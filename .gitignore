@@ -1,4 +1,6 @@
 auto-save-list/*
+elpa/*
+eshell/*
 network-security.data
 themes/*
 url/*

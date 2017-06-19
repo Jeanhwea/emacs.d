@@ -1,7 +1,10 @@
-(setq mac-command-modifier 'meta)
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/solarized")
-; (load-theme 'solarized t)
+(setq mac-command-modifier 'meta)
 
 ; customize all
 (custom-set-variables
@@ -11,7 +14,11 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
  '(initial-frame-alist (quote ((width . 100) (height . 40))))
- '(menu-bar-mode nil)
+ '(package-archives
+   (quote
+    (("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa" . "https://melpa.org/packages/"))))
+ '(scroll-bar-mode nil)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
