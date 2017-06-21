@@ -1,3 +1,5 @@
+(setq inhibit-startup-message t)
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -17,10 +19,7 @@
  '(custom-safe-themes
    (quote
     ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" default)))
- '(initial-frame-alist
-   (quote
-    ((width . 100)
-     (height . 30))))
+ '(initial-frame-alist (quote ((width . 100) (height . 30))))
  '(package-archives
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
@@ -29,6 +28,7 @@
    (quote
     (color-theme-sanityinc-solarized color-theme-solarized)))
  '(scroll-bar-mode nil)
+ '(shell-file-name "/bin/bash")
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
