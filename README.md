@@ -7,3 +7,4 @@ Hujinghui's EMACS Configuration
 - browses-at-remote: open github url on browser
 - yasnippet: Aha, meet the snippet system
 - smex: fast your M-x command
+- evil: vim-style text editing
