@@ -53,3 +53,4 @@ site-lisp/package/
 smex-items
 bookmarks
 places
+site-lisp/*

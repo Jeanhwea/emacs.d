@@ -6,4 +6,6 @@
 	("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
 
-(provide 'init-package)
+(package-initialize)
+
+(provide 'init-elpa)
