@@ -19,4 +19,4 @@
 ;; save cursor position
 (save-place-mode 1)
 
-(provide 'init-custom)
+(provide 'init-startup)

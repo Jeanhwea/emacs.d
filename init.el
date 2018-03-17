@@ -11,8 +11,8 @@
 ;; -----------------------------------------------------------------------------
 
 (require 'init-package)
+(require 'init-startup)
 (require 'init-gui)
-(require 'init-custom)
 
 ;; plugin
 (require 'init-magit)
