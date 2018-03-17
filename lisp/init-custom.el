@@ -1,6 +1,9 @@
 ;; change meta key
 (setq mac-command-modifier 'meta)
 
+;; bind keys
+(global-set-key (kbd "C-.") 'set-mark-command)
+
 ;; refuse backup on currect folder
 (make-directory "~/.emacs.d/autosaves/" t)
 (make-directory "~/.emacs.d/backups/" t)

@@ -17,6 +17,7 @@
 ;; plugin
 (require 'init-magit)
 (require 'init-smex)
+(require 'init-yasnippet)
 
 ;; -----------------------------------------------------------------------------
 ;; END: Bootstrap confiugration
