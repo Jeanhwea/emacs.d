@@ -3,6 +3,7 @@
 
 ;; bind keys
 (global-set-key (kbd "C-.") 'set-mark-command)
+(global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen)
 
 ;; refuse backup on currect folder
 (make-directory "~/.emacs.d/autosaves/" t)
