@@ -1,7 +1,7 @@
 Hujinghui's EMACS Configuration
 ==========================================================================
 
-## Reasonal Plugins
+## Reasonable Plugins
 
 - magit: powerful git manager
 - browses-at-remote: open github url on browser

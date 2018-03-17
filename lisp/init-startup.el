@@ -19,4 +19,8 @@
 ;; save cursor position
 (save-place-mode 1)
 
+;; enable upcase/downcase
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+
 (provide 'init-startup)
