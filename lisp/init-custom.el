@@ -13,4 +13,7 @@
 ;; always use 'y or n', refuse 'yes of no'
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; recently opened files
+(recentf-mode 1)
+
 (provide 'init-custom)
