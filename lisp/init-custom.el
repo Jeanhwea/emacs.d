@@ -16,4 +16,7 @@
 ;; recently opened files
 (recentf-mode 1)
 
+;; save cursor position
+(save-place-mode 1)
+
 (provide 'init-custom)
