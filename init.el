@@ -15,6 +15,7 @@
 (require 'init-elpa)
 (require 'init-startup)
 (require 'init-gui)
+(require 'init-themes)
 
 ;; plugin
 (require 'init-magit)
