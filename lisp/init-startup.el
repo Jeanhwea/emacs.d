@@ -5,11 +5,15 @@
 (global-set-key (kbd "C-.") 'set-mark-command)
 (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen)
 
+;; useful shortcuts
+(global-set-key (kbd "C-c b") 'list-bookmark)
+(global-set-key (kbd "C-c r") 'recentf-open-files)
+(global-set-key (kbd "C-c v") 'evil-mode)
+
 ;; refuse backup on currect folder
 (make-directory "~/.emacs.d/autosaves/" t)
 (make-directory "~/.emacs.d/backups/" t)
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/" t)))
-(setq backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
 
 ;; always use 'y or n', refuse 'yes of no'
 (defalias 'yes-or-no-p 'y-or-n-p)
