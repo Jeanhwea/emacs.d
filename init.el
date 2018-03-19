@@ -21,6 +21,7 @@
 (require 'init-magit)
 (require 'init-smex)
 (require 'init-yasnippet)
+(require 'init-helm)
 
 ;; -----------------------------------------------------------------------------
 ;; END: Bootstrap confiugration
@@ -39,7 +40,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (evil browse-at-remote yasnippet smex magit color-theme-solarized ag))))
+    (helm evil browse-at-remote yasnippet smex magit color-theme-solarized ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
