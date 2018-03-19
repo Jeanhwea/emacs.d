@@ -6,9 +6,9 @@
 (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen)
 
 ;; useful shortcuts
-(global-set-key (kbd "C-c b") 'list-bookmarks)
-(global-set-key (kbd "C-c r") 'recentf-open-files)
-(global-set-key (kbd "C-c v") 'evil-mode)
+;(global-set-key (kbd "C-c b") 'list-bookmarks)
+;(global-set-key (kbd "C-c r") 'recentf-open-files)
+;(global-set-key (kbd "C-c v") 'evil-mode)
 
 ;; refuse backup on currect folder
 (make-directory "~/.emacs.d/autosaves/" t)
