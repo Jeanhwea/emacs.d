@@ -37,7 +37,7 @@
 ;; save cursor position
 (save-place-mode 1)
 ;; restore last opened files and config
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
 
 ;; --------------------------------------------------------------------------
