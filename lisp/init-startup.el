@@ -9,6 +9,7 @@
 ;(global-set-key (kbd "C-c r") 'recentf-open-files)
 ;(global-set-key (kbd "C-c v") 'evil-mode)
 
+
 ;; --------------------------------------------------------------------------
 ;; backup setting
 ;; --------------------------------------------------------------------------
@@ -18,10 +19,11 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/" t)))
 (setq backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
 
+
 ;; --------------------------------------------------------------------------
 ;; more friendly interaction
 ;; --------------------------------------------------------------------------
-;; change meta key
+;; change meta key, let command key be additional meta key
 (setq mac-command-modifier 'meta)
 ;; always use 'y or n', refuse 'yes of no'
 (defalias 'yes-or-no-p 'y-or-n-p)
