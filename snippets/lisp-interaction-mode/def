@@ -2,6 +2,6 @@
 # name: def function
 # key: def
 # --
-(defun ${1:function} (${2:args})
+(defun ${1:function} ($2)
   "${3:Add document string here}"
   $0)
