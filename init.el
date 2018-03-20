@@ -22,6 +22,7 @@
 (require 'init-smex)
 (require 'init-yasnippet)
 (require 'init-helm)
+(require 'init-company)
 
 ;; -----------------------------------------------------------------------------
 ;; END: Bootstrap confiugration
