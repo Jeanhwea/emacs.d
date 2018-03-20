@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Global Key Binding
+# key: kbd
+# --
+(global-set-key (kbd "${1:M-x}") '${2:command})
