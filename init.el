@@ -40,7 +40,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (exec-path-from-shell helm evil browse-at-remote yasnippet smex magit color-theme-solarized ag))))
+    (company exec-path-from-shell helm evil browse-at-remote yasnippet smex magit color-theme-solarized ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
