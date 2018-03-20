@@ -8,4 +8,8 @@
 ;; cursor shape
 (blink-cursor-mode -1)
 
+;; use bar as default cursor
+(setq-default cursor-type 'bar)
+
+
 (provide 'init-gui)

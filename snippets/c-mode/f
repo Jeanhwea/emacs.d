@@ -2,7 +2,7 @@
 # name: define function
 # key: f
 # --
-${1:void} ${2:function}($3)
+${1:void} ${2:function} ($3)
 {
-	$0
+  $0
 }
