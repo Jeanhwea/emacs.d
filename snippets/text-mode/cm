@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: commit message style
+# key: cm
+# --
+${1:type in (feat fix docs style refactor test other)}: ${2:subject}
+
+${3:no detail}
