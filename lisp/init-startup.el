@@ -1,7 +1,9 @@
 ;; --------------------------------------------------------------------------
 ;; bind keys
 ;; --------------------------------------------------------------------------
+(global-set-key (kbd "M-1") 'bar-browse)
 (global-set-key (kbd "C-.") 'set-mark-command)
+(global-set-key (kbd "M-2") 'set-mark-command)
 (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen)
 
 ;; useful shortcuts
