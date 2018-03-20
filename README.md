@@ -9,6 +9,8 @@ Hujinghui's EMACS Configuration
 - smex: fast your M-x command
 - evil: vim-style text editing
 - helm: find anything, such as buffers, bookmarks, files and so on
+- company: auto complete words according context
+- exec-path-from-shell: load PATH from system
 
 
 ## Personal Hobbits
@@ -17,7 +19,7 @@ Hujinghui's EMACS Configuration
 - I like helm to make life easier
 
 
-## If you like it
+## Additional Words
 
 contact me: hujinghui@buaa.edu.cn
 
