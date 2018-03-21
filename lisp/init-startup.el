@@ -2,8 +2,12 @@
 ;; bind keys
 ;; --------------------------------------------------------------------------
 (global-set-key (kbd "C-.") 'set-mark-command)
-(global-set-key (kbd "C-. C-.") 'pop-global-mark)
+(global-set-key (kbd "C-x C-.") 'pop-global-mark)
 (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen)
+(global-set-key (kbd "M-1") 'delete-other-windows)
+(global-set-key (kbd "M-2") 'split-window-below)
+(global-set-key (kbd "M-3") 'split-window-right)
+(global-set-key (kbd "M-4") 'delete-window)
 
 ;; useful shortcuts
 ;(global-set-key (kbd "C-c b") 'list-bookmarks)
