@@ -17,6 +17,7 @@
 (require 'init-gui)
 (require 'init-editing)
 (require 'init-themes)
+(require 'init-abbrev)
 
 ;; plugin
 (require 'init-magit)
