@@ -4,4 +4,10 @@
 (global-set-key (kbd "C-j") 'join-line)
 
 
+(defun jh-tmp-buffer ()
+  "Create a temporary buffer"
+  (interactive)
+  (switch-to-buffer (make-temp-name "scratch+")))
+
+
 (provide 'init-editing)
