@@ -12,6 +12,8 @@ Hujinghui's EMACS Configuration
 - company: auto complete words according context
 - exec-path-from-shell: load PATH from system
 
+- nyan-mode: change your progress display in status bar into a cute animal
+
 
 ## Personal Hobbits
 
