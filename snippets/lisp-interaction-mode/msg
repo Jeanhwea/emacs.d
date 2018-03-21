@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: display message
+# key: msg
+# --
+(message "${1:string}")$0
