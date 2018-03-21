@@ -1,18 +1,10 @@
 ;; --------------------------------------------------------------------------
-;; bind keys
+;; more friendly interaction
 ;; --------------------------------------------------------------------------
-(global-set-key (kbd "C-.") 'set-mark-command)
-(global-set-key (kbd "C-x C-.") 'pop-global-mark)
-(global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen)
-(global-set-key (kbd "M-1") 'delete-other-windows)
-(global-set-key (kbd "M-2") 'split-window-below)
-(global-set-key (kbd "M-3") 'split-window-right)
-(global-set-key (kbd "M-4") 'delete-window)
-
-;; useful shortcuts
-;(global-set-key (kbd "C-c b") 'list-bookmarks)
-;(global-set-key (kbd "C-c r") 'recentf-open-files)
-;(global-set-key (kbd "C-c v") 'evil-mode)
+;; change meta key, let command key be additional meta key
+(setq mac-command-modifier 'meta)
+;; always use 'y or n', refuse 'yes of no'
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 
 ;; --------------------------------------------------------------------------
@@ -26,15 +18,6 @@
 
 
 ;; --------------------------------------------------------------------------
-;; more friendly interaction
-;; --------------------------------------------------------------------------
-;; change meta key, let command key be additional meta key
-(setq mac-command-modifier 'meta)
-;; always use 'y or n', refuse 'yes of no'
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-
-;; --------------------------------------------------------------------------
 ;; restore last configuration: files, workspace and so on
 ;; --------------------------------------------------------------------------
 ;; recently opened files
@@ -42,16 +25,12 @@
 ;; save cursor position
 (save-place-mode 1)
 ;; restore last opened files and config
-;; (desktop-save-mode 1)
-
-
-;; --------------------------------------------------------------------------
-;; editing setting
-;; --------------------------------------------------------------------------
-;; auto complete () {} []
+;(desktop-save-mode 1)
+;; auto complete pairs
 (electric-pair-mode 1)
 ;; enable upcase/downcase
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
+
 
 (provide 'init-startup)
