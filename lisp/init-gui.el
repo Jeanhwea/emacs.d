@@ -18,4 +18,8 @@
 ;; use bar as default cursor
 (setq-default cursor-type 'bar)
 
+;; scrollbar in status bar
+(when (require 'nyan-mode nil 'noerror)
+  (nyan-mode 1))
+
 (provide 'init-gui)
