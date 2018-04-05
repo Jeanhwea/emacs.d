@@ -10,7 +10,7 @@
 (setq tab-width 4)
 
 
-(defun jh-tmp-buffer ()
+(defun jh/temporary-buffer ()
   "Create a temporary buffer"
   (interactive)
   (switch-to-buffer (make-temp-name "scratch+")))
