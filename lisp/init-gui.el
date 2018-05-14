@@ -17,7 +17,7 @@
 (blink-cursor-mode -1)
 
 ;; use bar as default cursor
-(setq-default cursor-type 'bar)
+;(setq-default cursor-type 'bar)
 
 ;; scrollbar in status bar
 (when (require 'nyan-mode nil 'noerror)
