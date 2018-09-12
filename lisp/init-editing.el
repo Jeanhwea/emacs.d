@@ -9,16 +9,36 @@
 (setq-default tab-width 4)
 (setq tab-width 4)
 
-;; Javascript indentation
+;; Language-independent indentation
+(add-hook 'mhtml-mode-hook
+  (lambda()
+    (setq indent-tabs-mode nil)
+    (setq html-indent-level 2)
+    (setq tab-width 2)))
+
 (add-hook 'js-mode-hook
-   (lambda()
-      (setq indent-tabs-mode nil)
-      (setq js-indent-level 2)
-      (setq tab-width 2)))
+  (lambda()
+    (setq indent-tabs-mode nil)
+    (setq js-indent-level 2)
+    (setq tab-width 2)))
+
+(add-hook 'css-mode-hook
+  (lambda()
+    (setq indent-tabs-mode nil)
+    (setq css-indent-offset 2)
+    (setq tab-width 2)))
+
+(add-hook 'emacs-lisp-mode-hook
+  (lambda()
+    (setq indent-tabs-mode nil)
+    (setq lisp-indent-offset 2)
+    (setq tab-width 2)))
 
 
 ;; Display trailing whitespace
-(setq-default show-trailing-whitespace t)
+(add-hook 'js-mode-hook
+  (lambda()
+    (setq show-trailing-whitespace t)))
 
 
 (defun jh/temporary-buffer ()
