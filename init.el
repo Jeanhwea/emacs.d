@@ -20,11 +20,10 @@
 (require 'init-abbrev)
 
 ;; plugin
+(require 'init-plugin)
 (require 'init-magit)
 (require 'init-smex)
-(require 'init-yasnippet)
 (require 'init-helm)
-(require 'init-company)
 
 ;; -----------------------------------------------------------------------------
 ;; END: Bootstrap confiugration
@@ -41,9 +40,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (nyan-mode company exec-path-from-shell helm evil browse-at-remote yasnippet smex magit color-theme-solarized ag))))
+  '(package-selected-packages
+     (quote
+       (expand-region nyan-mode company exec-path-from-shell helm evil browse-at-remote yasnippet smex magit color-theme-solarized ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

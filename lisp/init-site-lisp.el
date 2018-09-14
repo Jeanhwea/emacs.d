@@ -6,11 +6,11 @@
   (let* ((default-directory parent-dir))
     (progn
       (setq load-path
-            (append
-             (remove-if-not
-              (lambda (dir) (file-directory-p dir))
-              (directory-files (expand-file-name parent-dir) t "^[^\\.]"))
-             load-path)))))
+        (append
+          (remove-if-not
+            (lambda (dir) (file-directory-p dir))
+            (directory-files (expand-file-name parent-dir) t "^[^\\.]"))
+          load-path)))))
 
 (hujinghui/add-subdirs-to-load-path (expand-file-name "site-lisp/" user-emacs-directory))
 

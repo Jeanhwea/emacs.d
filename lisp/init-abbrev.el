@@ -2,14 +2,13 @@
 
 (define-abbrev-table 'global-abbrev-table
   '(
-    
-    ;;
-    ("abz" "abcdefghijklmnopqrstuvwxyz")
-    ("utf8" "-*- coding: utf-8 -*-" )
-    ("eml" "hujinghui@buaa.edu.cn")
+     ;;
+     ("abz" "abcdefghijklmnopqrstuvwxyz")
+     ("utf8" "-*- coding: utf-8 -*-" )
+     ("eml" "hujinghui@buaa.edu.cn")
 
-    ;;
-    ))
+     ;;
+     ))
 
 
 (set-default 'abbrev-mode t)
