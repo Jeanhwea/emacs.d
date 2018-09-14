@@ -23,6 +23,7 @@
 (require 'init-plugin)
 (require 'init-smex)
 (require 'init-helm)
+(require 'init-experimental)
 
 ;; -----------------------------------------------------------------------------
 ;; END: Bootstrap confiugration
