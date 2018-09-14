@@ -53,5 +53,7 @@ site-lisp/package/
 smex-items
 bookmarks
 places
+server
 site-lisp/*
 /type-break
+
