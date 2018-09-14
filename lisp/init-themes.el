@@ -1,11 +1,11 @@
 (require 'color-theme-sanityinc-solarized)
 
 ;; default use solarized dark theme
-(load-theme 'sanityinc-solarized-dark t)
+(load-theme 'sanityinc-solarized-light t)
 
 
 ;; --------------------------------------------------------------------------
-;; Add helper command
+;; Add helper command to make changing color theme more faster
 ;; --------------------------------------------------------------------------
 (defun light()
   "Activate a light color theme"
