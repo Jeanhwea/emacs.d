@@ -34,6 +34,12 @@
     (setq lisp-indent-offset 2)
     (setq tab-width 2)))
 
+(add-hook 'sh-mode-hook
+  (lambda()
+    (setq indent-tabs-mode nil)
+    (setq sh-basic-offset 2)
+    (setq tab-width 2)))
+
 
 ;; Display trailing whitespace
 (add-hook 'js-mode-hook
