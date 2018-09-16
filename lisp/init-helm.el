@@ -7,6 +7,6 @@
 (global-set-key (kbd "C-x r b") 'helm-bookmarks)
 (global-set-key (kbd "M-9") 'helm-bookmarks)
 (global-set-key (kbd "C-x x") 'helm-M-x)
-(global-set-key (kbd "M-0") 'helm-M-x)
+
 
 (provide 'init-helm)
