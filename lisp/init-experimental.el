@@ -7,4 +7,9 @@
   (setq inhibit-compacting-font-caches t))
 
 
+(setq-default
+ recentf-max-saved-items 1000
+ recentf-exclude '("/tmp/" "/ssh:"))
+
+
 (provide 'init-experimental)
