@@ -45,6 +45,13 @@
     (setq sh-basic-offset 2)
     (setq tab-width 2)))
 
+(add-hook 'java-mode-hook
+  (lambda()
+    (setq show-trailing-whitespace t)
+    (setq indent-tabs-mode nil)
+    (setq c-basic-offset 2)
+    (setq tab-width 2)))
+
 
 (defun jh/temporary-buffer ()
   "Create a temporary buffer"
