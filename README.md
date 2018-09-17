@@ -21,7 +21,7 @@ Hujinghui's EMACS Configuration
 - I like helm to make life easier
 
 
-## Additional Words
+## Additional
 
 contact me: hujinghui@buaa.edu.cn
 
