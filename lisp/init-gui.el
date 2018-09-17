@@ -22,6 +22,7 @@
 ;;(setq-default cursor-type 'bar)
 
 
+;; set system font
 (when (string-equal "windows-nt" system-type)
   (set-face-attribute
     'default nil :font "Courier New 14")
