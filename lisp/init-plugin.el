@@ -42,8 +42,10 @@
 ;; -------------------------------------------------------------------------
 ;; exec-path-from-shell
 ;; -------------------------------------------------------------------------
-(when (require 'exec-path-from-shell)
-  (exec-path-from-shell-initialize))
+(when (and (require 'exec-path-from-shell)
+        (string-equal "darwin" system-type)
+         (exec-path-from-shell-initialize)))
+
 
 
 ;; -------------------------------------------------------------------------
