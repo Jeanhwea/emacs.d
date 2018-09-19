@@ -1,0 +1,4 @@
+alias open browse-url $1
+alias ff find-file $1
+alias d dired $1
+alias g git $*
