@@ -8,8 +8,8 @@
 
 
 (setq-default
- recentf-max-saved-items 1000
- recentf-exclude '("/tmp/" "/ssh:"))
+  recentf-max-saved-items 1000
+  recentf-exclude '("/tmp/" "/ssh:"))
 
 
 (provide 'init-experimental)
