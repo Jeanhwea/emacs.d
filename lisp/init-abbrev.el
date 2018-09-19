@@ -2,12 +2,11 @@
 
 (define-abbrev-table 'global-abbrev-table
   '(
-     ;;
+     ;; ----------------------------------------------------------------------
      ("abz" "abcdefghijklmnopqrstuvwxyz")
-     ("utf8" "-*- coding: utf-8 -*-" )
+     ("aqbf" "A quick brown fox jumps over the lazy dog")
      ("eml" "hujinghui@buaa.edu.cn")
-
-     ;;
+     ;; ----------------------------------------------------------------------
      ))
 
 

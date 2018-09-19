@@ -1,7 +1,7 @@
 ;; load all the path in ~/.emacs.d/site-path
 
 (eval-when-compile (require 'cl))
-(defun hujinghui/add-subdirs-to-load-path (parent-dir)
+(defun jh/add-subdirs-to-load-path (parent-dir)
   "Adds every non-hidden subdir of PARENT-DIR to `load-path'."
   (let* ((default-directory parent-dir))
     (progn
@@ -12,6 +12,6 @@
             (directory-files (expand-file-name parent-dir) t "^[^\\.]"))
           load-path)))))
 
-(hujinghui/add-subdirs-to-load-path (expand-file-name "site-lisp/" user-emacs-directory))
+(jh/add-subdirs-to-load-path (expand-file-name "site-lisp/" user-emacs-directory))
 
 (provide 'init-site-lisp)
