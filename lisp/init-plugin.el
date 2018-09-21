@@ -89,7 +89,7 @@
 ;; emmet-mode
 ;; -------------------------------------------------------------------------
 (when (require 'emmet-mode)
-  (add-hook 'mhtml-mode-hook 'emmet-mode)
+  (add-hook 'sgml-mode-hook 'emmet-mode)
   (add-hook 'css-mode-hook 'emmet-mode))
 
 
