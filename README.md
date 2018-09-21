@@ -14,6 +14,7 @@ Hujinghui's EMACS Configuration
 - expand-region: expand region increases the selected region by semantic units. Just keep pressing the key until it selects what you want. [video expamle](http://emacsrocks.com/e09.html)
 - nyan-mode: change your progress display in status bar into a cute animal
 - js-comint: let run interactive nodejs console with "M-x run-js"
+- tide: TypeScript Interactive Development Environment for Emacs. [homepage](https://github.com/ananthakumaran/tide)
 
 
 ## Personal Hobbits

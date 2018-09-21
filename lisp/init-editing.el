@@ -24,6 +24,13 @@
     (setq js-indent-level 2)
     (setq tab-width 2)))
 
+(add-hook 'typescript-mode-hook
+  (lambda()
+    (setq show-trailing-whitespace t)
+    (setq indent-tabs-mode nil)
+    (setq typescript-indent-level 2)
+    (setq tab-width 2)))
+
 (add-hook 'css-mode-hook
   (lambda()
     (setq show-trailing-whitespace t)

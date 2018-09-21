@@ -1,4 +1,10 @@
-;; this file add some unstable experimental feature
+;; this file add some unstable experimental featur
+
+
+;; --------------------------------------------------------------------------
+;; filetype detection
+;; --------------------------------------------------------------------------
+;; (add-to-list 'auto-mode-alist '("\\.ts?\\'" . javascript-mode))
 
 
 ;; when compact large fonts cause lots of resources, the editor will be very slow
@@ -17,6 +23,7 @@
     (lambda()
       (setq python-shell-interpreter "ipython"
         python-shell-interpreter-args "--simple-prompt -i"))))
+
 
 
 (provide 'init-experimental)
