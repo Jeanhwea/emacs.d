@@ -6,6 +6,7 @@ Hujinghui's EMACS Configuration
 - magit: powerful git manager
 - browses-at-remote: open github url on browser
 - yasnippet: Aha, meet the snippet system
+- undo-tree: visualize the editing history by a tree view
 - smex: fast your M-x command
 - evil: vim-style text editing
 - helm: find anything, such as buffers, bookmarks, files and so on
@@ -15,6 +16,7 @@ Hujinghui's EMACS Configuration
 - nyan-mode: change your progress display in status bar into a cute animal
 - js-comint: let run interactive nodejs console with "M-x run-js"
 - tide: TypeScript Interactive Development Environment for Emacs. [homepage](https://github.com/ananthakumaran/tide)
+- emmet-mode: a minor mode providing support for Zen Coding by producing HTML from CSS-like selectors. [homepage](https://github.com/smihica/emmet-mode)
 
 
 ## Personal Hobbits

@@ -9,6 +9,11 @@
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous))
 
+;; -------------------------------------------------------------------------
+;; undo-tree
+;; -------------------------------------------------------------------------
+(when (require 'undo-tree)
+  (global-undo-tree-mode))
 
 ;; -------------------------------------------------------------------------
 ;; expand-region
@@ -79,6 +84,13 @@
 
   ;; formats the buffer before saving
   (add-hook 'before-save-hook 'tide-format-before-save))
+
+;; -------------------------------------------------------------------------
+;; emmet-mode
+;; -------------------------------------------------------------------------
+(when (require 'emmet-mode)
+  (add-hook 'mhtml-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook 'emmet-mode))
 
 
 ;; -------------------------------------------------------------------------
