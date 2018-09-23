@@ -1,7 +1,7 @@
 alias open browse-url $1
 alias ff find-file $1
 alias d dired $1
-alias g git $*
+alias g git --no-pager $*
 alias l ls -al
 alias ll ls -alh
 alias lt ls -alt
