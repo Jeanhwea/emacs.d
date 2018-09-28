@@ -9,7 +9,7 @@ Hujinghui's EMACS Configuration
 - undo-tree: visualize the editing history by a tree view
 - smex: fast your M-x command
 - evil: vim-style text editing
-- helm: find anything, such as buffers, bookmarks, files and so on
+- helm: find anything, such as buffers, bookmarks, files and so on. [homepage](https://emacs-helm.github.io/helm/)
 - company: auto complete words according context
 - exec-path-from-shell: load PATH from system
 - expand-region: expand region increases the selected region by semantic units. Just keep pressing the key until it selects what you want. [video expamle](http://emacsrocks.com/e09.html)
