@@ -59,11 +59,29 @@
     (setq c-basic-offset 2)
     (setq tab-width 2)))
 
+;; C-o to open next lines
+(defun jh/open-next-line (N)
+  "Open N lines next the cursor"
+  (interactive "P")
+  (save-excursion
+    (move-end-of-line 1)
+    (open-line N)))
+(global-set-key (kbd "C-o") 'jh/open-next-line)
 
-(defun jh/temporary-buffer ()
-  "Create a temporary buffer"
-  (interactive)
-  (switch-to-buffer (make-temp-name "scratch+")))
+;; C-S-o to open previous lines
+(defun jh/open-previous-line (N)
+  "Open N lines before the cursor"
+  (interactive "P")
+  (save-excursion
+    (move-beginning-of-line 1)
+    (newline N)))
+(global-set-key (kbd "C-S-o") 'jh/open-previous-line)
+
+
+;; (defun jh/temporary-buffer ()
+;;   "Create a temporary buffer"
+;;   (interactive)
+;;   (switch-to-buffer (make-temp-name "scratch+")))
 
 
 (provide 'init-editing)
