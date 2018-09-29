@@ -7,6 +7,13 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; --------------------------------------------------------------------------
+;; Use utf-8 as default encoding system
+;; --------------------------------------------------------------------------
+(prefer-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+
+
+;; --------------------------------------------------------------------------
 ;; doc-view-mode support https://www.emacswiki.org/emacs/DocViewMode
 ;; 1. Set up png support, you’ll have to look elsewhere for instructions on this.
 ;; 2. Install ghostscript and add the bin and lib directories to your path.
