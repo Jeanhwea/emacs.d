@@ -2,4 +2,4 @@
 # name: time
 # key: time
 # --
-`(format-time-string %H-%M-%S)`$0
+`(format-time-string "%H:%M:%S")`$0
