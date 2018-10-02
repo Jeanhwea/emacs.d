@@ -49,6 +49,8 @@
 ;; enable upcase/downcase
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
+;; ido-mode
+(ido-mode 1)
 
 
 (provide 'init-startup)
