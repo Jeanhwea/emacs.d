@@ -7,10 +7,10 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; -----------------------------------------------------------------------------
-;; BEGIN: Bootstrap confiugration
+;; BEGIN of confiugration
 ;; -----------------------------------------------------------------------------
 
-;; normal setup
+;; bootstrap
 (require 'init-site-lisp)
 (require 'init-elpa)
 (require 'init-startup)
@@ -21,12 +21,21 @@
 
 ;; plugin
 (require 'init-plugin)
+(require 'init-company)
+(require 'init-git)
+(require 'init-yasnippet)
 (require 'init-smex)
 (require 'init-helm)
+
+;; programming language
+(require 'init-typescript)
+
+
+;; experimental feature
 (require 'init-experimental)
 
 ;; -----------------------------------------------------------------------------
-;; END: Bootstrap confiugration
+;; END of confiugration
 ;; -----------------------------------------------------------------------------
 
 (provide 'init)
