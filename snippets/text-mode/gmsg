@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: git commit message template
+# key: gmsg
+# --
+[${1:$$(yas-choose-value '("fix" "hotfix" "add" "update" "change" "clean" "disable" "remove" "upgrade" "revert"))}] ${2:messages}
+
+${3:no detail}
+$0
+
