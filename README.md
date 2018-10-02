@@ -24,8 +24,3 @@ Hujinghui's EMACS Configuration
 - I like vim mode editing, sometime I use evil-mode
 - I like helm to make life easier
 
-
-## Additional
-
-contact me: hujinghui@buaa.edu.cn
-
