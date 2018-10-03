@@ -2,7 +2,7 @@
 # name: git commit message template
 # key: gm
 # --
-**${1:$$(yas-choose-value '("fix" "hotfix" "add" "update" "change" "clean" "disable" "remove" "upgrade" "revert"))}** ${2:messages}
+**${1:commit type}** ${2:commit messages}
 
-${3:no detail}
+${3:commit detail}
 $0
