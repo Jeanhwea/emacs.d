@@ -7,10 +7,14 @@
 (setq mac-command-modifier 'meta) ; change meta key
 (defalias 'yes-or-no-p 'y-or-n-p) ; always use 'y or n', refuse 'yes of no'
 
+;;(desktop-save-mode 1)
 (save-place-mode 1)
 (electric-pair-mode 1)
-;;(desktop-save-mode 1)
-(put 'narrow-to-page 'disable nil)
+
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-defun 'disabled nil)
+
 (put 'downcase-region 'disabled nil) ; C-x C-u
 (put 'upcase-region 'disabled nil)   ; C-x C-l
 

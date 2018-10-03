@@ -3,17 +3,22 @@
 ;; -----------------------------------------------------------------------------
 (setq inhibit-startup-message t)
 
-;(menu-bar-mode -1)
+;;(menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-(blink-cursor-mode -1)
-;;(setq-default cursor-type 'bar)
+(setq-default
+  blink-cursor-mode t
+  cursor-type 'bar
+  blink-cursor-interval 1
+  ;; ediff-split-window-function 'split-window-horizontally
+  ;; ediff-window-setup-function 'ediff-setup-windows-plain
+  line-number-mode t
+  column-number-mode t
+  size-indication-mode t)
 
-(when (require 'nyan-mode) (nyan-mode 1))
-(line-number-mode 1)
-(column-number-mode 1)
-(size-indication-mode 1)
+(when (require 'nyan-mode)
+  (nyan-mode 1))
 
 
 ;; -----------------------------------------------------------------------------

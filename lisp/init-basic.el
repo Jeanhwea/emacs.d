@@ -1,8 +1,10 @@
 ;; -----------------------------------------------------------------------------
 ;; basic keybinds
 ;; -----------------------------------------------------------------------------
-(global-set-key (kbd "C-,") 'set-mark-command)
-(global-set-key (kbd "C-x C-,") 'pop-global-mark)
+(global-set-key (kbd "C-.") 'set-mark-command)
+(global-set-key (kbd "C-x C-.") 'pop-global-mark)
+
+
 (global-set-key (kbd "C-j") 'join-line)
 
 (global-set-key (kbd "M-0") 'delete-window)
@@ -86,8 +88,10 @@
 ;; -----------------------------------------------------------------------------
 ;; tab, space width
 ;; -----------------------------------------------------------------------------
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+(setq-default
+  delete-selection-mode t
+  indent-tabs-mode nil
+  tab-width 4)
 
 
 (provide 'init-basic)
