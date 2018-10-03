@@ -53,6 +53,16 @@
 (global-set-key (kbd "M-u") 'jh/upcase-previous-word)
 (global-set-key (kbd "M-c") 'jh/capitalize-previous-word)
 
+
+(defun jh/newline-at-the-end-of-line ()
+  "Move to the end of the line, enter a newline and indent"
+  (interactive)
+  (move-end-of-line 1)
+  (newline-and-indent))
+
+(global-set-key (kbd "S-<return>") 'jh/newline-at-the-end-of-line)
+
+
 ;; (defun jh/new-temporary-buffer ()
 ;;   "Create a temporary buffer"
 ;;   (interactive)
