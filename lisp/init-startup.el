@@ -1,16 +1,12 @@
 ;; -----------------------------------------------------------------------------
-;; encoding
+;; custom behavior
 ;; -----------------------------------------------------------------------------
 (prefer-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
 
-
-;; -----------------------------------------------------------------------------
-;; behavior
-;; -----------------------------------------------------------------------------
 (setq mac-command-modifier 'meta) ; change meta key
 (defalias 'yes-or-no-p 'y-or-n-p) ; always use 'y or n', refuse 'yes of no'
-(recentf-mode 1)
+
 (save-place-mode 1)
 (electric-pair-mode 1)
 ;;(desktop-save-mode 1)
@@ -19,9 +15,9 @@
 (put 'upcase-region 'disabled nil)   ; C-x C-l
 
 
-;; --------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
 ;; backup
-;; --------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
 (make-directory "~/.emacs.d/autosaves/" t)
 (make-directory "~/.emacs.d/backups/" t)
 (setq auto-save-file-name-transforms
@@ -31,8 +27,17 @@
 
 
 ;; -----------------------------------------------------------------------------
+;; exec-path-from-shell
+;; -----------------------------------------------------------------------------
+(when (require 'exec-path-from-shell)
+  (when (string-equal "darwin" system-type)
+    (exec-path-from-shell-initialize)))
+
+
+;; -----------------------------------------------------------------------------
 ;; recentf
 ;; -----------------------------------------------------------------------------
+(recentf-mode 1)
 (setq-default
   recentf-max-saved-items 1000
   recentf-exclude '("/tmp/" "/ssh:"))

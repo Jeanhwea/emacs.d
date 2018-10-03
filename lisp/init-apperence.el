@@ -8,7 +8,12 @@
 (tool-bar-mode -1)
 
 (blink-cursor-mode -1)
-;(setq-default cursor-type 'bar)
+;;(setq-default cursor-type 'bar)
+
+(when (require 'nyan-mode) (nyan-mode 1))
+(line-number-mode 1)
+(column-number-mode 1)
+(size-indication-mode 1)
 
 
 ;; -----------------------------------------------------------------------------
