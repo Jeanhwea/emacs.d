@@ -20,10 +20,9 @@
 
 ;; plugin
 (require 'init-plugin)
-(require 'init-company)
 (require 'init-git)
+(require 'init-completion)
 (require 'init-yasnippet)
-(require 'init-smex)
 (require 'init-helm)
 
 ;; programming language
