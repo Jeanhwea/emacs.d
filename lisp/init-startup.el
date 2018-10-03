@@ -35,22 +35,6 @@
 (setq backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
 
 
-;; --------------------------------------------------------------------------
-;; restore last configuration: files, workspace and so on
-;; --------------------------------------------------------------------------
-;; recently opened files
-(recentf-mode 1)
-;; save cursor position
-(save-place-mode 1)
-;; restore last opened files and config
-;(desktop-save-mode 1)
-;; auto complete pairs
-(electric-pair-mode 1)
-;; enable upcase/downcase
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
-;; ido-mode
-(ido-mode 1)
 
 
 (provide 'init-startup)
