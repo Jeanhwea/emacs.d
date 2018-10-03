@@ -1,3 +1,13 @@
+(add-hook 'js-mode-hook
+  (lambda()
+    (setq show-trailing-whitespace t)
+    (setq indent-tabs-mode nil)
+    (setq js-indent-level 2)
+    (setq tab-width 2)))
+
+(when (require 'js-comint)
+  (setq inferior-js-program-command "node"))
+
 (add-hook 'typescript-mode-hook
   (lambda()
     (setq show-trailing-whitespace t)
@@ -24,7 +34,5 @@
   ;; formats the buffer before saving
   (add-hook 'before-save-hook 'tide-format-before-save))
 
-(when (require 'js-comint)
-  (setq inferior-js-program-command "node"))
 
-(provide 'init-typescript)
+(provide 'init-javascript)
