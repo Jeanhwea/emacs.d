@@ -1,12 +1,12 @@
 ;; -----------------------------------------------------------------------------
-;; basic keybinds
+;; mark
 ;; -----------------------------------------------------------------------------
 (global-set-key (kbd "C-.") 'set-mark-command)
 (global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
-
-(global-set-key (kbd "C-j") 'join-line)
-
+;; -----------------------------------------------------------------------------
+;; windows
+;; -----------------------------------------------------------------------------
 (global-set-key (kbd "M-0") 'delete-window)
 (global-set-key (kbd "M-1") 'delete-other-windows)
 (global-set-key (kbd "M-2") 'split-window-below)
@@ -17,6 +17,9 @@
   (global-set-key (kbd "C-M-f") 'toggle-frame-maximized)
   (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen))
 
+;; -----------------------------------------------------------------------------
+;; editing lines: open lines, insert newline
+;; -----------------------------------------------------------------------------
 (defun jh/open-next-line (N)
   "Open N lines next the cursor"
   (interactive "P")
@@ -31,9 +34,28 @@
     (move-beginning-of-line 1)
     (newline N)))
 
+(defun jh/newline-at-the-end-of-previous-line ()
+  "Move to the end of previous line, enter a newline and indent"
+  (interactive)
+  (previous-line 1)
+  (move-end-of-line 1)
+  (newline-and-indent))
+
+(defun jh/newline-at-the-end-of-line ()
+  "Move to the end of the line, enter a newline and indent"
+  (interactive)
+  (move-end-of-line 1)
+  (newline-and-indent))
+
 (global-set-key (kbd "C-o") 'jh/open-next-line)
 (global-set-key (kbd "C-S-o") 'jh/open-previous-line)
+(global-set-key (kbd "C-<return>") 'jh/newline-at-the-end-of-line)
+(global-set-key (kbd "S-<return>") 'jh/newline-at-the-end-of-previous-line)
+(global-set-key (kbd "C-j") 'join-line)
 
+;; -----------------------------------------------------------------------------
+;; editing words: upcase, capitalized
+;; -----------------------------------------------------------------------------
 (defun jh/upcase-previous-word (N)
   "Convert previous word to upper case format, moving over"
   (interactive "P")
@@ -54,15 +76,6 @@
 
 (global-set-key (kbd "M-u") 'jh/upcase-previous-word)
 (global-set-key (kbd "M-c") 'jh/capitalize-previous-word)
-
-
-(defun jh/newline-at-the-end-of-line ()
-  "Move to the end of the line, enter a newline and indent"
-  (interactive)
-  (move-end-of-line 1)
-  (newline-and-indent))
-
-(global-set-key (kbd "S-<return>") 'jh/newline-at-the-end-of-line)
 
 
 ;; (defun jh/new-temporary-buffer ()
@@ -86,7 +99,7 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; tab, space width
+;; tab, space width configuration
 ;; -----------------------------------------------------------------------------
 (setq-default
   delete-selection-mode t
