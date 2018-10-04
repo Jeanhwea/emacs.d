@@ -9,6 +9,8 @@
 
 ;;(desktop-save-mode 1)
 (save-place-mode 1)
+
+(show-paren-mode 1)
 (electric-pair-mode 1)
 
 (put 'narrow-to-region 'disabled nil)
