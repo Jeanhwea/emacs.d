@@ -22,7 +22,7 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; backup
+;; backup and auto-save
 ;; -----------------------------------------------------------------------------
 (make-directory "~/.emacs.d/autosaves/" t)
 (make-directory "~/.emacs.d/backups/" t)
@@ -30,6 +30,7 @@
   '((".*" "~/.emacs.d/autosaves/" t)))
 (setq backup-directory-alist
   '((".*" . "~/.emacs.d/backups/")))
+(auto-save-visited-mode 1)
 
 
 ;; -----------------------------------------------------------------------------

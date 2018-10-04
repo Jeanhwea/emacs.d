@@ -1,8 +1,14 @@
 ;; -----------------------------------------------------------------------------
 ;; A reasonable Emacs configuration files.
 ;; -----------------------------------------------------------------------------
-
 (setq debug-on-error t)
+
+(let ((mini-version "26.1"))
+  (when (version< emacs-version mini-version)
+    (error
+      "This config supported mini version is v%s, upgrade your Emacs first"
+      mini-version)))
+
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 
