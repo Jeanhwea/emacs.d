@@ -1,6 +1,11 @@
 Hujinghui's EMACS Configuration
 ==========================================================================
 
+## Built-in
+- eshell: unix style shell
+- ielm: elisp REPL
+
+
 ## Reasonable Plugins
 
 - magit: powerful git manager
