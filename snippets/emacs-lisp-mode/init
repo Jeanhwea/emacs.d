@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Init Elisp init config file
-# key: init
-# --
-(require '${1:packname})
-
-$0
-
-(provide 'init-$1)
