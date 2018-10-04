@@ -1,3 +1,6 @@
+;; -----------------------------------------------------------------------------
+;; A reasonable Emacs configuration files.
+;; -----------------------------------------------------------------------------
 
 (setq debug-on-error t)
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
