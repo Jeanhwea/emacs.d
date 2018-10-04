@@ -17,8 +17,7 @@
   column-number-mode t
   size-indication-mode t)
 
-(when (require 'nyan-mode)
-  (nyan-mode 1))
+;;(when (require 'nyan-mode) (nyan-mode 1))
 
 
 ;; -----------------------------------------------------------------------------
