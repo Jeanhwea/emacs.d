@@ -47,10 +47,35 @@
   (move-end-of-line 1)
   (newline-and-indent))
 
+;; https://www.emacswiki.org/emacs/MoveLine
+(defmacro save-column (&rest BODY)
+  `(let ((column (current-column)))
+     (unwind-protect
+         (progn ,@BODY)
+       (move-to-column column))))
+(put 'save-column 'lisp-indent-function 0)
+
+(defun jh/shift-up-line ()
+  "Shift the line up"
+  (interactive)
+  (save-column
+    (transpose-lines 1)
+    (forward-line -2)))
+
+(defun jh/shift-down-line ()
+  "Shift the line down"
+  (interactive)
+  (save-column
+    (forward-line 1)
+    (transpose-lines 1)
+    (forward-line -1)))
+
 (global-set-key (kbd "C-o") 'jh/open-next-line)
 (global-set-key (kbd "C-S-o") 'jh/open-previous-line)
 (global-set-key (kbd "C-<return>") 'jh/newline-at-the-end-of-line)
 (global-set-key (kbd "S-<return>") 'jh/newline-at-the-end-of-previous-line)
+(global-set-key (kbd "M-p") 'jh/shift-up-line)
+(global-set-key (kbd "M-n") 'jh/shift-down-line)
 (global-set-key (kbd "C-j") 'join-line)
 
 ;; -----------------------------------------------------------------------------
