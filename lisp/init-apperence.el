@@ -8,6 +8,7 @@
 (tool-bar-mode -1)
 
 (setq-default
+  fill-column 80
   blink-cursor-mode t
   cursor-type 'bar
   blink-cursor-interval 1
