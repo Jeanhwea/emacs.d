@@ -30,15 +30,24 @@
   (load-theme 'sanityinc-solarized-light t)
 
   ;; Add helper command to make changing color theme more faster
-  (defun jh/light()
+  (defun jh/load-light-theme()
     "Activate a light color theme"
     (interactive)
     (load-theme 'sanityinc-solarized-light t))
 
-  (defun jh/dark()
-    "Activate a light color theme"
+  (defun jh/load-dark-theme()
+    "Activate a dark color theme"
     (interactive)
-    (load-theme 'sanityinc-solarized-dark t)))
+    (load-theme 'sanityinc-solarized-dark t))
+
+  (defun jh/toggle-light-dark-theme ()
+    "Toggle solarized light/dark theme"
+    (interactive)
+    (let ((current-theme (car custom-enabled-themes)))
+      (when (string-equal current-theme "sanityinc-solarized-dark")
+        (load-theme 'sanityinc-solarized-light))
+      (when (string-equal current-theme "sanityinc-solarized-light")
+        (load-theme 'sanityinc-solarized-dark)))))
 
 
 ;; -----------------------------------------------------------------------------
