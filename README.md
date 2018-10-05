@@ -1,4 +1,4 @@
-Hujinghui's EMACS Configuration
+Jinghui's emacs configuration
 ==========================================================================
 
 ## Built-in
