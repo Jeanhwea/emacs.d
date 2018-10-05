@@ -1,8 +1,11 @@
 alias open browse-url $1
-alias ff find-file $1
 alias d dired $1
+alias f find-file $1
+alias ff find-file $1
+alias fo find-file-other-window $1
 alias g git --no-pager $*
 alias git git --no-pager $*
+alias mg magit .
 alias l ls -al
 alias ll ls -alh
 alias lt ls -alt
