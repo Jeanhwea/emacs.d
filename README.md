@@ -28,6 +28,8 @@ Jinghui's emacs configuration
   Development Environment for Emacs.
 - [emmet-mode](https://github.com/smihica/emmet-mode): a minor mode providing
   support for Zen Coding by producing HTML from CSS-like selectors.
+- [elfeed](https://github.com/skeeto/elfeed): an extensible web feed reader for
+  Emacs, supporting both Atom and RSS.
 
 
 ## Personal Hobbits
