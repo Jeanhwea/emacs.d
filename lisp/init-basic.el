@@ -26,14 +26,18 @@
   (interactive "P")
   (save-excursion
     (move-end-of-line 1)
-    (open-line N)))
+    (if (integerp N)
+      (open-line N)
+      (open-line 1))))
 
 (defun jh/open-previous-line (N)
   "Open N lines before the cursor."
   (interactive "P")
   (save-excursion
     (move-beginning-of-line 1)
-    (newline N)))
+    (if (integerp N)
+      (newline N)
+      (newline 1))))
 
 (defun jh/newline-at-the-end-of-previous-line ()
   "Move to the end of previous line, enter a newline and indent."

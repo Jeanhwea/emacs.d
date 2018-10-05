@@ -7,7 +7,7 @@
     (setq prettify-symbols-alist
       '(
          ("lambda" . 955)               ; λ
-         ("defun" . 8753)               ; ∱
+         ("defun" . 119917)             ; 𝑭
          ))))
 
 (provide 'init-lisp)
