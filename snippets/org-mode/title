@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: basic header
+# key: title
+# --
+#+TITLE: ${1:Title}
+#+AUTHOR: Jinghui Hu
+#+EMAIL: hujinghui@buaa.edu.cn
+#+DATE: `(format-time-string "%Y-%m-%d")`
+
+$0
