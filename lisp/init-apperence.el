@@ -1,24 +1,25 @@
 ;; -----------------------------------------------------------------------------
 ;; gui
 ;; -----------------------------------------------------------------------------
-(setq inhibit-startup-message t)
-
-;;(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-
 (setq-default
+  inhibit-startup-message t
   fill-column 80
   blink-cursor-mode t
   cursor-type 'bar
   blink-cursor-interval 1
   ;; ediff-split-window-function 'split-window-horizontally
   ;; ediff-window-setup-function 'ediff-setup-windows-plain
+  display-time-format "%Y-%m-%d %H:%M"
   line-number-mode t
   column-number-mode t
   size-indication-mode t)
 
 ;;(when (require 'nyan-mode) (nyan-mode 1))
+
+;;(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(display-time-mode 1)
 
 (global-hl-line-mode 1) ; highlight the current line
 (when (require 'fill-column-indicator)
