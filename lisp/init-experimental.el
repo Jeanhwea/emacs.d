@@ -92,6 +92,10 @@
     "https://duckduckgo.com/?q=%s"
     :keybinding "d")
 
+  (defengine baidu
+    "https://www.baidu.com/s?wd=%s"
+    :keybinding "b")
+
   (engine-mode t))
 
 (provide 'init-experimental)
