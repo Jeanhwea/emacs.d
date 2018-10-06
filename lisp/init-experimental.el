@@ -67,8 +67,16 @@
 
 
   ;; highlight some tags of feeds
-  (defface github-elfeed-entry '((t :foreground "#39e")) "github feeds.")
-  (defface important-elfeed-entry '((t :foreground "#f0a")) "important feeds.")
+  (defface emacs-elfeed-entry
+    '((t :foreground "#c065db")) "emacs feeds")
+  (defface github-elfeed-entry
+    '((t :foreground "#28a745")) "github feeds.")
+  (defface news-elfeed-entry
+    '((t :foreground "#268bd2")) "news feeds.")
+  (defface important-elfeed-entry
+    '((t :foreground "#d33682")) "important feeds.")
+  (push '(emacs emacs-elfeed-entry) elfeed-search-face-alist)
+  (push '(news news-elfeed-entry) elfeed-search-face-alist)
   (push '(github github-elfeed-entry) elfeed-search-face-alist)
   (push '(important important-elfeed-entry) elfeed-search-face-alist)
 
