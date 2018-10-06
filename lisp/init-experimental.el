@@ -15,7 +15,7 @@
        ;; emacs
        ("http://planet.emacsen.org/atom.xml" emacsen emacs important)
        ("http://pragmaticemacs.com/feed/" pragmaticemacs emacs)
-       (" http://feeds.feedburner.com/XahsEmacsBlog" xah emacs)
+       ("http://ergoemacs.org/emacs/blog.xml" xah emacs)
        ;; programming
        ("http://www.ruanyifeng.com/blog/atom.xml" ruanyifeng blog coding)
        ("http://blog.binchen.org/rss.xml" chenbin blog coding)
