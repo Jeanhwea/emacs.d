@@ -34,7 +34,9 @@
   (push '(good good-elfeed-entry) elfeed-search-face-alist)
   (push '(imp imp-elfeed-entry) elfeed-search-face-alist)
 
-  (setq-default elfeed-search-filter "@2-months-ago -junk +unread")
+  ;; display feeds last 18 months ago, total items not greater than 100, and
+  ;; remove junk, show unread only
+  (setq-default elfeed-search-filter "@18-months-ago #100 -junk +unread")
   (setq url-queue-timeout 30)
   (global-set-key (kbd "C-x w") 'elfeed))
 
