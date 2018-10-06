@@ -79,4 +79,19 @@
   (global-set-key (kbd "C-x w") 'elfeed))
 
 
+;; -----------------------------------------------------------------------------
+;; engine-mode
+;; -----------------------------------------------------------------------------
+(when (require 'engine-mode)
+
+  (defengine google
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+    :keybinding "g")
+
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+
+  (engine-mode t))
+
 (provide 'init-experimental)
