@@ -13,14 +13,15 @@
     '(
        ;; ----------------------------------------------------------------------
        ;; emacs
-       ("http://planet.emacsen.org/atom.xml" emacsen emacs imp)
+       ("http://planet.emacsen.org/atom.xml" emacsen emacs important)
        ("http://pragmaticemacs.com/feed/" pragmaticemacs emacs)
        ("http://ergoemacs.org/emacs/blog.xml" xah emacs)
+       ("http://sachachua.com/blog/feed/" sachachua emacs)
        ;; programming
        ("http://www.ruanyifeng.com/blog/atom.xml" ruanyifeng blog coding)
        ("http://blog.binchen.org/rss.xml" chenbin blog coding)
        ("http://feeds2.feedburner.com/catonmat" catonmat blog coding)
-       ("https://nullprogram.com/feed/" nullprogram blog coding imp)
+       ("https://nullprogram.com/feed/" nullprogram blog coding important)
        ("https://blog.csdn.net/pennyliang/rss/list" pennyliang blog coding)
        ;; news
        ("https://laod.cn/feed/" laod blog news)
