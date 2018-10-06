@@ -42,7 +42,8 @@
 (when (require 'color-theme-sanityinc-solarized nil t)
 
   ;; default use solarized dark theme
-  (load-theme 'sanityinc-solarized-light t)
+  (add-hook 'after-init-hook
+    (lambda () (load-theme 'sanityinc-solarized-light t)))
 
   ;; Add helper command to make changing color theme more faster
   (defun jh/load-light-theme()
