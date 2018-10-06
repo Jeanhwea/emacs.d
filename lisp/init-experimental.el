@@ -13,14 +13,14 @@
     '(
        ;; ----------------------------------------------------------------------
        ;; emacs
-       ("http://planet.emacsen.org/atom.xml" emacsen emacs important)
+       ("http://planet.emacsen.org/atom.xml" emacsen emacs imp)
        ("http://pragmaticemacs.com/feed/" pragmaticemacs emacs)
        ("http://ergoemacs.org/emacs/blog.xml" xah emacs)
        ;; programming
        ("http://www.ruanyifeng.com/blog/atom.xml" ruanyifeng blog coding)
        ("http://blog.binchen.org/rss.xml" chenbin blog coding)
        ("http://feeds2.feedburner.com/catonmat" catonmat blog coding)
-       ("https://nullprogram.com/feed/" nullprogram blog coding important)
+       ("https://nullprogram.com/feed/" nullprogram blog coding imp)
        ("https://blog.csdn.net/pennyliang/rss/list" pennyliang blog coding)
        ;; news
        ("https://laod.cn/feed/" laod blog news)
@@ -30,9 +30,9 @@
 
   ;; highlight some tags of feeds
   (defface good-elfeed-entry '((t :foreground "#39e")) "good feeds.")
-  (defface important-elfeed-entry '((t :foreground "#f0a")) "important feeds.")
+  (defface imp-elfeed-entry '((t :foreground "#f0a")) "important feeds.")
   (push '(good good-elfeed-entry) elfeed-search-face-alist)
-  (push '(important important-elfeed-entry) elfeed-search-face-alist)
+  (push '(imp imp-elfeed-entry) elfeed-search-face-alist)
 
   (setq-default elfeed-search-filter "@2-months-ago -junk +unread")
   (setq url-queue-timeout 30)
