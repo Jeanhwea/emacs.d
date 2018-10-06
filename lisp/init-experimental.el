@@ -26,6 +26,7 @@
        ;; news
        ("https://laod.cn/feed/" laod blog news)
        ("https://www.zhihu.com/rss" zhihu blog daily-popular news)
+       ("https://blog.github.com/blog.atom" github blog git)
        ;; ----------------------------------------------------------------------
        ))
 
@@ -66,9 +67,9 @@
 
 
   ;; highlight some tags of feeds
-  (defface good-elfeed-entry '((t :foreground "#39e")) "good feeds.")
+  (defface github-elfeed-entry '((t :foreground "#39e")) "github feeds.")
   (defface important-elfeed-entry '((t :foreground "#f0a")) "important feeds.")
-  (push '(good good-elfeed-entry) elfeed-search-face-alist)
+  (push '(github github-elfeed-entry) elfeed-search-face-alist)
   (push '(important important-elfeed-entry) elfeed-search-face-alist)
 
   ;; display feeds last 18 months ago, total items not greater than 100, and
