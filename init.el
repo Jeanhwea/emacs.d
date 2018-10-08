@@ -21,6 +21,7 @@
 (require 'init-basic)
 (require 'init-apperence)
 (require 'init-abbrev)
+(require 'init-dired)
 
 ;; -----------------------------------------------------------------------------
 ;; plugin
