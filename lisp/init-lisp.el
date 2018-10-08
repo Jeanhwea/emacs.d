@@ -10,7 +10,7 @@
     (setq prettify-symbols-alist
       (append prettify-symbols-alist
         '(
-           ("defun" . 119917)             ; 𝑭
+           ;; ("defun" . 119917)             ; 
            )))))
 
 
