@@ -22,8 +22,8 @@
 (display-time-mode 1)
 
 ;;(global-hl-line-mode 1) ; highlight the current line
-(when (require 'fill-column-indicator)
-  (add-hook 'after-change-major-mode-hook 'fci-mode))
+;;(when (require 'fill-column-indicator)
+;;  (add-hook 'after-change-major-mode-hook 'fci-mode))
 
 (global-prettify-symbols-mode 1)
 (setq-default prettify-symbols-alist
