@@ -70,7 +70,7 @@
 ;; font
 ;; -----------------------------------------------------------------------------
 (when (string-equal "windows-nt" system-type)
-  (set-face-attribute 'default nil :font "Consolas 14")
+  (set-face-attribute 'default nil :font "Consolas 13")
   ;; 中文字体单独设置
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
