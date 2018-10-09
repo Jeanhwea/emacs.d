@@ -18,8 +18,8 @@
     org-lowest-priority ?C
     org-priority-faces
       '((?A . (:foreground "#d33682" :weight bold))
-        (?B . (:foreground "#268bd2" :weight bold))
-        (?C . (:foreground "#c065db")))
+        (?B . (:foreground "#c065db" :weight bold))
+        (?C . (:foreground "#268bd2")))
     org-todo-keywords
       '((sequence "TODO" "WAITING" "|" "DONE" "CANCLE"))
     org-agenda-files
