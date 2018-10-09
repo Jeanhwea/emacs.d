@@ -40,7 +40,7 @@
   (defun jh/pop-agenda-list-and-close-other-windows (split)
     "Popup org agenda list and close other windows"
     (interactive "P")
-    (org-agenda-list)
+    (org-agenda nil "n")
     (when (not split)
       (delete-other-windows)))
   (define-key global-map (kbd "C-c a") 'jh/pop-agenda-list-and-close-other-windows)
