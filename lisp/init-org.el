@@ -2,20 +2,20 @@
 ;; org-mode
 ;; -----------------------------------------------------------------------------
 (when (require 'org)
+
+  (defvar jesenia-path
+    (if (string-equal "windows-nt" system-type)
+      "e:/Codes/common/jesenia"
+      "~/Codes/common/jesenia"))
+
   (define-key global-map (kbd "C-c l") 'org-store-link)
   (define-key global-map (kbd "C-c a") 'org-agenda)
 
   (setq
     org-link-file-path-type 'relative
-    org-log-done t)
+    org-log-done t
+    org-agenda-files (list (concat jesenia-path "/todo/avic.org")))
 
-  (cond
-    ((string-equal "windows-nt" system-type)
-      (setq org-agenda-files
-        (list "e:/Codes/common/jesenia/todo/avic.org")))
-    ((string-equal "darwin" system-type)
-      (setq org-agenda-files
-        (list "~/Codes/common/jesenia/todo/avic.org"))))
 
   (add-hook 'org-mode-hook
     (lambda ()
