@@ -12,7 +12,7 @@
     org-link-file-path-type 'relative
     org-directory (concat jesenia-path "/agenda")
     org-agenda-files
-      (list (concat jesenia-path "/agenda/"))
+      (list (concat jesenia-path "/agenda"))
     org-todo-keywords
       '((sequence "TODO" "WAITING" "|" "DONE" "CANCLE"))
     org-default-priority ?B
@@ -26,7 +26,9 @@
       '(("t" "capture some tasks." entry
           (file+headline "tasks.org" "Tasks")
           "** TODO %?\n  %i\n  %a"))
-    org-log-done t)
+    org-enforce-todo-dependencies t
+    org-log-redeadline 'time
+    org-log-done 'time)
 
 
   (define-key global-map (kbd "C-c l") 'org-store-link)
