@@ -4,7 +4,9 @@
   '(
      ;; ------------------------------------------------------------------------
      ("abz" "abcdefghijklmnopqrstuvwxyz")
-     ("aqbf" "A quick brown fox jumps over the lazy dog")
+     ("aqf" "A quick brown fox jumps over the lazy dog")
+     ("atfer" "after")
+     ("eml" "email")
      ;; ------------------------------------------------------------------------
      ))
 
