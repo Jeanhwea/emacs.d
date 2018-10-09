@@ -33,7 +33,6 @@
   (interactive "sImage name: ")
   (let ((githome
           (file-name-directory (buffer-file-name))))
-    ;; TODO
     (message githome)))
 
 (provide 'init-experimental)
