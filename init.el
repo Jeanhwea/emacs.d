@@ -1,7 +1,10 @@
 ;; -----------------------------------------------------------------------------
 ;; A reasonable Emacs configuration files.
 ;; -----------------------------------------------------------------------------
-(setq debug-on-error t)
+(setq
+  user-full-name "Jinghui Hu"
+  user-mail-address "hujinghui@buaa.edu.cn"
+  debug-on-error t)
 
 (let ((mini-version "26.1"))
   (when (version< emacs-version mini-version)

@@ -14,6 +14,7 @@
   (setq
     org-link-file-path-type 'relative
     org-log-done t
+    org-todo-keywords '((sequence "TODO" "WAITING" "|" "DONE" "CANCLE"))
     org-agenda-files (list (concat jesenia-path "/todo/avic.org")))
 
 
