@@ -24,7 +24,7 @@
          (?C . (:foreground "#268bd2")))
     org-capture-templates
       '(("t" "capture some tasks." entry
-          (file+datetree "tasks.org" "Tasks")
+          (file+headline "tasks.org" "Tasks")
           "** TODO %?\n  %i\n  %a"))
     org-log-done t)
 
