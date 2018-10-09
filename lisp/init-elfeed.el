@@ -59,19 +59,13 @@
     'jh/elfeed-search-tag-all-junk)
 
 
-  ;; highlight some tags of feeds
-  (defface emacs-elfeed-entry
-    '((t :foreground "#c065db")) "emacs feeds")
-  (defface github-elfeed-entry
-    '((t :foreground "#28a745")) "github feeds.")
-  (defface news-elfeed-entry
-    '((t :foreground "#268bd2")) "news feeds.")
-  (defface important-elfeed-entry
-    '((t :foreground "#d33682")) "important feeds.")
-  (push '(emacs emacs-elfeed-entry) elfeed-search-face-alist)
-  (push '(news news-elfeed-entry) elfeed-search-face-alist)
-  (push '(github github-elfeed-entry) elfeed-search-face-alist)
-  (push '(important important-elfeed-entry) elfeed-search-face-alist)
+  ;; highlight some feed tags
+  (dolist
+    (face (list '(emacs (:foreground "#c065db"))
+            '(news (:foreground "#268bd2"))
+            '(github (:foreground "#28a745"))
+            '(important (:foreground "#d33682"))))
+    (push face elfeed-search-face-alist))
 
   ;; display feeds last 18 months ago, total items not greater than 100, and
   ;; remove junk, show unread only

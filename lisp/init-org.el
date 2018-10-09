@@ -13,6 +13,13 @@
 
   (setq
     org-link-file-path-type 'relative
+    org-default-priority ?B
+    org-highest-priority ?A
+    org-lowest-priority ?C
+    org-priority-faces
+      '((?A . (:foreground "#d33682" :weight bold))
+        (?B . (:foreground "#268bd2" :weight bold))
+        (?C . (:foreground "#c065db")))
     org-todo-keywords
       '((sequence "TODO" "WAITING" "|" "DONE" "CANCLE"))
     org-agenda-files
