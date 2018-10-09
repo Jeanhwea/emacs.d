@@ -13,9 +13,14 @@
 
   (setq
     org-link-file-path-type 'relative
-    org-log-done t
-    org-todo-keywords '((sequence "TODO" "WAITING" "|" "DONE" "CANCLE"))
-    org-agenda-files (list (concat jesenia-path "/todo/avic.org")))
+    org-todo-keywords
+      '((sequence "TODO" "WAITING" "|" "DONE" "CANCLE"))
+    org-agenda-files
+      (list
+        (concat jesenia-path "/todo/avic.org")
+        (concat jesenia-path "/todo/learn.org")
+        (concat jesenia-path "/todo/misc.org"))
+    org-log-done t)
 
 
   (add-hook 'org-mode-hook
