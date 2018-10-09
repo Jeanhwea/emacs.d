@@ -104,8 +104,8 @@
       (capitalize-word N)
       (capitalize-word 1))))
 
-(global-set-key (kbd "M-u") 'jh/upcase-previous-word)
-(global-set-key (kbd "M-c") 'jh/capitalize-previous-word)
+(global-set-key (kbd "M-c") 'jh/upcase-previous-word)
+(global-set-key (kbd "M-h") 'jh/capitalize-previous-word)
 
 
 ;; -----------------------------------------------------------------------------
