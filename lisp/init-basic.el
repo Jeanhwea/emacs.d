@@ -163,8 +163,8 @@
 ;; -----------------------------------------------------------------------------
 ;; tab, space width configuration
 ;; -----------------------------------------------------------------------------
+(delete-selection-mode 1)
 (setq-default
-  delete-selection-mode t
   indent-tabs-mode nil
   tab-width 4)
 
