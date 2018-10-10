@@ -8,6 +8,7 @@
     (add-to-list 'magit-repository-directories '("e:/Codes" . 3)))
 
   ;; keybinding
-  (global-set-key (kbd "C-x g") 'magit-status))
+  (global-set-key (kbd "<f1>") 'magit-status)
+  (global-set-key (kbd "C-c g") 'magit-status))
 
 (provide 'init-git)

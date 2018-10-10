@@ -40,22 +40,18 @@
 ;; theme
 ;; -----------------------------------------------------------------------------
 (when (require 'color-theme-sanityinc-solarized nil t)
-
   ;; default use solarized dark theme
   (add-hook 'after-init-hook
     (lambda () (load-theme 'sanityinc-solarized-light t)))
-
   ;; Add helper command to make changing color theme more faster
   (defun jh/load-light-theme()
     "Activate a light color theme"
     (interactive)
     (load-theme 'sanityinc-solarized-light t))
-
   (defun jh/load-dark-theme()
     "Activate a dark color theme"
     (interactive)
     (load-theme 'sanityinc-solarized-dark t))
-
   (defun jh/toggle-light-dark-theme ()
     "Toggle solarized light/dark theme"
     (interactive)
@@ -63,7 +59,8 @@
       (when (string-equal current-theme "sanityinc-solarized-dark")
         (load-theme 'sanityinc-solarized-light))
       (when (string-equal current-theme "sanityinc-solarized-light")
-        (load-theme 'sanityinc-solarized-dark)))))
+        (load-theme 'sanityinc-solarized-dark))))
+  (global-set-key (kbd "<f12>") 'jh/toggle-light-dark-theme))
 
 
 ;; -----------------------------------------------------------------------------
