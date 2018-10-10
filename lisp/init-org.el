@@ -14,14 +14,20 @@
     org-agenda-files
       (list (concat jesenia-path "/agenda"))
     org-todo-keywords
-      '((sequence "TODO" "WAITING" "|" "DONE" "CANCLE"))
+      '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCLE"))
+    org-todo-keyword-faces
+      '(("TODO" :foreground "red" :weight bold)
+        ("DOING" :foreground "red" :weight bold)
+        ("WAITING" :foreground "magenta")
+        ("DONE" :foreground "forest green")
+        ("CANCEL" :foreground "forest green"))
     org-default-priority ?B
     org-highest-priority ?A
     org-lowest-priority ?C
     org-priority-faces
       '((?A . (:foreground "#d33682" :weight bold))
         (?B . (:foreground "#c065db" :weight bold))
-         (?C . (:foreground "#268bd2")))
+        (?C . (:foreground "#268bd2")))
     org-capture-templates
       '(("t" "capture some tasks." entry
           (file+headline "tasks.org" "Tasks")
