@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: git sync message
+# key: sy
+# --
+synchronize data at `(format-time-string "%Y-%m-%d %H:%M:%S")`
