@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: console.log with time prefix
+# key: log
+# --
+console.log('[' + new Date().toJSON() + ']: ${1:message}');$0

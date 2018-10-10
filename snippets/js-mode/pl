@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: console.log
+# key: pl
+# --
+console.log(${1:"message"});$0
