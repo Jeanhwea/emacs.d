@@ -71,7 +71,7 @@
   ;; remove junk, show unread only
   (setq-default elfeed-search-filter elfeed-search-default-filter)
   (setq url-queue-timeout 30)
-  (global-set-key (kbd "<f8>") 'elfeed)
+  (global-set-key (kbd "<f7>") 'elfeed)
   (global-set-key (kbd "C-x w") 'elfeed))
 
 

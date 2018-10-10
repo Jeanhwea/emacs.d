@@ -1,4 +1,4 @@
-(global-set-key (kbd "<f9>") 'eshell)
+(global-set-key (kbd "<f8>") 'eshell)
 
 ;; -----------------------------------------------------------------------------
 ;; browse-at-remote

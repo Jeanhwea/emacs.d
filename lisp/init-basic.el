@@ -14,6 +14,9 @@
 (global-set-key (kbd "M-3") 'split-window-right)
 (global-set-key (kbd "M-o") 'other-window)
 
+(global-set-key (kbd "<f9>") 'make-frame-command)
+(global-set-key (kbd "<f10>") 'delete-frame)
+
 (if (string-equal "windows-nt" system-type)
   (global-set-key (kbd "C-M-f") 'toggle-frame-maximized)
   (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen))
@@ -146,8 +149,8 @@
 ;; -------------------------------------------------------------------------
 ;; undo-tree
 ;; -------------------------------------------------------------------------
-(when (require 'undo-tree)
-  (global-undo-tree-mode))
+;;(when (require 'undo-tree)
+;;  (global-undo-tree-mode))
 
 
 ;; -------------------------------------------------------------------------
