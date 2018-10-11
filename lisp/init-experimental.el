@@ -24,6 +24,10 @@
     "https://www.baidu.com/s?wd=%s"
     :keybinding "b")
 
+  (defengine npm
+    "https://www.npmjs.com/search?q=%s"
+    :keybinding "n")
+
   (engine-mode t))
 
 
