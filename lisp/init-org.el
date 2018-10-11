@@ -29,9 +29,9 @@
         (?B . (:foreground "#c065db" :weight bold))
         (?C . (:foreground "#268bd2")))
     org-capture-templates
-      '(("t" "capture some tasks." entry
-          (file+headline "tasks.org" "Tasks")
-          "** TODO %?\n  %i\n  %a"))
+      '(("t" "capture some todos." entry
+          (file+headline "todos.org" "TODOs")
+          "** TODO %?\n   %a"))
     org-enforce-todo-dependencies t
     org-log-redeadline 'time
     org-log-done 'time)
