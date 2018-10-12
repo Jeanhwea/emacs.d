@@ -57,4 +57,6 @@
           (file-name-directory (buffer-file-name))))
     (message githome)))
 
+(require 'htmlize)
+
 (provide 'init-experimental)
