@@ -67,12 +67,12 @@
 ;; font
 ;; -----------------------------------------------------------------------------
 (when (string-equal "windows-nt" system-type)
-  (set-face-attribute 'default nil :font "Consolas 13")
+  (set-face-attribute 'default nil :font "Consolas 12")
   ;; 中文字体单独设置
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
       charset
-      (font-spec :family "Microsoft YaHei" :size 18))))
+      (font-spec :family "Microsoft YaHei" :size 26))))
 
 
 (provide 'init-apperence)

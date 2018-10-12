@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: code
-# key: code
+# key: <s
 # --
 \`\`\`${1:shell}
 $0

@@ -36,7 +36,7 @@
     org-log-redeadline 'time
     org-log-done 'time)
 
-
+  (org-display-inline-images)
   (define-key global-map (kbd "C-c l") 'org-store-link)
 
   (defun jh/org-capture-task ()
