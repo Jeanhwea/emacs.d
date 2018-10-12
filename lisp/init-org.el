@@ -10,6 +10,7 @@
 
   (setq
     org-link-file-path-type 'relative
+    org-startup-with-inline-images t
     org-directory (concat jesenia-path "/agenda")
     org-agenda-files
       (list (concat jesenia-path "/agenda"))
@@ -36,7 +37,6 @@
     org-log-redeadline 'time
     org-log-done 'time)
 
-  (org-display-inline-images)
   (define-key global-map (kbd "C-c l") 'org-store-link)
 
   (defun jh/org-capture-task ()
