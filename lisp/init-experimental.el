@@ -1,5 +1,5 @@
 (defun jh/open-shrimp-shell-as-temporary-shell ()
-  "open a eshell as a temporary shell, and rename the buffer to `shrimp'"
+  "open a eshell as a temporary shell, and rename the buffer to `shrimp'."
   (interactive)
   (let ((shrimp-shell-name "shrimp-shell"))
     (when (get-buffer shrimp-shell-name)
@@ -7,6 +7,14 @@
     (eshell)
     (rename-buffer shrimp-shell-name)))
 (global-set-key (kbd "<f8>") 'jh/open-shrimp-shell-as-temporary-shell)
+
+(defun jh/toggle-frame-fullscreen-mode()
+  "toggle fulscreen, and toggle menu bar mode"
+  (interactive)
+  (if (string-equal "windows-nt" system-type)
+    (toggle-frame-maximized)
+    (toggle-frame-maximized)))
+(global-set-key (kbd "<f11>") 'jh/toggle-frame-fullscreen-mode)
 
 ;; -----------------------------------------------------------------------------
 ;; browse-at-remote
