@@ -3,6 +3,7 @@
 ;; -----------------------------------------------------------------------------
 (prefer-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
+(setq system-time-locale "C")
 
 (setq mac-command-modifier 'meta) ; change meta key
 (defalias 'yes-or-no-p 'y-or-n-p) ; always use 'y or n', refuse 'yes of no'
