@@ -1,4 +1,12 @@
-(global-set-key (kbd "<f8>") 'eshell)
+(defun jh/open-shrimp-shell-as-temporary-shell ()
+  "open a eshell as a temporary shell, and rename the buffer to `shrimp'"
+  (interactive)
+  (let ((shrimp-shell-name "shrimp-shell"))
+    (when (get-buffer shrimp-shell-name)
+      (kill-buffer shrimp-shell-name))
+    (eshell)
+    (rename-buffer shrimp-shell-name)))
+(global-set-key (kbd "<f8>") 'jh/open-shrimp-shell-as-temporary-shell)
 
 ;; -----------------------------------------------------------------------------
 ;; browse-at-remote
