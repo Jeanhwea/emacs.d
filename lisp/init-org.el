@@ -17,18 +17,19 @@
     org-todo-keywords
       '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCLE"))
     org-todo-keyword-faces
-      '(("TODO" :foreground "red" :weight bold)
-        ("DOING" :foreground "red" :weight bold)
-        ("WAITING" :foreground "magenta")
-        ("DONE" :foreground "forest green")
-        ("CANCEL" :foreground "forest green"))
-    org-default-priority ?B
+      '(("TODO" :foreground "#d33682" :weight bold)
+        ("DOING" :foreground "#dc322f" :weight bold)
+        ("WAITING" :foreground "#d33682")
+        ("DONE" :foreground "#859900" :weight bold)
+        ("CANCEL" :foreground "#2aa198"))
+    org-default-priority ?C
     org-highest-priority ?A
-    org-lowest-priority ?C
+    org-lowest-priority ?D
     org-priority-faces
-      '((?A . (:foreground "#d33682" :weight bold))
-        (?B . (:foreground "#c065db" :weight bold))
-        (?C . (:foreground "#268bd2")))
+      '((?A . (:foreground "#dc322f"))
+        (?B . (:foreground "#b58900"))
+        (?C . (:foreground "#268bd2"))
+        (?D . (:foreground "#859900")))
     org-capture-templates
       '(("t" "capture some todos." entry
           (file+headline "todos.org" "TODOs")
