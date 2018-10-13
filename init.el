@@ -18,6 +18,7 @@
 ;; -----------------------------------------------------------------------------
 ;; bootstrap
 ;; -----------------------------------------------------------------------------
+(require 'init-util)
 (require 'init-site-lisp)
 (require 'init-elpa) ; call "package-initialize" here
 (require 'init-startup)

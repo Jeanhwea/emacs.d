@@ -17,7 +17,7 @@
 (global-set-key (kbd "<f9>") 'make-frame-command)
 (global-set-key (kbd "<f10>") 'delete-frame)
 
-(if (string-equal "windows-nt" system-type)
+(if (jh/windows?)
   (global-set-key (kbd "C-M-f") 'toggle-frame-maximized)
   (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen))
 

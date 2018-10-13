@@ -6,7 +6,7 @@
 ;; 4. Set this in your .emacs: (setq doc-view-ghostscript-program “gswin32c”)
 ;; 5. That should be it.
 ;; -----------------------------------------------------------------------------
-(when (string-equal "windows-nt" system-type)
+(when (jh/windows?)
   (setq doc-view-ghostscript-program "gswin32c"))
 
 (provide 'init-misc)

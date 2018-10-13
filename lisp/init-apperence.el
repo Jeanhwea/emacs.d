@@ -66,7 +66,7 @@
 ;; -----------------------------------------------------------------------------
 ;; font
 ;; -----------------------------------------------------------------------------
-(when (string-equal "windows-nt" system-type)
+(when (jh/windows?)
   (set-face-attribute 'default nil :font "Consolas 12")
   ;; 中文字体单独设置
   (dolist (charset '(kana han symbol cjk-misc bopomofo))

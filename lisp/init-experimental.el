@@ -11,7 +11,7 @@
 (defun jh/toggle-frame-fullscreen-mode()
   "toggle fulscreen, and toggle menu bar mode"
   (interactive)
-  (if (string-equal "windows-nt" system-type)
+  (if (jh/windows?)
     (toggle-frame-maximized)
     (toggle-frame-maximized)))
 (global-set-key (kbd "<f11>") 'jh/toggle-frame-fullscreen-mode)

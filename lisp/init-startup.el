@@ -38,7 +38,7 @@
 ;; exec-path-from-shell
 ;; -----------------------------------------------------------------------------
 (when (require 'exec-path-from-shell)
-  (when (string-equal "darwin" system-type)
+  (when (jh/mac?)
     (exec-path-from-shell-initialize)))
 
 
@@ -55,7 +55,7 @@
 ;; when compact large fonts cause lots of resources, the editor will be very slow
 ;; so just inhibit compacting, when using chinese font
 ;; -----------------------------------------------------------------------------
-(when (string-equal "windows-nt" system-type)
+(when (jh/windows?)
   (setq inhibit-compacting-font-caches t))
 
 

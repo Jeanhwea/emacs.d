@@ -2,9 +2,9 @@
 
   ;; repositories for magit-list-repositories
   (setq magit-repository-directories `((,user-emacs-directory . 0)))
-  (when (string-equal "darwin" system-type)
+  (when (jh/mac?)
     (add-to-list 'magit-repository-directories '("~/Codes" . 3)))
-  (when (string-equal "windows-nt" system-type)
+  (when (jh/windows?)
     (add-to-list 'magit-repository-directories '("e:/Codes" . 3)))
 
   ;; keybinding

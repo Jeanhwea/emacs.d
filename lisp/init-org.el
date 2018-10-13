@@ -4,7 +4,7 @@
 (when (require 'org)
 
   (defvar jesenia-path
-    (if (string-equal "windows-nt" system-type)
+    (if (jh/windows?)
       "e:/Codes/common/jesenia"
       "~/Codes/common/jesenia"))
 
