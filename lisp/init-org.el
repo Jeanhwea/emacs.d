@@ -15,13 +15,13 @@
     org-agenda-files
       (list (concat jesenia-path "/agenda"))
     org-todo-keywords
-      '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCLE"))
+      '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
     org-todo-keyword-faces
       '(("TODO" :foreground "#d33682" :weight bold)
         ("DOING" :foreground "#dc322f" :weight bold)
         ("WAITING" :foreground "#d33682")
         ("DONE" :foreground "#859900" :weight bold)
-        ("CANCEL" :foreground "#2aa198"))
+        ("CANCELED" :foreground "#2aa198"))
     org-default-priority ?C
     org-highest-priority ?A
     org-lowest-priority ?D

@@ -50,12 +50,12 @@
 ;; -----------------------------------------------------------------------------
 ;; clipboard-image
 ;; -----------------------------------------------------------------------------
-(defun jh/git-home-directory (imagename)
-  "Get the git home directory of current file."
-  (interactive "sImage name: ")
-  (let ((githome
-          (file-name-directory (buffer-file-name))))
-    (message githome)))
+(defun jh/git-root-dir ()
+  "Get the root directory of a Git repository"
+  (expand-file-name
+    (shell-command-to-string
+      "git rev-parse --show-cdup")))
+
 
 (require 'htmlize)
 
