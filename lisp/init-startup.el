@@ -48,12 +48,12 @@
 (setq-default
   recentf-max-saved-items 1000
   recentf-exclude
-    '(
-       "/.elfeed/"
-       "/.emacs.d/elpa/*"
-       "ido.last"
-       "/tmp/"
-       "/ssh:"))
+    '("/.elfeed/"
+      "/.emacs.d/elpa/*"
+      "/.emacs.d/ido.last"
+      "/.emacs.d/bookmarks"
+      "/tmp/"
+      "/ssh:"))
 (recentf-mode 1)
 
 
