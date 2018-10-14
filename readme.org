@@ -6,7 +6,7 @@
 - org-mode
 
 ** Reasonable Plugins
-- magit: powerful git manager
+- [[https://magit.vc/][magit]]: powerful git manager
 - browses-at-remote: open github url on browser
 - [[https://github.com/joaotavora/yasnippet][yasnippet]]: Aha, meet the snippet system.
 - undo-tree: visualize the editing history by a tree view
