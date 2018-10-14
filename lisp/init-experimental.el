@@ -6,6 +6,7 @@
       (kill-buffer shrimp-shell-name))
     (eshell)
     (rename-buffer shrimp-shell-name)))
+(global-set-key (kbd "C-c s") 'jh/open-shrimp-shell-as-temporary-shell)
 (global-set-key (kbd "<f8>") 'jh/open-shrimp-shell-as-temporary-shell)
 
 (defun jh/toggle-frame-fullscreen-mode()
@@ -20,7 +21,7 @@
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
-  ((global-set-key (kbd "C-c b") 'bar-browse))
+  (global-set-key (kbd "C-c b") 'bar-browse)
   (global-set-key (kbd "<f4>") 'bar-browse))
 
 
