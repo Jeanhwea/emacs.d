@@ -20,6 +20,7 @@
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
+  ((global-set-key (kbd "C-c b") 'bar-browse))
   (global-set-key (kbd "<f4>") 'bar-browse))
 
 
