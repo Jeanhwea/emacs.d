@@ -52,11 +52,12 @@ flycheck_*.el
 # End of https://www.gitignore.io/api/emacs
 
 # personal added items
-bookmarks
-ido.last
 newsticker/
-places
-recentf
 site-lisp/
 url/
+image-dired/
+bookmarks
+ido.last
+places
+recentf
 smex-items
