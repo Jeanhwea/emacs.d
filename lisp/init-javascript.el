@@ -33,32 +33,21 @@
 (when (require 'js-comint)
   (setq inferior-js-program-command "node"))
 
-(add-hook 'typescript-mode-hook
-  (lambda()
-    (setq show-trailing-whitespace t)
-    (setq indent-tabs-mode nil)
-    (setq typescript-indent-level 2)
-    (setq tab-width 2)))
+
+(defun jh/setup-tide-mode ()
+  "Setup tide-mode"
+  (interactive)
+  (tide-setup)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (flycheck-mode 1)
+  (eldoc-mode 1)
+  (tide-hl-identifier-mode 1))
 
 (when (require 'tide)
-  (add-hook 'typescript-mode-hook
-     (lambda()
-       (tide-setup)
-       (flycheck-mode 1)
-       (setq flycheck-check-syntax-automatically '(save mode-enabled))
-       (eldoc-mode 1)
-       (tide-hl-identifier-mode 1)))
-
-  ;; format options
-  ;; (setq tide-format-options
-  ;;   '( :baseIndentSize 2
-  ;;      :indentSize 2
-  ;;      :tabSize 2
-  ;;      :convertTabsToSpaces t))
-
+  ;; add hook for tide-mode
+  (add-hook 'typescript-mode-hook #'jh/setup-tide-mode)
   ;; formats the buffer before saving
   (add-hook 'before-save-hook 'tide-format-before-save))
 
 ;; (add-to-list 'auto-mode-alist '("\\.ts?\\'" . javascript-mode))
-
 (provide 'init-javascript)
