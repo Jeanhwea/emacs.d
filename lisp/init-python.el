@@ -1,8 +1,9 @@
 
 (add-hook 'python-mode-hook
   (lambda()
-    (setq show-trailing-whitespace t)
-    (setq indent-tabs-mode nil)))
+    (setq
+      show-trailing-whitespace t
+      indent-tabs-mode nil)))
 
 (when (jh/windows?)
   (add-hook 'python-mode-hook

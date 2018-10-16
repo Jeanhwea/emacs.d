@@ -1,17 +1,16 @@
 (add-hook 'emacs-lisp-mode-hook
   (lambda ()
-    (setq show-trailing-whitespace t)
-    (setq indent-tabs-mode nil)
-    (setq lisp-indent-offset 2)
-    (setq tab-width 2)))
+    (setq
+      show-trailing-whitespace t
+      indent-tabs-mode nil
+      lisp-indent-offset 2
+      tab-width 2
+      prettify-symbols-alist
+        (append prettify-symbols-alist
+          '(
+             ;; ("defun" . 119917)             ;
+             )))
 
-(add-hook 'emacs-lisp-mode-hook
-  (lambda ()
-    (setq prettify-symbols-alist
-      (append prettify-symbols-alist
-        '(
-           ;; ("defun" . 119917)             ; 
-           )))))
-
+    (rainbow-delimiters-mode)))
 
 (provide 'init-lisp)

@@ -12,7 +12,7 @@
 ;; (global-set-key (kbd "M-1") 'delete-other-windows)
 ;; (global-set-key (kbd "M-2") 'split-window-below)
 ;; (global-set-key (kbd "M-3") 'split-window-right)
-;; (global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "M-o") 'other-window)
 
 (global-set-key (kbd "<f9>") 'make-frame-command)
 (global-set-key (kbd "<f10>") 'delete-frame)
