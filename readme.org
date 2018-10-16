@@ -40,4 +40,16 @@
 | F11 | jh/toggle-frame-fullscreen-mode            |
 | F12 | jh/toggle-light-dark-theme                 |
 
-
+*** smerge-mode
+#+BEGIN_SRC elisp
+  (setq smerge-command-prefix (kbd "C-c m"))
+#+END_SRC
+| key                           | binding             |
+|-------------------------------+---------------------|
+| ~smerge-command-prefix~ n     | smerge-next         |
+| ~smerge-command-prefix~ p     | smerge-previous     |
+| ~smerge-command-prefix~ <ret> | smerge-keep-current |
+| ~smerge-command-prefix~ m     | smerge-keep-mine    |
+| ~smerge-command-prefix~ o     | smerge-keep-other   |
+| ~smerge-command-prefix~ a     | smerge-keep-all     |
+| ~smerge-command-prefix~ E     | smerge-ediff        |

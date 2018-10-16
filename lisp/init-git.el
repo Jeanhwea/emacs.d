@@ -1,3 +1,6 @@
+;; smerge-mode
+(setq smerge-command-prefix (kbd "C-c m"))
+
 (when (require 'magit)
 
   ;; repositories for magit-list-repositories
@@ -13,5 +16,6 @@
   (global-set-key (kbd "<f3>") 'magit-log-all-branches)
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-c g") 'magit-status))
+
 
 (provide 'init-git)
