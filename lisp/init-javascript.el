@@ -39,20 +39,17 @@
 (when (require 'js-comint)
   (setq inferior-js-program-command "node"))
 
-(defun jh/setup-tide-mode ()
-  "Setup tide-mode"
-  (interactive)
-  (tide-setup)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (flycheck-mode 1)
-  (eldoc-mode 1)
-  (tide-hl-identifier-mode 1))
-
 (when (require 'tide)
-  ;; formats the buffer before saving
-  (add-hook 'before-save-hook 'tide-format-before-save)
   ;; add hook for tide-mode
-  (add-hook 'typescript-mode-hook #'jh/setup-tide-mode))
+  (add-hook 'typescript-mode-hook
+    (lambda ()
+      (tide-setup)
+      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+      (flycheck-mode 1)
+      (eldoc-mode 1)
+      (tide-hl-identifier-mode 1)))
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save))
 
 ;; (add-to-list 'auto-mode-alist '("\\.ts?\\'" . javascript-mode))
 (provide 'init-javascript)
