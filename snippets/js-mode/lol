@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Console Log with DateTime Prefix
+# key: lol
+# --
+console.log('[' + new Date().toJSON() + ']: ${1:text}');$0

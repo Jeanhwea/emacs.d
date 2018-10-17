@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: Print Line
-# key: pl
-# --
-console.log(${1:"message"});$0

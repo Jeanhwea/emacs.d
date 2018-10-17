@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Add Document String
+# key: doc
+# --
+/**
+ * $0
+ */
