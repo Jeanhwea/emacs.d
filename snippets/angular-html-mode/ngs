@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: NgSwitch
+# key: ngs
+# --
+<${1:div} [ngSwitch]="${2:switch_expression}">
+	$0
+	<!-- Default switch case for: $2 -->
+	<${3:some-element} *ngSwitchDefault></$3>
+</$1>

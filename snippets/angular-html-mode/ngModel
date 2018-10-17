@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: ngModel
-# key: ngmodel
-# --
-[(ngModel)]="${1:var}"$0

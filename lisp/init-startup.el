@@ -52,6 +52,7 @@
       "/.emacs.d/elpa/*"
       "/.emacs.d/ido.last"
       "/.emacs.d/bookmarks"
+      "/agenda/"
       "/tmp/"
       "/ssh:"))
 (recentf-mode 1)
