@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: code
+# name: Insert Code
 # key: <s
 # --
 \`\`\`${1:shell}

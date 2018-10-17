@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: println
+# name: Print One Line
 # key: pl
 # --
 printf("${1:line}\n");$0

@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: system-type
-# key: st
-# --
-(when (string-equal "${1:windows-nt}" system-type)
-  $0)

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: define key
+# name: Define Key
 # key: dk
 # --
 (define-key ${1:keymap}-mode-map (kbd "${2:k}") '${3:command})$0

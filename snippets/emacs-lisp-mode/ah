@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: add hook
+# name: Add Hook
 # key: ah
 # --
 (add-hook '${1:elisp}-mode-hook $0)

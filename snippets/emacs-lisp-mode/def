@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: def function
+# name: Define Function
 # key: def
 # --
 (defun ${1:function} ($2)

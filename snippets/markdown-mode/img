@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: image
+# name: Insert Image
 # key: img
 # --
-![${1:description}](${2:url}) $0
+![${1:description}](${2:url})$0

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: define function
-# key: f
+# name: Define Function
+# key: fun
 # --
 ${1:void} ${2:function} ($3)
 {

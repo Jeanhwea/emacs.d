@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Define Function
+# key: fun
+# --
+${1:func}($2): ${3:void} {
+	$0
+}

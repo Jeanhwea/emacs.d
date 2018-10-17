@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: def interaction function
+# name: Define Interaction Function
 # key: defi
 # --
 (defun ${1:function} ($2)

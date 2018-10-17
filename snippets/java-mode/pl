@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: println
+# name: Print One Line
 # key: pl
 # --
 System.out.println($1);$0

@@ -2,4 +2,4 @@
 # name: Print
 # key: pr
 # --
-printf("${1:text}");$0
+System.out.print($1);$0
