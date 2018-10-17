@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: NgIf with Else
+# key: ngife
+# --
+<div *ngIf="${1:cond}; else ${2:elseBlock}">$0</div>
+<!-- [$1] else -->
+<ng-template #$2></ng-template>

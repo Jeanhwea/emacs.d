@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: NgIfElse
+# name: NgIf with Then and Else
 # key: ngifel
 # --
 <div *ngIf="${1:cond}; then ${2:thenBlock} else ${3:elseBlock}"></div>
