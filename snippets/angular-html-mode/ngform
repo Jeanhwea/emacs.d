@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: NgForm
+# key: ngform
+# --
+<form #${1:formName}="ngForm" (ngSubmit)="onSubmit(${2:$1})">
+	$0
+	<!-- [$1] submit button --->
+	<button type="submit">${3:Submit}</button>
+</form>

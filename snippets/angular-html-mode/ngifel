@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: NgIfElse
+# key: ngifel
+# --
+<div *ngIf="${1:cond}; then ${2:thenBlock} else ${3:elseBlock}"></div>
+<ng-template #$2>$0</ng-template>
+<!-- [$1] else -->
+<ng-template #$3></ng-template>
