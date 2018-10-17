@@ -12,6 +12,7 @@
      ("envir" "environment")
      ("sceince" "science")
      ("scince" "science")
+     ("feild" "field")
      ;; ------------------------------------------------------------------------
      ))
 
