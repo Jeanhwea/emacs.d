@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: git commit message template
+# name: Git Commit Message
 # key: gm
 # --
 [${1:commit type}] ${2:commit messages}
