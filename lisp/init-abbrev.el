@@ -8,11 +8,12 @@
      ("eml" "hujinghui@buaa.edu.cn")
      ;; miss spelling
      ("atfer" "after")
-     ("tabel" "table")
-     ("envir" "environment")
+     ("enviroment" "environment")
+     ("feild" "field")
+     ("goverment" "government")
      ("sceince" "science")
      ("scince" "science")
-     ("feild" "field")
+     ("tabel" "table")
      ;; ------------------------------------------------------------------------
      ))
 
