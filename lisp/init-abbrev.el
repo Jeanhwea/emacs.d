@@ -5,8 +5,13 @@
      ;; ------------------------------------------------------------------------
      ("abz" "abcdefghijklmnopqrstuvwxyz")
      ("aqf" "A quick brown fox jumps over the lazy dog")
+     ("eml" "hujinghui@buaa.edu.cn")
+     ;; miss spelling
      ("atfer" "after")
-     ("eml" "email")
+     ("tabel" "table")
+     ("envir" "environment")
+     ("sceince" "science")
+     ("scince" "science")
      ;; ------------------------------------------------------------------------
      ))
 

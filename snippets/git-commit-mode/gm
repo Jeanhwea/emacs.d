@@ -3,4 +3,4 @@
 # key: gm
 # --
 [${1:commit type}] ${2:commit messages}
-${3:commit detail}$0
+$0detail

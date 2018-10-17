@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: timestamp
-# key: ts
+# name: Generate Datetime String
+# key: datetime
 # --
 [`(format-time-string "%Y-%m-%d %H:%M:%S")`]$0

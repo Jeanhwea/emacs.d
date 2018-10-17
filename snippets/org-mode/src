@@ -1,9 +1,8 @@
 # -*- mode: snippet -*-
-# name: src
+# name: Insert Source Code
 # key: src
 # --
 
-#+BEGIN_SRC 
-$1
+#+BEGIN_SRC ${1:sh}
+  $0
 #+END_SRC
-$0

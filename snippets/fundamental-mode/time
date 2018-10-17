@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: time
+# name: Generate Time String
 # key: time
 # --
 `(format-time-string "%H:%M:%S")`$0
