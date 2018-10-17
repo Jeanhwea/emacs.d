@@ -3,6 +3,6 @@
 # key: defi
 # --
 (defun ${1:function} ($2)
-  "${3:Add document string here}"
-  (interactive)
-  $0)
+	"${3:Add document string here}"
+	(interactive)
+	$0)

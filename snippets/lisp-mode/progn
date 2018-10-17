@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Keyword progn
+# key: progn
+# --
+(progn $0)
