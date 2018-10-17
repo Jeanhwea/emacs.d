@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: RouterLink inside <a>
+# key: rla
+# --
+<a [routerLink]="[${1:url/list}]">$0</a>

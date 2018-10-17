@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: NgForOf
-# key: ngfo
+# key: ngfor
 # --
 *ngFor="let ${1:var} of ${2:collection}"$0

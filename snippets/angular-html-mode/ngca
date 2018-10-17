@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: NgSwitchCase
-# key: ngc
+# key: ngca
 # --
 <${1:some-element} *ngSwitchCase="${2:case_expression}">$0</$1>

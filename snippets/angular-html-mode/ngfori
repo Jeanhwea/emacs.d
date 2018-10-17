@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: NgFor with Index
+# key: ngfori
+# --
+*ngFor="let ${1:var} of ${2:collection}; index as ${3:i}"$0

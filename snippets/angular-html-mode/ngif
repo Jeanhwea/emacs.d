@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: NgIf
-# key: ngi
+# key: ngif
 # --
 *ngIf="${1:cond}"$0
