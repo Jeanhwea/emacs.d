@@ -27,6 +27,7 @@
 ;; -----------------------------------------------------------------------------
 (make-directory "~/.emacs.d/autosaves/" t)
 (make-directory "~/.emacs.d/backups/" t)
+(setq create-lockfiles nil)
 (setq auto-save-file-name-transforms
   '((".*" "~/.emacs.d/autosaves/" t)))
 (setq backup-directory-alist
