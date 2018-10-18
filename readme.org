@@ -21,6 +21,7 @@
 - [[https://github.com/ananthakumaran/tide][tide]]: TypeScript Interactive Development Environment for Emacs.
 - [[https://github.com/smihica/emmet-mode][emmet-mode]]: a minor mode providing support for Zen Coding by producing HTML from CSS-like selectors.
 - [[https://github.com/skeeto/elfeed][elfeed]]: an extensible web feed reader for Emacs, supporting both Atom and RSS.
+- [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]: Multiple cursors for Emacs.
 
 ** Cheatsheet
 
