@@ -11,6 +11,7 @@
      ("enviroment" "environment")
      ("feild" "field")
      ("goverment" "government")
+     ("retrun" "return")
      ("sceince" "science")
      ("scince" "science")
      ("tabel" "table")
