@@ -22,6 +22,7 @@
 
 (defun jh/ffmpeg-start-on-mac (FILENAME &optional FPS)
   "Start capture command on macOS."
+  (unless FPS (setq FPS 30))
   (let ((default-directory capture-dir))
     (start-process "ffmpeg" capture-buffer capture-prog
       "-f" "avfoundation"
@@ -38,7 +39,7 @@
     (when (jh/windows?)
       (jh/ffmpeg-start-on-windows filename))
     (when (jh/mac?)
-      (jh/ffmpeg-start-on-mac))))
+      (jh/ffmpeg-start-on-mac filename))))
 
 (defun jh/ffmpeg-capture-stop ()
   "Stop ffmpeg capture process."
