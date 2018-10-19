@@ -3,7 +3,7 @@
 ;; -----------------------------------------------------------------------------
 (when (require 'org)
 
-  (defvar jesenia-path
+  (defvar jesenia-dir
     (if (jh/windows?)
       "e:/Codes/common/jesenia"
       "~/Codes/common/jesenia"))
@@ -11,9 +11,9 @@
   (setq
     org-link-file-path-type 'relative
     org-startup-with-inline-images t
-    org-directory (concat jesenia-path "/agenda")
+    org-directory (concat jesenia-dir "/agenda")
     org-agenda-files
-      (list (concat jesenia-path "/agenda"))
+      (list (concat jesenia-dir "/agenda"))
     org-todo-keywords
       '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
     org-todo-keyword-faces
