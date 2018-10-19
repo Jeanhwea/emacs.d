@@ -30,9 +30,11 @@
       "-i" "1:1"
       FILENAME)))
 
-(defun jh/ffmpeg-capture-start ()
-  "Start ffmpeg capture process."
+(defun jh/ffmpeg-capture-run ()
+  "Run ffmpeg capture process."
   (interactive)
+  (unless (executable-find capture-prog)
+    (error (concat "capture-prog doesn't exist: " capture-prog)))
   (unless (file-directory-p capture-dir)
     (error (concat "capture-dir doesn't exist: " capture-dir)))
   (let ((filename (jh/ffmpeg-capture-filename)))
@@ -41,8 +43,8 @@
     (when (jh/mac?)
       (jh/ffmpeg-start-on-mac filename))))
 
-(defun jh/ffmpeg-capture-stop ()
-  "Stop ffmpeg capture process."
+(defun jh/ffmpeg-capture-quit ()
+  "Quit ffmpeg capture process."
   (interactive)
   (process-send-string capture-buffer "q"))
 
