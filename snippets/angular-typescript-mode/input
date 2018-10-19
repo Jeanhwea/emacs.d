@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Input Property Decorator
+# key: input
+# --
+@Input(${1:'bind-property-name'})$0
