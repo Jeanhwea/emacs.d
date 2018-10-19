@@ -1,7 +1,7 @@
 (defvar capture-dir
   (if (jh/windows?)
-    "e:\\Videos\\capture"
-    "~/Videos/capture"))
+    "e:\\Video\\capture"
+    "~/Video/capture"))
 
 (defvar capture-prog "ffmpeg")
 (defvar capture-buffer "*ffmpeg-capture*")

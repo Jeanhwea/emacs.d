@@ -6,9 +6,9 @@
   ;; repositories for magit-list-repositories
   (setq magit-repository-directories `((,user-emacs-directory . 0)))
   (when (jh/mac?)
-    (add-to-list 'magit-repository-directories '("~/Codes" . 3)))
+    (add-to-list 'magit-repository-directories '("~/Code" . 3)))
   (when (jh/windows?)
-    (add-to-list 'magit-repository-directories '("e:/Codes" . 3)))
+    (add-to-list 'magit-repository-directories '("e:/Code" . 3)))
 
   ;; keybinding
   (global-set-key (kbd "<f1>") 'magit-status)

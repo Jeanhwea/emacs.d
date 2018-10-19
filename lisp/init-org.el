@@ -5,8 +5,8 @@
 
   (defvar jesenia-dir
     (if (jh/windows?)
-      "e:/Codes/common/jesenia"
-      "~/Codes/common/jesenia"))
+      "e:/Code/common/jesenia"
+      "~/Code/common/jesenia"))
 
   (setq
     org-link-file-path-type 'relative
