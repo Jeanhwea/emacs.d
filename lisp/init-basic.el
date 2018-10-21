@@ -176,7 +176,7 @@
     (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 (when (require 'helm-projectile)
-  (global-set-key (kbd "C-c h") 'helm-projectile))
+  (global-set-key (kbd "C-x f") 'helm-projectile))
 
 ;; -----------------------------------------------------------------------------
 ;; tab, space width configuration
