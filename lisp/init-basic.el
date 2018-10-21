@@ -84,7 +84,7 @@
 (global-set-key (kbd "S-<return>") 'jh/newline-at-the-end-of-previous-line)
 (global-set-key (kbd "M-p") 'jh/shift-up-line)
 (global-set-key (kbd "M-n") 'jh/shift-down-line)
-(global-set-key (kbd "C-j") 'join-line)
+;; (global-set-key (kbd "C-j") 'join-line)
 
 ;; -----------------------------------------------------------------------------
 ;; editing words: upcase, capitalized
