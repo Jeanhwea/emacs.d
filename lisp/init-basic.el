@@ -13,9 +13,17 @@
 ;; (global-set-key (kbd "M-2") 'split-window-below)
 ;; (global-set-key (kbd "M-3") 'split-window-right)
 (global-set-key (kbd "M-o") 'other-window)
-
 (global-set-key (kbd "<f9>") 'make-frame-command)
 (global-set-key (kbd "<f10>") 'delete-frame)
+
+
+;; -----------------------------------------------------------------------------
+;; file accession
+;; -----------------------------------------------------------------------------
+(global-set-key (kbd "M-7") 'recentf-open-files)
+(global-set-key (kbd "M-8") 'list-buffers)
+(global-set-key (kbd "M-9") 'list-bookmarks)
+
 
 (if (jh/windows?)
   (global-set-key (kbd "C-M-f") 'toggle-frame-maximized)
@@ -169,14 +177,13 @@
   (global-set-key (kbd "C-=") 'er/expand-region))
 
 ;; -----------------------------------------------------------------------------
-;; projectile & helm-projectile
+;; projectile
 ;; -----------------------------------------------------------------------------
 (when (require 'projectile)
   (projectile-mode 1)
-    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-(when (require 'helm-projectile)
-  (global-set-key (kbd "C-x f") 'helm-projectile))
+
 
 ;; -----------------------------------------------------------------------------
 ;; tab, space width configuration

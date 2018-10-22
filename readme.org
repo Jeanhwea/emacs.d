@@ -1,4 +1,8 @@
-* Jinghui's emacs configuration
+#+TITLE: Jinghui's emacs configuration
+#+AUTHOR: Jinghui Hu
+#+EMAIL: hujinghui@buaa.edu.cn
+#+DATE: 2018-10-22
+#+TAGS: emacs configuration elisp
 
 ** Built-in package
 - eshell: unix style shell
@@ -12,7 +16,6 @@
 - undo-tree: visualize the editing history by a tree view
 - smex: fast your M-x command
 - evil: vim-style text editing
-- [[https://emacs-helm.github.io/helm/][helm]]: find anything, such as buffers, bookmarks, files and so on.
 - company: auto complete words according context
 - exec-path-from-shell: load PATH from system
 - expand-region: expand region increases the selected region by semantic units. Just keep pressing the key until it selects what you want. [[http://emacsrocks.com/e09.html][video]]
