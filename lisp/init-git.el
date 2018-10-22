@@ -13,8 +13,7 @@
   ;; keybinding
   (global-set-key (kbd "<f1>") 'magit-status)
   (global-set-key (kbd "<f2>") 'magit-blame)
-  (global-set-key (kbd "<f3>") 'magit-log-all-branches)
-  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "<f3>") 'magit-log-buffer-file)
   (global-set-key (kbd "C-c g") 'magit-status))
 
 

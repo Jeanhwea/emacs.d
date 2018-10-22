@@ -20,6 +20,7 @@
 ;; -----------------------------------------------------------------------------
 ;; file accession
 ;; -----------------------------------------------------------------------------
+(global-set-key (kbd "C-c r") 'recenf-open-files)
 (global-set-key (kbd "M-7") 'recentf-open-files)
 (global-set-key (kbd "M-8") 'list-buffers)
 (global-set-key (kbd "M-9") 'list-bookmarks)
