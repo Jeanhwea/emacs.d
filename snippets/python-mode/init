@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Define __init__ Method
+# key: init
+# --
+def __init__(self${1:, args}):
+$>${2:"${3:docstring}"
+$>$>}$0

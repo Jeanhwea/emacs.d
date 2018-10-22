@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Define Class
+# key: class
+# --
+class ${1:ClassName}:
+$>$0
