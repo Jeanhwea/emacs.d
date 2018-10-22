@@ -3,7 +3,7 @@
 # key: ngsw
 # --
 <${1:div} [ngSwitch]="${2:switch_expression}">
-	$0
-	<!-- [$2] default case -->
-	<${3:some-element} *ngSwitchDefault></$3>
+$>$0
+$><!-- [$2] default case -->
+$><${3:some-element} *ngSwitchDefault></$3>
 </$1>

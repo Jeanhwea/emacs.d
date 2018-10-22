@@ -3,5 +3,5 @@
 # key: src
 # --
 #+BEGIN_SRC ${1:sh}
-	$0
+  $0
 #+END_SRC
