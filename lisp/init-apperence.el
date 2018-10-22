@@ -28,11 +28,8 @@
 (global-prettify-symbols-mode 1)
 (setq-default prettify-symbols-alist
   '(
-     ("lambda" . 955)               ; λ
-     ("this" . 949)                 ; ε
      ("public" . 8364)              ; €
      ("private" . 165)              ; ¥
-     ;; ("return" . 11013)             ; ⬅
      ))
 
 
