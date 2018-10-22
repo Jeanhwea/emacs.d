@@ -72,7 +72,30 @@
        ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
   '(package-selected-packages
      (quote
-       (htmlize helm-projectile projectile multiple-cursors rainbow-delimiters engine-mode elfeed nyan-mode fill-column-indicator emmet-mode tide markdown-mode js-comint expand-region nyan-mode company exec-path-from-shell helm evil browse-at-remote yasnippet smex magit color-theme-sanityinc-solarized ag))))
+       (ag
+        browse-at-remote
+        color-theme-sanityinc-solarized
+        company
+        elfeed
+        emmet-mode
+        engine-mode
+        evil
+        exec-path-from-shell
+        expand-region
+        fill-column-indicator
+        helm
+        helm-projectile
+        htmlize
+        js-comint
+        magit
+        markdown-mode
+        multiple-cursors
+        nyan-mode
+        projectile
+        rainbow-delimiters
+        smex
+        tide
+        yasnippet))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
