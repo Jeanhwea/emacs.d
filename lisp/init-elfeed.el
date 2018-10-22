@@ -72,7 +72,7 @@
   (setq-default elfeed-search-filter elfeed-search-default-filter)
   (setq url-queue-timeout 30)
   (global-set-key (kbd "<f7>") 'elfeed)
-  (global-set-key (kbd "C-x w") 'elfeed))
+  (global-set-key (kbd "C-c e") 'elfeed))
 
 
 (provide 'init-elfeed)

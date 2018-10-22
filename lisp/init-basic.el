@@ -1,34 +1,10 @@
 ;; -----------------------------------------------------------------------------
-;; mark
+;; tab, space width configuration
 ;; -----------------------------------------------------------------------------
-(global-set-key (kbd "C-,") 'set-mark-command)
-(global-set-key (kbd "C-.") 'set-mark-command)
-(global-set-key (kbd "C-;") 'pop-global-mark)
-
-;; -----------------------------------------------------------------------------
-;; windows
-;; -----------------------------------------------------------------------------
-;; (global-set-key (kbd "M-0") 'delete-window)
-;; (global-set-key (kbd "M-1") 'delete-other-windows)
-;; (global-set-key (kbd "M-2") 'split-window-below)
-;; (global-set-key (kbd "M-3") 'split-window-right)
-(global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "<f9>") 'make-frame-command)
-(global-set-key (kbd "<f10>") 'delete-frame)
-
-
-;; -----------------------------------------------------------------------------
-;; file accession
-;; -----------------------------------------------------------------------------
-(global-set-key (kbd "C-c r") 'recenf-open-files)
-(global-set-key (kbd "M-7") 'recentf-open-files)
-(global-set-key (kbd "M-8") 'list-buffers)
-(global-set-key (kbd "M-9") 'list-bookmarks)
-
-
-(if (jh/windows?)
-  (global-set-key (kbd "C-M-f") 'toggle-frame-maximized)
-  (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen))
+(delete-selection-mode 1)
+(setq-default
+  indent-tabs-mode nil
+  tab-width 4)
 
 ;; -----------------------------------------------------------------------------
 ;; editing lines: open lines, insert newline
@@ -93,7 +69,7 @@
 (global-set-key (kbd "S-<return>") 'jh/newline-at-the-end-of-previous-line)
 (global-set-key (kbd "M-p") 'jh/shift-up-line)
 (global-set-key (kbd "M-n") 'jh/shift-down-line)
-;; (global-set-key (kbd "C-j") 'join-line)
+(global-set-key (kbd "C-c j") 'join-line)
 
 ;; -----------------------------------------------------------------------------
 ;; editing words: upcase, capitalized
@@ -156,6 +132,33 @@
 
 
 ;; -----------------------------------------------------------------------------
+;; mark
+;; -----------------------------------------------------------------------------
+(global-set-key (kbd "C-,") 'set-mark-command)
+(global-set-key (kbd "C-.") 'set-mark-command)
+(global-set-key (kbd "C-;") 'pop-global-mark)
+
+;; -----------------------------------------------------------------------------
+;; windows
+;; -----------------------------------------------------------------------------
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "<f9>") 'make-frame-command)
+(global-set-key (kbd "<f10>") 'delete-frame)
+(global-set-key (kbd "C-c n") 'narrow-to-region)
+(global-set-key (kbd "C-c w") 'widen)
+(if (jh/windows?)
+  (global-set-key (kbd "C-M-f") 'toggle-frame-maximized)
+  (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen))
+
+;; -----------------------------------------------------------------------------
+;; file accession
+;; -----------------------------------------------------------------------------
+(global-set-key (kbd "C-c r") 'recentf-open-files)
+(global-set-key (kbd "M-7") 'recentf-open-files)
+(global-set-key (kbd "M-8") 'list-buffers)
+(global-set-key (kbd "M-9") 'list-bookmarks)
+
+;; -----------------------------------------------------------------------------
 ;; undo-tree
 ;; -----------------------------------------------------------------------------
 ;;(when (require 'undo-tree)
@@ -170,7 +173,6 @@
   (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
   (global-set-key (kbd "C-c C-l") 'mc/edit-lines))
 
-
 ;; -----------------------------------------------------------------------------
 ;; expand-region
 ;; -----------------------------------------------------------------------------
@@ -182,17 +184,7 @@
 ;; -----------------------------------------------------------------------------
 (when (require 'projectile)
   (projectile-mode 1)
-  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-
-
-;; -----------------------------------------------------------------------------
-;; tab, space width configuration
-;; -----------------------------------------------------------------------------
-(delete-selection-mode 1)
-(setq-default
-  indent-tabs-mode nil
-  tab-width 4)
 
 
 (provide 'init-basic)

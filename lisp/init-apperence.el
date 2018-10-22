@@ -26,12 +26,6 @@
 ;;  (add-hook 'after-change-major-mode-hook 'fci-mode))
 
 (global-prettify-symbols-mode 1)
-(setq-default prettify-symbols-alist
-  '(
-     ("public" . 8364)              ; €
-     ("private" . 165)              ; ¥
-     ))
-
 
 ;; -----------------------------------------------------------------------------
 ;; theme

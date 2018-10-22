@@ -59,7 +59,6 @@
 (recentf-mode 1)
 
 
-
 ;; -----------------------------------------------------------------------------
 ;; when compact large fonts cause lots of resources, the editor will be very slow
 ;; so just inhibit compacting, when using chinese font
