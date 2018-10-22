@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: For statement
+# key: for
+# --
+for ${1:var} in ${2:container}:
+	$0

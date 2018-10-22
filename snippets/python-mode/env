@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Get Environment Variable
+# key: env
+# --
+os.environ.get(${1:'PATH'})$0

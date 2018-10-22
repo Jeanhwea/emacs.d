@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: While statement
+# key: wh
+# --
+while ${1:cond}:
+	$0
