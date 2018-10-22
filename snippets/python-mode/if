@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: If statement
+# name: If Statement
 # key: if
 # --
 if ${1:cond}:

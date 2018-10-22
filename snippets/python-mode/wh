@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: While statement
+# name: While Statement
 # key: wh
 # --
 while ${1:cond}:
