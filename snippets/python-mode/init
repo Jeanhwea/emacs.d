@@ -4,4 +4,4 @@
 # --
 def __init__(self${1:, args}):
 $>${2:"${3:docstring}"
-$>$>}$0
+$>$>}${0:"# coding"}
