@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: os.path.splitext
+# key: ext
+# --
+(name, ext) = os.path.splitext(${1:filename})$0

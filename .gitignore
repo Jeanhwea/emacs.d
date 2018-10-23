@@ -52,6 +52,7 @@ flycheck_*.el
 # End of https://www.gitignore.io/api/emacs
 
 # personal added items
+.mc-lists.el
 bookmarks
 ido.last
 image-dired/
