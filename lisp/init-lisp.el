@@ -8,8 +8,8 @@
       prettify-symbols-alist
         (append prettify-symbols-alist
           '(
-             ("lambda" . 955)               ; λ
-             ("defun" . 402)                  ; ƒ
+             ("lambda" . 955)           ; λ
+             ("defun" . 402)            ; ƒ
              )))
 
     (rainbow-delimiters-mode)))

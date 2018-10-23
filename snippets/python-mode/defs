@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Define Static Method
+# key: defs
+# --
+@staticmethod
+def ${1:method}(${2:args}):
+$>${0:# coding}
