@@ -9,14 +9,7 @@
       (rename-buffer shrimp-shell-name))))
 (global-set-key (kbd "C-c s") 'jh/open-shrimp-shell-as-temporary-shell)
 (global-set-key (kbd "<f8>") 'jh/open-shrimp-shell-as-temporary-shell)
-
-(defun jh/toggle-frame-fullscreen-mode()
-  "toggle fulscreen, and toggle menu bar mode"
-  (interactive)
-  (if (jh/windows?)
-    (toggle-frame-maximized)
-    (toggle-frame-maximized)))
-(global-set-key (kbd "<f11>") 'jh/toggle-frame-fullscreen-mode)
+(global-set-key (kbd "<f11>") 'toggle-frame-fullscreen)
 
 ;; -----------------------------------------------------------------------------
 ;; browse-at-remote
