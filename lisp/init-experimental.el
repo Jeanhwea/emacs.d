@@ -9,7 +9,6 @@
       (rename-buffer shrimp-shell-name))))
 (global-set-key (kbd "C-c s") 'jh/open-shrimp-shell-as-temporary-shell)
 (global-set-key (kbd "<f8>") 'jh/open-shrimp-shell-as-temporary-shell)
-(global-set-key (kbd "<f11>") 'toggle-frame-fullscreen)
 
 ;; -----------------------------------------------------------------------------
 ;; browse-at-remote
