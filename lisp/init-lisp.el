@@ -10,6 +10,9 @@
           '(
              ("lambda" . 955)           ; λ
              ("defun" . 402)            ; ƒ
+             ("not" . 172)              ; ¬
+             ("and" . 8743)             ; ∧
+             ("or" . 8744)              ; ∨
              )))
 
     (rainbow-delimiters-mode)))
