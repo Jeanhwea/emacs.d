@@ -3,4 +3,4 @@
 # key: def
 # --
 def ${1:method}(self${2:, $3}):
-$>${0:# coding}
+$>${0:pass}

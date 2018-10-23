@@ -4,4 +4,4 @@
 # --
 @staticmethod
 def ${1:method}(${2:args}):
-$>${0:# coding}
+$>${0:pass}
