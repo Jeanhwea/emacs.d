@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: os.walk
-# key: walk
+# name: for ... in os.walk(...)
+# key: oswalk
 # --
 for root, dirnames, filenames in os.walk(${1:folder}):
 $>${0:pass}
