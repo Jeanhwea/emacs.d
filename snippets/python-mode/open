@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: with open(...) as f
+# key: open
+# --
+with open(${1:'file.txt'}${2:, '${3:r}'}) as f:
+$>${0:pass}
