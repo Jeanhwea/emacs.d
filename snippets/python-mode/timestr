@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: time.strftime('...', time.localtime())
+# key: timestr
+# --
+time.strftime('${1:%Y%m%d%H%M%S}', time.localtime())

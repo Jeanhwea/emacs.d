@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: time.time()
+# key: timestamp
+# --
+int(time.time())$0
