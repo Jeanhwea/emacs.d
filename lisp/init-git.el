@@ -4,7 +4,9 @@
 (when (require 'magit)
 
   ;; repositories for magit-list-repositories
-  (setq magit-repository-directories `((,user-emacs-directory . 0)))
+  (setq
+    magit-repository-directories `((,user-emacs-directory . 0)))
+
   (when (jh/mac?)
     (add-to-list 'magit-repository-directories '("~/Code" . 3)))
   (when (jh/windows?)
@@ -12,9 +14,9 @@
 
   ;; keybinding
   (global-set-key (kbd "<f1>") 'magit-status)
-  (global-set-key (kbd "C-c g") 'magit-status)
+  (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "<f2>") 'magit-file-popup)
-  (global-set-key (kbd "C-c f") 'magit-file-popup))
+  (global-set-key (kbd "C-x f") 'magit-file-popup))
 
 
 (provide 'init-git)
