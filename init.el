@@ -76,6 +76,7 @@
         browse-at-remote
         color-theme-sanityinc-solarized
         company
+        counsel
         csv-mode
         elfeed
         emmet-mode
@@ -94,6 +95,7 @@
         projectile
         rainbow-delimiters
         smex
+        swiper
         tide
         yasnippet))))
 (custom-set-faces

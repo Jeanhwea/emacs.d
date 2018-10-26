@@ -151,14 +151,6 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; file accession
-;; -----------------------------------------------------------------------------
-(global-set-key (kbd "C-c r") 'recentf-open-files)
-(global-set-key (kbd "M-7") 'recentf-open-files)
-(global-set-key (kbd "M-8") 'list-buffers)
-(global-set-key (kbd "M-9") 'list-bookmarks)
-
-;; -----------------------------------------------------------------------------
 ;; undo-tree
 ;; -----------------------------------------------------------------------------
 ;;(when (require 'undo-tree)
@@ -190,8 +182,19 @@
 ;; -----------------------------------------------------------------------------
 (when (require 'projectile)
   (projectile-mode 1)
-  (setq-default projectile-mode-line-prefix " Proj")
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  (setq-default
+    projectile-mode-line-prefix " Proj"
+    projectile-completion-system 'ivy)
+  (define-key projectile-mode-map (kbd "M-9") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-register-project-type 'py3code '("requirements.txt")
+    :test "python -m unittest"
+    :compile "pip install -r requirements.txt"
+    :run "python -m unittest test/test_basic.py")
+  (projectile-register-project-type 'yarn '("package.json")
+    :compile "yarn install"
+    :test "yarn test"
+    :run "yarn start"))
 
 
 (provide 'init-basic)

@@ -12,7 +12,7 @@
 - [[https://github.com/joaotavora/yasnippet][yasnippet]]: Aha, meet the snippet system.
 - [[https://github.com/bbatsov/projectile][projectile]]: a project interaction library for Emacs.
 - [[https://magit.vc/][magit]]: powerful git manager
-- smex: fast your M-x command
+- [[https://github.com/abo-abo/swiper][swiper]]: flexible, simple tools for minibuffer completion in Emacs
 - [[https://github.com/ananthakumaran/tide][tide]]: TypeScript Interactive Development Environment for Emacs.
 - [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]: Multiple cursors for Emacs.
 - [[https://github.com/skeeto/elfeed][elfeed]]: an extensible web feed reader for Emacs, supporting both Atom and RSS.
