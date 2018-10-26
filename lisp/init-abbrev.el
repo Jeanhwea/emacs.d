@@ -14,6 +14,10 @@
      ("retrun" "return")
      ("sceince" "science")
      ("scince" "science")
+     ("slef" "self")
+     ("tihs" "this")
+     ("thsi" "this")
+     ("tshi" "this")
      ("tabel" "table")
      ;; ------------------------------------------------------------------------
      ))
