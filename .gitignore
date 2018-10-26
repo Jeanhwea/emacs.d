@@ -54,6 +54,7 @@ flycheck_*.el
 # personal added items
 .mc-lists.el
 bookmarks
+elfeed/
 ido.last
 image-dired/
 newsticker/
