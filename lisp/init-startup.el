@@ -5,7 +5,16 @@
 (setq default-buffer-file-coding-system 'utf-8)
 (setq system-time-locale "C")
 
-(setq mac-command-modifier 'meta) ; change meta key
+;; setup windows key
+(setq
+  mac-command-modifier 'meta
+  mac-option-modifier 'super
+  w32-pass-lwindow-to-system nil
+  w32-lwindow-modifier 'super
+  w32-pass-rwindow-to-system nil
+  w32-rwindow-modifier 'super)
+
+
 (defalias 'yes-or-no-p 'y-or-n-p) ; always use 'y or n', refuse 'yes of no'
 
 ;;(desktop-save-mode 1)
