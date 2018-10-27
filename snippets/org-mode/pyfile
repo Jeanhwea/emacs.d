@@ -6,6 +6,5 @@
 ${1:import numpy as np
 import matplotlib.pyplot as plt}
 ${2:filename} = '../resource/image/`(format-time-string "%Y/%m")`/${3:image`(format-time-string "%H%M%S")`.png}'
-plt.savefig(filename)
 return $2
 #+END_SRC

@@ -30,11 +30,11 @@
 ;; -----------------------------------------------------------------------------
 ;; plugin
 ;; -----------------------------------------------------------------------------
-(require 'init-org)
-(require 'init-git)
 (require 'init-completion)
-(require 'init-yasnippet)
 (require 'init-elfeed)
+(require 'init-git)
+(require 'init-org)
+(require 'init-yasnippet)
 
 ;; -----------------------------------------------------------------------------
 ;; programming language
