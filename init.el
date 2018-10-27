@@ -32,9 +32,9 @@
 ;; -----------------------------------------------------------------------------
 (require 'init-completion)
 (require 'init-elfeed)
-(require 'init-git)
 (require 'init-org)
 (require 'init-yasnippet)
+(require 'init-git)
 
 ;; -----------------------------------------------------------------------------
 ;; programming language
