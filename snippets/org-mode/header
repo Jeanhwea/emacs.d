@@ -8,4 +8,5 @@
 #+DATE: `(format-time-string "%Y-%m-%d")`
 #+TAGS: ${2:tag1 tag2 tag3}
 
-$0
+
+* ${0:starting here}
