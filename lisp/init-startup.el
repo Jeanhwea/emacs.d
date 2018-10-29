@@ -3,7 +3,9 @@
 ;; -----------------------------------------------------------------------------
 (prefer-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
+
 (setq system-time-locale "C")
+(setq ring-bell-function 'ignore) ;; get rid of belling
 
 ;; setup windows key
 (setq
@@ -17,7 +19,7 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p) ; always use 'y or n', refuse 'yes of no'
 
-;;(desktop-save-mode 1)
+(desktop-save-mode 1)
 (save-place-mode 1)
 
 (show-paren-mode 1)
@@ -58,7 +60,7 @@
 (setq-default
   recentf-max-saved-items 1000
   recentf-exclude
-    '("/.elfeed/"
+    '("/.emacs.d/elfeed/*"
       "/.emacs.d/elpa/*"
       "/.emacs.d/ido.last"
       "/.emacs.d/bookmarks"

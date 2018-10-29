@@ -36,8 +36,10 @@
           "** TODO %?\n   %a"))
     org-enforce-todo-dependencies t
     org-log-redeadline 'time
-    org-log-done 'time
-    org-babel-python-command "python3")
+    org-log-done 'time)
+
+  (when (jh/mac?)
+    (setq org-babel-python-command "python3"))
 
   (define-key global-map (kbd "C-c l") 'org-store-link)
 
