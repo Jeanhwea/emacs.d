@@ -58,11 +58,11 @@
 ;; font
 ;; -----------------------------------------------------------------------------
 (when (jh/windows?)
-  (set-face-attribute 'default nil :font "Consolas 10")
+  (set-face-attribute 'default nil :font "Consolas 12")
   ;; 中文字体单独设置
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
       charset
-      (font-spec :family "WenQuanYi Micro Hei Mono" :size 22))))
+      (font-spec :family "WenQuanYi Micro Hei Mono" :size 26))))
 
 (provide 'init-apperence)
