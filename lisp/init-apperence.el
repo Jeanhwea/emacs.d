@@ -63,6 +63,6 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
       charset
-      (font-spec :family "Microsoft YaHei" :size 22))))
+      (font-spec :family "WenQuanYi Micro Hei Mono" :size 22))))
 
 (provide 'init-apperence)
