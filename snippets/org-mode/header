@@ -5,7 +5,7 @@
 #+TITLE: ${1:Title}
 #+AUTHOR: Jinghui Hu
 #+EMAIL: hujinghui@buaa.edu.cn
-#+DATE: `(format-time-string "%Y-%m-%d")`
+#+DATE: <`(format-time-string "%Y-%m-%d %a")`>
 #+TAGS: ${2:tag1 tag2 tag3}
 
 
