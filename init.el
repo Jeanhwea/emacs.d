@@ -18,18 +18,23 @@
 ;; bootstrap
 ;; -----------------------------------------------------------------------------
 (require 'init-util)
-(require 'init-site-lisp)
 (require 'init-elpa) ; call "package-initialize" here
-(require 'init-startup)
-(require 'init-basic)
-(require 'init-apperence)
+(require 'init-site-lisp)
+
+;; -----------------------------------------------------------------------------
+;; behavior
+;; -----------------------------------------------------------------------------
 (require 'init-abbrev)
-(require 'init-dired)
+(require 'init-apperence)
+(require 'init-basic)
+(require 'init-edit)
+(require 'init-startup)
 
 ;; -----------------------------------------------------------------------------
 ;; plugin
 ;; -----------------------------------------------------------------------------
 (require 'init-completion)
+(require 'init-dired)
 (require 'init-elfeed)
 (require 'init-git)
 (require 'init-org)
@@ -103,5 +108,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
