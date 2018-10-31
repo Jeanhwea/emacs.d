@@ -52,6 +52,13 @@
       (shell-command-to-string
         "git rev-parse --show-cdup"))))
 
+(defun jh/git-file-name ()
+  "Get the relative filename of a file in Git repository"
+  (if buffer-file-name
+    (replace-regexp-in-string (jh/git-root-dir) ""
+      (expand-file-name buffer-file-name))
+    nil))
+
 (defvar grip-buffer "*grip*")
 
 (defun jh/grip (DIR FILENAME &optional HOST PORT)
@@ -68,10 +75,13 @@
 	"start a grip daemon."
 	(interactive)
 	(let ((git-dir (jh/git-root-dir))
-         (filename
-           (replace-regexp-in-string (jh/git-root-dir) ""
-             (expand-file-name buffer-file-name))))
-    (when git-dir (jh/grip git-dir filename))))
+        (filename (jh/git-file-name)))
+    (unless filename
+      (error "filename is nil"))
+    (if (string-match-p ".md\\'" filename)
+      (when git-dir
+        (jh/grip git-dir filename))
+      (error "Buffer '%s' is not a Markdown file!" filename))))
 
 
 (require 'htmlize)
