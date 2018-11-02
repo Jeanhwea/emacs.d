@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: Typescript Header with MTI
+# key: mti
+# --
+/*
+ *      __  __    _______    _____
+ *     |  \/  |  |__   __|  |_   _|
+ *     | \  / |     | |       | |
+ *     | |\/| |     | |       | |
+ *     | |  | |     | |      _| |_
+ *     |_|  |_|     |_|     |_____|
+ *
+ * @Description: ${1:text}
+ * @Author: Jinghui Hu
+ * @Date: `(format-time-string "%Y-%m-%d %H:%M:%S")`
+ * @LastEditors: Jinghui Hu
+ * @LastEditTime: `(format-time-string "%Y-%m-%d %H:%M:%S")`
+ *
+ */
+$0

@@ -26,13 +26,13 @@
     (concat "\\("
       "^nn\\.a[0-9]+\\|\\.log\\|(ftp)\\|^tags\\|^TAGS"
       "\\|\\.emacs.*\\|\\.diary\\|\\.newsrc-dribble\\|\\.bbdb"
-	    "\\)$"))
+      "\\)$"))
   (add-to-list 'desktop-modes-not-to-save 'Info-mode)
   (add-to-list 'desktop-modes-not-to-save 'dired-mode)
   (add-to-list 'desktop-modes-not-to-save 'fundamental-mode)
   (add-to-list 'desktop-modes-not-to-save 'info-lookup-mode)
-  (add-to-list 'desktop-modes-not-to-save 'magit-mode)
-  (desktop-save-mode 1))
+  (add-to-list 'desktop-modes-not-to-save 'magit-mode))
+;; (desktop-save-mode 1)
 
 ;; parenthesis behavior
 (show-paren-mode 1)
