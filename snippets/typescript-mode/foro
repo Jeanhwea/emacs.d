@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: for..of
+# key: foro
+# --
+for (let ${1:var} of ${2:container}) {
+$>${0:// coding}
+}
