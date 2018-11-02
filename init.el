@@ -82,6 +82,7 @@
         company
         counsel
         csv-mode
+        edit-indirect
         elfeed
         emmet-mode
         engine-mode
