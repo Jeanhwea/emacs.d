@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: logger.debug
+# key: debug
+# --
+this.logger.debug(${1:"message"});$0

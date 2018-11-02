@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: logger.error
+# key: error
+# --
+this.logger.error(${1:"message"});$0
