@@ -6,7 +6,7 @@
   (defvar jesenia-dir
     (if (jh/windows?)
       "e:/Code/common/jesenia"
-      "~/Code/common/jesenia"))
+      "~/Documents/DropBox/jesenia"))
 
   (setq
     org-link-file-path-type 'relative
