@@ -4,3 +4,4 @@
 # --
 for (let ${1:var} in ${2:container}) {
 $>${0:// coding}
+}
