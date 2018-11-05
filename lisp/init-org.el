@@ -5,7 +5,7 @@
 
   (defvar jesenia-dir
     (if (jh/windows?)
-      "e:/Code/common/jesenia"
+      "e:/Document/DropBox/jesenia"
       "~/Documents/DropBox/jesenia"))
 
   (setq
