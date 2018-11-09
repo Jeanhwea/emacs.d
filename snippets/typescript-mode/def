@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Define Member Function
+# key: def
+# --
+${1:funcname}($2): ${3:void} {
+$>${0:// coding}
+}
