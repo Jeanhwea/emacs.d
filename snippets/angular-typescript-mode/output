@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: @Output() ... = ... new EventEmitter<...>();
+# key: output
+# --
+@Output() ${1:var} = new EventEmitter<${2:any}>();$0
