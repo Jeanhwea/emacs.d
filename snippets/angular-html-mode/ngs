@@ -2,4 +2,4 @@
 # name: NgStyle
 # key: ngs
 # --
-[ngStyle]="{'${1:max-width.px}': ${2:widthExp}}"$0
+[ngStyle]="{'${1:max-width.px}': ${0:widthExp}}"

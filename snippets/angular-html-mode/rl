@@ -2,4 +2,4 @@
 # name: RouterLink
 # key: rl
 # --
-[routerLink]="[${1:url/list}]"$0
+[routerLink]="[${0:url/list}]"

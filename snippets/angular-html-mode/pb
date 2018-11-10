@@ -2,4 +2,4 @@
 # name: Property Binding
 # key: pb
 # --
-[${1:value}]="${2:var}"$0
+[${1:value}]="${0:var}"

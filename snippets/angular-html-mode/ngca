@@ -2,4 +2,4 @@
 # name: NgSwitchCase
 # key: ngca
 # --
-<${1:some-element} *ngSwitchCase="${2:case_expression}">$0</$1>
+<${1:some-element} *ngSwitchCase="${0:case_expression}"></$1>

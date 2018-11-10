@@ -2,4 +2,4 @@
 # name: NgIf
 # key: ngif
 # --
-*ngIf="${1:cond}"$0
+*ngIf="${0:cond}"

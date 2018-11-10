@@ -2,4 +2,4 @@
 # name: Event Binding
 # key: eb
 # --
-(${1:click})="${2:handler}(${3:$event})"$0
+(${1:click})="${2:handler}(${0:$event})"

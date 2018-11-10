@@ -2,4 +2,4 @@
 # name: Two-way Binding
 # key: twb
 # --
-[(${1:ngModel})]="${2:property}"$0
+[(${1:ngModel})]="${0:property}"
