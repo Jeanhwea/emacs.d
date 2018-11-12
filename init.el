@@ -59,6 +59,12 @@
 (require 'init-misc)
 (require 'init-experimental)
 
+;; -----------------------------------------------------------------------------
+;; local settings
+;; -----------------------------------------------------------------------------
+(let ((local-settings "~/.emacs.local.el"))
+ (when (file-exists-p local-settings)
+   (load-file local-settings)))
 
 (provide 'init)
 
