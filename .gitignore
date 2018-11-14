@@ -55,6 +55,7 @@ flycheck_*.el
 .mc-lists.el
 bookmarks
 elfeed/
+games/
 ido.last
 image-dired/
 newsticker/
