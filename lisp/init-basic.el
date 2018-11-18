@@ -50,6 +50,7 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+;; (linum-mode 1)
 
 ;; (nyan-mode 1)
 ;; (global-hl-line-mode 1)
@@ -63,7 +64,6 @@
 ;; -----------------------------------------------------------------------------
 (setq-default
   inhibit-startup-message t
-  fill-column 80
   blink-cursor-mode t
   ;; cursor-type 'bar
   blink-cursor-interval 1
@@ -75,6 +75,7 @@
   column-number-mode t
   size-indication-mode t
   indent-tabs-mode nil
+  fill-column 80
   tab-width 4)
 
 ;; -----------------------------------------------------------------------------
