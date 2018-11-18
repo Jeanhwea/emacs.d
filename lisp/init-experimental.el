@@ -1,15 +1,3 @@
-(defun jh/open-shrimp-shell-as-temporary-shell ()
-  "open a eshell as a temporary shell, and rename the buffer to `shrimp'."
-  (interactive)
-  (let ((shrimp-shell-name "shrimp"))
-    (progn
-      (when (get-buffer shrimp-shell-name)
-        (kill-buffer shrimp-shell-name))
-      (eshell)
-      (rename-buffer shrimp-shell-name))))
-(global-set-key (kbd "C-c s") 'jh/open-shrimp-shell-as-temporary-shell)
-(global-set-key (kbd "<f8>") 'jh/open-shrimp-shell-as-temporary-shell)
-
 ;; -----------------------------------------------------------------------------
 ;; projectile
 ;; -----------------------------------------------------------------------------
@@ -20,6 +8,8 @@
     projectile-completion-system 'ivy)
   (define-key projectile-mode-map (kbd "M-9") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+  ;; personal project structure
   (projectile-register-project-type 'py3code '("requirements.txt")
     :test "python -m unittest"
     :compile "pip install -r requirements.txt"
@@ -28,14 +18,6 @@
     :compile "yarn install"
     :test "yarn test"
     :run "yarn start"))
-
-
-;; -----------------------------------------------------------------------------
-;; browse-at-remote
-;; -----------------------------------------------------------------------------
-(when (require 'browse-at-remote)
-  (global-set-key (kbd "C-c b") 'bar-browse)
-  (global-set-key (kbd "<f4>") 'bar-browse))
 
 
 ;; -----------------------------------------------------------------------------
@@ -65,20 +47,6 @@
 ;; -----------------------------------------------------------------------------
 ;; grip
 ;; -----------------------------------------------------------------------------
-(defun jh/git-root-dir ()
-  "Get the root directory of a Git repository."
-  (replace-regexp-in-string "\n" ""
-    (expand-file-name
-      (shell-command-to-string
-        "git rev-parse --show-cdup"))))
-
-(defun jh/git-file-name ()
-  "Get the relative filename of a file in Git repository"
-  (if buffer-file-name
-    (replace-regexp-in-string (jh/git-root-dir) ""
-      (expand-file-name buffer-file-name))
-    nil))
-
 (defvar grip-buffer "*grip*")
 
 (defun jh/grip (DIR FILENAME &optional HOST PORT)
