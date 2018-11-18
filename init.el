@@ -1,7 +1,7 @@
 ;; -----------------------------------------------------------------------------
 ;; A reasonable Emacs configuration files.
 ;; -----------------------------------------------------------------------------
-(setq
+(setq-default
   user-full-name "Jinghui Hu"
   user-mail-address "hujinghui@buaa.edu.cn"
   debug-on-error t)
@@ -25,10 +25,8 @@
 ;; behavior
 ;; -----------------------------------------------------------------------------
 (require 'init-abbrev)
-(require 'init-apperence)
 (require 'init-basic)
 (require 'init-edit)
-(require 'init-startup)
 
 ;; -----------------------------------------------------------------------------
 ;; plugin

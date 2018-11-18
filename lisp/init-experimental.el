@@ -11,6 +11,26 @@
 (global-set-key (kbd "<f8>") 'jh/open-shrimp-shell-as-temporary-shell)
 
 ;; -----------------------------------------------------------------------------
+;; projectile
+;; -----------------------------------------------------------------------------
+(when (require 'projectile)
+  (projectile-mode 1)
+  (setq-default
+    projectile-mode-line-prefix " Proj"
+    projectile-completion-system 'ivy)
+  (define-key projectile-mode-map (kbd "M-9") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-register-project-type 'py3code '("requirements.txt")
+    :test "python -m unittest"
+    :compile "pip install -r requirements.txt"
+    :run "python -m unittest test/test_basic.py")
+  (projectile-register-project-type 'yarn '("package.json")
+    :compile "yarn install"
+    :test "yarn test"
+    :run "yarn start"))
+
+
+;; -----------------------------------------------------------------------------
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
@@ -72,9 +92,9 @@
       (format "%s:%d" HOST PORT))))
 
 (defun grip ()
-	"start a grip daemon."
-	(interactive)
-	(let ((git-dir (jh/git-root-dir))
+  "start a grip daemon."
+  (interactive)
+  (let ((git-dir (jh/git-root-dir))
         (filename (jh/git-file-name)))
     (unless filename
       (error "filename is nil"))
