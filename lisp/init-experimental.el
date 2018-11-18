@@ -17,7 +17,8 @@
   (projectile-register-project-type 'yarn '("package.json")
     :compile "yarn install"
     :test "yarn test"
-    :run "yarn start"))
+    :run "yarn start"
+    :test-suffix ".spec"))
 
 
 ;; -----------------------------------------------------------------------------
