@@ -18,7 +18,7 @@
              ("or" . 8744)              ; ∨
              ;; ----------------------------------------------------------------
              )))
-
+    (hs-minor-mode 1)
     (rainbow-delimiters-mode)))
 
 (provide 'init-lisp)

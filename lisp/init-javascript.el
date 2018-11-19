@@ -35,7 +35,8 @@
              ("===" . 8801)             ; ≡
              ("!==" . 8802)             ; ≢
              ;; ----------------------------------------------------------------
-             )))))
+             )))
+        (hs-minor-mode 1)))
 
 (when (require 'js-comint)
   (setq inferior-js-program-command "node"))
