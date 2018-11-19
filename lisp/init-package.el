@@ -8,7 +8,8 @@
        ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
   ;; must initialize package first
-  (package-initialize))
+  (when (version< emacs-version "27.0")
+    (package-initialize)))
 
 (eval-when-compile (require 'cl))
 
