@@ -45,7 +45,7 @@
 
 
 (when (require 'js-comint)
-  (setq inferior-js-program-command "node"))
+  (setq js-comint-program-command "node"))
 
 
 (when (require 'tide)
