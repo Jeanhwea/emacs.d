@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: for..of
-# key: foro
+# key: forof
 # --
 for (const ${1:var} of ${2:container}) {
 $>${0:// coding}

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: for..in
-# key: fori
+# key: forin
 # --
 for (const ${1:var} in ${2:container}) {
 $>${0:// coding}
