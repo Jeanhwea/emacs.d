@@ -36,10 +36,16 @@
              ("!==" . 8802)             ; ≢
              ;; ----------------------------------------------------------------
              )))
-        (hs-minor-mode 1)))
+    ;; setup js-comint keybindings
+    (local-set-key (kbd "C-c C-e") 'js-comint-send-last-sexp)
+    (local-set-key (kbd "C-c C-r") 'js-comint-send-region)
+    (local-set-key (kbd "C-c C-b") 'js-comint-send-buffer)
+    (hs-minor-mode 1)))
+
 
 (when (require 'js-comint)
   (setq inferior-js-program-command "node"))
+
 
 (when (require 'tide)
   ;; add hook for tide-mode
