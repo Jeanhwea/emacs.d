@@ -73,6 +73,11 @@
       (error "Buffer '%s' is not a Markdown file!" filename))))
 
 
+;; -----------------------------------------------------------------------------
+;; markdown-mode
+;; -----------------------------------------------------------------------------
+(setq markdown-command "multimarkdown")
+
 (require 'htmlize)
 
 (provide 'init-experimental)

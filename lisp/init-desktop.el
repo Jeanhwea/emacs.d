@@ -50,9 +50,11 @@
 
 ;; -----------------------------------------------------------------------------
 ;; undo-tree
+;; undo-tree on elpa is very old and hard to use, try this mirror
+;; git clone git@github.com:Jeanhwea/undo-tree.git
 ;; -----------------------------------------------------------------------------
-;; (when (require 'undo-tree)
-;;   (global-undo-tree-mode))
+(when (require 'undo-tree)
+  (global-undo-tree-mode))
 
 ;; -----------------------------------------------------------------------------
 ;; font
