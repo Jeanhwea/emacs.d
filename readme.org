@@ -4,11 +4,15 @@
 #+DATE: 2018-10-22
 #+TAGS: emacs configuration elisp
 
+
 ** Built-in package
+
 - eshell: unix style shell
 - ielm: elisp REPL
 - org-mode
+
 ** Reasonable Plugins
+
 - [[https://github.com/joaotavora/yasnippet][yasnippet]]: Aha, meet the snippet system.
 - [[https://github.com/bbatsov/projectile][projectile]]: a project interaction library for Emacs.
 - [[https://magit.vc/][magit]]: powerful git manager
@@ -25,7 +29,9 @@
 - js-comint: let run interactive nodejs console with "M-x run-js"
 - nyan-mode: change your progress display in status bar into a cute animal
 - undo-tree: visualize the editing history by a tree view
+
 ** Cheatsheet
+
 *** Function Keys
 | key | binding                                    |
 |-----+--------------------------------------------|
@@ -55,3 +61,31 @@
 | ~smerge-command-prefix~ o     | smerge-keep-other   |
 | ~smerge-command-prefix~ a     | smerge-keep-all     |
 | ~smerge-command-prefix~ E     | smerge-ediff        |
+
+*** Local settings
+
+Feel free to add private setting at *~/.emacs.local.el*, the following is an
+example.
+
+#+BEGIN_SRC elisp
+;; -----------------------------------------------------------------------------
+;; startup initial frame
+;; -----------------------------------------------------------------------------
+(setq initial-frame-alist
+  '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
+(setq default-frame-alist
+  '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
+
+;; -----------------------------------------------------------------------------
+;; setup database
+;; -----------------------------------------------------------------------------
+(setq-default
+  sql-product "oracle"
+  sql-user "username"
+  sql-password "xxxxxxxx"
+  sql-database "host/sid")
+#+END_SRC
+
+
+# ------------------------------------------------------------------------------
+# readme.org ends here
