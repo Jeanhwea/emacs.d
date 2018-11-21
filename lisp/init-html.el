@@ -3,6 +3,7 @@
     (setq
       show-trailing-whitespace t
       indent-tabs-mode nil
+      sgml-basic-offset 2
       html-indent-level 2
       tab-width 2)
     (hl-line-mode 1)))
