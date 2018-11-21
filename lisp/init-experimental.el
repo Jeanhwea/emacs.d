@@ -26,6 +26,10 @@
 ;; -----------------------------------------------------------------------------
 (when (require 'engine-mode)
 
+  (defengine stackoverflow
+    "https://stackoverflow.com/search?q=%s"
+    :keybinding "s")
+
   (defengine google
     "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
     :keybinding "g")
