@@ -49,6 +49,7 @@
 (require 'init-lisp)
 (require 'init-python)
 (require 'init-sh)
+(require 'init-sql)
 
 ;; -----------------------------------------------------------------------------
 ;; misc
@@ -103,6 +104,7 @@
         projectile
         rainbow-delimiters
         smex
+        sql-indent
         swiper
         tide
         yasnippet))))
