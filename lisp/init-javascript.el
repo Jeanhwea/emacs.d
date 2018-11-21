@@ -37,7 +37,8 @@
              ;; ----------------------------------------------------------------
              )))
     ;; setup js-comint keybindings
-    (local-set-key (kbd "C-c C-e") 'js-comint-send-last-sexp)
+    (local-set-key (kbd "C-c C-e") 'js-comint-send-region)
+    (local-set-key (kbd "C-c C-c") 'js-comint-send-last-sexp)
     (local-set-key (kbd "C-c C-r") 'js-comint-send-region)
     (local-set-key (kbd "C-c C-b") 'js-comint-send-buffer)
     (hl-line-mode 1)
