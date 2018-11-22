@@ -101,6 +101,7 @@
         markdown-mode
         multiple-cursors
         nyan-mode
+        pangu-spacing
         projectile
         rainbow-delimiters
         smex
