@@ -108,6 +108,7 @@
          pangu-spacing
          projectile
          rainbow-delimiters
+         sicp
          smex
          sql-indent
          string-inflection
