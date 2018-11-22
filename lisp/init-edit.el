@@ -84,8 +84,17 @@
       (capitalize-word N)
       (capitalize-word 1))))
 
-(global-set-key (kbd "M-c") 'jh/upcase-previous-word)
-(global-set-key (kbd "M-h") 'jh/capitalize-previous-word)
+(defun jh/upcase-symbol-at-point ()
+  "Convert symbol at point to upper case format, moving over."
+  (interactive)
+  (let ((text (thing-at-point 'symbol))
+        (bounds (bounds-of-thing-at-point 'symbol)))
+    (when text
+      (setq new-text (upcase text))
+      (delete-region (car bounds) (cdr bounds))
+      (insert new-text))))
+
+(global-set-key (kbd "M-u") 'jh/upcase-symbol-at-point)
 
 
 ;; -----------------------------------------------------------------------------
