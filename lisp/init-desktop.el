@@ -27,6 +27,8 @@
 (add-hook 'before-save-hook 'whitespace-cleanup)
 (when (require 'pangu-spacing)
   (global-pangu-spacing-mode 1))
+(when (require 'hungry-delete)
+  (global-hungry-delete-mode 1))
 
 ;; -----------------------------------------------------------------------------
 ;; exec-path-from-shell, read the $PATH

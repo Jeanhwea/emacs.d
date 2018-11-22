@@ -96,6 +96,7 @@
         fill-column-indicator
         ggtags
         htmlize
+        hungry-delete
         js-comint
         magit
         markdown-mode
