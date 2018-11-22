@@ -102,6 +102,7 @@
         markdown-mode
         multiple-cursors
         nyan-mode
+        org-bullets
         pangu-spacing
         projectile
         rainbow-delimiters
