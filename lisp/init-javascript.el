@@ -41,6 +41,8 @@
     (local-set-key (kbd "C-c C-c") 'js-comint-send-last-sexp)
     (local-set-key (kbd "C-c C-r") 'js-comint-send-region)
     (local-set-key (kbd "C-c C-b") 'js-comint-send-buffer)
+    ;; string-inflection
+    (local-set-key (kbd "M-u") 'string-inflection-java-style-cycle)
     (hl-line-mode 1)
     (hs-minor-mode 1)))
 

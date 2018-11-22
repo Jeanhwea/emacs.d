@@ -28,7 +28,9 @@
              (">=" . 8805)              ; ≥
              ("!=" . 8800)              ; ≠
              ;; ----------------------------------------------------------------
-             )))))
+             )))
+    ;; string-inflection
+    (local-set-key (kbd "M-u") 'string-inflection-python-style-cycle)))
 
 (when (jh/mac?)
   (setq

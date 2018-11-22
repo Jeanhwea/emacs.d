@@ -66,35 +66,39 @@
 ;; -----------------------------------------------------------------------------
 ;; editing words: upcase, capitalized
 ;; -----------------------------------------------------------------------------
-(defun jh/upcase-previous-word (N)
-  "Convert previous word to upper case format, moving over."
-  (interactive "P")
-  (save-excursion
-    (backward-word N)
-    (if (integerp N)
-      (upcase-word N)
-      (upcase-word 1))))
+;; (defun jh/upcase-previous-word (N)
+;;   "Convert previous word to upper case format, moving over."
+;;   (interactive "P")
+;;   (save-excursion
+;;     (backward-word N)
+;;     (if (integerp N)
+;;       (upcase-word N)
+;;       (upcase-word 1))))
 
-(defun jh/capitalize-previous-word (N)
-  "Convert previous word to capitalized format, moving over."
-  (interactive "P")
-  (save-excursion
-    (backward-word N)
-    (if (integerp N)
-      (capitalize-word N)
-      (capitalize-word 1))))
+;; (defun jh/capitalize-previous-word (N)
+;;   "Convert previous word to capitalized format, moving over."
+;;   (interactive "P")
+;;   (save-excursion
+;;     (backward-word N)
+;;     (if (integerp N)
+;;       (capitalize-word N)
+;;       (capitalize-word 1))))
 
-(defun jh/upcase-symbol-at-point ()
-  "Convert symbol at point to upper case format, moving over."
-  (interactive)
-  (let ((text (thing-at-point 'symbol))
-        (bounds (bounds-of-thing-at-point 'symbol)))
-    (when text
-      (setq new-text (upcase text))
-      (delete-region (car bounds) (cdr bounds))
-      (insert new-text))))
+;; (defun jh/upcase-symbol-at-point ()
+;;   "Convert symbol at point to upper case format, moving over."
+;;   (interactive)
+;;   (let ((text (thing-at-point 'symbol))
+;;         (bounds (bounds-of-thing-at-point 'symbol)))
+;;     (when text
+;;       (setq new-text (upcase text))
+;;       (delete-region (car bounds) (cdr bounds))
+;;       (insert new-text))))
 
-(global-set-key (kbd "M-u") 'jh/upcase-symbol-at-point)
+;; -----------------------------------------------------------------------------
+;; string-inflection
+;; -----------------------------------------------------------------------------
+(when (require 'string-inflection)
+  (global-set-key (kbd "M-u") 'string-inflection-all-cycle))
 
 
 ;; -----------------------------------------------------------------------------

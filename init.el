@@ -105,6 +105,7 @@
         rainbow-delimiters
         smex
         sql-indent
+        string-inflection
         swiper
         tide
         yasnippet))))
