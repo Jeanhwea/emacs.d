@@ -37,8 +37,8 @@
 (global-set-key (kbd "<f10>") 'delete-frame)
 (global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen)
 (global-set-key (kbd "<f11>") 'toggle-frame-fullscreen)
-(global-set-key (kbd "C-c n") 'narrow-to-region)
-(global-set-key (kbd "C-c w") 'widen)
+;;(global-set-key (kbd "C-x n n") 'narrow-to-region)
+;;(global-set-key (kbd "C-x n w") 'widen)
 
 ;; -----------------------------------------------------------------------------
 ;; many default mode that I prefer

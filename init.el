@@ -94,6 +94,7 @@
          evil
          exec-path-from-shell
          expand-region
+         fancy-narrow
          fill-column-indicator
          ggtags
          htmlize

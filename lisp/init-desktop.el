@@ -25,10 +25,15 @@
 (auto-save-visited-mode 1)
 ;; auto delete trailing whitespace before saving
 (add-hook 'before-save-hook 'whitespace-cleanup)
-(when (require 'pangu-spacing)
-  (global-pangu-spacing-mode 1))
-(when (require 'hungry-delete)
-  (global-hungry-delete-mode 1))
+
+
+;; -----------------------------------------------------------------------------
+;; navigation helper
+;; -----------------------------------------------------------------------------
+(when (require 'fancy-narrow)
+  (fancy-narrow-mode 1))
+
+
 (when (require 'ace-jump-mode)
   (autoload
     'ace-jump-mode
@@ -37,6 +42,7 @@
     t)
   ;; you can select the key you prefer to
   (define-key global-map (kbd "C-c SPC") 'ace-jump-mode))
+
 
 ;; -----------------------------------------------------------------------------
 ;; exec-path-from-shell, read the $PATH
