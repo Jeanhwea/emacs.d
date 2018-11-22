@@ -29,6 +29,14 @@
   (global-pangu-spacing-mode 1))
 (when (require 'hungry-delete)
   (global-hungry-delete-mode 1))
+(when (require 'ace-jump-mode)
+  (autoload
+    'ace-jump-mode
+    "ace-jump-mode"
+    "Emacs quick move minor mode"
+    t)
+  ;; you can select the key you prefer to
+  (define-key global-map (kbd "C-c SPC") 'ace-jump-mode))
 
 ;; -----------------------------------------------------------------------------
 ;; exec-path-from-shell, read the $PATH
