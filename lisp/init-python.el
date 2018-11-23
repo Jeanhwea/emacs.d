@@ -30,7 +30,7 @@
              ;; ----------------------------------------------------------------
              )))
     ;; string-inflection
-    (local-set-key (kbd "M-u") 'string-inflection-python-style-cycle)))
+    (local-set-key (kbd "M-i") 'string-inflection-python-style-cycle)))
 
 (when (jh/mac?)
   (setq

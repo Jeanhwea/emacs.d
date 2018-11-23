@@ -98,7 +98,7 @@
 ;; string-inflection
 ;; -----------------------------------------------------------------------------
 (when (require 'string-inflection)
-  (global-set-key (kbd "M-u") 'string-inflection-all-cycle))
+  (global-set-key (kbd "M-i") 'string-inflection-all-cycle))
 
 
 ;; -----------------------------------------------------------------------------
