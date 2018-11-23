@@ -36,9 +36,9 @@
 (when (require 'dashboard)
   (dashboard-setup-startup-hook)
   (setq
+    show-week-agenda-p t
     dashboard-banner-logo-title "Keep thinking while not in coding."
     dashboard-startup-banner (concat user-emacs-directory "dashboard-banner.png")
-    show-week-agenda-p t
     dashboard-items '((recents  . 5)
                        (agenda . 5)
                        (projects . 5)
