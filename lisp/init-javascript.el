@@ -45,7 +45,8 @@
     ;; string-inflection
     (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)
     (hl-line-mode 1)
-    (hs-minor-mode 1)))
+    (hs-minor-mode 1)
+    (local-set-key (kbd "M-h") 'hs-toggle-hiding)))
 
 
 (when (require 'js-comint)
