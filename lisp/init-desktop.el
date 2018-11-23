@@ -97,7 +97,7 @@
 ;; -----------------------------------------------------------------------------
 ;; manually install howdoi
 ;; 1. pip install howdoi
-;; 2. git clone git@github.com:Jeanhwea/howdoi-emacs.git ~/.emacs.d/howdoi
+;; 2. git clone git@github.com:Jeanhwea/howdoi-emacs.git ~/.emacs.d/site-lisp/howdoi
 ;; -----------------------------------------------------------------------------
 (when (file-directory-p (concat user-emacs-directory "site-lisp/howdoi"))
   (require 'howdoi))
