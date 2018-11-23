@@ -4,7 +4,28 @@
       show-trailing-whitespace t
       indent-tabs-mode nil
       c-basic-offset 2
-      tab-width 2)
+      tab-width 2
+      prettify-symbols-alist
+        (append prettify-symbols-alist
+          '(
+             ;; ----------------------------------------------------------------
+             ("public" . 9794)          ; ♂
+             ("private" . 9792)         ; ♀
+             ("this" . 964)             ; τ
+             ("return" . 961)           ; ρ
+             ;; ----------------------------------------------------------------
+             ("null" . 951)             ; η
+             ("true" . 30495)           ; 真
+             ("false" . 20551)          ; 假
+             ;; ----------------------------------------------------------------
+             ("&&" . 8743)              ; ∧
+             ("||" . 8744)              ; ∨
+             ("!" . 172)                ; ¬
+             ("=>" . 8658)              ; ⇒
+             ("<=" . 8804)              ; ≤
+             ("!=" . 8800)              ; ≠
+             ;; ----------------------------------------------------------------
+             )))
     ;; string-inflection
     (local-set-key (kbd "M-u") 'string-inflection-java-style-cycle)
     (hl-line-mode 1)))
