@@ -39,7 +39,7 @@
     show-week-agenda-p t
     dashboard-banner-logo-title "Keep thinking while not in coding."
     dashboard-startup-banner (concat user-emacs-directory "dashboard-banner.png")
-    dashboard-items '((recents  . 5)
+    dashboard-items '((recents  . 10)
                        (agenda . 5)
                        (projects . 5)
                        (bookmarks . 5))))
