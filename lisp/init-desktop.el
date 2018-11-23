@@ -36,7 +36,7 @@
 (when (require 'dashboard)
   (dashboard-setup-startup-hook)
   (setq
-    dashboard-banner-logo-title "Welcome to Emacs Dashboard"
+    dashboard-banner-logo-title "Keep thinking while not in coding."
     dashboard-startup-banner (concat user-emacs-directory "dashboard-banner.png")
     show-week-agenda-p t
     dashboard-items '((recents  . 5)
@@ -82,6 +82,15 @@
 ;; git clone git@github.com:Jeanhwea/undo-tree.git
 ;; -----------------------------------------------------------------------------
 (when (require 'undo-tree)
+  ;; Persistent undo history
+  (setq
+    undo-tree-enable-undo-in-region nil
+    undo-tree-auto-save-history t
+    undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "undo"))))
+  ;; Compressing undo history
+  (defadvice undo-tree-make-history-save-file-name
+    (after undo-tree activate)
+    (setq ad-return-value (concat ad-return-value ".gz")))
   (global-undo-tree-mode))
 
 ;; -----------------------------------------------------------------------------
