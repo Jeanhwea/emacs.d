@@ -33,6 +33,16 @@
 (when (require 'fancy-narrow)
   (fancy-narrow-mode 1))
 
+(when (require 'dashboard)
+  (dashboard-setup-startup-hook)
+  (setq
+    dashboard-banner-logo-title "Welcome to Emacs Dashboard"
+    dashboard-startup-banner (concat user-emacs-directory "dashboard-banner.png")
+    show-week-agenda-p t
+    dashboard-items '((recents  . 5)
+                       (agenda . 5)
+                       (projects . 5)
+                       (bookmarks . 5))))
 
 (when (require 'ace-jump-mode)
   (autoload
