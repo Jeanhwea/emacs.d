@@ -61,6 +61,8 @@
 
   (add-hook 'org-mode-hook
     (lambda ()
+      (setq pangu-spacing-real-insert-separtor t)
+      (pangu-spacing-mode 1)
       (org-babel-do-load-languages
         'org-babel-load-languages
         '((js . t)
