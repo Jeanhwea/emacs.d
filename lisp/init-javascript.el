@@ -37,6 +37,8 @@
              ;; ("!==" . 8802)             ; ≢
              ;; ----------------------------------------------------------------
              )))
+    ;; highlight current line
+    (hl-line-mode 1)
     ;; setup js-comint keybindings
     (local-set-key (kbd "C-c C-e") 'js-comint-send-region)
     (local-set-key (kbd "C-c C-c") 'js-comint-send-last-sexp)
@@ -44,7 +46,6 @@
     (local-set-key (kbd "C-c C-b") 'js-comint-send-buffer)
     ;; string-inflection
     (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)
-    (hl-line-mode 1)
     (hs-minor-mode 1)
     (local-set-key (kbd "M-h") 'hs-toggle-hiding)))
 
