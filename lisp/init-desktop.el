@@ -183,9 +183,9 @@
     (interactive)
     (let ((current-theme (car custom-enabled-themes)))
       (when (string-equal current-theme "sanityinc-solarized-dark")
-        (load-theme 'sanityinc-solarized-light))
+        (load-theme 'sanityinc-solarized-light t))
       (when (string-equal current-theme "sanityinc-solarized-light")
-        (load-theme 'sanityinc-solarized-dark))))
+        (load-theme 'sanityinc-solarized-dark t))))
   ;; keybinding
   (global-set-key (kbd "<f12>") 'jh/toggle-light-dark-theme)
   ;; default use solarized light theme
