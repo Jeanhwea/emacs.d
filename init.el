@@ -94,6 +94,7 @@
          exec-path-from-shell
          expand-region
          dashboard
+         dockerfile-mode
          fancy-narrow
          fill-column-indicator
          ggtags
