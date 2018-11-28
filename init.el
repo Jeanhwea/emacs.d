@@ -45,6 +45,7 @@
 (require 'init-css)
 (require 'init-csv)
 (require 'init-html)
+(require 'init-csharp)
 (require 'init-java)
 (require 'init-javascript)
 (require 'init-lisp)
@@ -86,6 +87,7 @@
          company
          counsel
          csv-mode
+         csharp-mode
          edit-indirect
          elfeed
          emmet-mode
