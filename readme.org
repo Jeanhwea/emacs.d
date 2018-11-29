@@ -107,15 +107,12 @@ example.
   (format "%s/commit/%s" repo-url commithash))
 #+END_SRC
 
-
-# ------------------------------------------------------------------------------
-# readme.org ends here
 ** Symbol
 
 *** Chinese tones
 
 #+BEGIN_SRC text
-  ā ē ī ō ū á é í ó ú ǎ ě ǐ ǒ ǔ à è ì ò ù
+  ā ē ī ō ū á é í ó ú ě à è ì ò ù
 #+END_SRC
 
 *** Greek alphabet
