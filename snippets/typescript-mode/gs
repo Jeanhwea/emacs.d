@@ -2,10 +2,10 @@
 # name: getter and setter
 # key: gs
 # --
-get ${1:name}() {
+public get ${1:name}() {
 $>return this._$1;
 }
 
-set $1(${2:value}) {
+public set $1(${2:value}) {
 $>this._$1 = $2;
 }
