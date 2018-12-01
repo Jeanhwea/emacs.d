@@ -2,6 +2,6 @@
 # name: Define Member Function
 # key: def
 # --
-${1:funcname}($2): ${3:void} {
+${1:funcname}($2) {
 $>${0:// coding}
 }
