@@ -109,34 +109,34 @@ example.
 
 ** Symbol
 
-*** Chinese tones
+*** Chinese Tones
 
 #+BEGIN_SRC text
   ā ē ī ō ū á é í ó ú ě à è ì ò ù
 #+END_SRC
 
-*** Greek alphabet
+*** Greek Alphabet
 
 #+BEGIN_SRC text
   Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
   α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
 #+END_SRC
 
-*** Russian alphabet
+*** Russian Alphabet
 
 #+BEGIN_SRC text
   А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я
   а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я
 #+END_SRC
 
-*** Turkey alphabet
+*** Turkey Alphabet
 
 #+BEGIN_SRC text
   A B C Ç D E F G Ğ H I İ J K L M N O Ö P R S Ş T U Ü V Y Z
   a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z
 #+END_SRC
 
-*** Korean alphabet
+*** Korean Alphabet
 
 #+BEGIN_SRC text
   ㅏ ㅑ ㅓ ㅕ ㅗ ㅛ ㅜ ㅠ ㅡ ㅣ ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
@@ -166,4 +166,9 @@ example.
 #+BEGIN_SRC text
   ℀ ℁ ℂ ℃ ℄ ℅ ℆ ℇ ℈ ℉ ℊ ℋ ℌ ℍ ℎ ℏ ℐ ℑ ℒ ℓ ℔ ℕ № ℗ ℘ ℙ ℚ ℛ ℜ ℝ ℞ ℟ ℠ ℡ ™ ℣ ℤ ℥ ω ℧
   ℨ ℩ k å ℬ ℭ ℮ ℯ ℰ ℱ ⅎ ℳ ℴ ℵ ℶ ℷ ℸ ℹ ℺ ℻ ℼ ℽ ℾ ℿ ⅀ ⅁ ⅂ ⅃ ⅄ ⅅ ⅆ ⅇ ⅈ ⅉ ⅊ ⅋ ⅌ ⅍ ⅎ
+#+END_SRC
+
+*** Musical Symbol
+#+BEGIN_SRC text
+♪ ♩ ♫ ♬ ¶ ‖ ♭ ♯ § ∮
 #+END_SRC
