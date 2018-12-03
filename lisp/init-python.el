@@ -32,7 +32,9 @@
              ;; ----------------------------------------------------------------
              )))
     ;; string-inflection
-    (local-set-key (kbd "M-i") 'string-inflection-python-style-cycle)))
+    (local-set-key (kbd "M-i") 'string-inflection-python-style-cycle)
+    (hs-minor-mode 1)
+    (local-set-key (kbd "M-h") 'hs-toggle-hiding)))
 
 (when (jh/mac?)
   (setq
