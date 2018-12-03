@@ -86,8 +86,10 @@
          color-theme-sanityinc-solarized
          company
          counsel
-         csv-mode
          csharp-mode
+         csv-mode
+         dashboard
+         dockerfile-mode
          edit-indirect
          elfeed
          emmet-mode
@@ -95,11 +97,10 @@
          evil
          exec-path-from-shell
          expand-region
-         dashboard
-         dockerfile-mode
          fancy-narrow
          fill-column-indicator
          ggtags
+         graphviz-dot-mode
          htmlize
          hungry-delete
          js-comint
