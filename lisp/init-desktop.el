@@ -105,8 +105,8 @@
 ;; -----------------------------------------------------------------------------
 ;; font
 ;; -----------------------------------------------------------------------------
-(when (jh/windows?)
-  (set-face-attribute 'default nil :font "WenQuanYi Micro Hei Mono 11"))
+;; (when (jh/windows?)
+;;   (set-face-attribute 'default nil :font "WenQuanYi Micro Hei Mono 11"))
 
 ;; (when (jh/windows?)
 ;;   (set-face-attribute 'default nil :font "Consolas 11")
