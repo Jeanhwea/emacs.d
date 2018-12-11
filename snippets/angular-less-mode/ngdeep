@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ngdeep
+# key: ngd
+# --
+::ng-deep $0
