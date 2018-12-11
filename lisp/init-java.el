@@ -47,12 +47,14 @@
       (setq c-basic-offset 2)
       ;; use code format
       (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
-  (cond
-    ((eq system-type 'windows-nt)
-      (setq meghanada-java-path (expand-file-name "bin/java.exe" (getenv "JAVA_HOME")))
-      (setq meghanada-maven-path "mvn.cmd"))
-    (t
-      (setq meghanada-java-path "java")
-      (setq meghanada-maven-path "mvn"))))
+
+    (if (jh/windows?)
+      (setq
+        meghanada-java-path (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
+        meghanada-maven-path "mvn.cmd")
+      ;; unix-like system
+      (setq
+        meghanada-java-path "java"
+        meghanada-maven-path "mvn")))
 
 (provide 'init-java)
