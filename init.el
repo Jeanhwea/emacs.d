@@ -107,6 +107,7 @@
          js-comint
          magit
          markdown-mode
+         meghanada
          multiple-cursors
          nyan-mode
          org-bullets

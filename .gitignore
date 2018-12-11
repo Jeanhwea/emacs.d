@@ -58,6 +58,7 @@ games/
 ido.last
 image-dired/
 jdee-server/
+meghanada/
 newsticker/
 places
 projectile-bookmarks.eld
@@ -65,5 +66,5 @@ projectile.cache
 recentf
 site-lisp/
 smex-items
-url/
 undo/
+url/
