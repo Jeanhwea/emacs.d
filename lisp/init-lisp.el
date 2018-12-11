@@ -19,8 +19,8 @@
              ;; ----------------------------------------------------------------
              )))
     (hl-line-mode 1)
+    (rainbow-delimiters-mode)
     (hs-minor-mode 1)
-    (local-set-key (kbd "M-h") 'hs-toggle-hiding)
-    (rainbow-delimiters-mode)))
+    (local-set-key (kbd "M-h") 'hs-toggle-hiding)))
 
 (provide 'init-lisp)
