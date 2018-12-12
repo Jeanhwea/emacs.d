@@ -100,6 +100,7 @@
          expand-region
          fancy-narrow
          fill-column-indicator
+         flycheck
          ggtags
          graphviz-dot-mode
          groovy-mode
