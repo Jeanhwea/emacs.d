@@ -8,6 +8,9 @@
         "<!--\\|<[^/>]*[^/]>"
         "-->\\|</[^/>]*[^/]>"
         "<!--"
-        'nxml-forward-element nil))))
+        'nxml-forward-element nil))
+    (hl-line-mode 1)
+    (hs-minor-mode 1)
+    (local-set-key (kbd "C-c h") 'hs-toggle-hiding)))
 
 (provide 'init-nxml)
