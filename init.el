@@ -128,13 +128,12 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
-  '(rainbow-delimiters-depth-1-face ((t (:foreground "#9a4040"))))
-  '(rainbow-delimiters-depth-2-face ((t (:foreground "#ff5e5e"))))
-  '(rainbow-delimiters-depth-3-face ((t (:foreground "#ffaa77"))))
-  '(rainbow-delimiters-depth-4-face ((t (:foreground "#dddd77"))))
-  '(rainbow-delimiters-depth-5-face ((t (:foreground "#80ee80"))))
-  '(rainbow-delimiters-depth-6-face ((t (:foreground "#66bbff"))))
-  '(rainbow-delimiters-depth-7-face ((t (:foreground "#da6bda"))))
-  '(rainbow-delimiters-depth-8-face ((t (:foreground "#afafaf"))))
-  '(rainbow-delimiters-depth-9-face ((t (:foreground "#f0f0f0"))))
-  '(rainbow-delimiters-unmatched-face ((t (:foreground "Red")))))
+  '(rainbow-delimiters-depth-1-face ((t (:foreground "#8d5649"))))
+  '(rainbow-delimiters-depth-2-face ((t (:foreground "#d8241f"))))
+  '(rainbow-delimiters-depth-3-face ((t (:foreground "#9564bf"))))
+  '(rainbow-delimiters-depth-4-face ((t (:foreground "#24a222"))))
+  '(rainbow-delimiters-depth-5-face ((t (:foreground "#ff7f00"))))
+  '(rainbow-delimiters-depth-6-face ((t (:foreground "#1776b6"))))
+  '(rainbow-delimiters-depth-7-face ((t (:foreground "#00bed1"))))
+  '(rainbow-delimiters-depth-8-face ((t (:foreground "#bcbf00"))))
+  '(rainbow-delimiters-depth-9-face ((t (:foreground "#e574c3")))))
