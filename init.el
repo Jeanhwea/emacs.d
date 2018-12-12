@@ -47,6 +47,7 @@
 (require 'init-csharp)
 (require 'init-dot)
 (require 'init-html)
+(require 'init-nxml)
 (require 'init-java)
 (require 'init-javascript)
 (require 'init-lisp)
