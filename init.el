@@ -102,6 +102,7 @@
          fill-column-indicator
          ggtags
          graphviz-dot-mode
+         groovy-mode
          htmlize
          hungry-delete
          js-comint
