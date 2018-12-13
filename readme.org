@@ -122,6 +122,13 @@ example.
   α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
 #+END_SRC
 
+*** Hebrew Alphabet
+
+read from right to left
+#+BEGIN_SRC text
+  א בּ ב ג ד ה ו ז ח ט י כּ כ ךּ ך ל מ ם נ ן ס ע פּ פ ף צ ץ ק ר שׁ שׂ תּ ת
+#+END_SRC
+
 *** Russian Alphabet
 
 #+BEGIN_SRC text
