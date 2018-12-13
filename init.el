@@ -86,6 +86,7 @@
          ag
          browse-at-remote
          color-theme-sanityinc-solarized
+         color-theme-sanityinc-tomorrow
          company
          counsel
          csharp-mode
