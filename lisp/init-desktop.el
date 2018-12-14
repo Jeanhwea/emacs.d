@@ -168,7 +168,10 @@
 ;; -----------------------------------------------------------------------------
 ;; theme
 ;; -----------------------------------------------------------------------------
-(when (require 'color-theme-sanityinc-solarized nil t)
+(when
+  (and (require 'color-theme-sanityinc-solarized nil t)
+    (require 'color-theme-sanityinc-tomorrow nil t))
+
   ;; Add helper command to make changing color theme more faster
   (defun jh/load-light-theme()
     "Activate a light color theme"
