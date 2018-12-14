@@ -46,6 +46,7 @@
 (require 'init-csv)
 (require 'init-csharp)
 (require 'init-dot)
+(require 'init-groovy)
 (require 'init-html)
 (require 'init-nxml)
 (require 'init-java)
@@ -124,6 +125,7 @@
          string-inflection
          swiper
          tide
+         yaml-mode
          yasnippet
          ;; --------------------------------------------------------------------
          ))))
