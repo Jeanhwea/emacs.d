@@ -142,4 +142,6 @@
   '(rainbow-delimiters-depth-6-face ((t (:foreground "#1776b6"))))
   '(rainbow-delimiters-depth-7-face ((t (:foreground "#00bed1"))))
   '(rainbow-delimiters-depth-8-face ((t (:foreground "#bcbf00"))))
-  '(rainbow-delimiters-depth-9-face ((t (:foreground "#e574c3")))))
+  '(rainbow-delimiters-depth-9-face ((t (:foreground "#e574c3"))))
+  '(rainbow-delimiters-unmatched-face ((t (:background "#d8241f"))))
+  '(rainbow-delimiters-mismatched-face ((t (:background "#ffff99")))))
