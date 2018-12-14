@@ -19,10 +19,13 @@
     :test "yarn test"
     :run "yarn start"
     :test-suffix ".spec")
-  (projectile-register-project-type 'springboot '("mvnw")
-    :compile "mvnw clean install"
+  (projectile-register-project-type 'spring '("mvnw")
+    :compile "mvnw clean package"
     :test "mvnw test"
-    :run "mvnw spring-boot:run"))
+    :run "mvnw spring-boot:run"
+    :src-dir "src/main/"
+    :test-dir "src/test/"
+    :test-suffix "Tests"))
 
 
 ;; -----------------------------------------------------------------------------
