@@ -20,7 +20,7 @@
     :run "yarn start"
     :test-suffix ".spec")
   (projectile-register-project-type 'spring '("mvnw")
-    :compile "mvnw clean package"
+    :compile "mvnw compile package"
     :test "mvnw test"
     :run "mvnw spring-boot:run"
     :src-dir "src/main/"
