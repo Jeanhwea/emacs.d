@@ -125,6 +125,7 @@
          string-inflection
          swiper
          tide
+         web-mode
          yaml-mode
          yasnippet
          ;; --------------------------------------------------------------------
