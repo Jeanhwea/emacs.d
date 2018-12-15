@@ -11,7 +11,8 @@
   (setq
     org-link-file-path-type 'relative
     org-startup-with-inline-images t
-    org-directory (concat jesenia-dir "/agenda")
+    org-directory
+      (if (file-directory-p jesenia-dir) (concat jesenia-dir "/agenda") nil)
     org-agenda-files
       (list (concat jesenia-dir "/agenda"))
     org-todo-keywords
