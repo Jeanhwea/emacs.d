@@ -2,7 +2,9 @@
   (lambda()
     (setq
       show-trailing-whitespace t
-      indent-tabs-mode nil
+      ;; indent-tabs-mode nil
+      ;; c-basic-offset 2
+      ;; tab-width 2
       prettify-symbols-alist
         (append prettify-symbols-alist
           '(
