@@ -96,6 +96,7 @@
          dockerfile-mode
          edit-indirect
          elfeed
+         elm-mode
          emmet-mode
          engine-mode
          evil
