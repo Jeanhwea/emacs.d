@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Arrow Function Expression
+# key: afe
+# --
+(${1:args}) => $0

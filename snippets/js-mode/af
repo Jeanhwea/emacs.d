@@ -2,4 +2,4 @@
 # name: Arrow Function
 # key: af
 # --
-(${1:args}) => $0
+(${1:args}) => {$0}

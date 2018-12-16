@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Lambda Function
+# key: lb
+# --
+function(${1:args}) {$0}
