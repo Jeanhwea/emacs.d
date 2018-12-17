@@ -25,7 +25,7 @@
     :run "mvnw spring-boot:run"
     :src-dir "src/main/"
     :test-dir "src/test/"
-    :test-suffix "Tests"))
+    :test-suffix "Test"))
 
 
 ;; -----------------------------------------------------------------------------
