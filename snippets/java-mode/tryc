@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: try { ... } catch (Exception ex) { ... }
+# key: tryc
+# --
+try {
+$>$0
+} catch (${1:Exception} ${2:ex}) {
+$>$2.printStackTrace();
+}
