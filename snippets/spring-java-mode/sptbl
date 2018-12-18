@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Spring Annotation Table
+# key: sptbl
+# --
+@Table(name = "${1:tbl_name}")$0

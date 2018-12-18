@@ -2,4 +2,4 @@
 # name: Spring Annotation Column
 # key: spcol
 # --
-@Column(name = "${1:name}", nullable = ${2:$$(yas-choose-value '("true" "false"))}${3:, unique = true})$0
+@Column(name = "${1:col_name}", nullable = ${2:$$(yas-choose-value '("true" "false"))}${3:, unique = true})$0
