@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Spring Annotation GeneratedValue
+# key: spgen
+# --
+@GeneratedValue(strategy = GenerationType.${1:$$(yas-choose-value '("TABLE" "IDENTITY" "SEQUENCR" "AUTO"))})$0
