@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Java Serial Version UID
+# key: sid
+# --
+private static final long serialVersionUID = ${1:`(random)`}L;
