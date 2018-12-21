@@ -19,7 +19,7 @@
     :test "yarn test"
     :run "yarn start"
     :test-suffix ".spec")
-  (projectile-register-project-type 'spring '("mvn")
+  (projectile-register-project-type 'spring '("mvnw")
     :compile "mvn compile package"
     :test "mvn test"
     :run "mvn spring-boot:run"
