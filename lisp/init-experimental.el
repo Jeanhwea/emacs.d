@@ -19,10 +19,10 @@
     :test "yarn test"
     :run "yarn start"
     :test-suffix ".spec")
-  (projectile-register-project-type 'spring '("mvnw")
-    :compile "mvnw compile package"
-    :test "mvnw test"
-    :run "mvnw spring-boot:run"
+  (projectile-register-project-type 'spring '("mvn")
+    :compile "mvn compile package"
+    :test "mvn test"
+    :run "mvn spring-boot:run"
     :src-dir "src/main/"
     :test-dir "src/test/"
     :test-suffix "Test"))
