@@ -5,7 +5,8 @@
   (projectile-mode 1)
   (setq-default
     projectile-mode-line-prefix " Proj"
-    projectile-completion-system 'ivy)
+    projectile-completion-system 'ivy
+    projectile-create-missing-test-files t)
   (define-key projectile-mode-map (kbd "M-9") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 

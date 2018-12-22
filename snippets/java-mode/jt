@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: jUnit Test Method
+# key: jt
+# --
+@Test
+public void test${1:Function}() {
+$>$0
+}

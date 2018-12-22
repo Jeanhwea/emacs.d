@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: jUnit Test Case
+# key: jtc
+# --
+package `(mapconcat 'identity (split-string (replace-regexp-in-string ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?" "" default-directory) "/" t) ".")`;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+$>$0
+}
