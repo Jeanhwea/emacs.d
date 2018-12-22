@@ -33,7 +33,7 @@
       (let
         ((java-class-name (file-name-nondirectory (file-name-sans-extension (buffer-name))))
           (java-method-name (word-at-point)))
-        (if (and java-class-name (string-match-p "^[a-zA-Z]*Test[0-9a-zA-Z]*$" java-class-name))
+        (if (and java-class-name (string-match-p "^[a-zA-Z][0-9a-zA-Z]*Test$" java-class-name))
           (if (and java-method-name (string-match-p "^test[0-9A-Za-z]*$" java-method-name))
             (format "mvn test --batch-mode -Dtest=%s#%s" java-class-name java-method-name)
             (format "mvn test --batch-mode -Dtest=%s" java-class-name))
