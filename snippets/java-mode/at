@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: assertTrue
+# key: at
+# --
+assertTrue($0);
