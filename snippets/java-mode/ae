@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: assertEquals
+# key: ae
+# --
+assertEquals($0);
