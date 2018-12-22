@@ -31,12 +31,12 @@
     "Returns a String representing the test command to run for the given context"
     (when (eq major-mode 'java-mode)
       (let
-        ((class-name (file-name-nondirectory (file-name-sans-extension (buffer-name))))
-          (method-name (word-at-point)))
-        (if (and class-name (string-match-p "^[a-zA-Z]*Test[0-9a-zA-Z]*$" class-name))
-          (if (and method-name (string-match-p "^test[0-9A-Za-z]*$" method-name))
-            (format "mvn test --batch-mode -Dtest=%s#%s" class-name method-name)
-            (format "mvn test --batch-mode -Dtest=%s" class-name))
+        ((java-class-name (file-name-nondirectory (file-name-sans-extension (buffer-name))))
+          (java-method-name (word-at-point)))
+        (if (and java-class-name (string-match-p "^[a-zA-Z]*Test[0-9a-zA-Z]*$" java-class-name))
+          (if (and java-method-name (string-match-p "^test[0-9A-Za-z]*$" java-method-name))
+            (format "mvn test --batch-mode -Dtest=%s#%s" java-class-name java-method-name)
+            (format "mvn test --batch-mode -Dtest=%s" java-class-name))
           "mvn test --batch-mode"))))
 
   (projectile-register-project-type 'spring '("mvnw")
