@@ -5,6 +5,9 @@
       indent-tabs-mode nil
       c-basic-offset 2
       tab-width 2
+      compilation-scroll-output t
+      compilation-ask-about-save nil
+      compilation-error-regexp-alist '(java maven)
       prettify-symbols-alist
         (append prettify-symbols-alist
           '(

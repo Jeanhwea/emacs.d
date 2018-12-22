@@ -11,6 +11,9 @@
       ;;    :indentSize 2
       ;;    :tabSize 2
       ;;    :convertTabsToSpaces t)
+      compilation-scroll-output t
+      compilation-ask-about-save nil
+      compilation-error-regexp-alist '(typescript-tslint typescript-tsc-pretty typescript-tsc)
       prettify-symbols-alist
         (append prettify-symbols-alist
           '(
