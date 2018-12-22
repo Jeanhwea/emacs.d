@@ -20,9 +20,23 @@
     :test "yarn test"
     :run "yarn start"
     :test-suffix ".spec")
+
+  ;; maven spring test
+  (defun jh/springboot-test-command ()
+    "Returns a String representing the test command to run for the given context"
+    (when (eq major-mode 'java-mode)
+      (let
+        ((class-name (file-name-nondirectory (file-name-sans-extension (buffer-name))))
+          (method-name (word-at-point)))
+        (if (and class-name (string-match-p "^[a-zA-Z]*Test[0-9a-zA-Z]*$" class-name))
+          (if (and method-name (string-match-p "^test[0-9A-Za-z]*$" method-name))
+            (format "mvn test --batch-mode -Dtest=%s#%s" class-name method-name)
+            (format "mvn test --batch-mode -Dtest=%s" class-name))
+          "mvn test --batch-mode"))))
+
   (projectile-register-project-type 'spring '("mvnw")
     :compile "mvn compile package"
-    :test "mvn test"
+    :test 'jh/springboot-test-command
     :run "mvn spring-boot:run"
     :src-dir "src/main/"
     :test-dir "src/test/"
