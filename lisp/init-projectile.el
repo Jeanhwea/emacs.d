@@ -26,7 +26,8 @@
     :run "yarn start"
     :test-suffix ".spec")
 
-  ;; maven spring test
+  ;; maven springboot test
+  ;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
   (defun jh/springboot-test-command ()
     "Returns a String representing the test command to run for the given context"
     (when (eq major-mode 'java-mode)
