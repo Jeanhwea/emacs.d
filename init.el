@@ -36,6 +36,7 @@
 (require 'init-elfeed)
 (require 'init-git)
 (require 'init-org)
+(require 'init-projectile)
 (require 'init-markdown)
 (require 'init-yasnippet)
 
