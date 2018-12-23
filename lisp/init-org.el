@@ -67,6 +67,7 @@
       (org-babel-do-load-languages
         'org-babel-load-languages
         '((js . t)
+           (java . t)
            (python . t)))
       (when (jh/mac?) (org-bullets-mode 1)))))
 

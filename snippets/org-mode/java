@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: Insert java Code
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 't))
+# key: java
+# --
+#+HEADERS: :classname ${1:MainClass}
+#+BEGIN_SRC java :results output :exports both
+  import java.util.*;
+
+  class $1 {
+    public static void main(String args[]) {
+      System.out.println("${0:Hello World}");
+    }
+  }
+#+END_SRC
