@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: throw NullPointerException
+# key: tnp
+# --
+if (${1:args} == null) {
+$>throw new NullPointerException("'$1' should not be null");
+}
