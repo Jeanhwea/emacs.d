@@ -4,4 +4,4 @@
 # --
 if (${2:${1:args} == null}) {
 $>throw new IllegalArgumentException("'$1': " + String.valueOf($1));
-}
+}$0
