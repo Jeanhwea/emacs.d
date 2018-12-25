@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: private logger variable
+# key: log
+# --
+private Logger logger = LoggerFactory.getLogger(`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.class);
