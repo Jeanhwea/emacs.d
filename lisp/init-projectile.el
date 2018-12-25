@@ -36,9 +36,9 @@
           (java-method-name (word-at-point)))
         (if (and java-class-name (string-match-p "^[a-zA-Z][0-9a-zA-Z]*Test$" java-class-name))
           (if (and java-method-name (string-match-p "^test[0-9A-Za-z]*$" java-method-name))
-            (format "mvn test -B -Dtest=%s#%s" java-class-name java-method-name)
-            (format "mvn test -B -Dtest=%s" java-class-name))
-          "mvn test -B"))))
+            (format "mvn test -q -B -Dtest=%s#%s" java-class-name java-method-name)
+            (format "mvn test -q -B -Dtest=%s" java-class-name))
+          "mvn test -q -B"))))
 
   (projectile-register-project-type 'spring '("mvnw")
     :compile "mvn -B compile package"
