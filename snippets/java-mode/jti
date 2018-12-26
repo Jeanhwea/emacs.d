@@ -1,8 +1,8 @@
 # -*- mode: snippet -*-
-# name: jUnit Test Method
-# key: jt
+# name: jUnit Test Method with IllegalArgumentException
+# key: jti
 # --
-@Test
+@Test(expected = IllegalArgumentException.class)
 public void test${1:`(concat (file-name-nondirectory (file-name-sans-extension (buffer-file-name))) (format-time-string "%H%M%S"))`}() {
 $>$0
 }
