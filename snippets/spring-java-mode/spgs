@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Spring Getter and Setter with Field
-# key: spf
+# key: spgs
 # --
 @Column(name = "${5:${2:$(jh/upcase yas-text)}}", nullable = ${4:$$(yas-choose-value '("true" "false"))})
 private ${1:String} ${2:fieldName}; // ${3:filedDescription}
