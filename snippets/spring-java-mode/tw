@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tracker.warn()
+# key: tw
+# --
+tracker.warn($0);

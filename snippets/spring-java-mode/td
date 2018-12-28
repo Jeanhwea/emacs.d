@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tracker.debug()
+# key: td
+# --
+tracker.debug($0);

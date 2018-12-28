@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: private logger variable
+# key: trk
+# --
+DkTraceHelper tracker = new DkTraceHelper(logger, "${1:$$(yas-choose-value '("GET" "POST" "PUT" "DELETE"))}", "${2:path}");$0
