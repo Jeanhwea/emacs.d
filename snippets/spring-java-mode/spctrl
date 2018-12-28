@@ -11,9 +11,9 @@
  * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
  */
 @RequestMapping(value = "${2:/}", method = RequestMethod.${3:$$(yas-choose-value '("GET" "POST" "PUT" "DELETE"))})
-public Map<String, Object> ${4:requestName}() {
-$>DkTraceHelper tracker = new DkTraceHelper(logger, "$3", "${4:/prefix}$2");
-$>tracker.info("enter");
+public Map<String, Object> ${4:requestName}(HttpServletRequest req) {
+$>DkTraceHelper tracker = new DkTraceHelper(logger, req);
+$>tracker.enter();
 
 $>Map<String, Object> resp = null;
 $>try {
@@ -23,6 +23,6 @@ $>} catch (Exception ex) {
 $>tracker.error(Arrays.toString(ex.getStackTrace()));
 $>}
 
-$>tracker.info("success");
+$>tracker.leave();
 $>return resp;
 }
