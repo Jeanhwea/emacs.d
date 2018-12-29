@@ -1,0 +1,35 @@
+# -*- mode: snippet -*-
+# name: enum
+# key: en
+# --
+package `(mapconcat 'identity (split-string (replace-regexp-in-string ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?" "" default-directory) "/" t) ".")`;
+
+/**
+ * ${1:TODO:}
+ *
+ * @author Jinghui Hu
+ * @version v1.0
+ * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
+ */
+public enum ${2:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} {
+
+$>Enum1,
+$>Enum2;
+$>/**
+$> * 从字符串构造对应的枚举
+$> *
+$> * @return 枚举类型
+$> * @author Jinghui Hu
+$> * @version v1.0
+$> * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
+$> */
+$>public static $2 of(String str) {
+$>$>if (str == null) { return null; }
+$>$>for ($2 value : $2.values()) {
+$>$>$>if (true/* str == ... */) {
+$>$>$>$>return value;
+$>$>$>}
+$>$>}
+$>$>return null;
+$>}
+}

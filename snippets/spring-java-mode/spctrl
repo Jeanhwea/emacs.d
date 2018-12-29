@@ -5,6 +5,7 @@
 /**
  * ${1:TODO:}
  *
+ * @param req 请求对象
  * @return 控制器输出接口
  * @author Jinghui Hu
  * @version v1.0
