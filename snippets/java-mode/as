@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: assertSame
+# key: as
+# --
+assertSame($0);
