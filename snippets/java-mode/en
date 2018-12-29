@@ -14,7 +14,7 @@ package `(mapconcat 'identity (split-string (replace-regexp-in-string ".*src\\(/
 public enum ${2:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} {
 
 $>Enum1,
-$>Enum2;
+$>${3:Unknown};
 $>/**
 $> * 从字符串构造对应的枚举
 $> *
@@ -24,12 +24,12 @@ $> * @version v1.0
 $> * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
 $> */
 $>public static $2 of(String str) {
-$>$>if (str == null) { return null; }
+$>$>if (str == null) { return $2.$3; }
 $>$>for ($2 value : $2.values()) {
 $>$>$>if (true/* str == ... */) {
 $>$>$>$>return value;
 $>$>$>}
 $>$>}
-$>$>return null;
+$>$>return  $2.$3;
 $>}
 }
