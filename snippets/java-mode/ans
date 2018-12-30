@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: assertNotSame
-# key: as
+# key: ans
 # --
 assertNotSame($0);
