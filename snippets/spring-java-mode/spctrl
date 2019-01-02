@@ -21,7 +21,7 @@ $>try {
 $>resp = new HashMap<>();
 $>$0
 $>} catch (Exception ex) {
-$>tracker.error(Arrays.toString(ex.getStackTrace()));
+$>tracker.except(ex);
 $>}
 
 $>tracker.leave();
