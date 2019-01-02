@@ -16,7 +16,7 @@ public Map<String, Object> ${4:requestName}(HttpServletRequest req) {
 $>DkTraceHelper tracker = new DkTraceHelper(logger, req);
 $>tracker.enter();
 
-$>Map<String, Object> resp = null;
+$>Map<String, Object> resp;
 $>try {
 $>resp = new HashMap<>();
 $>$0
