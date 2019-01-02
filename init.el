@@ -109,6 +109,7 @@
          ggtags
          graphviz-dot-mode
          groovy-mode
+         haskell-mode
          htmlize
          hungry-delete
          js-comint
