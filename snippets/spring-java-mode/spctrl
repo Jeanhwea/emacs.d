@@ -5,25 +5,25 @@
 /**
  * ${1:TODO:}
  *
- * @param req 请求对象
+ * @param request 请求对象
  * @return 控制器输出接口
  * @author Jinghui Hu
  * @version v1.0
  * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
  */
 @RequestMapping(value = "${2:/}", method = RequestMethod.${3:$$(yas-choose-value '("GET" "POST" "PUT" "DELETE"))})
-public Map<String, Object> ${4:requestName}(HttpServletRequest req) {
-$>DkTraceHelper tracker = new DkTraceHelper(logger, req);
+public Map<String, Object> ${4:requestName}(HttpServletRequest request) {
+$>DkTraceHelper tracker = new DkTraceHelper(logger, request);
 $>tracker.enter();
 
-$>Map<String, Object> resp;
+$>Map<String, Object> response;
 $>try {
-$>resp = new HashMap<>();
+$>response = new HashMap<>();
 $>$0
 $>} catch (Exception ex) {
 $>tracker.except(ex);
 $>}
 
 $>tracker.leave();
-$>return resp;
+$>return response;
 }
