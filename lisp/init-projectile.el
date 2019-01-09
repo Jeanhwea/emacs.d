@@ -17,8 +17,11 @@
 
   ;; personal project structure
   (projectile-register-project-type 'py3code '("requirements.txt")
-    :test "python -m unittest"
     :compile "pip install -r requirements.txt"
+    :test "python -m unittest"
+    :src-dir "gaintbrain/"
+    :test-dir "test/"
+    :test-prefix "test_"
     :run "python -m unittest test/test_basic.py")
   (projectile-register-project-type 'yarn '("package.json")
     :compile "yarn install"
