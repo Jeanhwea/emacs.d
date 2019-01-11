@@ -36,7 +36,10 @@
     ;; string-inflection
     (local-set-key (kbd "M-i") 'string-inflection-python-style-cycle)
     (hs-minor-mode 1)
-    (local-set-key (kbd "C-c h") 'hs-toggle-hiding)))
+    (local-set-key (kbd "C-c h") 'hs-toggle-hiding)
+    (when (require 'elpy)
+      ;; pip install jedi flake8 autopep8
+      (elpy-enable))))
 
 (when (jh/mac?)
   (setq

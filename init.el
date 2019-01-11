@@ -98,6 +98,7 @@
          edit-indirect
          elfeed
          elm-mode
+         elpy
          emmet-mode
          engine-mode
          evil
