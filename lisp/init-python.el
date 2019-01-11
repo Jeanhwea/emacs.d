@@ -39,7 +39,9 @@
     (local-set-key (kbd "C-c h") 'hs-toggle-hiding)
     (when (require 'elpy)
       ;; pip install jedi flake8 autopep8
-      (elpy-enable))))
+      (elpy-enable)
+      (delete 'elpy-module-highlight-indentation elpy-modules)
+      (local-set-key (kbd "M-.") 'elpy-goto-definition))))
 
 (when (jh/mac?)
   (setq
