@@ -33,6 +33,7 @@
              )))
     (hl-line-mode 1)
     (rainbow-delimiters-mode 1)
+    (highlight-indent-guides-mode 1)
     ;; string-inflection
     (local-set-key (kbd "M-i") 'string-inflection-python-style-cycle)
     (hs-minor-mode 1)

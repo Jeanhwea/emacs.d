@@ -59,6 +59,7 @@
     ;; highlight current line
     (hl-line-mode 1)
     (rainbow-delimiters-mode 1)
+    (highlight-indent-guides-mode 1)
     ;; setup js-comint keybindings
     (local-set-key (kbd "C-c C-e") 'js-comint-send-region)
     (local-set-key (kbd "C-c C-c") 'js-comint-send-last-sexp)

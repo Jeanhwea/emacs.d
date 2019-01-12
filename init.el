@@ -111,6 +111,7 @@
          graphviz-dot-mode
          groovy-mode
          haskell-mode
+         highlight-indent-guides
          htmlize
          hungry-delete
          js-comint
