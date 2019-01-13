@@ -66,9 +66,15 @@
       (pangu-spacing-mode 1)
       (org-babel-do-load-languages
         'org-babel-load-languages
-        '((js . t)
+        '(
+           ;; ------------------------------------------------------------------
+           (emacs-lisp . t)
            (java . t)
-           (python . t)))
+           (js . t)
+           (python . t)
+           (shell . t)
+           ;; ------------------------------------------------------------------
+           ))
       (when (jh/mac?) (org-bullets-mode 1)))))
 
 (provide 'init-org)
