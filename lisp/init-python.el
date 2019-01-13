@@ -30,6 +30,10 @@
              ("!=" . 8800)              ; ≠
              ("in" . 8712)              ; ∈
              ("not in" . 8713)          ; ∉
+             ("intersection" . 8745)    ; ∩
+             ("union" . 8746)           ; ∪
+             ("issuperset" . 8835)      ; ⊃
+             ("issubset" . 8834)        ; ⊂
              ;; ----------------------------------------------------------------
              )))
     (hl-line-mode 1)
@@ -40,7 +44,7 @@
     (hs-minor-mode 1)
     (local-set-key (kbd "C-c h") 'hs-toggle-hiding)
     (when (require 'elpy)
-      ;; pip install jedi flake8 autopep8
+      ;; pip install jedi flake8 autopep8 rope
       (elpy-enable)
       (delete 'elpy-module-highlight-indentation elpy-modules)
       (local-set-key (kbd "M-.") 'elpy-goto-definition))))
