@@ -46,6 +46,9 @@
     (when (require 'elpy)
       ;; pip install jedi flake8 autopep8 rope
       (elpy-enable)
+      (if (jh/windows?)
+        (setq elpy-rpc-python-command "python")
+        (setq elpy-rpc-python-command "python3"))
       (delete 'elpy-module-highlight-indentation elpy-modules)
       (local-set-key (kbd "M-.") 'elpy-goto-definition))))
 
