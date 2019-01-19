@@ -48,12 +48,11 @@
       (delete 'elpy-module-highlight-indentation elpy-modules)
       (elpy-mode 1)
       (elpy-enable)
-      (if (jh/windows?)
-        (setq elpy-rpc-python-command "python")
+      (when (executable-find "python3")
         (setq elpy-rpc-python-command "python3"))
       (local-set-key (kbd "M-.") 'elpy-goto-definition))))
 
-(when (jh/mac?)
+(when (executable-find "python3")
   (setq
     python-shell-interpreter "python3"
     python-shell-interpreter-args "-i"))
