@@ -113,7 +113,7 @@
          haskell-mode
          highlight-indent-guides
          htmlize
-         hungry-delete
+         ;; hungry-delete
          js-comint
          magit
          markdown-mode
