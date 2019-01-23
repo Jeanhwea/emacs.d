@@ -15,8 +15,8 @@
     "https://duckduckgo.com/?q=%s"
     :keybinding "d")
 
-  (defengine baidu
-    "https://www.baidu.com/s?wd=%s"
+  (defengine bing
+    "https://cn.bing.com/search?ensearch=1&q=%s"
     :keybinding "b")
 
   (defengine npm
