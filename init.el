@@ -113,8 +113,8 @@
          haskell-mode
          highlight-indent-guides
          htmlize
-         ;; hungry-delete
          js-comint
+         lua-mode
          magit
          markdown-mode
          meghanada
