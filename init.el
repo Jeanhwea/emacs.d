@@ -123,6 +123,7 @@
          org-bullets
          pangu-spacing
          projectile
+         protobuf-mode
          rainbow-delimiters
          sicp
          smex
