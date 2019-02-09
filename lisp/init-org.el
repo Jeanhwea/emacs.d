@@ -10,6 +10,7 @@
 
   (setq
     org-link-file-path-type 'relative
+    org-html-validation-link nil
     org-startup-with-inline-images t
     org-directory
       (if (file-directory-p jesenia-dir) (concat jesenia-dir "/agenda") nil)
