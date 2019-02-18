@@ -65,7 +65,7 @@
 (setq-default
   inhibit-startup-message t
   blink-cursor-mode t
-  cursor-type 'bar
+  ;; cursor-type 'bar
   blink-cursor-interval 1
   ;; ediff-split-window-function 'split-window-horizontally
   ;; ediff-window-setup-function 'ediff-setup-windows-plain
