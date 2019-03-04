@@ -66,5 +66,6 @@ projectile.cache
 recentf
 site-lisp/
 smex-items
+transient/
 undo/
 url/
