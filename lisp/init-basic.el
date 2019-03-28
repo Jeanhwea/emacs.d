@@ -35,7 +35,7 @@
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "<f9>") 'make-frame-command)
 (global-set-key (kbd "<f10>") 'delete-frame)
-(global-set-key (kbd "C-M-f") 'toggle-frame-fullscreen)
+(global-set-key (kbd "C-M-f") 'toggle-frame-maximized)
 (global-set-key (kbd "<f11>") 'toggle-frame-fullscreen)
 ;;(global-set-key (kbd "C-x n n") 'narrow-to-region)
 ;;(global-set-key (kbd "C-x n w") 'widen)
