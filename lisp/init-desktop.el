@@ -86,7 +86,7 @@
   (setq
     undo-tree-enable-undo-in-region nil
     undo-tree-auto-save-history t
-    undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "undo"))))
+    undo-tree-history-directory-alist `(("." . ,(expand-file-name "undo" user-emacs-directory))))
   ;; Compressing undo history
   (defadvice undo-tree-make-history-save-file-name
     (after undo-tree activate)
@@ -107,7 +107,7 @@
 ;; 1. pip install howdoi
 ;; 2. git clone git@github.com:Jeanhwea/howdoi-emacs.git ~/.emacs.d/site-lisp/howdoi
 ;; -----------------------------------------------------------------------------
-(when (file-directory-p (concat user-emacs-directory "site-lisp/howdoi"))
+(when (file-directory-p (expand-file-name "site-lisp/howdoi" user-emacs-directory))
   (require 'howdoi))
 
 ;; -----------------------------------------------------------------------------
