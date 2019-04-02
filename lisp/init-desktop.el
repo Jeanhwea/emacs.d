@@ -93,7 +93,7 @@
     (setq ad-return-value (concat ad-return-value ".gz")))
   ;; Delete big file to avoid C stack overflow
   (defun delete-big-undo-files ()
-    (let ((max-undo-file-size 10000)
+    (let ((max-undo-file-size 4096)
            (undodir (expand-file-name "undo" user-emacs-directory)))
       (dolist (undofile (directory-files undodir t "gz$"))
         (when (> (file-attribute-size (file-attributes undofile)) max-undo-file-size)
