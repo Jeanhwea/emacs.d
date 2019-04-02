@@ -35,8 +35,12 @@
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "<f9>") 'make-frame-command)
 (global-set-key (kbd "<f10>") 'delete-frame)
-(global-set-key (kbd "C-M-f") 'toggle-frame-maximized)
 (global-set-key (kbd "<f11>") 'toggle-frame-fullscreen)
+(defun jh/toggle-frame ()
+  "toggle fullscreen in different platform"
+  (interactive)
+  (if (jh/windows?) (toggle-frame-maximized) (toggle-frame-fullscreen)))
+(global-set-key (kbd "C-M-f") 'jh/toggle-frame)
 ;;(global-set-key (kbd "C-x n n") 'narrow-to-region)
 ;;(global-set-key (kbd "C-x n w") 'widen)
 
