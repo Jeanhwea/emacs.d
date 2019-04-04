@@ -185,9 +185,9 @@
 ;; shrimp shell
 ;; -----------------------------------------------------------------------------
 (defun jh/open-shrimp-shell-as-temporary-shell ()
-  "open a eshell as a temporary shell, and rename the buffer to `shrimp'."
+  "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
   (interactive)
-  (let ((shrimp-shell-name "shrimp"))
+  (let ((shrimp-shell-name "*shrimp*"))
     (progn
       (when (get-buffer shrimp-shell-name)
         (kill-buffer shrimp-shell-name))
