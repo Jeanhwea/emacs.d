@@ -15,8 +15,8 @@
   ;; keybinding
   (global-set-key (kbd "<f1>") 'magit-status)
   (global-set-key (kbd "C-x g") 'magit-status)
-  (global-set-key (kbd "<f2>") 'magit-file-popup)
-  (global-set-key (kbd "C-x f") 'magit-file-popup))
+  (global-set-key (kbd "<f2>") 'magit-blame)
+  (global-set-key (kbd "C-x f") 'magit-blame))
 
 
 ;; -----------------------------------------------------------------------------
