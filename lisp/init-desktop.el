@@ -43,7 +43,13 @@
     dashboard-items '((bookmarks . 5)
                        (recents  . 10)
                        (agenda . 5)
-                       (projects . 5))))
+                       (projects . 5)))
+  (defun jh/switch-to-dashboard ()
+    "Load dashboard at this frame."
+    (interactive)
+    (switch-to-buffer "*dashboard*")
+    (dashboard-refresh-buffer))
+  (global-set-key (kbd "C-c d") 'jh/switch-to-dashboard))
 
 (when (require 'ace-jump-mode)
   (autoload
