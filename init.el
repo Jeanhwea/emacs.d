@@ -93,6 +93,7 @@
          counsel
          csharp-mode
          csv-mode
+         cuda-mode
          dashboard
          dockerfile-mode
          edit-indirect
