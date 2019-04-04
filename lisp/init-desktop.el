@@ -179,26 +179,33 @@
 (when
   (and (require 'color-theme-sanityinc-solarized nil t)
     (require 'color-theme-sanityinc-tomorrow nil t))
-
-  ;; Add helper command to make changing color theme more faster
-  (defun jh/load-light-theme()
-    "Activate a light color theme"
-    (interactive)
-    (load-theme 'sanityinc-solarized-light t))
-  (defun jh/load-dark-theme()
-    "Activate a dark color theme"
-    (interactive)
-    (load-theme 'sanityinc-solarized-dark t))
-  (defun jh/toggle-light-dark-theme ()
-    "Toggle solarized light/dark theme"
+  (defun jh/cycle-color-theme ()
+    "Cycle through all prefered color theme."
     (interactive)
     (let ((current-theme (car custom-enabled-themes)))
-      (when (string-equal current-theme "sanityinc-solarized-dark")
-        (load-theme 'sanityinc-solarized-light t))
-      (when (string-equal current-theme "sanityinc-solarized-light")
-        (load-theme 'sanityinc-solarized-dark t))))
+      (cond
+        ;; sanityinc-solarized-dark -> sanityinc-solarized-light
+        ((string-equal current-theme "sanityinc-solarized-dark")
+          (load-theme 'sanityinc-solarized-light t))
+        ;; sanityinc-solarized-light -> sanityinc-tomorrow-bright
+        ((string-equal current-theme "sanityinc-solarized-light")
+          (load-theme 'sanityinc-tomorrow-bright t))
+        ;; sanityinc-tomorrow-bright -> sanityinc-solarized-day
+        ((string-equal current-theme "sanityinc-tomorrow-bright")
+          (load-theme 'sanityinc-tomorrow-day t))
+        ;; sanityinc-tomorrow-day -> sanityinc-solarized-night
+        ((string-equal current-theme "sanityinc-tomorrow-day")
+          (load-theme 'sanityinc-tomorrow-night t))
+        ;; sanityinc-tomorrow-night -> sanityinc-solarized-blue
+        ((string-equal current-theme "sanityinc-tomorrow-night")
+          (load-theme 'sanityinc-tomorrow-blue t))
+        ;; sanityinc-tomorrow-blue -> sanityinc-solarized-eighties
+        ((string-equal current-theme "sanityinc-tomorrow-blue")
+          (load-theme 'sanityinc-tomorrow-eighties t))
+        ;; default -> sanityinc-solarized-dark
+        (t (load-theme 'sanityinc-solarized-dark t)))))
   ;; keybinding
-  (global-set-key (kbd "<f12>") 'jh/toggle-light-dark-theme)
+  (global-set-key (kbd "<f12>") 'jh/cycle-color-theme)
   ;; default use solarized light theme
   (load-theme 'sanityinc-solarized-light t))
 
