@@ -98,14 +98,30 @@
   (defadvice undo-tree-make-history-save-file-name
     (after undo-tree activate)
     (setq ad-return-value (concat ad-return-value ".gz")))
+
+  (defun jh/undofile-expired-p (filename)
+  "Return ture if the undo file is expired."
+  (let
+    ((expired-seconds (* 100 60 60 24)) ; file expired time limits to 100 days
+      (last-modification-time
+        (file-attribute-modification-time
+          (file-attributes
+            (expand-file-name filename)))))
+    (time-less-p (time-add last-modification-time expired-seconds)
+      (current-time))))
+  (defun jh/undofile-size-exceed-p (filename)
+    "Return ture if the undo file exceeds maximum size limits."
+    (let ((max-size-limit (* 8 1024))   ; file size limits to 8k
+           (file-size (file-attribute-size (file-attributes filename))))
+      (> file-size max-size-limit)))
+
   ;; Delete big file to avoid C stack overflow
-  (defun jh/delete-big-undo-files ()
-    (let ((max-undo-file-size 4096)
-           (undodir (expand-file-name "undo" user-emacs-directory)))
+  (defun jh/delete-unused-undofiles ()
+    (let ((undodir (expand-file-name "undo" user-emacs-directory)))
       (dolist (undofile (directory-files undodir t "gz$"))
-        (when (> (file-attribute-size (file-attributes undofile)) max-undo-file-size)
+        (when (or (jh/undofile-size-exceed-p undofile) (jh/undofile-expired-p undofile))
           (delete-file undofile)))))
-  (jh/delete-big-undo-files)
+  (jh/delete-unused-undofiles)
   (global-undo-tree-mode))
 
 
