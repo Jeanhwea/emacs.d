@@ -25,25 +25,16 @@
     (replace-regexp-in-string (jh/git-root-dir) ""
       (expand-file-name buffer-file-name)) nil))
 
-
 ;; -----------------------------------------------------------------------------
-;; helper function for setup timer. use as following example
-;;
-;;   (jh/set-timer-if-possible "10:50:00"
-;;     (lambda () (load-theme 'kill-emacs t)))
+;; setup timer
 ;; -----------------------------------------------------------------------------
-(defun jh/current-seconds-to (timestr)
-  "Current seconds to specific timestr is `%H:%M:%S' like string"
-  (setq from (cadr (current-time)))
-  (setq to
-    (cadr (date-to-time
-            (format-time-string (concat "%Y-%m-%d " timestr)))))
-  (- to from))
-
-(defun jh/set-timer-if-possible (timestr func)
+(defun jh/run-at-time-if-possible (timestr func)
   "If timestr is not out of date, then setup a callback function"
-  (when (> (jh/current-seconds-to timestr) 0)
-    (run-at-time (jh/current-seconds-to timestr) nil func)))
+  (let ((now (current-time))
+         (start (date-to-time (format-time-string (concat "%Y-%m-%d " timestr)))))
+    (when (time-less-p now start)
+      (run-at-time timestr nil func))))
+
 
 ;; -----------------------------------------------------------------------------
 ;; string helper, using string-inflection
