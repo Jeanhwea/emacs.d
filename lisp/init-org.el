@@ -15,7 +15,8 @@
     org-directory
       (if (file-directory-p jesenia-dir) (concat jesenia-dir "/agenda") nil)
     org-agenda-files
-      (list (concat jesenia-dir "/agenda"))
+    (if (file-directory-p jesenia-dir)
+      (list (concat jesenia-dir "/agenda")) nil)
     org-todo-keywords
       '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
     org-todo-keyword-faces
