@@ -2,4 +2,4 @@
 # name: console.log with DateTime Prefix
 # key: lol
 # --
-console.log('[' + new Date().toJSON() + ']: ${1:text}');$0
+console.log('[%s] %o',  new Date().toJSON(), $1);$0
