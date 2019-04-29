@@ -2,8 +2,8 @@
 # name: interface
 # key: int
 # --
-package `(mapconcat 'identity (split-string (replace-regexp-in-string ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?" "" default-directory) "/" t) ".")`;
+package `(jh/java-package-name)`;
 
-public interface `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+public interface `(jh/java-class-name)` {
 $>$0
 }

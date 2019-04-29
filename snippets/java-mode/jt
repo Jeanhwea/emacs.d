@@ -3,6 +3,6 @@
 # key: jt
 # --
 @Test
-public void test${1:`(concat (file-name-nondirectory (file-name-sans-extension (buffer-file-name))) (format-time-string "%H%M%S"))`}() {
+public void ${1:`(jh/java-test-case-name)`}() {
 $>$0
 }

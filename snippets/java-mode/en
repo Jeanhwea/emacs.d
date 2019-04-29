@@ -2,7 +2,7 @@
 # name: enum
 # key: en
 # --
-package `(mapconcat 'identity (split-string (replace-regexp-in-string ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?" "" default-directory) "/" t) ".")`;
+package `(jh/java-package-name)`;
 
 /**
  * ${1:TODO:}
@@ -11,7 +11,7 @@ package `(mapconcat 'identity (split-string (replace-regexp-in-string ".*src\\(/
  * @version v1.0
  * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
  */
-public enum ${2:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} {
+public enum ${2:`(jh/java-class-name)`} {
 
 $>Enum1,
 $>${3:Unknown};

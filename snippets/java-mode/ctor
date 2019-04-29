@@ -9,6 +9,6 @@
  * @version v1.0
  * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
  */
-public `(file-name-sans-extension (buffer-name))`($2) {
+public `(jh/java-class-name)`($2) {
 $>$0
 }

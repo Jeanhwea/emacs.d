@@ -35,33 +35,4 @@
     (when (time-less-p now start)
       (run-at-time timestr nil func))))
 
-
-;; -----------------------------------------------------------------------------
-;; string helper, using string-inflection
-;; -----------------------------------------------------------------------------
-(defun jh/underscore (str)
-  "convert string to `foo_bar' format"
-  (string-inflection-underscore-function str))
-
-(defun jh/pascalcase (str)
-  "convert string to `FooBar' format"
-  (string-inflection-pascal-case-function str))
-
-(defun jh/camelcase (str)
-  "convert string to `fooBar' format"
-  (string-inflection-camelcase-function str))
-
-(defun jh/upcase (str)
-  "convert string to `FooBar' format"
-  (string-inflection-upcase-function str))
-
-(defun jh/kebabcase (str)
-  "convert string to `foo-bar' format"
-  (string-inflection-kebab-case-function str))
-
-(defun jh/capital-underscore (str)
-  "convert string to `Foo_Bar' format"
-  (string-inflection-capital-underscore str))
-
-
 (provide 'init-util)

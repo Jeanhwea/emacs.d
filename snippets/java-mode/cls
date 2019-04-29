@@ -2,9 +2,9 @@
 # name: class with Singleton Partten
 # key: cls
 # --
-package `(mapconcat 'identity (split-string (replace-regexp-in-string ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?" "" default-directory) "/" t) ".")`;
+package `(jh/java-package-name)`;
 
-public class ${1:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} {
+public class ${1:`(jh/java-class-name)`} {
 
 $>private static $1 ${2:the${1:$(jh/pascalcase yas-text)}} = new $1();
 

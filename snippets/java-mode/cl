@@ -2,8 +2,8 @@
 # name: class
 # key: cl
 # --
-package `(mapconcat 'identity (split-string (replace-regexp-in-string ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?" "" default-directory) "/" t) ".")`;
+package `(jh/java-package-name)`;
 
-public class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+public class `(jh/java-class-name)` {
 $>$0
 }
