@@ -44,7 +44,7 @@
           "mvn test -q -B"))))
 
   (projectile-register-project-type 'spring '("mvnw")
-    :compile "mvn -B compile package"
+    :compile "mvn -B clean package"
     :run "mvn -B spring-boot:run"
     :test 'jh/springboot-test-command
     :src-dir "src/main/"
