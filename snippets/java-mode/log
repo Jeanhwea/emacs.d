@@ -2,4 +2,4 @@
 # name: private logger variable
 # key: log
 # --
-private Logger logger = LoggerFactory.getLogger(`(jh/java-class-name)`.class);
+private static final Logger logger = LoggerFactory.getLogger(`(jh/java-class-name)`.class);
