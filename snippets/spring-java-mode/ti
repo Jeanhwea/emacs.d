@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: tracker.info()
-# key: ti
-# --
-tracker.info($0);

@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: JPA Getter and Setter with Field
+# key: jpags
+# --
+@Column(name="${2:$(jh/upcase yas-text)}", nullable=true, unique=true)
+private ${1:String} ${2:fieldName};
+
+public $1 get${2:$(jh/pascalcase yas-text)}() {
+ return this.$2;
+}
+
+public void set${2:$(jh/pascalcase yas-text)}($1 $2) {
+ this.$2 = $2;
+}

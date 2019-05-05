@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: tracker.error()
-# key: te
-# --
-tracker.error($0);
