@@ -60,7 +60,7 @@
   (interactive)
   (concat
     "test"
-    (jh/java-class-name)
+    (replace-regexp-in-string "Test$" "" (jh/java-class-name))
     (format-time-string "%H%M%S")))
 
 (defun jh/java-repo-to-entity (repo)
