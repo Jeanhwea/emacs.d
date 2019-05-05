@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: Spring Annotation Table
-# key: jpatbl
-# --
-@Table(name = "${1:table_name}")$0

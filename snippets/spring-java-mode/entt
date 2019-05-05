@@ -1,18 +1,11 @@
 # -*- mode: snippet -*-
 # name: JPA Annotation Entity
-# key: jpaent
+# key: entt
 # --
 package `(jh/java-package-name)`;
 
 import javax.persistence.*;
 
-/**
- * ${1:name}实体
- *
- * @author Jinghui Hu
- * @version v1.0
- * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
- */
 @Entity
 @Table(name = "${2:TABLE_NAME}")
 public class `(jh/java-class-name)` {

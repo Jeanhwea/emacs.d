@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: Spring Repository Interface
+# key: repo
+# --
+package `(jh/java-package-name)`;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
+
+
+@Repository
+public interface ${1:`(jh/java-class-name)`} extends CrudRepository<${1:$(jh/java-repo-to-entity yas-text)}, Long> {
+$>$0
+}

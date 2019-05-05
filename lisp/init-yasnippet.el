@@ -63,4 +63,9 @@
     (jh/java-class-name)
     (format-time-string "%H%M%S")))
 
+(defun jh/java-repo-to-entity (repo)
+  "Guess entity name from repo"
+  (interactive)
+  (replace-regexp-in-string "Repository" "" repo))
+
 (provide 'init-yasnippet)

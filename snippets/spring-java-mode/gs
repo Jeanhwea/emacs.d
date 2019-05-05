@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: JPA Getter and Setter with Field
-# key: jpags
+# key: gs
 # --
 @Column(name="${2:$(jh/upcase yas-text)}", nullable=true, unique=true)
 private ${1:String} ${2:fieldName};
