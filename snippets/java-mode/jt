@@ -3,6 +3,6 @@
 # key: jt
 # --
 @Test
-public void ${1:`(jh/java-test-case-name)`}() {
+public void ${1:`(jh/java-test-case-name)`}() throws Exception {
 $>$0
 }

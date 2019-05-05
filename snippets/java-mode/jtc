@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+
 public class `(jh/java-class-name)` {
 $>$0
 }

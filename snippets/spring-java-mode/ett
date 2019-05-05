@@ -6,6 +6,7 @@ package `(jh/java-package-name)`;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "${2:$$(jh/underscore (jh/java-class-name))}")
 public class `(jh/java-class-name)` {
