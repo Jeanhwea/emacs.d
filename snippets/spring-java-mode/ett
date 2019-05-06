@@ -13,6 +13,6 @@ public class `(jh/java-class-name)` {
 
 $>@Id
 $>@GeneratedValue(strategy = GenerationType.${1:$$(yas-choose-value '("TABLE" "IDENTITY" "SEQUENCR" "AUTO"))})$0
-$>private Long id;
-$>$0
+$>private Long id;$0
+
 }
