@@ -63,26 +63,25 @@
     (replace-regexp-in-string "Test$" "" (jh/java-class-name))
     (format-time-string "%H%M%S")))
 
-(defun jh/java-repo-to-entity (repo)
-  "Guess entity name from repo"
-  (interactive)
-  (replace-regexp-in-string "Repository$" "" repo))
-
-(defun jh/java-service-to-entity (service)
-  "Guess entity name from service"
-  (interactive)
-  (replace-regexp-in-string "Service$" "" service))
-
-(defun jh/java-service-to-repo (service)
-  "Guess repo name from service"
+(defun jh/java-whatever-to-entity-name (whatever)
+  "Convert `*RepositoryImpl', `*Service' ... to `*'."
   (interactive)
   (jh/pascalcase
-    (concat (jh/java-service-to-entity service) "Repository")))
+    (replace-regexp-in-string
+      "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"
+      "" whatever)))
 
-(defun jh/java-service-to-repo-name (service)
-  "Guess repo variable name from service"
+(defun jh/java-implement-name-to-interface-name (name)
+  "Convert `*Impl' to `*'"
   (interactive)
-  (jh/camelcase
-    (concat (jh/java-service-to-entity service) "Repo")))
+  (jh/pascalcase
+    (replace-regexp-in-string "Impl$" "" name)))
+
+(defun jh/java-interface-name-to-implement-name (name)
+  "Convert `*' to `*Impl'."
+  (interactive)
+  (jh/pascalcase
+    (if (string-match-p "^.*Impl$" name) name
+      (concat name "Impl"))))
 
 (provide 'init-yasnippet)

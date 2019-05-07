@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class ${1:`(jh/java-class-name)`} implements I$1 {
+public class ${1:`(jh/java-class-name)`} implements ${1:$(jh/java-implement-name-to-interface-name yas-text)} {
 
-$>// private final ${2:${1:$(jh/java-service-to-repo yas-text)}} ${3:${1:$(jh/java-service-to-repo-name yas-text)}};
+$>// private final ${2:${1:$(concat (jh/java-whatever-to-entity-name yas-text) "Repository")}} ${3:${2:$(jh/camelcase yas-text)}};
 
-$>public `(jh/java-class-name)`(/*$2 $3*/) {
+$>public `(jh/java-class-name)`($2 $3) {
 $>$>// this.$3 = $3;$0
 $>}
 
