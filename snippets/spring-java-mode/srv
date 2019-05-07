@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: Spring Service
+# key: srv
+# --
+package `(jh/java-package-name)`;
+
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class ${1:`(jh/java-class-name)`} implements I$1 {
+
+$>// private final ${2:${1:$(jh/java-service-to-repo yas-text)}} ${3:${1:$(jh/java-service-to-repo-name yas-text)}};
+
+$>public `(jh/java-class-name)`(/*$2 $3*/) {
+$>$>// this.$3 = $3;$0
+$>}
+
+}

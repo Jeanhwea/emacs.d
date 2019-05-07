@@ -66,6 +66,23 @@
 (defun jh/java-repo-to-entity (repo)
   "Guess entity name from repo"
   (interactive)
-  (replace-regexp-in-string "Repository" "" repo))
+  (replace-regexp-in-string "Repository$" "" repo))
+
+(defun jh/java-service-to-entity (service)
+  "Guess entity name from service"
+  (interactive)
+  (replace-regexp-in-string "Service$" "" service))
+
+(defun jh/java-service-to-repo (service)
+  "Guess repo name from service"
+  (interactive)
+  (jh/pascalcase
+    (concat (jh/java-service-to-entity service) "Repository")))
+
+(defun jh/java-service-to-repo-name (service)
+  "Guess repo variable name from service"
+  (interactive)
+  (jh/camelcase
+    (concat (jh/java-service-to-entity service) "Repo")))
 
 (provide 'init-yasnippet)

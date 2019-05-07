@@ -2,13 +2,6 @@
 # name: constructor
 # key: ctor
 # --
-/**
- * 构造器
- *
- * @author Jinghui Hu
- * @version v1.0
- * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
- */
 public `(jh/java-class-name)`($2) {
 $>$0
 }

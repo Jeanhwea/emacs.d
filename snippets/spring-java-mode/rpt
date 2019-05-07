@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Spring Repository Interface
-# key: repo
+# key: rpt
 # --
 package `(jh/java-package-name)`;
 
