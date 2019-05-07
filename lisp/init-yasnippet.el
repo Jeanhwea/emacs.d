@@ -38,6 +38,11 @@
 ;; -----------------------------------------------------------------------------
 ;; helper function for yasnippets
 ;; -----------------------------------------------------------------------------
+(defun jh/filename ()
+  "Get the file name without extension."
+  (file-name-nondirectory
+    (file-name-sans-extension (buffer-file-name))))
+
 (defun jh/java-package-name ()
   "Get the package name for java."
   (interactive)
@@ -51,9 +56,7 @@
 (defun jh/java-class-name ()
   "Get the class name for java."
   (interactive)
-  (jh/pascalcase
-    (file-name-nondirectory
-      (file-name-sans-extension (buffer-file-name)))))
+  (jh/pascalcase (jh/filename)))
 
 (defun jh/java-test-case-name ()
   "Generate test case name with random time string."
