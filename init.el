@@ -39,6 +39,7 @@
 (require 'init-projectile)
 (require 'init-markdown)
 (require 'init-yasnippet)
+(require 'init-framework)
 
 ;; -----------------------------------------------------------------------------
 ;; programming language
