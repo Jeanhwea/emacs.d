@@ -33,9 +33,10 @@
     (fw/expand-directory
       (expand-file-name ".git" dir))))
 
-(defun fw/project-root ()
+(defun fw/project-root (&optional directory)
   "Return current project root dir."
-  (fw/git-project-root-dir default-directory))
+  (setq directory (or directory default-directory))
+  (fw/git-project-root-dir directory))
 
 (defun fw/file-relative-name (filename &optional directory)
   "Convert FILENAME to be relative to DIRECTORY (default: `default-directory')."
@@ -44,18 +45,30 @@
   (replace-regexp-in-string "^/" ""
     (replace-regexp-in-string dir "" name)))
 
+(defun fw/flatten-dirs-list (dirs-list)
+  "flatten a nested list."
+  (let (value)
+    (dolist (elt dirs-list value)
+      (setq value (concatenate 'list value elt)))))
+
+(defun fw/interested-files (dirs pat)
+  "Return a list of interested files."
+  (let ((dirs-list
+          (mapcar
+            (lambda (dir)
+              (directory-files-recursively dir pat))
+            dirs)))
+    (fw/flatten-dirs-list dirs-list)))
+
+(defun fw/file-name-to-class-name (file)
+  "Return the class name from a relative name."
+  (file-name-nondirectory (file-name-sans-extension file)))
+
+;; (mapcar #'fw/file-name-to-class-name (fw/interested-files '("e:/Code/work/avic/spt/src") "^.*\.java$"))
+
 (defun fw/maven-project-source-dirs ()
   "Return the maven project source folder."
   (setq srcdir (expand-file-name "src" (fw/project-root)))
   (if (file-directory-p srcdir) (cons srcdir nil) nil))
-
-(defun fw/interested-files (dirs pat)
-  "Return a list of interested files."
-  (mapcar
-    (lambda (dir)
-      (mapcar
-        (lambda (file) (fw/file-relative-name file (fw/project-root)))
-        (directory-files-recursively dir pat)))
-    dirs))
 
 (provide 'init-framework)
