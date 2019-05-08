@@ -10,10 +10,7 @@
 
 (defun fw/parent-dir (path)
   "Return the parent directory of PATH."
-  (directory-file-name
-    (file-name-directory
-      (directory-file-name
-        (expand-file-name path)))))
+  (directory-file-name (file-name-directory (directory-file-name (expand-file-name path)))))
 
 (defun fw/root-dir-p (path)
   "Return ture if PATH is a root directory"
