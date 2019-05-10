@@ -65,15 +65,24 @@
   (file-name-nondirectory (file-name-sans-extension file)))
 
 (defun fw/file-name-to-entity-name (file)
-  "Return the entity name from a file name"
+  "Return the entity name from a file name."
   (when (string-match-p ".*\\(controller\\|entity\\|repo\\|service\\)/.*\\.java" file)
     (jh/pascalcase
       (replace-regexp-in-string
         "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"
         "" (fw/file-name-to-class-name file)))))
 
+(defun fw/file-name-to-implement-name (file)
+  "Return the implement name from a file name."
+  (let ((class (fw/file-name-to-class-name file)))
+    (when (string-match-p "^.*\\(Repository\\|Service\\)$" class)
+      (concat class "Impl"))))
+
 (defvar fw/all-components-cache (make-hash-table :test 'equal)
   "Cached all components in this project.")
+
+(defvar fw/all-implements-cache (make-hash-table :test 'equal)
+  "Cached all implements in this project.")
 
 (defun fw/scan-all-components (dirs)
   "Return a list that contains all components in the project."
@@ -83,6 +92,15 @@
       (let ((class (fw/file-name-to-class-name file)))
         (unless (null (fw/file-name-to-entity-name file))
           (puthash class file fw/all-components-cache))))))
+
+(defun fw/scan-all-implements (dirs)
+  "Return a list that contains all implements in the project."
+  (progn
+    (clrhash fw/all-implements-cache)
+    (dolist (file (fw/directory-files dirs))
+      (let ((class (fw/file-name-to-class-name file)))
+        (when (string-match-p "^.*Impl$" class)
+          (puthash class file fw/all-implements-cache))))))
 
 (defun fw/trans-file-name (file path formula)
   "Transfer file to given relative path, with a formula, like `%sRepository.java'."
@@ -99,7 +117,6 @@
         (fw/find-file
           (fw/trans-file-name
             (gethash entity fw/all-components-cache) path formula))))))
-
 
 (defun fw/switch-to-entity-file ()
   "Switch to entity file."
@@ -125,15 +142,36 @@
   (interactive)
   (fw/switch-to-component-file "../../controller" "%sController.java"))
 
+(defun fw/swap-interface-and-implemention (file)
+  "Swap interface and implemention name."
+  (let ((class (fw/file-name-to-class-name file)))
+    (cond
+      ((string-match-p "^.*Impl$" class)
+        (expand-file-name
+          (concat (replace-regexp-in-string "Impl$" "" class) ".java")
+          (fw/parent-dir (fw/parent-dir file))))
+      ((string-match-p "^.*\\(Repository\\|Service\\)$" class)
+        (expand-file-name
+          (concat class "Impl.java")
+          (expand-file-name "impl" (fw/parent-dir file))))
+      (t nil))))
+
+(defun fw/toggle-interface-and-implemention ()
+  "Toggle interface file and implemention."
+  (interactive)
+  (fw/find-file (fw/swap-interface-and-implemention (buffer-file-name))))
+
 ;; (mapcar #'fw/file-name-to-class-name (fw/directory-files '("~/Code/work/avic/skree/src")))
 ;; (mapcar #'fw/file-name-to-entity-name (fw/directory-files '("~/Code/work/avic/skree/src")))
 ;; (fw/file-name-to-entity-name (car (fw/directory-files '("~/Code/work/avic/skree/src"))))
 ;; (fw/scan-all-components '("~/Code/work/avic/skree/src"))
+;; (fw/scan-all-implements '("~/Code/work/avic/skree/src"))
 ;; (fw/scan-all-components nil)
 ;; (gethash "Employee" fw/all-components-cache)
 ;; (find-file (gethash "Employee" fw/all-components-cache))
 ;; (fw/trans-file-name (gethash "Employee" fw/all-components-cache) "../repo" "%sRepository.java")
 ;; (print fw/all-components-cache)
+;; (print fw/all-implements-cache)
 
 (defun fw/maven-project-source-dirs ()
   "Return the maven project source folder."
@@ -148,9 +186,10 @@
 (progn
   (define-prefix-command 'fw/leader-key-map)
   (define-key fw/leader-key-map (kbd "c") 'fw/switch-to-controller-file)
+  (define-key fw/leader-key-map (kbd "i") 'fw/toggle-interface-and-implemention)
   (define-key fw/leader-key-map (kbd "r") 'fw/switch-to-repository-file)
   (define-key fw/leader-key-map (kbd "s") 'fw/switch-to-service-file)
   (define-key fw/leader-key-map (kbd "e") 'fw/switch-to-entity-file))
-(global-set-key (kbd "M-8") 'fw/leader-key-map)
+(global-set-key (kbd "M-2") 'fw/leader-key-map)
 
 (provide 'init-framework)
