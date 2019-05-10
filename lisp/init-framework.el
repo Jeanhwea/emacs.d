@@ -17,6 +17,10 @@
   (let ((dir (fw/expand-directory path)))
     (string-equal dir (fw/parent-dir dir))))
 
+(defun fw/find-file (file)
+  "Open a FILE."
+  (find-file file))
+
 (defun fw/git-project-root-dir (path)
   "Return the git root dir of PATH."
   (if (fw/git-project-root-p path) path
@@ -62,32 +66,74 @@
 
 (defun fw/file-name-to-entity-name (file)
   "Return the entity name from a file name"
-  (when (string-match-p ".*entity/.*\\.java" file)
+  (when (string-match-p ".*\\(controller\\|entity\\|repo\\|service\\)/.*\\.java" file)
     (jh/pascalcase
       (replace-regexp-in-string
         "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"
         "" (fw/file-name-to-class-name file)))))
 
-(defvar fw/all-entities-cache (make-hash-table :test 'equal)
-  "Cached all entities in this project.")
+(defvar fw/all-components-cache (make-hash-table :test 'equal)
+  "Cached all components in this project.")
 
-(defun fw/scan-all-entities (dirs)
-  "Return a list that contains all entities in the project."
+(defun fw/scan-all-components (dirs)
+  "Return a list that contains all components in the project."
   (progn
-    (clrhash fw/all-entities-cache)
+    (clrhash fw/all-components-cache)
     (dolist (file (fw/directory-files dirs))
-      (let ((entity (fw/file-name-to-entity-name file)))
-        (unless (null entity)
-          (puthash entity file fw/all-entities-cache))))))
+      (let ((class (fw/file-name-to-class-name file)))
+        (unless (null (fw/file-name-to-entity-name file))
+          (puthash class file fw/all-components-cache))))))
 
+(defun fw/trans-file-name (file path formula)
+  "Transfer file to given relative path, with a formula, like `%sRepository.java'."
+  (let ((entity (fw/file-name-to-entity-name file))
+         (folder (expand-file-name path (fw/parent-dir file))))
+    (expand-file-name (replace-regexp-in-string "%s" entity formula) folder)))
+
+(defun fw/switch-to-component-file (path formula)
+  "Switch to a component file in the project."
+  (let ((entity (fw/file-name-to-entity-name (buffer-file-name))))
+    (progn
+      (fw/scan-all-components (fw/maven-project-source-dirs))
+      (unless (null entity)
+        (fw/find-file
+          (fw/trans-file-name
+            (gethash entity fw/all-components-cache) path formula))))))
+
+
+(defun fw/switch-to-entity-file ()
+  "Switch to entity file."
+  (interactive)
+  (let ((entity (fw/file-name-to-entity-name (buffer-file-name))))
+    (progn
+      (fw/scan-all-components (fw/maven-project-source-dirs))
+      (unless (null entity)
+        (fw/find-file (gethash entity fw/all-components-cache))))))
+
+(defun fw/switch-to-repository-file ()
+  "Switch to repository file."
+  (interactive)
+  (fw/switch-to-component-file "../repo" "%sRepository.java"))
+
+(defun fw/switch-to-service-file ()
+  "Switch to service file."
+  (interactive)
+  (fw/switch-to-component-file "../../service" "%sService.java"))
+
+(defun fw/switch-to-controller-file ()
+  "Switch to controller file."
+  (interactive)
+  (fw/switch-to-component-file "../../controller" "%sController.java"))
 
 ;; (mapcar #'fw/file-name-to-class-name (fw/directory-files '("~/Code/work/avic/skree/src")))
 ;; (mapcar #'fw/file-name-to-entity-name (fw/directory-files '("~/Code/work/avic/skree/src")))
 ;; (fw/file-name-to-entity-name (car (fw/directory-files '("~/Code/work/avic/skree/src"))))
-;; (fw/scan-all-entities '("~/Code/work/avic/skree/src"))
-;; (fw/scan-all-entities nil)
-;; (gethash "Employee" fw/all-entities-cache)
-;; (print fw/all-entities-cache)
+;; (fw/scan-all-components '("~/Code/work/avic/skree/src"))
+;; (fw/scan-all-components nil)
+;; (gethash "Employee" fw/all-components-cache)
+;; (find-file (gethash "Employee" fw/all-components-cache))
+;; (fw/trans-file-name (gethash "Employee" fw/all-components-cache) "../repo" "%sRepository.java")
+;; (print fw/all-components-cache)
 
 (defun fw/maven-project-source-dirs ()
   "Return the maven project source folder."
@@ -95,5 +141,16 @@
   (when (file-directory-p srcdir) (cons srcdir nil)))
 
 ;; (fw/maven-project-source-dirs)
+
+;; -----------------------------------------------------------------------------
+;; key bindings
+;; -----------------------------------------------------------------------------
+(progn
+  (define-prefix-command 'fw/leader-key-map)
+  (define-key fw/leader-key-map (kbd "c") 'fw/switch-to-controller-file)
+  (define-key fw/leader-key-map (kbd "r") 'fw/switch-to-repository-file)
+  (define-key fw/leader-key-map (kbd "s") 'fw/switch-to-service-file)
+  (define-key fw/leader-key-map (kbd "e") 'fw/switch-to-entity-file))
+(global-set-key (kbd "M-8") 'fw/leader-key-map)
 
 (provide 'init-framework)
