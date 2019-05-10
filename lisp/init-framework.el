@@ -57,14 +57,43 @@
   (fw/flatten-dirs-list (mapcar #'fw/java-files dirs)))
 
 (defun fw/file-name-to-class-name (file)
-  "Return the class name from a relative name."
+  "Return the class name from a file name."
   (file-name-nondirectory (file-name-sans-extension file)))
 
+(defun fw/file-name-to-entity-name (file)
+  "Return the entity name from a file name"
+  (when (string-match-p ".*entity/.*\\.java" file)
+    (jh/pascalcase
+      (replace-regexp-in-string
+        "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"
+        "" (fw/file-name-to-class-name file)))))
+
+(defvar fw/all-entities-cache (make-hash-table :test 'equal)
+  "Cached all entities in this project.")
+
+(defun fw/scan-all-entities (dirs)
+  "Return a list that contains all entities in the project."
+  (progn
+    (clrhash fw/all-entities-cache)
+    (dolist (file (fw/directory-files dirs))
+      (let ((entity (fw/file-name-to-entity-name file)))
+        (unless (null entity)
+          (puthash entity file fw/all-entities-cache))))))
+
+
 ;; (mapcar #'fw/file-name-to-class-name (fw/directory-files '("~/Code/work/avic/skree/src")))
+;; (mapcar #'fw/file-name-to-entity-name (fw/directory-files '("~/Code/work/avic/skree/src")))
+;; (fw/file-name-to-entity-name (car (fw/directory-files '("~/Code/work/avic/skree/src"))))
+;; (fw/scan-all-entities '("~/Code/work/avic/skree/src"))
+;; (fw/scan-all-entities nil)
+;; (gethash "Employee" fw/all-entities-cache)
+;; (print fw/all-entities-cache)
 
 (defun fw/maven-project-source-dirs ()
   "Return the maven project source folder."
   (setq srcdir (expand-file-name "src" (fw/project-root)))
-  (if (file-directory-p srcdir) (cons srcdir nil) nil))
+  (when (file-directory-p srcdir) (cons srcdir nil)))
+
+;; (fw/maven-project-source-dirs)
 
 (provide 'init-framework)
