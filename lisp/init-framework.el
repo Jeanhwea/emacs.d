@@ -48,20 +48,19 @@
     (dolist (elt dirs-list value)
       (setq value (concatenate 'list value elt)))))
 
-(defun fw/interested-files (dirs pat)
+(defun fw/java-files (dir)
+  "Return a list of `*.java' files."
+  (directory-files-recursively dir "^.*\.java$"))
+
+(defun fw/directory-files (dirs)
   "Return a list of interested files."
-  (let ((dirs-list
-          (mapcar
-            (lambda (dir)
-              (directory-files-recursively dir pat))
-            dirs)))
-    (fw/flatten-dirs-list dirs-list)))
+  (fw/flatten-dirs-list (mapcar #'fw/java-files dirs)))
 
 (defun fw/file-name-to-class-name (file)
   "Return the class name from a relative name."
   (file-name-nondirectory (file-name-sans-extension file)))
 
-;; (mapcar #'fw/file-name-to-class-name (fw/interested-files '("e:/Code/work/avic/spt/src") "^.*\.java$"))
+;; (mapcar #'fw/file-name-to-class-name (fw/directory-files '("~/Code/work/avic/skree/src")))
 
 (defun fw/maven-project-source-dirs ()
   "Return the maven project source folder."
