@@ -38,25 +38,56 @@
 ;; -----------------------------------------------------------------------------
 ;; helper function for yasnippets
 ;; -----------------------------------------------------------------------------
-(defun jh/filename ()
-  "Get the file name without extension."
+(defun jh/file-name ()
+  "Return the file name without extension."
   (file-name-nondirectory
     (file-name-sans-extension (buffer-file-name))))
 
-(defun jh/java-package-name ()
-  "Get the package name for java."
-  (interactive)
+(defun jh/parent-dir (file)
+  "Return parent directory of the FILE."
+  (unless (null file)
+    (directory-file-name
+      (file-name-directory
+        (directory-file-name (expand-file-name file))))))
+
+(defun jh/read-file-lines (file)
+  "Read a file content, and put all into a list of lines."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (split-string (buffer-string) "\n" t)))
+
+(defun jh/extract-package-class (line)
+  "Extract package name and class name from line."
+  (save-match-data
+    (and (string-match "^import \\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" line)
+      (setq package (match-string 1 line)
+        class (match-string 2 line))
+      (list class package))))
+
+(defun jh/read-imported-class (file)
+  "Read imported class in the FILES, then put them into a cache."
+  (let ((class-cache (make-hash-table :test 'equal)))
+    (dolist (ele (mapcar #'jh/extract-package-class (jh/read-file-lines file)))
+      (unless (null ele) (puthash (car ele) (cadr ele) class-cache)))
+    class-cache))
+
+;; (cadr '("a" "b"))
+;; (remove-if 'null (mapcar #'jh/extract-package-class (jh/read-file-lines "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")))
+;; (jh/read-imported-class "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")
+
+(defun jh/java-package-name (&optional file)
+  "Return the package name for a java file."
+  (setq dir (jh/parent-dir (or file (buffer-file-name))))
   (mapconcat 'identity
     (split-string
       (replace-regexp-in-string
         ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?"
-        ""
-        default-directory) "/" t) "."))
+        "" dir) "/" t) "."))
 
 (defun jh/java-class-name ()
-  "Get the class name for java."
+  "Return the class name for java."
   (interactive)
-  (jh/pascalcase (jh/filename)))
+  (jh/pascalcase (jh/file-name)))
 
 (defun jh/java-test-case-name ()
   "Generate test case name with random time string."
