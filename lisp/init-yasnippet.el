@@ -84,19 +84,13 @@
         (unless (null ele) (puthash (car ele) (cadr ele) class-cache))))
     class-cache))
 
-(defun jh/java-class-need-imported-p (clz &optional file)
-  "Return ture when the class is needed imported."
+(defun jh/java-has-imported-p (clz &optional file)
+  "Return ture when the class has imported to this class."
   (setq file (or file (buffer-file-name)))
   (let ((class-cache (make-hash-table :test 'equal)))
     (dolist (ele (mapcar #'jh/extract-java-package-class (jh/read-file-lines file)))
       (unless (null ele) (puthash (car ele) (cadr ele) class-cache)))
-    (null (gethash clz class-cache))))
-
-;; (remove-if 'null (mapcar #'jh/extract-java-package-class (jh/read-file-lines "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")))
-;; (gethash "Employee" (jh/read-java-imported-class "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java"))
-;; (jh/java-class-need-imported-p "EmployeeType" "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")
-;; (jh/java-class-need-imported-p "List" "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")
-;; (jh/java-class-need-imported-p "Employee" "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")
+    (not (null (gethash clz class-cache)))))
 
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
@@ -112,29 +106,25 @@
   (interactive)
   (jh/pascalcase (jh/file-name file)))
 
-(defun jh/java-import-package-statement (clz &optional file)
-  "Return the importing java package statement."
+(defun jh/java-search-all-package-name (clz &optional file)
+  "Return the importing java package."
   (setq file (or file (buffer-file-name)))
-  (let ((package (gethash clz (jh/read-java-imported-class file))))
-    (unless (null package) (format "import %s.%s;" package clz))))
+  (gethash clz (jh/read-java-imported-class file)))
 
 (defun jh/java-try-import-class (&optional clz)
   "Try import class"
   (interactive)
-  (setq clz (or clz (word-at-point)))
   (save-buffer)
-  (let ((stmt (jh/java-import-package-statement clz)))
-    (when (and (jh/java-class-need-imported-p clz) (not (null stmt)))
-      (save-excursion
-        (progn
-          (beginning-of-buffer)
-          (next-line)
-          (newline)
-          (insert stmt))))))
+  (setq clz (or clz (word-at-point)))
+  (setq pkg (jh/java-search-all-package-name clz))
+  (unless (or (jh/java-has-imported-p clz) (null pkg) (string-equal pkg (jh/java-package-name)))
+    (save-excursion
+      (progn
+        (beginning-of-buffer)
+        (next-line)
+        (newline)
+        (insert (format "import %s.%s;" pkg clz))))))
 (add-hook 'java-mode-hook (lambda () (local-set-key (kbd "M-RET") 'jh/java-try-import-class)))
-
-;; (jh/java-import-package-statement "EmployeeRepository" "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")
-;; (jh/java-import-package-statement "Logger" "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")
 
 (defun jh/java-test-case-name ()
   "Generate test case name with random time string."
