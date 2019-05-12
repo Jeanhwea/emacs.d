@@ -79,7 +79,7 @@
   "Read imported class in the FILES, then put them into a cache."
   (let ((class-cache (make-hash-table :test 'equal)))
     (dolist (java-src-file (jh/java-project-source-files file))
-      (puthash (jh/java-class-name file) (jh/java-package-name file) class-cache)
+      (puthash (jh/java-class-name java-src-file) (jh/java-package-name java-src-file) class-cache)
       (dolist (ele (mapcar #'jh/extract-java-package-class (jh/read-file-lines java-src-file)))
         (unless (null ele) (puthash (car ele) (cadr ele) class-cache))))
     class-cache))
