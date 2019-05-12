@@ -121,14 +121,16 @@
 (defun jh/java-try-import-class (&optional clz)
   "Try import class"
   (interactive)
-  (let
-    ((stmt (jh/java-import-package-statement (or clz (word-at-point)))))
-    (save-excursion
-      (progn
-        (beginning-of-buffer)
-        (next-line)
-        (newline)
-        (insert (or stmt ""))))))
+  (setq clz (or clz (word-at-point)))
+  (save-buffer)
+  (let ((stmt (jh/java-import-package-statement clz)))
+    (when (and (jh/java-class-need-imported-p clz) (not (null stmt)))
+      (save-excursion
+        (progn
+          (beginning-of-buffer)
+          (next-line)
+          (newline)
+          (insert stmt))))))
 (add-hook 'java-mode-hook (lambda () (local-set-key (kbd "M-RET") 'jh/java-try-import-class)))
 
 ;; (jh/java-import-package-statement "EmployeeRepository" "/Users/hujinghui/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")
