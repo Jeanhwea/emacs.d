@@ -124,7 +124,6 @@
         (next-line)
         (newline)
         (insert (format "import %s.%s;" pkg clz))))))
-(add-hook 'java-mode-hook (lambda () (local-set-key (kbd "M-RET") 'jh/java-try-import-class)))
 
 (defun jh/java-test-case-name ()
   "Generate test case name with random time string."

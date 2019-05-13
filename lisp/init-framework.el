@@ -189,7 +189,9 @@
   (define-key fw/leader-key-map (kbd "i") 'fw/toggle-interface-and-implemention)
   (define-key fw/leader-key-map (kbd "r") 'fw/switch-to-repository-file)
   (define-key fw/leader-key-map (kbd "s") 'fw/switch-to-service-file)
+  (define-key fw/leader-key-map (kbd "t") 'projectile-toggle-between-implementation-and-test)
+  (define-key fw/leader-key-map (kbd "RET") 'jh/java-try-import-class)
   (define-key fw/leader-key-map (kbd "e") 'fw/switch-to-entity-file))
-(global-set-key (kbd "M-2") 'fw/leader-key-map)
+(global-set-key (kbd "M-RET") 'fw/leader-key-map)
 
 (provide 'init-framework)
