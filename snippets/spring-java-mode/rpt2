@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: Spring Repository Interface  MES system
+# key: rpt2
+# --
+package `(jh/java-package-name)`;
+
+import org.springframework.stereotype.Repository;
+import com.avic.mti.skree.common.meta.repo.MesRepository;
+
+
+@Repository
+public interface ${1:`(jh/java-class-name)`} extends MesRepository<${1:$(jh/java-whatever-to-entity-name yas-text)}> {
+$>$0
+}

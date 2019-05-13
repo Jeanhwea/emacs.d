@@ -23,7 +23,7 @@
   (string-inflection-camelcase-function str))
 
 (defun jh/upcase (str)
-  "convert string to `FooBar' format"
+  "convert string to `FOO_BAR' format"
   (string-inflection-upcase-function str))
 
 (defun jh/kebabcase (str)
@@ -32,7 +32,7 @@
 
 (defun jh/capital-underscore (str)
   "convert string to `Foo_Bar' format"
-  (string-inflection-capital-underscore str))
+  (string-inflection-capital-underscore-function str))
 
 
 ;; -----------------------------------------------------------------------------

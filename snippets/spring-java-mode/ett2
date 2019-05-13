@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: JPA Annotation Entity in MES system
+# key: ett2
+# --
+package `(jh/java-package-name)`;
+
+import com.avic.mti.skree.common.meta.entity.MesEntity;
+import javax.persistence.*;
+
+
+@Entity
+@Table(name = "`(jh/upcase (jh/java-class-name))`")
+public class `(jh/java-class-name)` extends MesEntity {
+$0
+}
