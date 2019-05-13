@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Override annotation
+# key: or
+# --
+@Override$0
