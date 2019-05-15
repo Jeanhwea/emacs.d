@@ -6,7 +6,7 @@
     markdown-asymmetric-header t
     markdown-fontify-code-blocks-natively t
     markdown-header-scaling t
-    markdown-hide-urls t
+    markdown-hide-urls nil
     markdown-max-image-size '(640 . 480))
   ;; markdown-mode use very bad code font on my Windows machine, get rid of it
   ;; by set `markdown-code-face' to default
