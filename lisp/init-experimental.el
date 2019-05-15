@@ -49,8 +49,8 @@
 (defun grip ()
   "start a grip daemon."
   (interactive)
-  (let ((git-dir (jh/git-root-dir))
-        (filename (jh/git-file-name)))
+  (let ((git-dir (jh/git-project-root-dir-from-file))
+        (filename (jh/git-file-name-relative-to-project-root)))
     (unless filename
       (error "filename is nil"))
     (if (string-match-p ".md\\'" filename)

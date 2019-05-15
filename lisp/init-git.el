@@ -26,5 +26,27 @@
   (global-set-key (kbd "C-c b") 'bar-browse)
   (global-set-key (kbd "<f4>") 'bar-browse))
 
+;; -----------------------------------------------------------------------------
+;; some helper function with git repository
+;; -----------------------------------------------------------------------------
+(defun jh/git-project-root-dir-p (dir)
+  "Return ture if DIR is contains `.git'."
+  (file-directory-p
+    (directory-file-name
+      (expand-file-name ".git" dir))))
+
+(defun jh/git-project-root-dir (dir)
+  "Return the root directory of a git repository."
+  (if (jh/git-project-root-dir-p dir) dir
+    (unless (jh/root-dir-p dir)
+      (jh/git-project-root-dir (jh/parent-dir dir)))))
+
+(defun jh/git-project-root-dir-from-file (&optional file)
+  "Return the root directory of a git repository, which contains the FILE. `git rev-parse --show-cdup'"
+  (jh/git-project-root-dir (jh/parent-dir (or file (buffer-file-name)))))
+
+(defun jh/git-file-name-relative-to-project-root (&optional file)
+  "Return a git file name relative to git root directory."
+  (jh/relative-path (or file (buffer-file-name)) (jh/git-project-root-dir-from-file)))
 
 (provide 'init-git)
