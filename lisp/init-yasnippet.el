@@ -10,18 +10,6 @@
 ;; -----------------------------------------------------------------------------
 ;; helper function for yasnippets
 ;; -----------------------------------------------------------------------------
-(defun jh/file-name (&optional file)
-  "Return the file name without extension."
-  (setq file (or file (buffer-file-name)))
-  (file-name-nondirectory (file-name-sans-extension file)))
-
-(defun jh/parent-dir (file)
-  "Return parent directory of the FILE."
-  (unless (null file)
-    (directory-file-name
-      (file-name-directory
-        (directory-file-name (expand-file-name file))))))
-
 (defun jh/read-file-lines (file)
   "Read a file content, and put all into a list of lines."
   (with-temp-buffer
@@ -76,7 +64,7 @@
 (defun jh/java-class-name (&optional file)
   "Return the class name for java."
   (interactive)
-  (jh/pascalcase (jh/file-name file)))
+  (jh/pascalcase (jh/filename-without-extension file)))
 
 (defun jh/java-search-all-package-name (clz &optional file)
   "Return the importing java package."
