@@ -65,6 +65,13 @@
   (file-name-nondirectory
     (file-name-sans-extension (or file (buffer-file-name)))))
 
+(defun jh/read-file-content-as-lines (&optional file)
+  "Read a file content, and put all into a list of lines."
+  (let ((file (or file (buffer-file-name))))
+    (with-temp-buffer
+      (insert-file-contents file)
+      (split-string (buffer-string) "\n" t))))
+
 ;; -----------------------------------------------------------------------------
 ;; setup timer
 ;; -----------------------------------------------------------------------------

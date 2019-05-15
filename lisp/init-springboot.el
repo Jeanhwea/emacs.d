@@ -6,6 +6,13 @@
   "Return current project root dir."
   (jh/git-project-root-dir-from-file file))
 
+(defun spt/project-java-source-files (&optional file)
+  "Return a list of `*.java' files in the project."
+  (let ((dir (expand-file-name "src" (spt/project-root file))))
+    (unless (null dir) (directory-files-recursively dir "^.*\.java$"))))
+
+;; (spt/project-java-source-files "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
+
 (defun spt/flatten-dirs-list (dirs-list)
   "flatten a nested list."
   (let (value)
@@ -16,9 +23,6 @@
   "Return a list of `*.java' files."
   (directory-files-recursively dir "^.*\.java$"))
 
-(defun spt/directory-files (dirs)
-  "Return a list of interested files."
-  (spt/flatten-dirs-list (mapcar #'spt/java-files dirs)))
 
 (defun spt/file-name-to-class-name (&optional file)
   "Return the class name from a file name."
@@ -48,7 +52,7 @@
   "Return a list that contains all components in the project."
   (progn
     (clrhash spt/all-components-cache)
-    (dolist (file (spt/directory-files dirs))
+    (dolist (file (spt/project-java-source-files))
       (let ((class (spt/file-name-to-class-name file)))
         (unless (null (spt/file-name-to-entity-name file))
           (puthash class file spt/all-components-cache))))))
@@ -57,7 +61,7 @@
   "Return a list that contains all implements in the project."
   (progn
     (clrhash spt/all-implements-cache)
-    (dolist (file (spt/directory-files dirs))
+    (dolist (file (spt/project-java-source-files))
       (let ((class (spt/file-name-to-class-name file)))
         (when (string-match-p "^.*Impl$" class)
           (puthash class file spt/all-implements-cache))))))
@@ -121,9 +125,9 @@
   (interactive)
   (spt/find-file (spt/swap-interface-and-implemention (buffer-file-name))))
 
-;; (mapcar #'spt/file-name-to-class-name (spt/directory-files '("~/Code/work/avic/skree/src")))
-;; (mapcar #'spt/file-name-to-entity-name (spt/directory-files '("~/Code/work/avic/skree/src")))
-;; (spt/file-name-to-entity-name (car (spt/directory-files '("~/Code/work/avic/skree/src"))))
+;; (mapcar #'spt/file-name-to-class-name (spt/project-java-source-files '("~/Code/work/avic/skree/src")))
+;; (mapcar #'spt/file-name-to-entity-name (spt/project-java-source-files '("~/Code/work/avic/skree/src")))
+;; (spt/file-name-to-entity-name (car (spt/project-java-source-files '("~/Code/work/avic/skree/src"))))
 ;; (spt/scan-all-components '("~/Code/work/avic/skree/src"))
 ;; (spt/scan-all-implements '("~/Code/work/avic/skree/src"))
 ;; (spt/scan-all-components nil)

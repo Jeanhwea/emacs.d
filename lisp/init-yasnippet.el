@@ -10,12 +10,6 @@
 ;; -----------------------------------------------------------------------------
 ;; helper function for yasnippets
 ;; -----------------------------------------------------------------------------
-(defun jh/read-file-lines (file)
-  "Read a file content, and put all into a list of lines."
-  (with-temp-buffer
-    (insert-file-contents file)
-    (split-string (buffer-string) "\n" t)))
-
 (defun jh/java-project-source-files (&optional file)
   "Return a list of `*.java' files in the project which contains the FILE."
   (setq file (or file (buffer-file-name)))
@@ -40,7 +34,7 @@
   (let ((class-cache (make-hash-table :test 'equal)))
     (dolist (java-src-file (jh/java-project-source-files file))
       (puthash (jh/java-class-name java-src-file) (jh/java-package-name java-src-file) class-cache)
-      (dolist (ele (mapcar #'jh/extract-java-package-class (jh/read-file-lines java-src-file)))
+      (dolist (ele (mapcar #'jh/extract-java-package-class (jh/read-file-content-as-lines java-src-file)))
         (unless (null ele) (puthash (car ele) (cadr ele) class-cache))))
     class-cache))
 
@@ -48,7 +42,7 @@
   "Return ture when the class has imported to this class."
   (setq file (or file (buffer-file-name)))
   (let ((class-cache (make-hash-table :test 'equal)))
-    (dolist (ele (mapcar #'jh/extract-java-package-class (jh/read-file-lines file)))
+    (dolist (ele (mapcar #'jh/extract-java-package-class (jh/read-file-content-as-lines file)))
       (unless (null ele) (puthash (car ele) (cadr ele) class-cache)))
     (not (null (gethash clz class-cache)))))
 
