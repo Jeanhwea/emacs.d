@@ -10,42 +10,6 @@
 ;; -----------------------------------------------------------------------------
 ;; helper function for yasnippets
 ;; -----------------------------------------------------------------------------
-(defun jh/java-project-source-files (&optional file)
-  "Return a list of `*.java' files in the project which contains the FILE."
-  (setq file (or file (buffer-file-name)))
-  (let ((project-src-dir
-          (when (string-match ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?" file)
-            (expand-file-name
-              (replace-regexp-in-string
-                "/\\(main\\|test\\)/java/.*$" "" file)))))
-    (unless (null project-src-dir)
-      (directory-files-recursively project-src-dir "^.*\.java$"))))
-
-(defun jh/extract-java-package-class (line)
-  "Extract package name and class name from line."
-  (save-match-data
-    (and (string-match "^import \\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" line)
-      (setq package (match-string 1 line)
-        class (match-string 2 line))
-      (list class package))))
-
-(defun jh/read-java-imported-class (file)
-  "Read imported class in the FILES, then put them into a cache."
-  (let ((class-cache (make-hash-table :test 'equal)))
-    (dolist (java-src-file (jh/java-project-source-files file))
-      (puthash (jh/java-class-name java-src-file) (jh/java-package-name java-src-file) class-cache)
-      (dolist (ele (mapcar #'jh/extract-java-package-class (jh/read-file-content-as-lines java-src-file)))
-        (unless (null ele) (puthash (car ele) (cadr ele) class-cache))))
-    class-cache))
-
-(defun jh/java-has-imported-p (clz &optional file)
-  "Return ture when the class has imported to this class."
-  (setq file (or file (buffer-file-name)))
-  (let ((class-cache (make-hash-table :test 'equal)))
-    (dolist (ele (mapcar #'jh/extract-java-package-class (jh/read-file-content-as-lines file)))
-      (unless (null ele) (puthash (car ele) (cadr ele) class-cache)))
-    (not (null (gethash clz class-cache)))))
-
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
   (setq dir (jh/parent-dir (or file (buffer-file-name))))
@@ -59,25 +23,6 @@
   "Return the class name for java."
   (interactive)
   (jh/pascalcase (jh/filename-without-extension file)))
-
-(defun jh/java-search-all-package-name (clz &optional file)
-  "Return the importing java package."
-  (setq file (or file (buffer-file-name)))
-  (gethash clz (jh/read-java-imported-class file)))
-
-(defun jh/java-try-import-class (&optional clz)
-  "Try import class"
-  (interactive)
-  (save-buffer)
-  (setq clz (or clz (word-at-point)))
-  (setq pkg (jh/java-search-all-package-name clz))
-  (unless (or (jh/java-has-imported-p clz) (null pkg) (string-equal pkg (jh/java-package-name)))
-    (save-excursion
-      (progn
-        (beginning-of-buffer)
-        (next-line)
-        (newline)
-        (insert (format "import %s.%s;" pkg clz))))))
 
 (defun jh/java-test-case-name ()
   "Generate test case name with random time string."

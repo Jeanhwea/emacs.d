@@ -19,11 +19,6 @@
     (dolist (elt dirs-list value)
       (setq value (concatenate 'list value elt)))))
 
-(defun spt/java-files (dir)
-  "Return a list of `*.java' files."
-  (directory-files-recursively dir "^.*\.java$"))
-
-
 (defun spt/file-name-to-class-name (&optional file)
   "Return the class name from a file name."
   (jh/filename-without-extension file))
@@ -42,29 +37,85 @@
     (when (string-match-p "^.*\\(Repository\\|Service\\)$" class)
       (concat class "Impl"))))
 
-(defvar spt/all-components-cache (make-hash-table :test 'equal)
+;; -----------------------------------------------------------------------------
+;; modify file contents
+;; -----------------------------------------------------------------------------
+(defun spt/insert-import-package-statement (package class)
+  "Insert `import com.package.ClassName;'"
+  (save-excursion
+    (progn
+      (beginning-of-buffer)
+      (next-line)
+      (newline)
+      (insert (format "import %s.%s;" package class)))))
+
+;; -----------------------------------------------------------------------------
+;; extractor
+;; -----------------------------------------------------------------------------
+(defun spt/extract-java-package-class (line)
+  "Extract package name and class name from line."
+  (save-match-data
+    (and (string-match "^import \\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" line)
+      (setq package (match-string 1 line)
+        class (match-string 2 line))
+      (list class package))))
+
+(defun spt/read-imported-class-from-file (file)
+  "Read imported class in the FILE, then put them into a cache."
+  (let ((cache (make-hash-table :test 'equal)))
+    (puthash (jh/java-class-name file) (jh/java-package-name file) cache)
+    (dolist (ele (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
+      (unless (null ele) (puthash (car ele) (cadr ele) cache)))
+    cache))
+
+;; (spt/read-imported-class-from-file "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
+
+(defun spt/read-imported-class-in-project ()
+  "Read imported class in the whole project, then put them into a cache."
+  (let ((cache (make-hash-table :test 'equal)))
+    (dolist (file (spt/project-java-source-files))
+      (puthash (jh/java-class-name file) (jh/java-package-name file) cache)
+      (dolist (ele (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
+        (unless (null ele) (puthash (car ele) (cadr ele) cache))))
+    cache))
+
+(defun spt/try-import-class (&optional class)
+  "Try to import CLASS."
+  (interactive)
+  (save-buffer)
+  (let* ((clz (or class (word-at-point)))
+          (project-class-cache (spt/read-imported-class-in-project))
+          (file-class-cache (spt/read-imported-class-from-file (buffer-file-name)))
+          (pkg (gethash clz project-class-cache))
+          (file-pkg (gethash clz file-class-cache)))
+    (when (and (null file-pkg) (not (null pkg)) (not (string-equal pkg (jh/java-package-name))))
+      (spt/insert-import-package-statement pkg clz))))
+
+;; (spt/extract-java-package-class "import com.avic.Apple;")
+
+(defvar spt/component-cache (make-hash-table :test 'equal)
   "Cached all components in this project.")
 
-(defvar spt/all-implements-cache (make-hash-table :test 'equal)
+(defvar spt/implement-cache (make-hash-table :test 'equal)
   "Cached all implements in this project.")
 
 (defun spt/scan-all-components (dirs)
   "Return a list that contains all components in the project."
   (progn
-    (clrhash spt/all-components-cache)
+    (clrhash spt/component-cache)
     (dolist (file (spt/project-java-source-files))
       (let ((class (spt/file-name-to-class-name file)))
         (unless (null (spt/file-name-to-entity-name file))
-          (puthash class file spt/all-components-cache))))))
+          (puthash class file spt/component-cache))))))
 
 (defun spt/scan-all-implements (dirs)
   "Return a list that contains all implements in the project."
   (progn
-    (clrhash spt/all-implements-cache)
+    (clrhash spt/implement-cache)
     (dolist (file (spt/project-java-source-files))
       (let ((class (spt/file-name-to-class-name file)))
         (when (string-match-p "^.*Impl$" class)
-          (puthash class file spt/all-implements-cache))))))
+          (puthash class file spt/implement-cache))))))
 
 (defun spt/trans-file-name (file path formula)
   "Transfer file to given relative path, with a formula, like `%sRepository.java'."
@@ -80,7 +131,7 @@
       (unless (null entity)
         (spt/find-file
           (spt/trans-file-name
-            (gethash entity spt/all-components-cache) path formula))))))
+            (gethash entity spt/component-cache) path formula))))))
 
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
@@ -89,7 +140,7 @@
     (progn
       (spt/scan-all-components (spt/maven-project-source-dirs))
       (unless (null entity)
-        (spt/find-file (gethash entity spt/all-components-cache))))))
+        (spt/find-file (gethash entity spt/component-cache))))))
 
 (defun spt/switch-to-repository-file ()
   "Switch to repository file."
@@ -131,11 +182,11 @@
 ;; (spt/scan-all-components '("~/Code/work/avic/skree/src"))
 ;; (spt/scan-all-implements '("~/Code/work/avic/skree/src"))
 ;; (spt/scan-all-components nil)
-;; (gethash "Employee" spt/all-components-cache)
-;; (find-file (gethash "Employee" spt/all-components-cache))
-;; (spt/trans-file-name (gethash "Employee" spt/all-components-cache) "../repo" "%sRepository.java")
-;; (print spt/all-components-cache)
-;; (print spt/all-implements-cache)
+;; (gethash "Employee" spt/component-cache)
+;; (find-file (gethash "Employee" spt/component-cache))
+;; (spt/trans-file-name (gethash "Employee" spt/component-cache) "../repo" "%sRepository.java")
+;; (print spt/component-cache)
+;; (print spt/implement-cache)
 
 (defun spt/maven-project-source-dirs ()
   "Return the maven project source folder."
@@ -153,7 +204,7 @@
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
   (define-key spt/leader-key-map (kbd "t") 'projectile-toggle-between-implementation-and-test)
-  (define-key spt/leader-key-map (kbd "RET") 'jh/java-try-import-class)
+  (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class)
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file))
 (global-set-key (kbd "M-RET") 'spt/leader-key-map)
 
