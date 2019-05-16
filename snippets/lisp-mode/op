@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Optional Arguments
+# key: op
+# --
+&optional $0

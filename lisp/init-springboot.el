@@ -172,24 +172,23 @@
   (interactive)
   (spt/switch-to-component-file "../../controller" "%sController.java"))
 
-(defun spt/swap-interface-and-implemention (file)
-  "Swap interface and implemention name."
-  (let ((class (spt/file-name-to-class-name file)))
-    (cond
-      ((string-match-p "^.*Impl$" class)
-        (expand-file-name
-          (concat (replace-regexp-in-string "Impl$" "" class) ".java")
-          (jh/parent-dir (jh/parent-dir file))))
-      ((string-match-p "^.*\\(Repository\\|Service\\)$" class)
-        (expand-file-name
-          (concat class "Impl.java")
-          (expand-file-name "impl" (jh/parent-dir file))))
-      (t nil))))
-
-(defun spt/toggle-interface-and-implemention ()
-  "Toggle interface file and implemention."
+(defun spt/toggle-interface-and-implement (&optional file)
+  "Toggle interface and implement file."
   (interactive)
-  (spt/find-file (spt/swap-interface-and-implemention (buffer-file-name))))
+  (let* ((the-file (or file (buffer-file-name)))
+          (dir (jh/parent-dir the-file))
+          (class (spt/file-name-to-class-name the-file))
+          (other-file (cond
+                        ((string-match-p "^.*Impl$" class)
+                          (expand-file-name
+                            (concat (replace-regexp-in-string "Impl$" "" class) ".java")
+                            (jh/parent-dir dir)))
+                        ((string-match-p "^.*\\(Repository\\|Service\\)$" class)
+                          (expand-file-name
+                            (concat class "Impl.java")
+                            (expand-file-name "impl" dir)))
+                        (t nil))))
+    (unless (null other-file) (spt/find-file other-file))))
 
 ;; -----------------------------------------------------------------------------
 ;; key bindings
@@ -198,7 +197,7 @@
   (define-prefix-command 'spt/leader-key-map)
   (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
   (define-key spt/leader-key-map (kbd "f") 'meghanada-code-beautify)
-  (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implemention)
+  (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
   (define-key spt/leader-key-map (kbd "t") 'projectile-toggle-between-implementation-and-test)
