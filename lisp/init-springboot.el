@@ -11,7 +11,7 @@
   (let ((dir (expand-file-name "src" (spt/project-root file))))
     (unless (null dir) (directory-files-recursively dir "^.*\.java$"))))
 
-;; (spt/source-files "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
+;; (spt/source-files "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
 
 (defun spt/flatten-dirs-list (dirs-list)
   "flatten a nested list."
@@ -60,6 +60,19 @@
         class (match-string 2 line))
       (list class package))))
 
+(defun spt/extract-java-component (file)
+  "Extract package and entity name."
+  (save-match-data
+    (and (string-match ".*src/\\(main\\|test\\)/java/.*\\(entity\\|repo\\|service\\|controller\\)/\\([0-9a-zA-Z]*\\).java$" file)
+      (setq folder (match-string 1 file)
+        type (match-string 2 file)
+        class (match-string 3 file))
+      (list folder type class))))
+
+
+;; -----------------------------------------------------------------------------
+;; cache builder
+;; -----------------------------------------------------------------------------
 (defun spt/read-imported-class-from-file (file)
   "Read imported class in the FILE, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
@@ -68,7 +81,7 @@
       (unless (null ele) (puthash (car ele) (cadr ele) cache)))
     cache))
 
-;; (spt/read-imported-class-from-file "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
+;; (spt/read-imported-class-from-file "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
 
 (defun spt/read-imported-class-in-project ()
   "Read imported class in the whole project, then put them into a cache."
@@ -79,6 +92,20 @@
         (unless (null ele) (puthash (car ele) (cadr ele) cache))))
     cache))
 
+(defun spt/read-components-in-project (&optional buffile)
+  "Return a list that contains all component in the project."
+  (let ((cache (make-hash-table :test 'equal)))
+    (dolist (file (spt/source-files buffile))
+      (let ((cpnt (spt/extract-java-component file)))
+        (unless (null cpnt)
+          (puthash (caddr cpnt) file cache))))
+    cache))
+
+;; (spt/read-components-in-project "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
+
+;; -----------------------------------------------------------------------------
+;; keybind interactive function
+;; -----------------------------------------------------------------------------
 (defun spt/try-import-class (&optional class)
   "Try to import CLASS."
   (interactive)
@@ -91,32 +118,6 @@
     (when (and (null file-pkg) (not (null pkg)) (not (string-equal pkg (jh/java-package-name))))
       (spt/insert-import-package-statement pkg clz))))
 
-;; (spt/extract-java-package-class "import com.avic.Apple;")
-
-(defvar spt/component-cache (make-hash-table :test 'equal)
-  "Cached all components in this project.")
-
-(defvar spt/implement-cache (make-hash-table :test 'equal)
-  "Cached all implements in this project.")
-
-(defun spt/scan-all-components (dirs)
-  "Return a list that contains all components in the project."
-  (progn
-    (clrhash spt/component-cache)
-    (dolist (file (spt/source-files))
-      (let ((class (spt/file-name-to-class-name file)))
-        (unless (null (spt/file-name-to-entity-name file))
-          (puthash class file spt/component-cache))))))
-
-(defun spt/scan-all-implements (dirs)
-  "Return a list that contains all implements in the project."
-  (progn
-    (clrhash spt/implement-cache)
-    (dolist (file (spt/source-files))
-      (let ((class (spt/file-name-to-class-name file)))
-        (when (string-match-p "^.*Impl$" class)
-          (puthash class file spt/implement-cache))))))
-
 (defun spt/trans-file-name (file path formula)
   "Transfer file to given relative path, with a formula, like `%sRepository.java'."
   (let ((entity (spt/file-name-to-entity-name file))
@@ -125,22 +126,20 @@
 
 (defun spt/switch-to-component-file (path formula)
   "Switch to a component file in the project."
-  (let ((entity (spt/file-name-to-entity-name (buffer-file-name))))
-    (progn
-      (spt/scan-all-components (spt/maven-project-source-dirs))
-      (unless (null entity)
-        (spt/find-file
-          (spt/trans-file-name
-            (gethash entity spt/component-cache) path formula))))))
+  (let ((entity (spt/file-name-to-entity-name (buffer-file-name)))
+         (cache (spt/read-components-in-project)))
+    (unless (null entity)
+      (spt/find-file
+        (spt/trans-file-name
+          (gethash entity cache) path formula)))))
 
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
   (interactive)
-  (let ((entity (spt/file-name-to-entity-name (buffer-file-name))))
-    (progn
-      (spt/scan-all-components (spt/maven-project-source-dirs))
-      (unless (null entity)
-        (spt/find-file (gethash entity spt/component-cache))))))
+  (let ((entity (spt/file-name-to-entity-name (buffer-file-name)))
+         (cache (spt/read-components-in-project)))
+    (unless (null entity)
+      (spt/find-file (gethash entity cache)))))
 
 (defun spt/switch-to-repository-file ()
   "Switch to repository file."
@@ -179,9 +178,6 @@
 ;; (mapcar #'spt/file-name-to-class-name (spt/source-files '("~/Code/work/avic/skree/src")))
 ;; (mapcar #'spt/file-name-to-entity-name (spt/source-files '("~/Code/work/avic/skree/src")))
 ;; (spt/file-name-to-entity-name (car (spt/source-files '("~/Code/work/avic/skree/src"))))
-;; (spt/scan-all-components '("~/Code/work/avic/skree/src"))
-;; (spt/scan-all-implements '("~/Code/work/avic/skree/src"))
-;; (spt/scan-all-components nil)
 ;; (gethash "Employee" spt/component-cache)
 ;; (find-file (gethash "Employee" spt/component-cache))
 ;; (spt/trans-file-name (gethash "Employee" spt/component-cache) "../repo" "%sRepository.java")
