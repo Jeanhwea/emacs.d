@@ -69,6 +69,16 @@
         class (match-string 3 file))
       (list folder type class))))
 
+(defun spt/extract-java-entity-field (line)
+  "Extract java entity file from line."
+  (save-match-data
+    (and (string-match "^\\([\t ]+\\)private \\([0-9A-Za-z]+\\) \\([0-9A-Za-z]+\\);" line)
+      (setq type (match-string 2 line)
+        name (match-string 3 line))
+      (list type name))))
+
+;; (spt/extract-java-entity-field "  private String departmentCode; // 部门编号")
+
 
 ;; -----------------------------------------------------------------------------
 ;; cache builder
@@ -174,21 +184,6 @@
   "Toggle interface file and implemention."
   (interactive)
   (spt/find-file (spt/swap-interface-and-implemention (buffer-file-name))))
-
-;; (mapcar #'spt/file-name-to-class-name (spt/source-files '("~/Code/work/avic/skree/src")))
-;; (mapcar #'spt/file-name-to-entity-name (spt/source-files '("~/Code/work/avic/skree/src")))
-;; (spt/file-name-to-entity-name (car (spt/source-files '("~/Code/work/avic/skree/src"))))
-;; (gethash "Employee" spt/component-cache)
-;; (find-file (gethash "Employee" spt/component-cache))
-;; (spt/trans-file-name (gethash "Employee" spt/component-cache) "../repo" "%sRepository.java")
-;; (print spt/component-cache)
-;; (print spt/implement-cache)
-
-(defun spt/maven-project-source-dirs ()
-  "Return the maven project source folder."
-  (list (expand-file-name "src" (spt/project-root))))
-
-;; (spt/maven-project-source-dirs)
 
 ;; -----------------------------------------------------------------------------
 ;; key bindings
