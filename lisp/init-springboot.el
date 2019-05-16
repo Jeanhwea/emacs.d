@@ -196,6 +196,7 @@
 (progn
   (define-prefix-command 'spt/leader-key-map)
   (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
+  (define-key spt/leader-key-map (kbd "f") 'meghanada-code-beautify)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implemention)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
