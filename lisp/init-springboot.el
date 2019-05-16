@@ -77,8 +77,7 @@
         name (match-string 3 line))
       (list type name))))
 
-;; (spt/extract-java-entity-field "  private String departmentCode; // 部门编号")
-
+;; (remove-if 'null (mapcar #'spt/extract-java-entity-field (jh/read-file-content-as-lines "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/domain/entity/Employee.java")))
 
 ;; -----------------------------------------------------------------------------
 ;; cache builder
