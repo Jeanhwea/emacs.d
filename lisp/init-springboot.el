@@ -60,15 +60,6 @@
         class (match-string 2 line))
       (list class package))))
 
-(defun spt/extract-java-component (file)
-  "Extract package and entity name."
-  (save-match-data
-    (and (string-match ".*src/\\(main\\|test\\)/java/.*\\(entity\\|repo\\|service\\|controller\\)/\\([0-9a-zA-Z]*\\).java$" file)
-      (setq folder (match-string 1 file)
-        type (match-string 2 file)
-        class (match-string 3 file))
-      (list folder type class))))
-
 (defun spt/extract-java-entity-field (line)
   "Extract java entity file from line."
   (save-match-data
@@ -77,7 +68,14 @@
         name (match-string 3 line))
       (list type name))))
 
-;; (remove-if 'null (mapcar #'spt/extract-java-entity-field (jh/read-file-content-as-lines "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/domain/entity/Employee.java")))
+(defun spt/extract-java-component (file)
+  "Extract package and entity name."
+  (save-match-data
+    (and (string-match ".*src/\\(main\\|test\\)/java/.*\\(entity\\|repo\\|service\\|controller\\)/\\([0-9a-zA-Z]*\\).java$" file)
+      (setq folder (match-string 1 file)
+        type (match-string 2 file)
+        class (match-string 3 file))
+      (list folder type class))))
 
 ;; -----------------------------------------------------------------------------
 ;; cache builder
@@ -111,6 +109,15 @@
     cache))
 
 ;; (spt/read-components-in-project "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
+
+(defun spt/read-field-in-entity-class (file)
+  "Read all field and type in a entity class."
+  (let ((cache (make-hash-table :test 'equal)))
+    (dolist (fld (mapcar #'spt/extract-java-entity-field (jh/read-file-content-as-lines file)))
+      (unless (null fld) (puthash (cadr fld) (car fld) cache)))
+    cache))
+
+;; (spt/read-field-in-entity-class "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/domain/entity/Employee.java")
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
