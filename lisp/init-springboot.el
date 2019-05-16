@@ -172,6 +172,17 @@
   (interactive)
   (spt/switch-to-component-file "../../controller" "%sController.java"))
 
+(defun spt/format-java-source-code ()
+  "format java source file code."
+  (interactive)
+  (save-excursion
+    (meghanada-code-beautify)))
+
+(defun spt/toggle-test-and-source ()
+  "toggle between implementation and test."
+  (interactive)
+  (projectile-toggle-between-implementation-and-test))
+
 (defun spt/toggle-interface-and-implement (&optional file)
   "Toggle interface and implement file."
   (interactive)
@@ -208,14 +219,14 @@
 (progn
   (define-prefix-command 'spt/leader-key-map)
   (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
-  (define-key spt/leader-key-map (kbd "f") 'meghanada-code-beautify)
+  (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
+  (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
   (define-key spt/leader-key-map (kbd "j") 'spt/jump-to-entity-field)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
-  (define-key spt/leader-key-map (kbd "t") 'projectile-toggle-between-implementation-and-test)
-  (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class)
-  (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file))
+  (define-key spt/leader-key-map (kbd "t") 'spt/toggle-test-and-source)
+  (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class))
 (global-set-key (kbd "M-RET") 'spt/leader-key-map)
 
 (provide 'init-springboot)
