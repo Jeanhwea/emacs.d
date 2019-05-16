@@ -40,6 +40,14 @@
       "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"
       "" whatever)))
 
+(defun jh/java-controller-base-url-mapping (ctrl)
+  "Return a url mapping from name."
+  (let ((entity (jh/java-whatever-to-entity-name ctrl)))
+    (concat "/"
+      (mapconcat 'identity
+        (mapcar #'(lambda (x) (concat x "s"))
+          (split-string (jh/kebabcase entity) "-")) "/"))))
+
 (defun jh/java-implement-name-to-interface-name (name)
   "Convert `*Impl' to `*'"
   (interactive)
