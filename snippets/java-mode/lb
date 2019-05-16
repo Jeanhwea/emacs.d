@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Lambda Function
+# key: lb
+# --
+($1) -> $0
