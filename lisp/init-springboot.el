@@ -190,6 +190,18 @@
                         (t nil))))
     (unless (null other-file) (spt/find-file other-file))))
 
+(defun spt/jump-to-entity-field (&optional file)
+  "jump to entity field."
+  (interactive)
+  (when (string-match-p "^.*/entity/.*.java$" (or file (buffer-file-name)))
+    (let* ((cache (spt/read-field-in-entity-class file))
+            (fields (hash-table-keys cache))
+            (field (completing-read "jump to > " fields))
+            (regexp (format "private %s %s;" (gethash field cache) field)))
+      (progn
+        (beginning-of-buffer)
+        (re-search-forward regexp nil)))))
+
 ;; -----------------------------------------------------------------------------
 ;; key bindings
 ;; -----------------------------------------------------------------------------
@@ -198,6 +210,7 @@
   (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
   (define-key spt/leader-key-map (kbd "f") 'meghanada-code-beautify)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
+  (define-key spt/leader-key-map (kbd "j") 'spt/jump-to-entity-field)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
   (define-key spt/leader-key-map (kbd "t") 'projectile-toggle-between-implementation-and-test)
