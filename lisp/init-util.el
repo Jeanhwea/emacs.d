@@ -35,6 +35,56 @@
   "convert string to `Foo_Bar' format"
   (string-inflection-capital-underscore-function str))
 
+(defvar noun-cache (make-hash-table :test 'equal)
+  "store all noun in english.")
+
+(defun jh/noun-p (word)
+  "Return ture if the WORD is a noun."
+  (unless (gethash "apple" noun-cache)
+    (let ((noun-file (expand-file-name "lang/nouns.txt" user-emacs-directory)))
+      (dolist (line (jh/read-file-content-as-lines noun-file))
+        (unless (null line)
+          (puthash line 't noun-cache)))))
+  (gethash word noun-cache))
+
+(defvar pluralism-rule
+  '(
+     ;; irregular words
+     ("child$" . "children")
+     ("man$" . "men")
+     ("person$" . "people")
+     ;; common rule
+     ("ch$" . "ches")
+     ("ief$" . "ieves")
+     ("ife$" . "ives")
+     ("lf$" . "lves")
+     ("sh$" . "shes")
+     ("ss$" . "sses")
+     ("um" . "a")
+     ("\\([^aeiou]\\)y$" . "\\1ies")
+     ("[aeiou]y$" . "\\&s")
+     ;; default append "s"
+     ("[^s]$" . "\\&s"))
+  "Define the rule of pluralizing noun.")
+
+(defun jh/pluralize-cond-test (re str)
+  (let ((is-lower (equal (downcase re) re)))
+    (let ((case-fold-search is-lower))
+      (string-match re str))))
+
+(defun jh/pluralize (noun)
+  "Return a plural of NOUN."
+  (when (jh/noun-p noun)
+    (let ((plural-replace
+            (assoc-default noun pluralism-rule 'jh/pluralize-cond-test)))
+      (if (null plural-replace) noun
+        (replace-match plural-replace t nil noun)))))
+
+;; (jh/pluralize "bus")
+;; (jh/pluralize "city")
+;; (jh/pluralize "boy")
+
+
 ;; -----------------------------------------------------------------------------
 ;; file and directory helper
 ;; -----------------------------------------------------------------------------
@@ -46,7 +96,6 @@
   "Return a relative path of FILE to DIR."
   (let ((absolute-file (jh/absolute-path file))
          (absolute-dir (concat (jh/absolute-path dir) "/")))
-    (message absolute-dir)
     (replace-regexp-in-string absolute-dir "" absolute-file)))
 
 (defun jh/parent-dir (dir)

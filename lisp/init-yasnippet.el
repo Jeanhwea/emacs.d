@@ -45,7 +45,7 @@
   (let ((entity (jh/java-whatever-to-entity-name ctrl)))
     (concat "/"
       (mapconcat 'identity
-        (mapcar #'(lambda (x) (concat x "s"))
+        (mapcar #'jh/pluralize
           (split-string (jh/kebabcase entity) "-")) "/"))))
 
 (defun jh/java-implement-name-to-interface-name (name)
