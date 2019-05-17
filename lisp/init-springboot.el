@@ -175,8 +175,12 @@
 (defun spt/format-java-source-code ()
   "format java source file code."
   (interactive)
-  (save-excursion
-    (meghanada-code-beautify)))
+  (let ((prev-point (point)))
+    (progn
+      (meghanada-code-beautify)
+      (save-buffer)
+      (when (< prev-point (point-max))
+        (goto-char prev-point)))))
 
 (defun spt/toggle-test-and-source ()
   "toggle between implementation and test."
