@@ -40,14 +40,14 @@
 ;; -----------------------------------------------------------------------------
 ;; modify file contents
 ;; -----------------------------------------------------------------------------
-(defun spt/insert-import-package-statement (package class)
+(defun spt/insert-import-package-statement (pkg class)
   "Insert `import com.package.ClassName;'"
   (save-excursion
     (progn
       (beginning-of-buffer)
       (next-line)
       (newline)
-      (insert (format "import %s.%s;" package class)))))
+      (insert (format "import %s%s.%s;" (car pkg) (cadr pkg) class)))))
 
 ;; -----------------------------------------------------------------------------
 ;; extractor
@@ -55,10 +55,11 @@
 (defun spt/extract-java-package-class (line)
   "Extract package name and class name from line."
   (save-match-data
-    (and (string-match "^import \\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" line)
-      (setq package (match-string 1 line)
-        class (match-string 2 line))
-      (list class package))))
+    (and (string-match "^import \\(static \\|\\)\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" line)
+      (setq prefix (match-string 1 line)
+        package (match-string 2 line)
+        class (match-string 3 line))
+      (list class (list prefix package)))))
 
 (defun spt/extract-java-entity-field (line)
   "Extract java entity file from line."
@@ -83,7 +84,7 @@
 (defun spt/read-imported-class-from-file (file)
   "Read imported class in the FILE, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
-    (puthash (jh/java-class-name file) (jh/java-package-name file) cache)
+    (puthash (jh/java-class-name file) (list "" (jh/java-package-name file)) cache)
     (dolist (ele (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
       (unless (null ele) (puthash (car ele) (cadr ele) cache)))
     cache))
@@ -94,7 +95,7 @@
   "Read imported class in the whole project, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (file (spt/source-files))
-      (puthash (jh/java-class-name file) (jh/java-package-name file) cache)
+      (puthash (jh/java-class-name file) (list "" (jh/java-package-name file)) cache)
       (dolist (ele (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
         (unless (null ele) (puthash (car ele) (cadr ele) cache))))
     cache))
@@ -131,7 +132,10 @@
           (file-class-cache (spt/read-imported-class-from-file (buffer-file-name)))
           (pkg (gethash clz project-class-cache))
           (file-pkg (gethash clz file-class-cache)))
-    (when (and (null file-pkg) (not (null pkg)) (not (string-equal pkg (jh/java-package-name))))
+    (when (and
+            (null file-pkg)
+            (not (null pkg))
+            (not (string-equal (cadr pkg) (jh/java-package-name))))
       (spt/insert-import-package-statement pkg clz))))
 
 (defun spt/trans-file-name (file path formula)
