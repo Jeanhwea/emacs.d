@@ -173,7 +173,7 @@
   (spt/switch-to-component-file "../../controller" "%sController.java"))
 
 (defun spt/format-java-source-code ()
-  "format java source file code."
+  "Format java source file code."
   (interactive)
   (let ((prev-point (point)))
     (progn
@@ -183,7 +183,7 @@
         (goto-char prev-point)))))
 
 (defun spt/toggle-test-and-source ()
-  "toggle between implementation and test."
+  "Toggle between implementation and test."
   (interactive)
   (projectile-toggle-between-implementation-and-test))
 
