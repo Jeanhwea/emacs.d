@@ -179,8 +179,8 @@
     (progn
       (meghanada-code-beautify)
       (save-buffer)
-      (when (< prev-point (point-max))
-        (goto-char prev-point)))))
+      (let ((new-point (if (< prev-point (point-max)) prev-point (point-max))))
+        (goto-char new-point)))))
 
 (defun spt/toggle-test-and-source ()
   "Toggle between implementation and test."
