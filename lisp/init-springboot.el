@@ -153,6 +153,19 @@
         (spt/trans-file-name
           (gethash entity cache) path formula)))))
 
+;; -----------------------------------------------------------------------------
+;; 控制器包项目组织的结构
+;; -----------------------------------------------------------------------------
+;;
+;; - module (业务模块包)
+;;   +- controller (控制器类包)
+;;   +- domain (问题模型包)
+;;     +- entity (实体类包)
+;;     +- repo (仓库类包)
+;;       +- impl (仓库实现类包)
+;;   +- service (服务类包)
+;;     +- impl (服务实现类包)
+
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
   (interactive)
