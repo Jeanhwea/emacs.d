@@ -16,7 +16,7 @@
     :keybinding "d")
 
   (defengine bing
-    "https://cn.bing.com/search?ensearch=1&q=%s"
+    "https://cn.bing.com/search?q=%s"
     :keybinding "b")
 
   (defengine npm
