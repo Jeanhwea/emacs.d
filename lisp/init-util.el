@@ -53,6 +53,7 @@
      ("child$" . "children")
      ("man$" . "men")
      ("person$" . "people")
+     ("tooth$" . "teeth")
      ;; common rule
      ("ch$" . "ches")
      ("ief$" . "ieves")
