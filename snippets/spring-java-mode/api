@@ -2,7 +2,7 @@
 # name: API controller method
 # key: api
 # --
-@RequestMapping(value = "/{id}", method = RequestMethod.${1:$$(yas-choose-value '("GET" "POST" "PUT" "DELETE"))})
-public ${2:$$(yas-choose-value '("String" "Map<String, Object>" "List<Object>"))} ${1:$(jh/camelcase yas-text)}`(jh/java-whatever-to-entity-name (jh/java-class-name))`(@PathVariable long id) {
+@${1:$$(yas-choose-value '("Get" "Post" "Put" "Delete"))}Mapping("/{id}")
+public ${2:$$(yas-choose-value '("void" "String" "Map<String, Object>" "List<Object>"))} ${1:$(jh/camelcase yas-text)}`(jh/java-whatever-to-entity-name (jh/java-class-name))`(@PathVariable long id) {
 $>return null;
 }
