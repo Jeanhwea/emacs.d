@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: jsonPath
+# key: jp
+# --
+.andExpect(jsonPath($0))
