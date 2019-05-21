@@ -2,4 +2,4 @@
 # name: RequestParam Annotation
 # key: rp
 # --
-@RequestParam(name = "${1:page}", defaultValue = "") $0
+@RequestParam(name = "$1", defaultValue = "") String ${1:code}$0
