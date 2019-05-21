@@ -164,8 +164,6 @@
           (puthash (caddr cpnt) file cache))))
     cache))
 
-;; (spt/read-components-in-project "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
-
 (defun spt/read-field-in-entity-class (file)
   "Read all field and type in a entity class."
   (let ((cache (make-hash-table :test 'equal)))
@@ -173,17 +171,29 @@
       (unless (null fld) (puthash (cadr fld) (car fld) cache)))
     cache))
 
-(defun spt/controller-p (file)
+(defun spt/controller? (file)
   "Return ture if FILE is a controller."
   (not (null (string-match-p "^.*/controller/[0-9a-zA-Z]*\\.java$" file))))
 
-(defun spt/api-name-p (func)
+(defun spt/entity? (file)
+  "Return ture if FILE is a entity."
+  (not (null (string-match-p "^.*/entity/[0-9a-zA-Z]*\\.java$" file))))
+
+(defun spt/testcase? (file)
+  "Return ture if FILE is a entity."
+  (not (null (string-match-p "^.*/src/test/java/.*/[0-9a-zA-Z]*Test\\.java$" file))))
+
+(defun spt/implement? (file)
+  "Return ture if FILE is a implement."
+  (not (null (string-match-p "^.*/impl/[0-9a-zA-Z]*Impl\\.java$" file))))
+
+(defun spt/apiname? (func)
   "Return ture if func is a api name."
   (not (null (string-match-p "^\\(get\\|post\\|put\\|delete\\)" func))))
 
 (defun spt/read-java-controller-module-base (file)
   "read the base url in a java controller file."
-  (when (spt/controller-p file)
+  (when (spt/controller? file)
     (let*
       ((lines (jh/read-file-content-as-lines file))
         (module (car (remove-if 'null (mapcar #'spt/extract-java-controller-module lines))))
@@ -224,6 +234,24 @@
           (base (cadr (split-string (cadr module-base) "/"))))
     (expand-file-name (format "doc/%s/%s/%s.md" module base func) (spt/project-root file))))
 
+(defun spt/trans-test-and-source (&optional file)
+  "Transfer file between test and source."
+  (let ((file (or file (buffer-file-name))))
+    (if (spt/testcase? file)
+        (replace-regexp-in-string "Test\\.java$" ".java"
+          (replace-regexp-in-string "src/test/java" "src/main/java" file))
+        (replace-regexp-in-string "\\.java$" "Test.java"
+          (replace-regexp-in-string "src/main/java" "src/test/java" file)))))
+
+(defun spt/trans-impl-and-inter (&optional file)
+  "Transfer file between implementation and interface."
+  (let ((file (or file (buffer-file-name))))
+    (if (spt/implement? file)
+      (replace-regexp-in-string "/impl/" "/"
+        (replace-regexp-in-string "Impl\\.java$" ".java" file))
+      (replace-regexp-in-string "/\\([_A-Za-z][_A-Za-z0-9]*\\.java\\)$" "/impl/\\1"
+        (replace-regexp-in-string "\\.java$" "Impl.java" file)))))
+
 ;; (spt/trans-doc-markdown-file "getEmployeesLevelsList" "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeLevelController.java")
 
 ;; -----------------------------------------------------------------------------
@@ -233,10 +261,8 @@
   "Switch to a component file in the project."
   (let ((entity (spt/file-name-to-entity-name (buffer-file-name)))
          (cache (spt/read-components-in-project)))
-    (unless (null entity)
-      (spt/find-file
-        (spt/trans-file-name
-          (gethash entity cache) path formula)))))
+    (or (null entity) (spt/testcase? (buffer-file-name))
+      (spt/find-file (spt/trans-file-name (gethash entity cache) path formula)))))
 
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
@@ -266,7 +292,7 @@
   (interactive)
   (let ((file (buffer-file-name))
          (func (thing-at-point 'symbol)))
-    (and (spt/controller-p file) (spt/api-name-p func)
+    (and (spt/controller? file) (spt/apiname? func)
       (spt/find-file (spt/trans-doc-markdown-file func file)))))
 
 (defun spt/format-java-source-code ()
@@ -282,11 +308,9 @@
 (defun spt/toggle-test-and-source ()
   "Toggle between implementation and test."
   (interactive)
-  (let ((file (if (string-match-p "Impl\\.java$" (buffer-file-name))
-                (replace-regexp-in-string "Impl\\.java$" ".java$" (buffer-file-name))
-                (buffer-file-name))))
-    (spt/find-file
-      (projectile-find-implementation-or-test file))))
+  (let* ((buffile (buffer-file-name))
+          (file (if (spt/implement? buffile) (spt/trans-impl-and-inter buffile) buffile)))
+    (spt/find-file (spt/trans-test-and-source file))))
 
 (defun spt/toggle-interface-and-implement (&optional file)
   "Toggle interface and implement file."
@@ -294,22 +318,14 @@
   (let* ((the-file (or file (buffer-file-name)))
           (dir (jh/parent-dir the-file))
           (class (spt/file-name-to-class-name the-file))
-          (other-file (cond
-                        ((string-match-p "^.*Impl$" class)
-                          (expand-file-name
-                            (concat (replace-regexp-in-string "Impl$" "" class) ".java")
-                            (jh/parent-dir dir)))
-                        ((string-match-p "^.*\\(Repository\\|Service\\)$" class)
-                          (expand-file-name
-                            (concat class "Impl.java")
-                            (expand-file-name "impl" dir)))
-                        (t nil))))
-    (unless (null other-file) (spt/find-file other-file))))
+          (other-file (spt/trans-impl-and-inter the-file)))
+    (and (not (spt/testcase? the-file)) (spt/find-file other-file))))
 
 (defun spt/jump-to-entity-field (&optional file)
   "jump to entity field."
   (interactive)
-  (when (string-match-p "^.*/entity/.*\\.java$" (or file (buffer-file-name)))
+  (setq file (or file (buffer-file-name)))
+  (when (spt/entity? file)
     (let* ((cache (spt/read-field-in-entity-class file))
             (fields (hash-table-keys cache))
             (field (completing-read "jump to > " fields))
