@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: RequestParam Annotation
+# key: rp
+# --
+@RequestParam(name = "${1:page}", defaultValue = "") $0
