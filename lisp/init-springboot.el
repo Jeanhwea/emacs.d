@@ -238,7 +238,11 @@
 (defun spt/toggle-test-and-source ()
   "Toggle between implementation and test."
   (interactive)
-  (projectile-toggle-between-implementation-and-test))
+  (let ((file (if (string-match-p "Impl.java$" (buffer-file-name))
+                (replace-regexp-in-string "Impl.java$" ".java$" (buffer-file-name))
+                (buffer-file-name))))
+    (spt/find-file
+      (projectile-find-implementation-or-test file))))
 
 (defun spt/toggle-interface-and-implement (&optional file)
   "Toggle interface and implement file."
