@@ -118,6 +118,21 @@
       (setq module (match-string 1 line))
       module)))
 
+(defun spt/extract-java-method (line)
+  "Extract java method signature."
+  (save-match-data
+    (and (string-match "^[ \t]*\\(public static\\|public\\|private\\|\\)[ \t]+\\([^(]+\\)[ \t]+\\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
+      (setq prefix (match-string 1 line)
+        return (match-string 2 line)
+        func (match-string 3 line))
+      (list prefix return func))))
+
+;; (remove-if 'null (mapcar #'spt/extract-java-method (jh/read-file-content-as-lines "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/domain/entity/Department.java")))
+;; (remove-if 'null (mapcar #'spt/extract-java-method (jh/read-file-content-as-lines "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/DepartmentService.java")))
+;; (remove-if 'null (mapcar #'spt/extract-java-method (jh/read-file-content-as-lines "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeController.java")))
+;; (remove-if 'null (mapcar #'spt/extract-java-method (jh/read-file-content-as-lines "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/common/config/GitConfiguration.java")))
+
+
 ;; -----------------------------------------------------------------------------
 ;; cache builder
 ;; -----------------------------------------------------------------------------
