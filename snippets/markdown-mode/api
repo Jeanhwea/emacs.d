@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: API Document Template
+# key: api
+# --
+## $0
+
+### 说明
+
+### 参数
+无
+
+### 示例

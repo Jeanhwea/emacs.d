@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Parameters Table
+# key: param
+# --
+| 名称 | 类型 | 默认值 | 含义 |
+|-$0
