@@ -35,7 +35,7 @@
 (defun spt/source-files (&optional file)
   "Return a list of `*.java' files in the project."
   (let ((dir (expand-file-name "src" (spt/project-root file))))
-    (unless (null dir) (directory-files-recursively dir "^.*\.java$"))))
+    (unless (null dir) (directory-files-recursively dir "^.*\\.java$"))))
 
 ;; (spt/source-files "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")
 
@@ -98,7 +98,7 @@
 (defun spt/extract-java-component (file)
   "Extract package and entity name."
   (save-match-data
-    (and (string-match ".*src/\\(main\\|test\\)/java/.*\\(entity\\|repo\\|service\\|controller\\)/\\([0-9a-zA-Z]*\\).java$" file)
+    (and (string-match ".*src/\\(main\\|test\\)/java/.*\\(entity\\|repo\\|service\\|controller\\)/\\([0-9a-zA-Z]*\\)\\.java$" file)
       (setq folder (match-string 1 file)
         type (match-string 2 file)
         class (match-string 3 file))
@@ -158,16 +158,24 @@
       (unless (null fld) (puthash (cadr fld) (car fld) cache)))
     cache))
 
-(defun spt/read-java-controller-base-module (file)
+(defun spt/controller-p (file)
+  "Return ture if FILE is a controller."
+  (not (null (string-match-p "^.*/controller/[0-9a-zA-Z]*\\.java$" file))))
+
+(defun spt/api-name-p (func)
+  "Return ture if func is a api name."
+  (not (null (string-match-p "^\\(get\\|post\\|put\\|delete\\)" func))))
+
+(defun spt/read-java-controller-module-base (file)
   "read the base url in a java controller file."
-  (when (string-match-p ".*/controller/\\([0-9a-zA-Z]*\\)Controller.java$" file)
+  (when (spt/controller-p file)
     (let*
       ((lines (jh/read-file-content-as-lines file))
-        (base (car (remove-if 'null (mapcar #'spt/extract-java-controller-base lines))))
-        (module (car (remove-if 'null (mapcar #'spt/extract-java-controller-module lines)))))
-      (unless (or (null base) (null module)) (list module base)))))
+        (module (car (remove-if 'null (mapcar #'spt/extract-java-controller-module lines))))
+        (base (car (remove-if 'null (mapcar #'spt/extract-java-controller-base lines)))))
+      (unless (or (null module) (null base)) (list module base)))))
 
-;; (spt/read-java-controller-base-module "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeLevelController.java")
+;; (spt/read-java-controller-module-base "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeLevelController.java")
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
@@ -193,6 +201,19 @@
          (folder (expand-file-name path (jh/parent-dir file))))
     (expand-file-name (replace-regexp-in-string "%s" entity formula) folder)))
 
+(defun spt/trans-doc-markdown-file (func &optional file)
+  "Transfer file to document file."
+  (let* ((file (or file (buffer-file-name)))
+          (module-base (spt/read-java-controller-module-base file))
+          (module (car module-base))
+          (base (cadr (split-string (cadr module-base) "/"))))
+    (expand-file-name (format "doc/%s/%s/%s.md" module base func) (spt/project-root file))))
+
+;; (spt/trans-doc-markdown-file "getEmployeesLevelsList" "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeLevelController.java")
+
+;; -----------------------------------------------------------------------------
+;; switch to file functions
+;; -----------------------------------------------------------------------------
 (defun spt/switch-to-component-file (path formula)
   "Switch to a component file in the project."
   (let ((entity (spt/file-name-to-entity-name (buffer-file-name)))
@@ -225,6 +246,14 @@
   (interactive)
   (spt/switch-to-component-file "../../controller" "%sController.java"))
 
+(defun spt/switch-to-controller-api-doc ()
+  "Switch to controller api document file."
+  (interactive)
+  (let ((file (buffer-file-name))
+         (func (thing-at-point 'symbol)))
+    (and (spt/controller-p file) (spt/api-name-p func)
+      (spt/find-file (spt/trans-doc-markdown-file func file)))))
+
 (defun spt/format-java-source-code ()
   "Format java source file code."
   (interactive)
@@ -238,8 +267,8 @@
 (defun spt/toggle-test-and-source ()
   "Toggle between implementation and test."
   (interactive)
-  (let ((file (if (string-match-p "Impl.java$" (buffer-file-name))
-                (replace-regexp-in-string "Impl.java$" ".java$" (buffer-file-name))
+  (let ((file (if (string-match-p "Impl\\.java$" (buffer-file-name))
+                (replace-regexp-in-string "Impl\\.java$" ".java$" (buffer-file-name))
                 (buffer-file-name))))
     (spt/find-file
       (projectile-find-implementation-or-test file))))
@@ -265,7 +294,7 @@
 (defun spt/jump-to-entity-field (&optional file)
   "jump to entity field."
   (interactive)
-  (when (string-match-p "^.*/entity/.*.java$" (or file (buffer-file-name)))
+  (when (string-match-p "^.*/entity/.*\\.java$" (or file (buffer-file-name)))
     (let* ((cache (spt/read-field-in-entity-class file))
             (fields (hash-table-keys cache))
             (field (completing-read "jump to > " fields))
@@ -280,6 +309,7 @@
 (progn
   (define-prefix-command 'spt/leader-key-map)
   (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
+  (define-key spt/leader-key-map (kbd "d") 'spt/switch-to-controller-api-doc)
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
   (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
