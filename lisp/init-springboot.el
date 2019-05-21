@@ -78,6 +78,20 @@
         class (match-string 3 file))
       (list folder type class))))
 
+(defun spt/extract-java-controller-base (line)
+  "Extract spring boot controller base url and more."
+  (save-match-data
+    (and (string-match "^@RequestMapping\(\"\\([^\"]*\\)\"\)$" line)
+      (setq base (match-string 1 line))
+      base)))
+
+(defun spt/extract-java-controller-module (line)
+  "Extract spring boot controller module name."
+  (save-match-data
+    (and (string-match "^package .*\\.\\([^.]*\\)\\.controller;$" line)
+      (setq module (match-string 1 line))
+      module)))
+
 ;; -----------------------------------------------------------------------------
 ;; cache builder
 ;; -----------------------------------------------------------------------------
@@ -118,7 +132,16 @@
       (unless (null fld) (puthash (cadr fld) (car fld) cache)))
     cache))
 
-;; (spt/read-field-in-entity-class "e:/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/domain/entity/Employee.java")
+(defun spt/read-java-controller-base-module (file)
+  "read the base url in a java controller file."
+  (when (string-match-p ".*/controller/\\([0-9a-zA-Z]*\\)Controller.java$" file)
+    (let*
+      ((lines (jh/read-file-content-as-lines file))
+        (base (car (remove-if 'null (mapcar #'spt/extract-java-controller-base lines))))
+        (module (car (remove-if 'null (mapcar #'spt/extract-java-controller-module lines)))))
+      (unless (or (null base) (null module)) (list module base)))))
+
+;; (spt/read-java-controller-base-module "~/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/controller/EmployeeLevelController.java")
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
