@@ -39,7 +39,7 @@
   (when (spt/testcase? file)
     (let* ((source-file (spt/trans-test-and-source file))
             (methods (remove-if 'null (mapcar #'spt/extract-java-method (jh/read-file-content-as-lines source-file))))
-            (methods-names (mapcar 'caddr methods)))
+            (methods-names (remove-duplicates (mapcar 'caddr methods) :test 'equal)))
       (mapcar #'(lambda (name) (concat "test" (jh/pascalcase name) (format-time-string "%H%M%S"))) methods-names))))
 
 (defun jh/java-whatever-to-entity-name (whatever)
