@@ -97,14 +97,14 @@
 ;; -----------------------------------------------------------------------------
 ;; Operators
 ;; -----------------------------------------------------------------------------
-(defun spt/insert-import-package-statement (pkg class)
+(defun spt/insert-import-package-statement (prefix package class)
   "Insert `import com.package.ClassName;'"
   (save-excursion
     (progn
       (beginning-of-buffer)
       (next-line)
       (newline)
-      (insert (format "import %s%s.%s;" (car pkg) (cadr pkg) class)))))
+      (insert (format "import %s%s.%s;" prefix package class)))))
 
 ;; -----------------------------------------------------------------------------
 ;; Extractors
@@ -116,7 +116,7 @@
       (setq prefix (match-string 1 line)
         package (match-string 2 line)
         class (match-string 3 line))
-      (list class (list prefix package)))))
+      (list prefix package class))))
 
 (defun spt/extract-java-entity-field (line)
   "Extract java entity file from line."
@@ -165,8 +165,10 @@
   "Read imported class in the FILE, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
     (puthash (jh/java-class-name file) (list "" (jh/java-package-name file)) cache)
-    (dolist (ele (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
-      (unless (null ele) (puthash (car ele) (cadr ele) cache)))
+    (dolist (val (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
+      (unless (null val)
+        (let ((prefix (car val)) (package (cadr val)) (class (caddr val)))
+          (puthash class (list prefix package) cache))))
     cache))
 
 (defun spt/build-imported-class-in-project ()
@@ -174,8 +176,10 @@
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (file (spt/source-files))
       (puthash (jh/java-class-name file) (list "" (jh/java-package-name file)) cache)
-      (dolist (ele (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
-        (unless (null ele) (puthash (car ele) (cadr ele) cache))))
+      (dolist (val (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
+        (unless (null val)
+          (let ((prefix (car val)) (package (cadr val)) (class (caddr val)))
+            (puthash class (list prefix package) cache)))))
     cache))
 
 (defun spt/build-components-in-project (&optional buffile)
@@ -233,10 +237,10 @@
   "Transfer file between test and source."
   (let ((file (or file (buffer-file-name))))
     (if (spt/testcase? file)
-        (replace-regexp-in-string "Test\\.java$" ".java"
-          (replace-regexp-in-string "src/test/java" "src/main/java" file))
-        (replace-regexp-in-string "\\.java$" "Test.java"
-          (replace-regexp-in-string "src/main/java" "src/test/java" file)))))
+      (replace-regexp-in-string "Test\\.java$" ".java"
+        (replace-regexp-in-string "src/test/java" "src/main/java" file))
+      (replace-regexp-in-string "\\.java$" "Test.java"
+        (replace-regexp-in-string "src/main/java" "src/test/java" file)))))
 
 (defun spt/trans-impl-and-inter (&optional file)
   "Transfer file between implementation and interface."
@@ -257,13 +261,14 @@
   (let* ((clz (or class (word-at-point)))
           (project-class-cache (spt/build-imported-class-in-project))
           (file-class-cache (spt/build-imported-class-from-file (buffer-file-name)))
-          (pkg (gethash clz project-class-cache))
+          (prefix-package (gethash clz project-class-cache))
           (file-pkg (gethash clz file-class-cache)))
     (when (and
             (null file-pkg)
-            (not (null pkg))
-            (not (string-equal (cadr pkg) (jh/java-package-name))))
-      (spt/insert-import-package-statement pkg clz))))
+            (not (null prefix-package))
+            (not (string-equal (cadr prefix-package) (jh/java-package-name))))
+      (let ((pre (car prefix-package)) (pkg (cadr prefix-package)))
+        (spt/insert-import-package-statement pre pkg clz)))))
 
 (defun spt/switch-to-component-file (path formula)
   "Switch to a component file in the project."
