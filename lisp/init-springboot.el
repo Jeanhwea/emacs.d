@@ -126,15 +126,6 @@
         name (match-string 3 line))
       (list type name))))
 
-(defun spt/extract-java-component (file)
-  "Extract package and entity name."
-  (save-match-data
-    (and (string-match ".*src/\\(main\\|test\\)/java/.*\\(entity\\|repo\\|service\\|controller\\)/\\([0-9a-zA-Z]*\\)\\.java$" file)
-      (setq folder (match-string 1 file)
-        type (match-string 2 file)
-        class (match-string 3 file))
-      (list folder type class))))
-
 (defun spt/extract-java-controller-base (line)
   "Extract spring boot controller base url and more."
   (save-match-data
@@ -161,7 +152,7 @@
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
 ;; -----------------------------------------------------------------------------
-(defun spt/build-imported-class-from-file (file)
+(defun spt/cache-of-imported-class-in-file (file)
   "Read imported class in the FILE, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
     (puthash (jh/java-class-name file) (list "" (jh/java-package-name file)) cache)
@@ -171,7 +162,7 @@
           (puthash class (list prefix package) cache))))
     cache))
 
-(defun spt/build-imported-class-in-project ()
+(defun spt/cache-of-imported-class-in-project ()
   "Read imported class in the whole project, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (file (spt/source-files))
@@ -182,16 +173,17 @@
             (puthash class (list prefix package) cache)))))
     cache))
 
-(defun spt/build-components-in-project (&optional buffile)
+(defun spt/cache-of-files-in-project-if (pred &optional file)
   "Return a list that contains all component in the project."
-  (let ((cache (make-hash-table :test 'equal)))
-    (dolist (file (spt/source-files buffile))
-      (let ((cpnt (spt/extract-java-component file)))
-        (unless (null cpnt)
-          (puthash (caddr cpnt) file cache))))
+  (let ((cache (make-hash-table :test 'equal))
+         (cpnt-files (remove-if-not pred
+                       (spt/source-files (or file (buffer-file-name))))))
+    (dolist (cpnt cpnt-files)
+      (puthash (jh/filename-without-extension cpnt) cpnt cache))
     cache))
+;; (spt/cache-of-files-in-project-if 'spt/entity? tmpfile)
 
-(defun spt/build-field-in-entity-class (file)
+(defun spt/cache-of-fields-in-entity (file)
   "Read all field and type in a entity class."
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (fld (mapcar #'spt/extract-java-entity-field (jh/read-file-content-as-lines file)))
@@ -259,8 +251,8 @@
   (interactive)
   (save-buffer)
   (let* ((clz (or class (word-at-point)))
-          (project-class-cache (spt/build-imported-class-in-project))
-          (file-class-cache (spt/build-imported-class-from-file (buffer-file-name)))
+          (project-class-cache (spt/cache-of-imported-class-in-project))
+          (file-class-cache (spt/cache-of-imported-class-in-file (buffer-file-name)))
           (prefix-package (gethash clz project-class-cache))
           (file-pkg (gethash clz file-class-cache)))
     (when (and
@@ -273,7 +265,7 @@
 (defun spt/switch-to-component-file (path formula)
   "Switch to a component file in the project."
   (let ((entity (spt/file-to-entity (buffer-file-name)))
-         (cache (spt/build-components-in-project)))
+         (cache (spt/cache-of-files-in-project-if 'spt/component? (buffer-file-name))))
     (or (null entity) (spt/testcase? (buffer-file-name))
       (spt/find-file (spt/trans-file-name (gethash entity cache) path formula)))))
 
@@ -281,7 +273,7 @@
   "Switch to entity file."
   (interactive)
   (let ((entity (spt/file-to-entity (buffer-file-name)))
-         (cache (spt/build-components-in-project)))
+         (cache (spt/cache-of-files-in-project-if 'spt/entity? (buffer-file-name))))
     (unless (null entity)
       (spt/find-file (gethash entity cache)))))
 
@@ -337,7 +329,7 @@
   (interactive)
   (setq file (or file (buffer-file-name)))
   (when (spt/entity? file)
-    (let* ((cache (spt/build-field-in-entity-class file))
+    (let* ((cache (spt/cache-of-fields-in-entity file))
             (fields (hash-table-keys cache))
             (field (completing-read "jump to > " fields))
             (regexp (format "private %s %s;" (gethash field cache) field)))
