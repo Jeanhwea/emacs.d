@@ -71,4 +71,14 @@
     (if (string-match-p "^.*Impl$" name) name
       (concat name "Impl"))))
 
+(defun jh/java-repository-name-list (&optional file)
+  "Get all repository names in the project."
+  (when (spt/maven-project? (or file (buffer-file-name)))
+    (hash-table-keys (spt/cache-of-files-in-project-if 'spt/repository? file))))
+
+(defun jh/java-service-name-list (&optional file)
+  "Get all service names in the project."
+  (when (spt/maven-project? (or file (buffer-file-name)))
+    (hash-table-keys (spt/cache-of-files-in-project-if 'spt/service? file))))
+
 (provide 'init-yasnippet)

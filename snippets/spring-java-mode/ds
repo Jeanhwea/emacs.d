@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Define a service
+# key: ds
+# --
+${1:`(yas-choose-value (jh/java-service-name-list))`} ${1:$(jh/camelcase yas-text)}$0
