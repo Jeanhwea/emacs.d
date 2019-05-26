@@ -100,7 +100,7 @@
     (file-exists-p (expand-file-name "pom.xml" root))))
 
 ;; -----------------------------------------------------------------------------
-;; Operators
+;; Modifiers
 ;; -----------------------------------------------------------------------------
 (defun spt/insert-import-package-statement (prefix package class)
   "Insert `import com.package.ClassName;'"
@@ -154,6 +154,15 @@
         func (match-string 3 line))
       (list prefix return func))))
 
+(defun spt/extract-java-controller-module-base (file)
+  "read the base url in a java controller file."
+  (when (spt/controller? file)
+    (let*
+      ((lines (jh/read-file-content-as-lines file))
+        (module (car (remove-if 'null (mapcar #'spt/extract-java-controller-module lines))))
+        (base (car (remove-if 'null (mapcar #'spt/extract-java-controller-base lines)))))
+      (unless (or (null module) (null base)) (list module base)))))
+
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
 ;; -----------------------------------------------------------------------------
@@ -194,42 +203,11 @@
     (dolist (fld (mapcar #'spt/extract-java-entity-field (jh/read-file-content-as-lines file)))
       (unless (null fld) (puthash (cadr fld) (car fld) cache)))
     cache))
+;; (spt/cache-of-fields-in-entity tmpfile)
 
 ;; -----------------------------------------------------------------------------
-;; Readers
+;; Transfer file to others
 ;; -----------------------------------------------------------------------------
-(defun spt/read-java-controller-module-base (file)
-  "read the base url in a java controller file."
-  (when (spt/controller? file)
-    (let*
-      ((lines (jh/read-file-content-as-lines file))
-        (module (car (remove-if 'null (mapcar #'spt/extract-java-controller-module lines))))
-        (base (car (remove-if 'null (mapcar #'spt/extract-java-controller-base lines)))))
-      (unless (or (null module) (null base)) (list module base)))))
-
-(defun spt/read-component-in-project (predictor file)
-  "Read file with given PREDICTOR."
-  (remove-if-not predictor (spt/source-files file)))
-
-;; (spt/read-component-in-project #'spt/controller? tmpfile)
-
-;; -----------------------------------------------------------------------------
-;; Transfer file to other
-;; -----------------------------------------------------------------------------
-(defun spt/trans-file-name (file path formula)
-  "Transfer file to given relative path, with a formula, like `%sRepository.java'."
-  (let ((entity (spt/file-to-entity file))
-         (folder (expand-file-name path (jh/parent-dir file))))
-    (expand-file-name (replace-regexp-in-string "%s" entity formula) folder)))
-
-(defun spt/trans-doc-markdown-file (func &optional file)
-  "Transfer file to document file."
-  (let* ((file (or file (buffer-file-name)))
-          (module-base (spt/read-java-controller-module-base file))
-          (module (car module-base))
-          (base (cadr (split-string (cadr module-base) "/"))))
-    (expand-file-name (format "doc/%s/%s/%s.md" module base func) (spt/project-root file))))
-
 (defun spt/trans-test-and-source (&optional file)
   "Transfer file between test and source."
   (let ((file (or file (buffer-file-name))))
@@ -247,6 +225,20 @@
         (replace-regexp-in-string "Impl\\.java$" ".java" file))
       (replace-regexp-in-string "/\\([_A-Za-z][_A-Za-z0-9]*\\.java\\)$" "/impl/\\1"
         (replace-regexp-in-string "\\.java$" "Impl.java" file)))))
+
+(defun spt/trans-file-name (file path formula)
+  "Transfer file to given relative path, with a formula, like `%sRepository.java'."
+  (let ((entity (spt/file-to-entity file))
+         (folder (expand-file-name path (jh/parent-dir file))))
+    (expand-file-name (replace-regexp-in-string "%s" entity formula) folder)))
+
+(defun spt/trans-doc-markdown-file (func &optional file)
+  "Transfer file to document file."
+  (let* ((file (or file (buffer-file-name)))
+          (module-base (spt/extract-java-controller-module-base file))
+          (module (car module-base))
+          (base (cadr (split-string (cadr module-base) "/"))))
+    (expand-file-name (format "doc/%s/%s/%s.md" module base func) (spt/project-root file))))
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
