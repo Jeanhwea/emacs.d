@@ -94,6 +94,11 @@
   "Return ture if func is a api name."
   (not (null (string-match-p "^\\(get\\|post\\|put\\|delete\\)" func))))
 
+(defun spt/maven-project? ()
+  "Return ture if current project is a maven project."
+  (let ((root (spt/project-root (buffer-file-name))))
+    (file-exists-p (expand-file-name "pom.xml" root))))
+
 ;; -----------------------------------------------------------------------------
 ;; Operators
 ;; -----------------------------------------------------------------------------
