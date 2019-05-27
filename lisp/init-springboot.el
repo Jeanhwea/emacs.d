@@ -33,6 +33,21 @@
   "Return current project root dir."
   (jh/git-project-root-dir-from-file file))
 
+(defun spt/module-root (&optional file)
+  "Return the root dir of module."
+  (cond
+    ((spt/controller? file)
+      (expand-file-name ".." (jh/parent-dir file)))
+    ((spt/service? file)
+      (expand-file-name ".." (jh/parent-dir file)))
+    ((and (spt/implement? file) (string-match-p ".*/service/.*" file))
+      (expand-file-name "../.." (jh/parent-dir file)))
+    ((spt/entity? file)
+      (expand-file-name "../.." (jh/parent-dir file)))
+    ((spt/repository? file)
+      (expand-file-name "../.." (jh/parent-dir file)))
+    nil))
+
 (defun spt/source-files (&optional file)
   "Return a list of `*.java' files in the project."
   (let ((dir (expand-file-name "src" (spt/project-root file))))
@@ -259,35 +274,40 @@
       (let ((pre (car prefix-package)) (pkg (cadr prefix-package)))
         (spt/insert-import-package-statement pre pkg clz)))))
 
-(defun spt/switch-to-component-file (path formula)
-  "Switch to a component file in the project."
-  (let ((entity (spt/file-to-entity (buffer-file-name)))
-         (cache (spt/cache-of-files-in-project-if 'spt/component? (buffer-file-name))))
-    (or (null entity) (spt/testcase? (buffer-file-name))
-      (spt/find-file (spt/trans-file-name (gethash entity cache) path formula)))))
+;; (defun spt/switch-to-component-file (path formula)
+;;   "Switch to a component file in the project."
+;;   (let ((entity (spt/file-to-entity (buffer-file-name)))
+;;          (cache (spt/cache-of-files-in-project-if 'spt/component? (buffer-file-name))))
+;;     (or (null entity) (spt/testcase? (buffer-file-name))
+;;       (spt/find-file (spt/trans-file-name (gethash entity cache) path formula)))))
 
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
   (interactive)
   (let ((entity (spt/file-to-entity (buffer-file-name)))
-         (cache (spt/cache-of-files-in-project-if 'spt/entity? (buffer-file-name))))
-    (unless (null entity)
-      (spt/find-file (gethash entity cache)))))
+         (base (spt/module-root (buffer-file-name))))
+    (spt/find-file (format "%s/domain/entity/%s.java" base entity))))
 
 (defun spt/switch-to-repository-file ()
   "Switch to repository file."
   (interactive)
-  (spt/switch-to-component-file "../repo" "%sRepository.java"))
+  (let ((entity (spt/file-to-entity (buffer-file-name)))
+         (base (spt/module-root (buffer-file-name))))
+    (spt/find-file (format "%s/domain/repo/%sRepository.java" base entity))))
 
 (defun spt/switch-to-service-file ()
   "Switch to service file."
   (interactive)
-  (spt/switch-to-component-file "../../service" "%sService.java"))
+  (let ((entity (spt/file-to-entity (buffer-file-name)))
+         (base (spt/module-root (buffer-file-name))))
+    (spt/find-file (format "%s/service/%sService.java" base entity))))
 
 (defun spt/switch-to-controller-file ()
   "Switch to controller file."
   (interactive)
-  (spt/switch-to-component-file "../../controller" "%sController.java"))
+  (let ((entity (spt/file-to-entity (buffer-file-name)))
+         (base (spt/module-root (buffer-file-name))))
+    (spt/find-file (format "%s/controller/%sController.java" base entity))))
 
 (defun spt/switch-to-controller-api-doc ()
   "Switch to controller api document file."

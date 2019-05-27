@@ -7,6 +7,7 @@ package `(jh/java-package-name)`;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class `(jh/java-class-name)` {
 $>@Autowired
 $>private MockMvc mvc;
 
-$>@Test
-$>public void `(jh/java-test-case-name)`() throws Exception {
+$>@Before
+$>public void setup() throws Exception {
 $>$>${1:this.mvc.perform(get("/")).andExpect(status().isOk());}$0
 $>}
 
