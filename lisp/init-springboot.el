@@ -33,6 +33,20 @@
   "Return current project root dir."
   (jh/git-project-root-dir-from-file file))
 
+(defun spt/app-root (&optional file)
+  "Return current source root dir."
+  (let ((sources (spt/source-files (or file (buffer-file-name))))
+         (result))
+    (dolist (source sources result)
+      (unless (null (string-match-p ".*Application\\.java$" source))
+        (setq result (jh/parent-dir source))))
+    result))
+
+(defun spt/doc-root (&optional file)
+  "Return current source root dir."
+  (let ((root (spt/project-root file)))
+    (expand-file-name "doc" root)))
+
 (defun spt/module-root (&optional file)
   "Return the root dir of module."
   (cond
