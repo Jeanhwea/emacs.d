@@ -284,36 +284,44 @@
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
   (interactive)
-  (let ((entity (spt/file-to-entity (buffer-file-name)))
-         (base (spt/module-root (buffer-file-name))))
-    (spt/find-file (format "%s/domain/entity/%s.java" base entity))))
+  (let* ((file (buffer-file-name))
+          (entity (spt/file-to-entity file))
+          (base (spt/module-root file)))
+    (when (spt/component? file)
+      (spt/find-file (format "%s/domain/entity/%s.java" base entity)))))
 
 (defun spt/switch-to-repository-file ()
   "Switch to repository file."
   (interactive)
-  (let ((entity (spt/file-to-entity (buffer-file-name)))
-         (base (spt/module-root (buffer-file-name))))
-    (spt/find-file (format "%s/domain/repo/%sRepository.java" base entity))))
+  (let* ((file (buffer-file-name))
+          (entity (spt/file-to-entity file))
+          (base (spt/module-root file)))
+    (when (spt/component? file)
+      (spt/find-file (format "%s/domain/repo/%sRepository.java" base entity)))))
 
 (defun spt/switch-to-service-file ()
   "Switch to service file."
   (interactive)
-  (let ((entity (spt/file-to-entity (buffer-file-name)))
-         (base (spt/module-root (buffer-file-name))))
-    (spt/find-file (format "%s/service/%sService.java" base entity))))
+  (let* ((file (buffer-file-name))
+          (entity (spt/file-to-entity file))
+          (base (spt/module-root file)))
+    (when (spt/component? file)
+      (spt/find-file (format "%s/service/%sService.java" base entity)))))
 
 (defun spt/switch-to-controller-file ()
   "Switch to controller file."
   (interactive)
-  (let ((entity (spt/file-to-entity (buffer-file-name)))
-         (base (spt/module-root (buffer-file-name))))
-    (spt/find-file (format "%s/controller/%sController.java" base entity))))
+  (let* ((file (buffer-file-name))
+          (entity (spt/file-to-entity file))
+          (base (spt/module-root file)))
+    (when (spt/component? file)
+      (spt/find-file (format "%s/controller/%sController.java" base entity)))))
 
 (defun spt/switch-to-controller-api-doc ()
   "Switch to controller api document file."
   (interactive)
-  (let ((file (buffer-file-name))
-         (func (thing-at-point 'symbol)))
+  (let* ((file (buffer-file-name))
+          (func (thing-at-point 'symbol)))
     (and (spt/controller? file) (spt/apiname? func)
       (spt/find-file (spt/trans-doc-markdown-file func file)))))
 
