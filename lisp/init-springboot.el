@@ -241,12 +241,6 @@
       (replace-regexp-in-string "/\\([_A-Za-z][_A-Za-z0-9]*\\.java\\)$" "/impl/\\1"
         (replace-regexp-in-string "\\.java$" "Impl.java" file)))))
 
-(defun spt/trans-file-name (file path formula)
-  "Transfer file to given relative path, with a formula, like `%sRepository.java'."
-  (let ((entity (spt/file-to-entity file))
-         (folder (expand-file-name path (jh/parent-dir file))))
-    (expand-file-name (replace-regexp-in-string "%s" entity formula) folder)))
-
 (defun spt/trans-doc-markdown-file (func &optional file)
   "Transfer file to document file."
   (let* ((file (or file (buffer-file-name)))
@@ -273,13 +267,6 @@
             (not (string-equal (cadr prefix-package) (jh/java-package-name))))
       (let ((pre (car prefix-package)) (pkg (cadr prefix-package)))
         (spt/insert-import-package-statement pre pkg clz)))))
-
-;; (defun spt/switch-to-component-file (path formula)
-;;   "Switch to a component file in the project."
-;;   (let ((entity (spt/file-to-entity (buffer-file-name)))
-;;          (cache (spt/cache-of-files-in-project-if 'spt/component? (buffer-file-name))))
-;;     (or (null entity) (spt/testcase? (buffer-file-name))
-;;       (spt/find-file (spt/trans-file-name (gethash entity cache) path formula)))))
 
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
