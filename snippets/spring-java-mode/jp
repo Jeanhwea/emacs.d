@@ -2,4 +2,4 @@
 # name: jsonPath
 # key: jp
 # --
-.andExpect(jsonPath($0))
+jsonPath($0)

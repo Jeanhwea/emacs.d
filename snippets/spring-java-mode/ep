@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: andExpect
+# key: ep
+# --
+.andExpect($0)
