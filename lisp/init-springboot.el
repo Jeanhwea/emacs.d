@@ -159,20 +159,6 @@
         name (match-string 3 line))
       (list type name))))
 
-(defun spt/extract-java-controller-base (line)
-  "Extract spring boot controller base url and more."
-  (save-match-data
-    (and (string-match "^@RequestMapping\(\"\\([^\"]*\\)\"\)$" line)
-      (setq base (match-string 1 line))
-      base)))
-
-(defun spt/extract-java-controller-module (line)
-  "Extract spring boot controller module name."
-  (save-match-data
-    (and (string-match "^package .*\\.\\([^.]*\\)\\.controller;$" line)
-      (setq module (match-string 1 line))
-      module)))
-
 (defun spt/extract-java-public-method (line)
   "Extract java method signature."
   (save-match-data
@@ -181,6 +167,20 @@
         return (match-string 2 line)
         func (match-string 3 line))
       (list prefix return func))))
+
+(defun spt/extract-java-controller-module (line)
+  "Extract spring boot controller module name."
+  (save-match-data
+    (and (string-match "^package .*\\.\\([^.]*\\)\\.controller;$" line)
+      (setq module (match-string 1 line))
+      module)))
+
+(defun spt/extract-java-controller-base (line)
+  "Extract spring boot controller base url and more."
+  (save-match-data
+    (and (string-match "^@RequestMapping\(\"\\([^\"]*\\)\"\)$" line)
+      (setq base (match-string 1 line))
+      base)))
 
 (defun spt/extract-java-controller-api (text)
   "Extract all api information in controller."
