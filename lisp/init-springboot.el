@@ -23,28 +23,29 @@
 ;;       - readme.md
 ;;       - {get|post|put|delete}FunctionName.md (控制器函数名称)
 ;;
-
-;; (setq tmpfile (expand-file-name (concat (if (jh/windows?) "e:" "~") "/Code/work/avic/skree/src/main/java/com/avic/mti/skree/user/service/EmployeeService.java")))
+;; -----------------------------------------------------------------------------
 
 ;; -----------------------------------------------------------------------------
 ;; Helpers
 ;; -----------------------------------------------------------------------------
 (defun spt/project-root ()
   "Return current project root dir."
-  (jh/git-project-root-dir default-directory))
+  (let ((dir (jh/git-project-root-dir default-directory)))
+    (when (spt/maven-project?) dir)))
 
 (defun spt/app-root ()
   "Return current source root dir."
   (let ((dirs
           (remove-if-not
-            #'(lambda (dir) (file-exists-p (expand-file-name "Application.java" dir)))
+            (lambda (dir) (file-exists-p (expand-file-name "Application.java" dir)))
             (jh/directory-sequence default-directory))))
     (unless (null dirs) (car dirs))))
 
 (defun spt/doc-root ()
-  "Return current source root dir."
-  (let ((root (spt/project-root)))
-    (file-name-as-directory (expand-file-name "doc" root))))
+  "Return current document root dir."
+  (let* ((dir (spt/project-root))
+          (doc (file-name-as-directory (expand-file-name "doc" dir))))
+    (when (file-exists-p doc) doc)))
 
 (defun spt/module-root (file)
   "Return the root dir of module."
@@ -63,21 +64,16 @@
 (defun spt/source-files ()
   "Return a list of `*.java' files in the project."
   (let ((dir (expand-file-name "src" (spt/project-root))))
-    (unless (null dir) (directory-files-recursively dir "^.*\\.java$"))))
+    (when (file-directory-p dir)
+      (directory-files-recursively dir "^.*\\.java$"))))
 
 (defun spt/find-file (file)
   "Open a FILE."
   (find-file file))
 
-(defun spt/flatten-dirs-list (dirs-list)
-  "flatten a nested list."
-  (let (value)
-    (dolist (elt dirs-list value)
-      (setq value (concatenate 'list value elt)))))
-
 (defun spt/file-to-entity (file)
   "Return the entity name from a file name."
-  (let ((class (jh/filename-without-extension file))
+  (let ((class (jh/java-class-name file))
          (re "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"))
     (when (spt/component? file)
       (replace-regexp-in-string re "" class))))
@@ -123,8 +119,9 @@
 
 (defun spt/maven-project? ()
   "Return ture if current project is a maven project."
-  (let ((root (spt/project-root)))
-    (file-exists-p (expand-file-name "pom.xml" root))))
+  (file-exists-p
+    (expand-file-name "pom.xml"
+      (jh/git-project-root-dir default-directory))))
 
 ;; -----------------------------------------------------------------------------
 ;; Modifiers
@@ -133,8 +130,12 @@
   "Insert `import com.package.ClassName;'"
   (save-excursion
     (progn
-      (beginning-of-buffer)
-      (next-line)
+      (end-of-buffer)
+      (unless (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" nil t)
+        (progn
+          (beginning-of-buffer)
+          (next-line)))
+      (end-of-line)
       (newline)
       (insert (format "import %s%s.%s;" prefix package class)))))
 
@@ -193,83 +194,78 @@
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
 ;; -----------------------------------------------------------------------------
-(defun spt/cache-of-imported-class-in-file (file)
+(defun spt/cache-of-imported-class (file)
   "Read imported class in the FILE, then put them into a cache."
-  (let ((cache (make-hash-table :test 'equal)))
-    (puthash (jh/java-class-name file) (list "" (jh/java-package-name file)) cache)
-    (dolist (val (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
+  (let ((cache (make-hash-table :test 'equal))
+         (values (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file))))
+    (dolist (val values)
       (unless (null val)
         (let ((prefix (car val)) (package (cadr val)) (class (caddr val)))
           (puthash class (list prefix package) cache))))
     cache))
 
-(defun spt/cache-of-imported-class-in-project ()
+(defun spt/cache-of-all-imported-class ()
   "Read imported class in the whole project, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (file (spt/source-files))
       (puthash (jh/java-class-name file) (list "" (jh/java-package-name file)) cache)
-      (dolist (val (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file)))
-        (unless (null val)
-          (let ((prefix (car val)) (package (cadr val)) (class (caddr val)))
-            (puthash class (list prefix package) cache)))))
+      (maphash (lambda (k v) (puthash k v cache)) (spt/cache-of-imported-class file)))
     cache))
 
 (defun spt/cache-of-class-in-project-if (pred)
   "Return a list that contains all component in the project."
   (let ((cache (make-hash-table :test 'equal))
-         (cpnt-files (remove-if-not pred (spt/source-files))))
-    (dolist (cpnt cpnt-files)
-      (puthash (jh/filename-without-extension cpnt) cpnt cache))
+         (files (remove-if-not pred (spt/source-files))))
+    (dolist (file files)
+      (puthash (jh/java-class-name file) file cache))
     cache))
-;; (spt/cache-of-class-in-project-if 'spt/entity?)
 
-(defun spt/cache-of-fields-in-entity (file)
+(defun spt/cache-of-fields (file)
   "Read all field and type in a entity class."
-  (let ((cache (make-hash-table :test 'equal)))
-    (dolist (fld (mapcar #'spt/extract-java-entity-field (jh/read-file-content-as-lines file)))
-      (unless (null fld) (puthash (cadr fld) (car fld) cache)))
+  (let ((cache (make-hash-table :test 'equal))
+         (fields (mapcar #'spt/extract-java-entity-field (jh/read-file-content-as-lines file))))
+    (dolist (field fields)
+      (unless (null field)
+        (let ((name (cadr field)) (type (car field)))
+          (puthash name type cache))))
     cache))
-;; (spt/cache-of-fields-in-entity tmpfile)
 
 ;; -----------------------------------------------------------------------------
 ;; Transfer file to others
 ;; -----------------------------------------------------------------------------
-(defun spt/trans-test-and-source (&optional file)
+(defun spt/trans-test-and-source (file)
   "Transfer file between test and source."
-  (let ((file (or file (buffer-file-name))))
-    (if (spt/testcase? file)
-      (replace-regexp-in-string "Test\\.java$" ".java"
-        (replace-regexp-in-string "src/test/java" "src/main/java" file))
-      (replace-regexp-in-string "\\.java$" "Test.java"
-        (replace-regexp-in-string "src/main/java" "src/test/java" file)))))
+  (if (spt/testcase? file)
+    (replace-regexp-in-string "Test\\.java$" ".java"
+      (replace-regexp-in-string "src/test/java" "src/main/java" file))
+    (replace-regexp-in-string "\\.java$" "Test.java"
+      (replace-regexp-in-string "src/main/java" "src/test/java" file))))
 
-(defun spt/trans-impl-and-inter (&optional file)
+(defun spt/trans-impl-and-inter (file)
   "Transfer file between implementation and interface."
-  (let ((file (or file (buffer-file-name))))
-    (if (spt/implement? file)
-      (replace-regexp-in-string "/impl/" "/"
-        (replace-regexp-in-string "Impl\\.java$" ".java" file))
-      (replace-regexp-in-string "/\\([_A-Za-z][_A-Za-z0-9]*\\.java\\)$" "/impl/\\1"
-        (replace-regexp-in-string "\\.java$" "Impl.java" file)))))
+  (if (spt/implement? file)
+    (replace-regexp-in-string "/impl/" "/"
+      (replace-regexp-in-string "Impl\\.java$" ".java" file))
+    (replace-regexp-in-string "/\\([_A-Za-z][_A-Za-z0-9]*\\.java\\)$" "/impl/\\1"
+      (replace-regexp-in-string "\\.java$" "Impl.java" file))))
 
-(defun spt/trans-doc-markdown-file (func &optional file)
+(defun spt/trans-doc-markdown-file (func file)
   "Transfer file to document file."
-  (let* ((file (or file (buffer-file-name)))
-          (module-base (spt/extract-java-controller-module-base file))
+  (let* ((module-base (spt/extract-java-controller-module-base file))
           (module (car module-base))
           (base (cadr (split-string (cadr module-base) "/"))))
-    (expand-file-name (format "doc/%s/%s/%s.md" module base func) (spt/project-root))))
+    (expand-file-name (format "%s/%s/%s.md" module base func) (spt/doc-root))))
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
 ;; -----------------------------------------------------------------------------
-(defun spt/try-import-class (&optional class)
+(defun spt/try-import-class ()
   "Try to import CLASS."
   (interactive)
   (save-buffer)
-  (let* ((clz (or class (word-at-point)))
-          (project-class-cache (spt/cache-of-imported-class-in-project))
-          (file-class-cache (spt/cache-of-imported-class-in-file (buffer-file-name)))
+  (let* ((clz (word-at-point))
+          (project-class-cache (spt/cache-of-all-imported-class))
+          (file-class-cache (spt/cache-of-imported-class (buffer-file-name)))
           (prefix-package (gethash clz project-class-cache))
           (file-pkg (gethash clz file-class-cache)))
     (when (and
@@ -347,12 +343,11 @@
           (other-file (spt/trans-impl-and-inter the-file)))
     (and (not (spt/testcase? the-file)) (spt/find-file other-file))))
 
-(defun spt/jump-to-entity-field (&optional file)
+(defun spt/jump-to-entity-field ()
   "jump to entity field."
   (interactive)
-  (setq file (or file (buffer-file-name)))
-  (when (spt/entity? file)
-    (let* ((cache (spt/cache-of-fields-in-entity file))
+  (when (spt/entity? (buffer-file-name))
+    (let* ((cache (spt/cache-of-fields (buffer-file-name)))
             (fields (hash-table-keys cache))
             (field (completing-read "jump to > " fields))
             (regexp (format "private %s %s;" (gethash field cache) field)))
