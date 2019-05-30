@@ -35,12 +35,15 @@
 (defun jh/java-test-case-name-list ()
   "Generate test case name list."
   (interactive)
-  (setq file (buffer-file-name))
-  (when (spt/testcase? file)
-    (let* ((source-file (spt/trans-test-and-source file))
-            (methods (remove-if 'null (mapcar #'spt/extract-java-method (jh/read-file-content-as-lines source-file))))
+  (when (spt/testcase? (buffer-file-name))
+    (let* ((source-file (spt/trans-test-and-source (buffer-file-name)))
+            (methods (remove-if 'null
+                       (mapcar #'spt/extract-java-public-method
+                         (jh/read-file-content-as-lines source-file))))
             (methods-names (remove-duplicates (mapcar 'caddr methods) :test 'equal)))
-      (mapcar #'(lambda (name) (concat "test" (jh/pascalcase name) (format-time-string "%H%M%S"))) methods-names))))
+      (mapcar (lambda (name)
+                (concat "test" (jh/pascalcase name) (format-time-string "%H%M%S")))
+        methods-names))))
 
 (defun jh/java-whatever-to-entity-name (whatever)
   "Convert `*RepositoryImpl', `*Service' ... to `*'."

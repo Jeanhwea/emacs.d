@@ -181,10 +181,10 @@
         name (match-string 2 line))
       (list type name))))
 
-(defun spt/extract-java-method (line)
+(defun spt/extract-java-public-method (line)
   "Extract java method signature."
   (save-match-data
-    (and (string-match "^[ \t]*\\(public static\\|public\\|private\\|\\)[ \t]+\\([^(]+\\)[ \t]+\\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
+    (and (string-match "^  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
       (setq prefix (match-string 1 line)
         return (match-string 2 line)
         func (match-string 3 line))
