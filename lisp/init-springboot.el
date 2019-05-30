@@ -321,26 +321,30 @@
 (defun spt/format-java-source-code ()
   "Format java source file code."
   (interactive)
-  (let ((prev-point (point)))
-    (progn
-      (meghanada-code-beautify)
-      (save-buffer)
-      (let ((new-point (if (< prev-point (point-max)) prev-point (point-max))))
-        (goto-char new-point)))))
+  (let ((file (buffer-file-name))
+         (prev-point (point)))
+    (when (string-match-p "\\.java$" file)
+      (progn
+        (meghanada-code-beautify)
+        (save-buffer)
+        (if (> prev-point (point-max))
+          (goto-char (point-max))
+          (goto-char prev-point))))))
 
 (defun spt/toggle-test-and-source ()
   "Toggle between implementation and test."
   (interactive)
-  (let* ((buffile (buffer-file-name))
-          (file (if (spt/implement? buffile) (spt/trans-impl-and-inter buffile) buffile)))
-    (spt/find-file (spt/trans-test-and-source file))))
+  (let ((file (buffer-file-name)))
+    (if (spt/implement? file)
+      (spt/find-file (spt/trans-test-and-source (spt/trans-impl-and-inter file)))
+      (spt/find-file (spt/trans-test-and-source file)))))
 
 (defun spt/toggle-interface-and-implement ()
   "Toggle interface and implement file."
   (interactive)
-  (let* ((the-file (buffer-file-name))
-          (other-file (spt/trans-impl-and-inter the-file)))
-    (and (not (spt/testcase? the-file)) (spt/find-file other-file))))
+  (let ((file (buffer-file-name))
+         (other-file (spt/trans-impl-and-inter (buffer-file-name))))
+    (unless (spt/testcase? file) (spt/find-file other-file))))
 
 (defun spt/jump-to-entity-field ()
   "jump to entity field."
