@@ -173,6 +173,14 @@
       (setq module (match-string 1 line))
       module)))
 
+(defun spt/extract-java-controller-api (line)
+  "Extract api function in controller."
+  (save-match-data
+    (and (string-match "^  public \\([^(]+\\)[ \t]+\\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
+      (setq type (match-string 1 line)
+        name (match-string 2 line))
+      (list type name))))
+
 (defun spt/extract-java-method (line)
   "Extract java method signature."
   (save-match-data
@@ -182,14 +190,19 @@
         func (match-string 3 line))
       (list prefix return func))))
 
-(defun spt/extract-java-controller-module-base (file)
+(defun spt/extract-java-controller-info (file)
   "read the base url in a java controller file."
   (when (spt/controller? file)
     (let*
       ((lines (jh/read-file-content-as-lines file))
-        (module (car (remove-if 'null (mapcar #'spt/extract-java-controller-module lines))))
-        (base (car (remove-if 'null (mapcar #'spt/extract-java-controller-base lines)))))
-      (unless (or (null module) (null base)) (list module base)))))
+        (module (car (remove-if 'null
+                       (mapcar #'spt/extract-java-controller-module lines))))
+        (full (car (remove-if 'null
+                     (mapcar #'spt/extract-java-controller-base lines))))
+        (api (remove-if 'null
+               (mapcar #'spt/extract-java-controller-api lines)))
+        (base (cadr (split-string full "/"))))
+      (unless (or (null module) (null base)) (list module base full file api)))))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -197,7 +210,8 @@
 (defun spt/cache-of-imported-class (file)
   "Read imported class in the FILE, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal))
-         (values (mapcar #'spt/extract-java-package-class (jh/read-file-content-as-lines file))))
+         (values (mapcar #'spt/extract-java-package-class
+                   (jh/read-file-content-as-lines file))))
     (dolist (val values)
       (unless (null val)
         (let ((prefix (car val)) (package (cadr val)) (class (caddr val)))
@@ -208,8 +222,13 @@
   "Read imported class in the whole project, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (file (spt/source-files))
-      (puthash (jh/java-class-name file) (list "" (jh/java-package-name file)) cache)
-      (maphash (lambda (k v) (puthash k v cache)) (spt/cache-of-imported-class file)))
+      (puthash
+        (jh/java-class-name file)
+        (list "" (jh/java-package-name file))
+        cache)
+      (maphash
+        (lambda (k v) (puthash k v cache))
+        (spt/cache-of-imported-class file)))
     cache))
 
 (defun spt/cache-of-class-in-project-if (pred)
@@ -223,7 +242,8 @@
 (defun spt/cache-of-fields (file)
   "Read all field and type in a entity class."
   (let ((cache (make-hash-table :test 'equal))
-         (fields (mapcar #'spt/extract-java-entity-field (jh/read-file-content-as-lines file))))
+         (fields (mapcar #'spt/extract-java-entity-field
+                   (jh/read-file-content-as-lines file))))
     (dolist (field fields)
       (unless (null field)
         (let ((name (cadr field)) (type (car field)))
@@ -252,10 +272,12 @@
 (defun spt/trans-doc-markdown-file (func file)
   "Transfer file to document file."
   (if (spt/controller? file)
-    (let* ((module-base (spt/extract-java-controller-module-base file))
-            (module (car module-base))
-            (base (cadr (split-string (cadr module-base) "/"))))
-      (expand-file-name (format "%s/%s/%s.md" module base func) (spt/doc-root)))))
+    (let* ((info (spt/extract-java-controller-info file))
+            (module (car info))
+            (base (cadr info)))
+      (expand-file-name
+        (format "%s/%s/%s.md" module base func)
+        (spt/doc-root)))))
 
 (defun spt/trans-module-file (formula file)
   "Transfer file to absolute path."
