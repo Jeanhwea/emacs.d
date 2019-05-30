@@ -139,6 +139,15 @@
       (newline)
       (insert (format "import %s%s.%s;" prefix package class)))))
 
+(defun go ()
+  "Go to api."
+  (interactive)
+  (let ((regex
+          (concat
+            "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
+            "  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$")))
+    (search-forward-regexp regex nil t)))
+
 ;; -----------------------------------------------------------------------------
 ;; Extractors
 ;; -----------------------------------------------------------------------------
