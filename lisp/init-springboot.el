@@ -29,25 +29,24 @@
 ;; -----------------------------------------------------------------------------
 ;; Helpers
 ;; -----------------------------------------------------------------------------
-(defun spt/project-root (&optional file)
+(defun spt/project-root ()
   "Return current project root dir."
   (jh/git-project-root-dir default-directory))
 
-(defun spt/app-root (&optional file)
+(defun spt/app-root ()
   "Return current source root dir."
-  (let ((sources (spt/source-files (or file (buffer-file-name))))
-         (result))
-    (dolist (source sources result)
-      (unless (null (string-match-p ".*Application\\.java$" source))
-        (setq result (jh/parent-dir source))))
-    result))
+  (let ((dirs
+          (remove-if-not
+            #'(lambda (dir) (file-exists-p (expand-file-name "Application.java" dir)))
+            (jh/directory-sequence default-directory))))
+    (unless (null dirs) (car dirs))))
 
-(defun spt/doc-root (&optional file)
+(defun spt/doc-root ()
   "Return current source root dir."
-  (let ((root (spt/project-root file)))
-    (expand-file-name "doc" root)))
+  (let ((root (spt/project-root)))
+    (file-name-as-directory (expand-file-name "doc" root))))
 
-(defun spt/module-root (&optional file)
+(defun spt/module-root (file)
   "Return the root dir of module."
   (cond
     ((spt/controller? file)
@@ -59,12 +58,11 @@
     ((spt/entity? file)
       (expand-file-name "../.." (jh/parent-dir file)))
     ((spt/repository? file)
-      (expand-file-name "../.." (jh/parent-dir file)))
-    nil))
+      (expand-file-name "../.." (jh/parent-dir file)))))
 
-(defun spt/source-files (&optional file)
+(defun spt/source-files ()
   "Return a list of `*.java' files in the project."
-  (let ((dir (expand-file-name "src" (spt/project-root file))))
+  (let ((dir (expand-file-name "src" (spt/project-root))))
     (unless (null dir) (directory-files-recursively dir "^.*\\.java$"))))
 
 (defun spt/find-file (file)
@@ -123,9 +121,9 @@
   "Return ture if func is a api name."
   (not (null (string-match-p "^\\(get\\|post\\|put\\|delete\\)" func))))
 
-(defun spt/maven-project? (&optional file)
+(defun spt/maven-project? ()
   "Return ture if current project is a maven project."
-  (let ((root (spt/project-root (or file (buffer-file-name)))))
+  (let ((root (spt/project-root)))
     (file-exists-p (expand-file-name "pom.xml" root))))
 
 ;; -----------------------------------------------------------------------------
@@ -216,15 +214,14 @@
             (puthash class (list prefix package) cache)))))
     cache))
 
-(defun spt/cache-of-files-in-project-if (pred &optional file)
+(defun spt/cache-of-class-in-project-if (pred)
   "Return a list that contains all component in the project."
   (let ((cache (make-hash-table :test 'equal))
-         (cpnt-files (remove-if-not pred
-                       (spt/source-files (or file (buffer-file-name))))))
+         (cpnt-files (remove-if-not pred (spt/source-files))))
     (dolist (cpnt cpnt-files)
       (puthash (jh/filename-without-extension cpnt) cpnt cache))
     cache))
-;; (spt/cache-of-files-in-project-if 'spt/entity? tmpfile)
+;; (spt/cache-of-class-in-project-if 'spt/entity?)
 
 (defun spt/cache-of-fields-in-entity (file)
   "Read all field and type in a entity class."
@@ -261,7 +258,7 @@
           (module-base (spt/extract-java-controller-module-base file))
           (module (car module-base))
           (base (cadr (split-string (cadr module-base) "/"))))
-    (expand-file-name (format "doc/%s/%s/%s.md" module base func) (spt/project-root file))))
+    (expand-file-name (format "doc/%s/%s/%s.md" module base func) (spt/project-root))))
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function

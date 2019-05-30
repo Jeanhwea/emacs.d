@@ -104,11 +104,11 @@
     (when (file-in-directory-p abs-file abs-dir)
       (replace-regexp-in-string abs-dir "" abs-file))))
 
-(defun jh/parent-dir (dir)
-  "Return the parent directory of DIR."
+(defun jh/parent-dir (file)
+  "Return the parent directory of FILE."
   (file-name-directory
     (file-name-directory
-      (directory-file-name (expand-file-name dir)))))
+      (directory-file-name (expand-file-name file)))))
 
 (defun jh/root-dir-p (dir)
   "Return ture if DIR is a root directory"
@@ -116,7 +116,7 @@
     (string-equal path (jh/parent-dir path))))
 
 (defun jh/directory-sequence-recursively (dirs)
-  "Return a list of dir, dir's parent, dir's great parent and more."
+  "Return a list of dir, dir's parent, dir's great parent and more, which dir is the head of dirs."
   (let ((dir (car dirs)))
     (if (jh/root-dir-p dir) dirs
       (jh/directory-sequence-recursively (cons (jh/parent-dir dir) dirs)))))
