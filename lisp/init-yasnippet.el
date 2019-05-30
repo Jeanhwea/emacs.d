@@ -12,21 +12,20 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
-  (setq dir (jh/parent-dir (or file (buffer-file-name))))
-  (mapconcat 'identity
-    (split-string
-      (replace-regexp-in-string
-        ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?"
-        "" dir) "/" t) "."))
+  (let  ((dir (jh/parent-dir (or file (buffer-file-name)))))
+    (mapconcat 'identity
+      (split-string
+        (replace-regexp-in-string
+          ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?"
+          "" dir) "/" t) ".")))
 
 (defun jh/java-class-name (&optional file)
   "Return the class name for java."
-  (interactive)
-  (jh/pascalcase (jh/filename-without-extension file)))
+  (let ((class (jh/filename-without-extension (or file (buffer-file-name)))))
+    (jh/pascalcase class)))
 
 (defun jh/java-test-case-name ()
   "Generate test case name with random time string."
-  (interactive)
   (concat
     "test"
     (replace-regexp-in-string "Test$" "" (jh/java-class-name))
@@ -34,7 +33,6 @@
 
 (defun jh/java-test-case-name-list ()
   "Generate test case name list."
-  (interactive)
   (when (spt/testcase? (buffer-file-name))
     (let* ((source-file (spt/trans-test-and-source (buffer-file-name)))
             (methods (remove-if 'null
@@ -47,7 +45,6 @@
 
 (defun jh/java-whatever-to-entity-name (whatever)
   "Convert `*RepositoryImpl', `*Service' ... to `*'."
-  (interactive)
   (jh/pascalcase
     (replace-regexp-in-string
       "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"
@@ -63,7 +60,6 @@
 
 (defun jh/java-implement-name-to-interface-name (name)
   "Convert `*Impl' to `*'"
-  (interactive)
   (jh/pascalcase
     (replace-regexp-in-string "Impl$" "" name)))
 
