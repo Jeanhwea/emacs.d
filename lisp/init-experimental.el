@@ -36,27 +36,27 @@
 ;; -----------------------------------------------------------------------------
 (defvar grip-buffer "*grip*")
 
-(defun jh/grip (DIR FILENAME &optional HOST PORT)
+(defun jh/grip (dir file &optional host port)
   "start a grip in backgroud in DIR."
-  (unless HOST (setq HOST "localhost"))
-  (unless PORT (setq PORT 2758))
-  (let ((default-directory DIR))
+  (unless host (setq host "localhost"))
+  (unless port (setq port 2758))
+  (let ((default-directory dir))
     (when (get-buffer-process grip-buffer)
       (quit-process grip-buffer))
-    (start-process "grip" grip-buffer "grip" "-b" FILENAME
-      (format "%s:%d" HOST PORT))))
+    (start-process "grip" grip-buffer "grip" "-b" file
+      (format "%s:%d" host port))))
 
 (defun grip ()
   "start a grip daemon."
   (interactive)
-  (let ((git-dir (jh/git-project-root-dir default-directory))
-        (filename (jh/git-relative-filename (buffer-file-name))))
-    (unless filename
-      (error "filename is nil"))
-    (if (string-match-p ".md\\'" filename)
-      (when git-dir
-        (jh/grip git-dir filename))
-      (error "Buffer '%s' is not a Markdown file!" filename))))
+  (let ((dir (jh/git-project-root-dir default-directory))
+         (file (jh/git-relative-filename (buffer-file-name))))
+    (unless file
+      (error "file is nil"))
+    (if (string-match-p "\\.md$" file)
+      (when dir
+        (jh/grip dir file))
+      (error "Buffer '%s' is not a Markdown file!" file))))
 
 
 ;; -----------------------------------------------------------------------------
