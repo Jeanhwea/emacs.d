@@ -91,17 +91,17 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/absolute-path (dir)
   "Return absolute path of DIR."
-  (directory-file-name (expand-file-name dir)))
+  (file-name-directory (expand-file-name dir)))
 
 (defun jh/relative-path (file dir)
   "Return a relative path of FILE to DIR."
   (let ((absolute-file (jh/absolute-path file))
-         (absolute-dir (concat (jh/absolute-path dir) "/")))
+         (absolute-dir (jh/absolute-path dir)))
     (replace-regexp-in-string absolute-dir "" absolute-file)))
 
 (defun jh/parent-dir (dir)
   "Return the parent directory of DIR."
-  (directory-file-name
+  (file-name-directory
     (file-name-directory
       (directory-file-name (expand-file-name dir)))))
 
@@ -110,17 +110,15 @@
   (let ((path (jh/absolute-path dir)))
     (string-equal path (jh/parent-dir path))))
 
-(defun jh/filename-without-extension (&optional file)
+(defun jh/filename-without-extension (file)
   "Return the file name without extension."
-  (file-name-nondirectory
-    (file-name-sans-extension (or file (buffer-file-name)))))
+  (file-name-nondirectory (file-name-sans-extension file)))
 
-(defun jh/read-file-content-as-lines (&optional file)
+(defun jh/read-file-content-as-lines (file)
   "Read a file content, and put all into a list of lines."
-  (let ((file (or file (buffer-file-name))))
-    (with-temp-buffer
-      (insert-file-contents file)
-      (split-string (buffer-string) "\n" t))))
+  (with-temp-buffer
+    (insert-file-contents file)
+    (split-string (buffer-string) "\n" t)))
 
 ;; -----------------------------------------------------------------------------
 ;; setup timer
