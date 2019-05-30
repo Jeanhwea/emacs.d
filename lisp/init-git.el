@@ -37,9 +37,10 @@
 
 (defun jh/git-project-root-dir (dir)
   "Return the root directory of a git repository."
-  (if (jh/git-project-root-dir-p dir) dir
-    (unless (jh/root-dir-p dir)
-      (jh/git-project-root-dir (jh/parent-dir dir)))))
+  (let ((dirs
+          (remove-if-not #'jh/git-project-root-dir-p
+            (jh/directory-sequence dir))))
+    (unless (null dirs) (car dirs))))
 
 (defun jh/git-project-root-dir-from-file (&optional file)
   "Return the root directory of a git repository, which contains the FILE. `git rev-parse --show-cdup'"

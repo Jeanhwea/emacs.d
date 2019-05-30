@@ -110,6 +110,16 @@
   (let ((path (jh/absolute-path dir)))
     (string-equal path (jh/parent-dir path))))
 
+(defun jh/directory-sequence-recursively (dirs)
+  "Return a list of dir, dir's parent, dir's great parent and more."
+  (let ((dir (car dirs)))
+    (if (jh/root-dir-p dir) dirs
+      (jh/directory-sequence-recursively (cons (jh/parent-dir dir) dirs)))))
+
+(defun jh/directory-sequence (dir)
+  "Return a list of dir, dir's parent, dir's great parent and more."
+  (jh/directory-sequence-recursively (list (jh/absolute-path dir))))
+
 (defun jh/filename-without-extension (file)
   "Return the file name without extension."
   (file-name-nondirectory (file-name-sans-extension file)))
