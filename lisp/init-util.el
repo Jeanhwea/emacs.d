@@ -89,15 +89,20 @@
 ;; -----------------------------------------------------------------------------
 ;; file and directory helper
 ;; -----------------------------------------------------------------------------
-(defun jh/absolute-path (dir)
-  "Return absolute path of DIR."
-  (file-name-directory (expand-file-name dir)))
+(defun jh/absolute-path (file)
+  "Return absolute path of FILE."
+  (let ((abs (expand-file-name file)))
+    (cond
+      ((file-directory-p abs)
+        (file-name-as-directory abs))
+      (t abs))))
 
 (defun jh/relative-path (file dir)
   "Return a relative path of FILE to DIR."
-  (let ((absolute-file (jh/absolute-path file))
-         (absolute-dir (jh/absolute-path dir)))
-    (replace-regexp-in-string absolute-dir "" absolute-file)))
+  (let ((abs-file (jh/absolute-path file))
+         (abs-dir (jh/absolute-path dir)))
+    (when (file-in-directory-p abs-file abs-dir)
+      (replace-regexp-in-string abs-dir "" abs-file))))
 
 (defun jh/parent-dir (dir)
   "Return the parent directory of DIR."
@@ -118,7 +123,9 @@
 
 (defun jh/directory-sequence (dir)
   "Return a list of dir, dir's parent, dir's great parent and more."
-  (jh/directory-sequence-recursively (list (jh/absolute-path dir))))
+  (reverse
+    (jh/directory-sequence-recursively
+      (list (jh/absolute-path dir)))))
 
 (defun jh/filename-without-extension (file)
   "Return the file name without extension."

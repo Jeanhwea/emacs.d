@@ -31,7 +31,7 @@
 ;; -----------------------------------------------------------------------------
 (defun spt/project-root (&optional file)
   "Return current project root dir."
-  (jh/git-project-root-dir-from-file file))
+  (jh/git-project-root-dir default-directory))
 
 (defun spt/app-root (&optional file)
   "Return current source root dir."

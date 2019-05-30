@@ -42,12 +42,9 @@
             (jh/directory-sequence dir))))
     (unless (null dirs) (car dirs))))
 
-(defun jh/git-project-root-dir-from-file (&optional file)
-  "Return the root directory of a git repository, which contains the FILE. `git rev-parse --show-cdup'"
-  (jh/git-project-root-dir (jh/parent-dir (or file (buffer-file-name)))))
-
-(defun jh/git-file-name-relative-to-project-root (&optional file)
+(defun jh/git-relative-filename (file)
   "Return a git file name relative to git root directory."
-  (jh/relative-path (or file (buffer-file-name)) (jh/git-project-root-dir-from-file)))
+  (let ((git-root (jh/git-project-root-dir (jh/parent-dir file))))
+    (jh/relative-path file git-root)))
 
 (provide 'init-git)
