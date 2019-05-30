@@ -139,15 +139,6 @@
       (newline)
       (insert (format "import %s%s.%s;" prefix package class)))))
 
-(defun go ()
-  "Go to api."
-  (interactive)
-  (let ((regex
-          (concat
-            "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
-            "  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$")))
-    (search-forward-regexp regex nil t)))
-
 ;; -----------------------------------------------------------------------------
 ;; Extractors
 ;; -----------------------------------------------------------------------------
@@ -182,14 +173,6 @@
       (setq module (match-string 1 line))
       module)))
 
-(defun spt/extract-java-controller-api (line)
-  "Extract api function in controller."
-  (save-match-data
-    (and (string-match "^  public \\([^(]+\\)[ \t]+\\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
-      (setq type (match-string 1 line)
-        name (match-string 2 line))
-      (list type name))))
-
 (defun spt/extract-java-public-method (line)
   "Extract java method signature."
   (save-match-data
@@ -199,19 +182,41 @@
         func (match-string 3 line))
       (list prefix return func))))
 
+(defun spt/extract-java-controller-api (text)
+  "Extract all api information in controller."
+  (let
+    ((regex
+       (concat
+         "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
+         "  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$"))
+      (start 0)
+      (res))
+    (while start
+      (save-match-data
+        (setq start (string-match regex text start))
+        (and start
+          (setq method (jh/upcase (match-string 1 text))
+            url (match-string 3 text)
+            type (match-string 5 text)
+            name (match-string 6 text)
+            args (string-trim (match-string 7 text)))
+          (setq res (cons (list method url type name args start) res))
+          (setq start (+ start 1)))))
+    (reverse res)))
+
 (defun spt/extract-java-controller-info (file)
   "read the base url in a java controller file."
   (when (spt/controller? file)
     (let*
       ((lines (jh/read-file-content-as-lines file))
+        (text (jh/read-file-content file))
         (module (car (remove-if 'null
                        (mapcar #'spt/extract-java-controller-module lines))))
         (full (car (remove-if 'null
                      (mapcar #'spt/extract-java-controller-base lines))))
-        (api (remove-if 'null
-               (mapcar #'spt/extract-java-controller-api lines)))
-        (base (cadr (split-string full "/"))))
-      (unless (or (null module) (null base)) (list module base full file api)))))
+        (apis (spt/extract-java-controller-api text))
+        (base (cadr (split-string (or full "/") "/"))))
+      (unless (or (null module) (null base)) (list module base full file apis)))))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -257,6 +262,38 @@
       (unless (null field)
         (let ((name (cadr field)) (type (car field)))
           (puthash name type cache))))
+    cache))
+
+(defun spt/cache-of-controller-api (file)
+  "Read all api information in the controller FILE."
+  (let* ((cache (make-hash-table :test 'equal))
+          (info (spt/extract-java-controller-info file))
+          (module (nth 0 info))
+          (base (nth 1 info))
+          (full (nth 2 info))
+          (file (nth 3 info))
+          (apis (nth 4 info)))
+    (dolist (api apis)
+      (setq method (nth 0 api)
+        url (nth 1 api)
+        type (nth 2 api)
+        name (nth 3 api)
+        args (nth 4 api)
+        start (nth 5 api))
+      (puthash
+        (format "%s/%s/%s.md" module base name)
+        (list file start (format "%s %s%s" method full url) type name args)
+        cache))
+    cache))
+
+(defun spt/cache-of-all-controller-api ()
+  "Read all api information in the whole project."
+  (let ((cache (make-hash-table :test 'equal)))
+    (dolist (file (spt/source-files))
+      (when (spt/controller? file)
+        (maphash
+          (lambda (k v) (puthash k v cache))
+          (spt/cache-of-controller-api file))))
     cache))
 
 ;; -----------------------------------------------------------------------------
@@ -373,8 +410,18 @@
   (interactive)
   (let* ((file (buffer-file-name))
           (func (thing-at-point 'symbol)))
-    (and (spt/controller? file) (spt/apiname? func)
-      (spt/find-file (spt/trans-doc-markdown-file func file)))))
+    (if (spt/controller? file)
+      (when (spt/apiname? func)
+        (spt/find-file (spt/trans-doc-markdown-file func file)))
+      (let* ((cache (spt/cache-of-all-controller-api))
+              (path (jh/relative-path file (spt/doc-root)))
+              (signature (gethash path cache))
+              (file (car signature))
+              (pos (cadr signature)))
+        (progn
+          (spt/find-file file)
+          (goto-char pos)
+          (search-forward-regexp "{$"))))))
 
 (defun spt/format-java-source-code ()
   "Format java source file code."

@@ -137,6 +137,12 @@
     (insert-file-contents file)
     (split-string (buffer-string) "\n" t)))
 
+(defun jh/read-file-content (file)
+  "Read a file content, and put all into a list of lines."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (buffer-string)))
+
 ;; -----------------------------------------------------------------------------
 ;; setup timer
 ;; -----------------------------------------------------------------------------
