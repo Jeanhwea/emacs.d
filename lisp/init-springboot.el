@@ -251,10 +251,17 @@
 
 (defun spt/trans-doc-markdown-file (func file)
   "Transfer file to document file."
-  (let* ((module-base (spt/extract-java-controller-module-base file))
-          (module (car module-base))
-          (base (cadr (split-string (cadr module-base) "/"))))
-    (expand-file-name (format "%s/%s/%s.md" module base func) (spt/doc-root))))
+  (if (spt/controller? file)
+    (let* ((module-base (spt/extract-java-controller-module-base file))
+            (module (car module-base))
+            (base (cadr (split-string (cadr module-base) "/"))))
+      (expand-file-name (format "%s/%s/%s.md" module base func) (spt/doc-root)))))
+
+(defun spt/trans-module-file (formula file)
+  "Transfer file to absolute path."
+  (let ((entity (spt/file-to-entity file))
+         (base (spt/module-root file)))
+    (expand-file-name (format formula entity) base)))
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
@@ -278,38 +285,30 @@
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
   (interactive)
-  (let* ((file (buffer-file-name))
-          (entity (spt/file-to-entity file))
-          (base (spt/module-root file)))
+  (let ((file (buffer-file-name)))
     (when (spt/component? file)
-      (spt/find-file (format "%s/domain/entity/%s.java" base entity)))))
+      (spt/find-file (spt/trans-module-file "domain/entity/%s.java" file)))))
 
 (defun spt/switch-to-repository-file ()
   "Switch to repository file."
   (interactive)
-  (let* ((file (buffer-file-name))
-          (entity (spt/file-to-entity file))
-          (base (spt/module-root file)))
+  (let ((file (buffer-file-name)))
     (when (spt/component? file)
-      (spt/find-file (format "%s/domain/repo/%sRepository.java" base entity)))))
+      (spt/find-file (spt/trans-module-file "domain/repo/%sRepository.java" file)))))
 
 (defun spt/switch-to-service-file ()
   "Switch to service file."
   (interactive)
-  (let* ((file (buffer-file-name))
-          (entity (spt/file-to-entity file))
-          (base (spt/module-root file)))
+  (let ((file (buffer-file-name)))
     (when (spt/component? file)
-      (spt/find-file (format "%s/service/%sService.java" base entity)))))
+      (spt/find-file (spt/trans-module-file "service/%sService.java" file)))))
 
 (defun spt/switch-to-controller-file ()
   "Switch to controller file."
   (interactive)
-  (let* ((file (buffer-file-name))
-          (entity (spt/file-to-entity file))
-          (base (spt/module-root file)))
+  (let ((file (buffer-file-name)))
     (when (spt/component? file)
-      (spt/find-file (format "%s/controller/%sController.java" base entity)))))
+      (spt/find-file (spt/trans-module-file "controller/%sController.java" file)))))
 
 (defun spt/switch-to-controller-api-doc ()
   "Switch to controller api document file."
@@ -336,10 +335,10 @@
           (file (if (spt/implement? buffile) (spt/trans-impl-and-inter buffile) buffile)))
     (spt/find-file (spt/trans-test-and-source file))))
 
-(defun spt/toggle-interface-and-implement (&optional file)
+(defun spt/toggle-interface-and-implement ()
   "Toggle interface and implement file."
   (interactive)
-  (let* ((the-file (or file (buffer-file-name)))
+  (let* ((the-file (buffer-file-name))
           (other-file (spt/trans-impl-and-inter the-file)))
     (and (not (spt/testcase? the-file)) (spt/find-file other-file))))
 
