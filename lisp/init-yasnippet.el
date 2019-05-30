@@ -80,4 +80,12 @@
   (when (spt/maven-project?)
     (hash-table-keys (spt/cache-of-class-in-project-if 'spt/service?))))
 
+(defun jh/java-controller-doc-url ()
+  "Return a full url, to put it as the header of the doc, like `GET /api/'."
+  (when (spt/maven-project?)
+    (let* ((cache (spt/cache-of-all-controller-api))
+            (path (jh/relative-path (buffer-file-name) (spt/doc-root)))
+            (signature (gethash path cache)))
+      (if (null signature) "" (nth 2 signature)))))
+
 (provide 'init-yasnippet)
