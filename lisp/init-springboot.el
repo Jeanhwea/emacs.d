@@ -313,12 +313,24 @@
       (let ((pre (car prefix-package)) (pkg (cadr prefix-package)))
         (spt/insert-import-package-statement pre pkg clz)))))
 
+(defun spt/switch-to-any-file (pred prompt)
+  "Switch to controller file."
+  (let* ((cache (spt/cache-of-class-in-project-if pred))
+          (key (completing-read prompt (hash-table-keys cache))))
+    (unless (null key)
+      (spt/find-file (gethash key cache)))))
+
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
   (interactive)
   (let ((file (buffer-file-name)))
     (when (spt/component? file)
       (spt/find-file (spt/trans-module-file "domain/entity/%s.java" file)))))
+
+(defun spt/switch-to-any-entity-file ()
+  "Switch to any entity file."
+  (interactive)
+  (spt/switch-to-any-file 'spt/entity? "Entity >> "))
 
 (defun spt/switch-to-repository-file ()
   "Switch to repository file."
@@ -327,6 +339,11 @@
     (when (spt/component? file)
       (spt/find-file (spt/trans-module-file "domain/repo/%sRepository.java" file)))))
 
+(defun spt/switch-to-any-repository-file ()
+  "Switch to any repository file."
+  (interactive)
+  (spt/switch-to-any-file 'spt/repository? "Repository >> "))
+
 (defun spt/switch-to-service-file ()
   "Switch to service file."
   (interactive)
@@ -334,12 +351,22 @@
     (when (spt/component? file)
       (spt/find-file (spt/trans-module-file "service/%sService.java" file)))))
 
+(defun spt/switch-to-any-service-file ()
+  "Switch to any service file."
+  (interactive)
+  (spt/switch-to-any-file 'spt/service? "Service >> "))
+
 (defun spt/switch-to-controller-file ()
   "Switch to controller file."
   (interactive)
   (let ((file (buffer-file-name)))
     (when (spt/component? file)
       (spt/find-file (spt/trans-module-file "controller/%sController.java" file)))))
+
+(defun spt/switch-to-any-controller-file ()
+  "Switch to any controller file."
+  (interactive)
+  (spt/switch-to-any-file 'spt/controller? "Controller >> "))
 
 (defun spt/switch-to-controller-api-doc ()
   "Switch to controller api document file."
@@ -395,13 +422,17 @@
 (progn
   (define-prefix-command 'spt/leader-key-map)
   (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
+  (define-key spt/leader-key-map (kbd "C") 'spt/switch-to-any-controller-file)
   (define-key spt/leader-key-map (kbd "d") 'spt/switch-to-controller-api-doc)
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
+  (define-key spt/leader-key-map (kbd "E") 'spt/switch-to-any-entity-file)
   (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
   (define-key spt/leader-key-map (kbd "j") 'spt/jump-to-entity-field)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
+  (define-key spt/leader-key-map (kbd "R") 'spt/switch-to-any-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
+  (define-key spt/leader-key-map (kbd "S") 'spt/switch-to-any-service-file)
   (define-key spt/leader-key-map (kbd "t") 'spt/toggle-test-and-source)
   (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class))
 (global-set-key (kbd "M-RET") 'spt/leader-key-map)
