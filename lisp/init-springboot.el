@@ -39,7 +39,7 @@
           (remove-if-not
             (lambda (dir) (file-exists-p (expand-file-name "Application.java" dir)))
             (jh/directory-sequence default-directory))))
-    (unless (null dirs) (car dirs))))
+    (and dirs (car dirs))))
 
 (defun spt/doc-root ()
   "Return current document root dir."
@@ -131,7 +131,7 @@
   (save-excursion
     (progn
       (end-of-buffer)
-      (unless (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" nil t)
+      (or (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" nil t)
         (progn
           (beginning-of-buffer)
           (next-line)))
@@ -240,13 +240,20 @@
     (let*
       ((lines (jh/read-file-content-as-lines file))
         (text (jh/read-file-content file))
-        (module (car (remove-if 'null
-                       (mapcar #'spt/extract-java-controller-module lines))))
-        (full (car (remove-if 'null
-                     (mapcar #'spt/extract-java-controller-base lines))))
+        (module (car
+                  (remove-if 'null
+                    (mapcar #'spt/extract-java-controller-module lines))))
+        (full (or
+                (car
+                  (remove-if 'null
+                    (mapcar #'spt/extract-java-controller-base lines)))
+                ""))
         (apis (spt/extract-java-controller-api text))
-        (base (cadr (split-string (or full "/") "/"))))
-      (unless (or (null module) (null base)) (list module base full file apis)))))
+        (base (or
+                (cadr
+                  (split-string (or full "/") "/"))
+                "")))
+      (and module base (list module base full file apis)))))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -257,7 +264,7 @@
          (values (mapcar #'spt/extract-java-package-class
                    (jh/read-file-content-as-lines file))))
     (dolist (val values)
-      (unless (null val)
+      (and val
         (let ((prefix (car val)) (package (cadr val)) (class (caddr val)))
           (puthash class (list prefix package) cache))))
     cache))
@@ -309,7 +316,7 @@
          (fields (mapcar #'spt/extract-java-entity-field
                    (jh/read-file-content-as-lines file))))
     (dolist (field fields)
-      (unless (null field)
+      (and field
         (let ((name (cadr field)) (type (car field)))
           (puthash name type cache))))
     cache))
@@ -404,8 +411,7 @@
   "Switch to controller file."
   (let* ((cache (spt/cache-of-class-in-project-if pred))
           (key (completing-read prompt (hash-table-keys cache))))
-    (unless (null key)
-      (spt/find-file (gethash key cache)))))
+    (and key (spt/find-file (gethash key cache)))))
 
 (defun spt/switch-to-entity-file ()
   "Switch to entity file."
@@ -504,7 +510,7 @@
   (interactive)
   (let ((file (buffer-file-name))
          (other-file (spt/trans-impl-and-inter (buffer-file-name))))
-    (unless (spt/testcase? file) (spt/find-file other-file))))
+    (or (spt/testcase? file) (spt/find-file other-file))))
 
 (defun spt/jump-to-entity-field ()
   "jump to entity field."
