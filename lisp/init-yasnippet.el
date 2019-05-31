@@ -88,4 +88,36 @@
             (signature (gethash path cache)))
       (if (null signature) "" (nth 2 signature)))))
 
+(defun jh/java-inter-method-signature ()
+  "Complete the signature of interface's method."
+  (if (spt/implement? (buffer-file-name))
+    (let* ((file (buffer-file-name))
+            (cache-impl (spt/cache-of-impl-override-method file))
+            (cache-inter (spt/cache-of-inter-method (spt/trans-impl-and-inter file)))
+            (todo))
+      (maphash
+        (lambda (k v)
+          (let ((value (gethash k cache-impl)))
+            (if (null value)
+              (setq todo (cons v todo)))))
+        cache-inter)
+      (cond
+        ((> (length todo) 1)
+          (completing-read "Override function >> "
+            (mapcar
+              (lambda (sign)
+                (let ((type (nth 0 sign))
+                       (func (nth 1 sign))
+                       (args (nth 2 sign)))
+                  (format "%s %s(%s)" type func args)))
+              todo)))
+        ((= (length todo) 1)
+          (let* ((sign (car todo))
+                  (type (nth 0 sign))
+                  (func (nth 1 sign))
+                  (args (nth 2 sign)))
+            (format "%s %s(%s)" type func args)))
+        (t "String toString()")))
+    "String toString()"))
+
 (provide 'init-yasnippet)

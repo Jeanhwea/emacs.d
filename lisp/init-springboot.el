@@ -164,9 +164,39 @@
   (save-match-data
     (and (string-match "^  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
       (setq prefix (match-string 1 line)
-        return (match-string 2 line)
+        type (match-string 2 line)
         func (match-string 3 line))
-      (list prefix return func))))
+      (list prefix type func))))
+
+(defun spt/extract-java-inter-method (line)
+  "Extract java method in interface."
+  (save-match-data
+    (and (string-match "^  \\(public \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$" line)
+      (setq prefix (match-string 1 line)
+        type (match-string 2 line)
+        func (match-string 3 line)
+        args (match-string 4 line))
+      (list type func args))))
+
+(defun spt/extract-java-impl-override-method (text)
+  "Extract java method in interface."
+  (let
+    ((regex
+       (concat
+         "^  @Override[ \t\n]*public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$"))
+      (start 0)
+      (res))
+    (while start
+      (save-match-data
+        (setq start (string-match regex text start))
+        (and start
+          (setq
+            type (match-string 2 text)
+            func (match-string 3 text)
+            args (string-trim (match-string 4 text)))
+          (setq res (cons (list type func args) res))
+          (setq start (+ start 1)))))
+    (reverse res)))
 
 (defun spt/extract-java-controller-module (line)
   "Extract spring boot controller module name."
@@ -198,9 +228,9 @@
           (setq method (jh/upcase (match-string 1 text))
             url (match-string 3 text)
             type (match-string 5 text)
-            name (match-string 6 text)
+            func (match-string 6 text)
             args (string-trim (match-string 7 text)))
-          (setq res (cons (list method url type name args start) res))
+          (setq res (cons (list method url type func args start) res))
           (setq start (+ start 1)))))
     (reverse res)))
 
@@ -253,6 +283,26 @@
       (puthash (jh/java-class-name file) file cache))
     cache))
 
+(defun spt/cache-of-inter-method (file)
+  "Read all cache of all method in a interface."
+  (let ((cache (make-hash-table :test 'equal))
+         (signs (remove-if 'null
+                  (mapcar #'spt/extract-java-inter-method
+                    (jh/read-file-content-as-lines file)))))
+    (dolist (sign signs)
+      (puthash (mapconcat 'identity sign "$") sign cache))
+    cache))
+
+(defun spt/cache-of-impl-override-method (file)
+  "Read all cache of all override method in a implement."
+  (let ((cache (make-hash-table :test 'equal))
+         (signs
+           (spt/extract-java-impl-override-method
+             (jh/read-file-content file))))
+    (dolist (sign signs)
+      (puthash (mapconcat 'identity sign "$") sign cache))
+    cache))
+
 (defun spt/cache-of-fields (file)
   "Read all field and type in a entity class."
   (let ((cache (make-hash-table :test 'equal))
@@ -277,12 +327,12 @@
       (setq method (nth 0 api)
         url (nth 1 api)
         type (nth 2 api)
-        name (nth 3 api)
+        func (nth 3 api)
         args (nth 4 api)
         start (nth 5 api))
       (puthash
-        (format "%s/%s/%s.md" module base name)
-        (list file start (format "%s %s%s" method full url) type name args)
+        (format "%s/%s/%s.md" module base func)
+        (list file start (format "%s %s%s" method full url) type func args)
         cache))
     cache))
 
@@ -328,8 +378,8 @@
 (defun spt/trans-module-file (formula file)
   "Transfer file to absolute path."
   (let ((entity (spt/file-to-entity file))
-         (base (spt/module-root file)))
-    (expand-file-name (format formula entity) base)))
+         (module (spt/module-root file)))
+    (expand-file-name (format formula entity) module)))
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
@@ -420,9 +470,9 @@
             (spt/find-file (spt/trans-doc-markdown-file func file)))))
       (let* ((cache (spt/cache-of-all-controller-api))
               (path (jh/relative-path file (spt/doc-root)))
-              (signature (gethash path cache))
-              (file (car signature))
-              (pos (cadr signature)))
+              (sign (gethash path cache))
+              (file (car sign))
+              (pos (cadr sign)))
         (progn
           (spt/find-file file)
           (goto-char pos)

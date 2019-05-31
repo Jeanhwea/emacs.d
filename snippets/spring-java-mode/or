@@ -2,4 +2,7 @@
 # name: Override annotation
 # key: or
 # --
-@Override$0
+@Override
+public `(jh/java-inter-method-signature)` {$0
+$> return null;
+}
