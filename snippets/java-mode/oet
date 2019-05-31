@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: orElseThrow Exception
+# key: oet
+# --
+.orElseThrow(() -> new ${1:RuntimeException}($0));

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Optional.ofNullable()
+# key: na
+# --
+Optional.ofNullable($0)

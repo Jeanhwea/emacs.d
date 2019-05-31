@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: @Autowired annotation
+# key: aw
+# --
+@Autowired$0

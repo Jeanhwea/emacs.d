@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: NotNull annotation
+# name: @NotNull annotation
 # key: nn
 # --
 @NotNull $0

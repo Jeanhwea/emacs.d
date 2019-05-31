@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: throw RuntimeException
+# key: thr
+# --
+throw new RuntimeException("$0");
