@@ -156,7 +156,7 @@
     (let ((class (jh/java-class-name)))
       (spt/compilation-start (format "mvn test -q -B -Dtest=%s" class)))))
 
-(defun spt/run-test-command ()
+(defun spt/run-test-method-command ()
   "Run a test command."
   (interactive)
   (when (spt/testcase? (buffer-file-name))
@@ -573,7 +573,7 @@
   (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
   (define-key spt/leader-key-map (kbd "j") 'spt/jump-to-entity-field)
-  (define-key spt/leader-key-map (kbd "p") 'spt/run-test-command)
+  (define-key spt/leader-key-map (kbd "p") 'spt/run-test-method-command)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
   (define-key spt/leader-key-map (kbd "t") 'spt/toggle-test-and-source)
