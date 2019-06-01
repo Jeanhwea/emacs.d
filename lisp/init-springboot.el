@@ -187,11 +187,11 @@
         class (match-string 3 line))
       (list static package class))))
 
-(defun spt/extract-java-public-method (text)
-  "Extract java method signature."
+(defun spt/extract-java-methods (text)
+  "Extract java methods, return a list of signature."
   (let ((regexp
           (concat
-            "^  \\(public\\|private\\)[ \t]*"
+            "^  \\(public\\|private\\|protected\\)[ \t]*"
             "\\(static\\|\\)[ \t]*"
             "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
             "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
