@@ -2,6 +2,9 @@
 ;; engine-mode
 ;; -----------------------------------------------------------------------------
 (when (require 'engine-mode)
+  (defengine codelf
+    "https://unbug.github.io/codelf/#%s"
+    :keybinding "v")
 
   (defengine stackoverflow
     "https://stackoverflow.com/search?q=%s"
