@@ -215,22 +215,41 @@
             addr (+ addr 1)))))
     (reverse res)))
 
-(defun spt/extract-java-inter-method (line)
+(defun spt/extract-java-inter-methods (text)
   "Extract java method in interface."
-  (save-match-data
-    (and (string-match "^  \\(public \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$" line)
-      (setq prefix (match-string 1 line)
-        type (match-string 2 line)
-        func (match-string 3 line)
-        args (match-string 4 line))
-      (list type func args))))
+  (let ((regexp
+          (concat
+            "^  \\(public \\|\\)"
+            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
+            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "(\\([^;{]*\\));$"))
+         (addr 0)
+         (res))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq
+            return (match-string 3 text)
+            func (match-string 4 text)
+            args (match-string 5 text))
+          (setq
+            sign (list (jh/trim-blank return) func (jh/trim-blank args) addr)
+            res (cons sign res)
+            addr (+ addr 1)))))
+    (reverse res)))
 
-(defun spt/extract-java-impl-override-method (text)
+(defun spt/extract-java-impl-override-methods (text)
   "Extract java method in interface."
   (let
     ((regexp
        (concat
-         "^  @Override[ \t\n]*public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$"))
+         "^  @Override[ \t\n]*"
+         "public "
+         "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
+         "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+         "(\\([^;{]*\\))"
+         "\\( {\\|;\\)$"))
       (addr 0)
       (res))
     (while addr
@@ -238,10 +257,13 @@
         (setq addr (string-match regexp text addr))
         (and addr
           (setq
-            type (match-string 2 text)
-            func (match-string 3 text)
-            args (string-trim (match-string 4 text)))
-          (setq res (cons (list type func args) res))
+            return (match-string 1 text)
+            func (match-string 2 text)
+            args (match-string 3 text))
+          (setq
+            sign (list (jh/trim-blank return) func (jh/trim-blank args) addr)
+            res (cons sign res)
+            addr (+ addr 1))
           (setq addr (+ addr 1)))))
     (reverse res)))
 
@@ -259,7 +281,7 @@
       (setq base (match-string 1 line))
       base)))
 
-(defun spt/extract-java-controller-api (text)
+(defun spt/extract-java-controller-apis (text)
   "Extract all api information in controller."
   (let
     ((regexp
@@ -295,7 +317,7 @@
                   (remove-if 'null
                     (mapcar #'spt/extract-java-controller-base lines)))
                 ""))
-        (apis (spt/extract-java-controller-api text))
+        (apis (spt/extract-java-controller-apis text))
         (base (or
                 (cadr
                   (split-string (or full "/") "/"))
@@ -370,21 +392,15 @@
 (defun spt/cache-of-inter-method (file)
   "Read all cache of all method in a interface."
   (let ((cache (make-hash-table :test 'equal))
-         (signs (remove-if 'null
-                  (mapcar #'spt/extract-java-inter-method
-                    (jh/read-file-content-as-lines file)))))
-    (dolist (sign signs)
-      (puthash (mapconcat 'identity sign "$") sign cache))
+         (signs (mapcar #'spt/extract-java-inter-methods (jh/read-file-content file))))
+    (dolist (sign signs) (puthash (apply 'format "%s$%s$%s" sign) sign cache))
     cache))
 
 (defun spt/cache-of-impl-override-method (file)
   "Read all cache of all override method in a implement."
   (let ((cache (make-hash-table :test 'equal))
-         (signs
-           (spt/extract-java-impl-override-method
-             (jh/read-file-content file))))
-    (dolist (sign signs)
-      (puthash (mapconcat 'identity sign "$") sign cache))
+         (signs (spt/extract-java-impl-override-methods (jh/read-file-content file))))
+    (dolist (sign signs) (puthash (apply 'format "%s$%s$%s" sign) sign cache))
     cache))
 
 (defun spt/cache-of-controller-api (file)
