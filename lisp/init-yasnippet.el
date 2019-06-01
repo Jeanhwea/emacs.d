@@ -36,7 +36,7 @@
   (when (spt/testcase? file)
     (let ((text (jh/read-file-content (spt/trans-test-and-source file))))
       (remove-duplicates
-        (mapcar #'cadddr (spt/extract-java-methods text))
+        (mapcar #'cadddr (spt/extract-java-class-methods text))
         :test 'equal))))
 
 (defun jh/java-test-case-func-names ()

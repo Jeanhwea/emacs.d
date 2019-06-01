@@ -187,7 +187,7 @@
         class (match-string 3 line))
       (list static package class))))
 
-(defun spt/extract-java-methods (text)
+(defun spt/extract-java-class-methods (text)
   "Extract java methods, return a list of signature."
   (let ((regexp
           (concat
