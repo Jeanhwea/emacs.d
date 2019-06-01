@@ -79,9 +79,9 @@
 (defun spt/file-to-entity (file)
   "Return the entity name from a file name."
   (let ((class (jh/java-class-name file))
-         (re "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"))
+         (regexp "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"))
     (when (spt/component? file)
-      (replace-regexp-in-string re "" class))))
+      (replace-regexp-in-string regexp "" class))))
 
 ;; -----------------------------------------------------------------------------
 ;; Predictors
@@ -175,25 +175,36 @@
 ;; -----------------------------------------------------------------------------
 ;; Extractors
 ;; -----------------------------------------------------------------------------
-(defun spt/extract-java-package-class (line)
+(defun spt/extract-java-imported-class (line)
   "Extract package name and class name from line."
   (save-match-data
-    (and (string-match "^import \\(static \\|\\)\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" line)
-      (setq prefix (match-string 1 line)
+    (and (string-match "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" line)
+      (setq static (match-string 1 line)
         package (match-string 2 line)
         class (match-string 3 line))
-      (list prefix package class))))
-
-(defun spt/extract-java-entity-field (line)
-  "Extract java entity file from line."
-  (save-match-data
-    (and (string-match "^\\([\t ]+\\)private \\([0-9A-Za-z]+\\) \\([0-9A-Za-z]+\\);" line)
-      (setq type (match-string 2 line)
-        name (match-string 3 line))
-      (list type name))))
+      (list static package class))))
 
 (defun spt/extract-java-public-method (line)
   "Extract java method signature."
+  (save-match-data
+    (and (string-match "^  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
+      (setq prefix (match-string 1 line)
+        type (match-string 2 line)
+        func (match-string 3 line))
+      (list prefix type func))))
+
+(defun spt/extract-java-public-method2 (text)
+  "Extract java method signature."
+  (let ((regexp
+          (concat
+            "^  \\(public\\|private\\)[ \t]*"
+            "\\(static\\|\\)[ \t]*"
+            "\\([a-zA-Z][ ,<>a-zA-Z0-9]+?\\|\\)[ \t]*"
+            "\\([_a-zA-Z][_a-zA-Z0-9]*\\)"
+            "(\\([^;{]*\\))"
+            "\\({\\|;\\)$"
+            ))))
+
   (save-match-data
     (and (string-match "^  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
       (setq prefix (match-string 1 line)
@@ -294,7 +305,7 @@
 (defun spt/cache-of-imported-class (file)
   "Read imported class in the FILE, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal))
-         (values (mapcar #'spt/extract-java-package-class
+         (values (mapcar #'spt/extract-java-imported-class
                    (jh/read-file-content-as-lines file))))
     (dolist (val values)
       (and val
@@ -313,6 +324,36 @@
       (maphash
         (lambda (k v) (puthash k v cache))
         (spt/cache-of-imported-class file)))
+    cache))
+
+(defun spt/cache-of-file-meta (file)
+  "Extract java class file meta information, such as class/interface, parent"
+  (let ((regexp-package-declare "^package \\([^;]*\\);$")
+         (regexp-class-declare
+           (concat
+             "^\\(\\|public\\)[ \t]*"
+             "\\(class\\|interface\\)[ \t]*"
+             "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+             "\\(extends\\|implements\\|\\)[ \t]*"
+             "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
+             "{$"))
+         (text (jh/read-file-content file))
+         (cache (make-hash-table :test 'equal)))
+    (save-match-data
+      (and (string-match regexp-package-declare text)
+        (setq package (match-string 1 text))
+        (puthash 'package package cache)))
+    (save-match-data
+      (and (string-match regexp-class-declare text)
+        (setq
+          class-inter (match-string 2 text)
+          name (match-string 3 text)
+          extends-impl (match-string 4 text)
+          parent (match-string 5 text))
+        (puthash 'class-inter class-inter cache)
+        (puthash 'name name cache)
+        (puthash 'extends-impl extends-impl cache)
+        (puthash 'parent parent cache)))
     cache))
 
 (defun spt/cache-of-class-in-project-if (pred)
@@ -341,17 +382,6 @@
              (jh/read-file-content file))))
     (dolist (sign signs)
       (puthash (mapconcat 'identity sign "$") sign cache))
-    cache))
-
-(defun spt/cache-of-fields (file)
-  "Read all field and type in a entity class."
-  (let ((cache (make-hash-table :test 'equal))
-         (fields (mapcar #'spt/extract-java-entity-field
-                   (jh/read-file-content-as-lines file))))
-    (dolist (field fields)
-      (and field
-        (let ((name (cadr field)) (type (car field)))
-          (puthash name type cache))))
     cache))
 
 (defun spt/cache-of-controller-api (file)
@@ -456,7 +486,7 @@
 (defun spt/switch-to-any-entity-file ()
   "Switch to any entity file."
   (interactive)
-  (spt/switch-to-any-file 'spt/entity? "Entity >> "))
+  (spt/switch-to-any-file #'spt/entity? "Entity >> "))
 
 (defun spt/switch-to-repository-file ()
   "Switch to repository file."
@@ -468,7 +498,7 @@
 (defun spt/switch-to-any-repository-file ()
   "Switch to any repository file."
   (interactive)
-  (spt/switch-to-any-file 'spt/repository? "Repository >> "))
+  (spt/switch-to-any-file #'spt/repository? "Repository >> "))
 
 (defun spt/switch-to-service-file ()
   "Switch to service file."
@@ -480,7 +510,7 @@
 (defun spt/switch-to-any-service-file ()
   "Switch to any service file."
   (interactive)
-  (spt/switch-to-any-file 'spt/service? "Service >> "))
+  (spt/switch-to-any-file #'spt/service? "Service >> "))
 
 (defun spt/switch-to-controller-file ()
   "Switch to controller file."
@@ -492,7 +522,7 @@
 (defun spt/switch-to-any-controller-file ()
   "Switch to any controller file."
   (interactive)
-  (spt/switch-to-any-file 'spt/controller? "Controller >> "))
+  (spt/switch-to-any-file #'spt/controller? "Controller >> "))
 
 (defun spt/switch-to-controller-api-doc ()
   "Switch to controller api document file."
@@ -545,18 +575,6 @@
          (other-file (spt/trans-impl-and-inter (buffer-file-name))))
     (or (spt/testcase? file) (spt/find-file other-file))))
 
-(defun spt/jump-to-entity-field ()
-  "jump to entity field."
-  (interactive)
-  (when (spt/entity? (buffer-file-name))
-    (let* ((cache (spt/cache-of-fields (buffer-file-name)))
-            (fields (hash-table-keys cache))
-            (field (completing-read "jump to > " fields))
-            (regexp (format "private %s %s;" (gethash field cache) field)))
-      (progn
-        (beginning-of-buffer)
-        (re-search-forward regexp nil)))))
-
 ;; -----------------------------------------------------------------------------
 ;; key bindings
 ;; -----------------------------------------------------------------------------
@@ -572,7 +590,6 @@
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
   (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
-  (define-key spt/leader-key-map (kbd "j") 'spt/jump-to-entity-field)
   (define-key spt/leader-key-map (kbd "p") 'spt/run-test-method-command)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)

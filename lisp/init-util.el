@@ -131,17 +131,23 @@
   "Return the file name without extension."
   (file-name-nondirectory (file-name-sans-extension file)))
 
-(defun jh/read-file-content-as-lines (file)
-  "Read a file content, and put all into a list of lines."
-  (with-temp-buffer
-    (insert-file-contents file)
-    (split-string (buffer-string) "\n" t)))
-
+;; -----------------------------------------------------------------------------
+;; file content and string reader
+;; -----------------------------------------------------------------------------
 (defun jh/read-file-content (file)
   "Read a file content, and put all into a list of lines."
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
+
+(defun jh/read-file-content-as-lines (file)
+  "Read a file content, and put all into a list of lines."
+  (split-string (jh/read-file-content file) "\n" t))
+
+(defun jh/current-line ()
+  "Read content of current line."
+  (string-trim (thing-at-point 'line t)))
+
 
 ;; -----------------------------------------------------------------------------
 ;; setup timer
