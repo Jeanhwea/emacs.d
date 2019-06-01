@@ -31,19 +31,25 @@
     (replace-regexp-in-string "Test$" "" (jh/java-class-name))
     (format-time-string "%H%M%S")))
 
-(defun jh/java-test-case-name-list ()
+(defun jh/java-test-subject-names (file)
+  "Genearate test subject names."
+  (when (spt/testcase? file)
+    (let ((text (jh/read-file-content (spt/trans-test-and-source file))))
+      (remove-duplicates
+        (mapcar #'cadddr (spt/extract-java-public-method text))
+        :test 'equal))))
+
+(defun jh/java-test-case-func-names ()
   "Generate test case name list."
-  (when (spt/testcase? (buffer-file-name))
-    (let* ((source-file (spt/trans-test-and-source (buffer-file-name)))
-            (text (jh/read-file-content source-file))
-            (funcs (mapcar #'cadddr (spt/extract-java-public-method text))))
-      (mapcar
-        (lambda (name)
-          (concat
-            "test"
-            (jh/pascalcase name)
-            (format-time-string "%H%M%S")))
-        funcs))))
+  (let
+    ((subjects (jh/java-test-subject-names (buffer-file-name))))
+    (mapcar
+      (lambda (name)
+        (concat
+          "test"
+          (jh/pascalcase name)
+          (format-time-string "%H%M%S")))
+      subjects)))
 
 (defun jh/java-whatever-to-entity-name (whatever)
   "Convert `*RepositoryImpl', `*Service' ... to `*'."

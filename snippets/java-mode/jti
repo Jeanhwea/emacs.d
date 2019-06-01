@@ -3,6 +3,6 @@
 # key: jti
 # --
 @Test(expected = IllegalArgumentException.class)
-public void ${1:$$(yas-choose-value (jh/java-test-case-name-list))}() throws Exception {
+public void ${1:$$(yas-choose-value (jh/java-test-case-func-names))}() throws Exception {
 $>$0
 }

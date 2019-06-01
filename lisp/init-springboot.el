@@ -204,15 +204,13 @@
         (setq addr (string-match regexp text addr))
         (and addr
           (setq
-            visiable (match-string 1 text)
+            visb (match-string 1 text)
             static (match-string 2 text)
             return (match-string 3 text)
             func (match-string 4 text)
             args (match-string 5 text))
           (setq
-            sign (mapcar
-                   #'jh/trim-blank
-                   (list visiable static return func args addr))
+            sign (list visb static (jh/trim-blank return) func (jh/trim-blank args) addr)
             res (cons sign res)
             addr (+ addr 1)))))
     (reverse res)))
