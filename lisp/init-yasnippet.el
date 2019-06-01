@@ -109,23 +109,8 @@
             (if (null value)
               (setq todo (cons v todo)))))
         cache-inter)
-      (cond
-        ((> (length todo) 1)
-          (completing-read "Override function >> "
-            (mapcar
-              (lambda (sign)
-                (let ((type (nth 0 sign))
-                       (func (nth 1 sign))
-                       (args (nth 2 sign)))
-                  (format "%s %s(%s)" type func args)))
-              todo)))
-        ((= (length todo) 1)
-          (let* ((sign (car todo))
-                  (type (nth 0 sign))
-                  (func (nth 1 sign))
-                  (args (nth 2 sign)))
-            (format "%s %s(%s)" type func args)))
-        (t "String toString()")))
-    "String toString()"))
+      (if todo
+        (mapcar (lambda (sign) (apply 'format "%s %s(%s)" sign)) todo)
+        '("String toString()")))))
 
 (provide 'init-yasnippet)

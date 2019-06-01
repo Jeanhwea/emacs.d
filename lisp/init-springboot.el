@@ -230,9 +230,9 @@
         (setq addr (string-match regexp text addr))
         (and addr
           (setq
-            return (match-string 3 text)
-            func (match-string 4 text)
-            args (match-string 5 text))
+            return (match-string 2 text)
+            func (match-string 3 text)
+            args (match-string 4 text))
           (setq
             sign (list (jh/trim-blank return) func (jh/trim-blank args) addr)
             res (cons sign res)
@@ -392,7 +392,7 @@
 (defun spt/cache-of-inter-method (file)
   "Read all cache of all method in a interface."
   (let ((cache (make-hash-table :test 'equal))
-         (signs (mapcar #'spt/extract-java-inter-methods (jh/read-file-content file))))
+         (signs (spt/extract-java-inter-methods (jh/read-file-content file))))
     (dolist (sign signs) (puthash (apply 'format "%s$%s$%s" sign) sign cache))
     cache))
 
