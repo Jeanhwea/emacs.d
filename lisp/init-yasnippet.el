@@ -35,13 +35,15 @@
   "Generate test case name list."
   (when (spt/testcase? (buffer-file-name))
     (let* ((source-file (spt/trans-test-and-source (buffer-file-name)))
-            (methods (remove-if #'null
-                       (mapcar #'spt/extract-java-public-method
-                         (jh/read-file-content-as-lines source-file))))
-            (methods-names (remove-duplicates (mapcar 'caddr methods) :test 'equal)))
-      (mapcar (lambda (name)
-                (concat "test" (jh/pascalcase name) (format-time-string "%H%M%S")))
-        methods-names))))
+            (text (jh/read-file-content source-file))
+            (funcs (mapcar #'cadddr (spt/extract-java-public-method text))))
+      (mapcar
+        (lambda (name)
+          (concat
+            "test"
+            (jh/pascalcase name)
+            (format-time-string "%H%M%S")))
+        funcs))))
 
 (defun jh/java-whatever-to-entity-name (whatever)
   "Convert `*RepositoryImpl', `*Service' ... to `*'."

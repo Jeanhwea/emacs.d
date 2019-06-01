@@ -91,9 +91,9 @@
 ;; -----------------------------------------------------------------------------
 ;; String, helper
 ;; -----------------------------------------------------------------------------
-(defun jh/remove-trailing-blank (str)
+(defun jh/trim-blank (str)
   "Remove trailing spaces and tabs in a string."
-  (replace-regexp-in-string "[ \t]+" " " str))
+  (string-trim (replace-regexp-in-string "[ \t\n]+" " " str)))
 
 
 ;; -----------------------------------------------------------------------------

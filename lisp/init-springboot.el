@@ -135,10 +135,10 @@
   "Insert `import com.package.ClassName;'"
   (save-excursion
     (progn
-      (end-of-buffer)
+      (goto-char (point-max))
       (or (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" nil t)
         (progn
-          (beginning-of-buffer)
+          (goto-char (point-min))
           (next-line)))
       (end-of-line)
       (newline)
@@ -187,16 +187,7 @@
         class (match-string 3 line))
       (list static package class))))
 
-(defun spt/extract-java-public-method (line)
-  "Extract java method signature."
-  (save-match-data
-    (and (string-match "^  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
-      (setq prefix (match-string 1 line)
-        return (match-string 2 line)
-        func (match-string 3 line))
-      (list prefix return func))))
-
-(defun spt/extract-java-public-method2 (text)
+(defun spt/extract-java-public-method (text)
   "Extract java method signature."
   (let ((regexp
           (concat
@@ -218,17 +209,12 @@
             return (match-string 3 text)
             func (match-string 4 text)
             args (match-string 5 text))
-          (setq res
-            (cons
-              (list
-                visiable
-                static
-                (string-trim return)
-                func
-                (string-trim args)
-                addr)
-              res))
-          (setq addr (+ addr 1)))))
+          (setq
+            sign (mapcar
+                   #'jh/trim-blank
+                   (list visiable static return func args addr))
+            res (cons sign res)
+            addr (+ addr 1)))))
     (reverse res)))
 
 (defun spt/extract-java-inter-method (line)
