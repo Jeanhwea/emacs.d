@@ -71,6 +71,11 @@
   "Open a FILE."
   (find-file file))
 
+(defun spt/compilation-start (cmd &optional dir)
+  "Run compilation command."
+  (let ((default-directory (or dir (spt/project-root))))
+    (compilation-start cmd)))
+
 (defun spt/file-to-entity (file)
   "Return the entity name from a file name."
   (let ((class (jh/java-class-name file))
@@ -138,6 +143,34 @@
       (end-of-line)
       (newline)
       (insert (format "import %s%s.%s;" prefix package class)))))
+
+;; -----------------------------------------------------------------------------
+;; Runner
+;; -----------------------------------------------------------------------------
+;; maven springboot test
+;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
+(defun spt/run-test-class-command ()
+  "Run a test command."
+  (interactive)
+  (when (spt/testcase? (buffer-file-name))
+    (let ((class (jh/java-class-name)))
+      (spt/compilation-start (format "mvn test -q -B -Dtest=%s" class)))))
+
+(defun spt/run-test-command ()
+  "Run a test command."
+  (interactive)
+  (when (spt/testcase? (buffer-file-name))
+    (let ((class (jh/java-class-name))
+           (nearest-method
+             (save-excursion
+               (progn
+                 (and (search-backward-regexp "^[ \t]*@Test" nil t)
+                   (search-forward-regexp "test[_0-9A-Za-z]+")
+                   (word-at-point))))))
+      (spt/compilation-start
+        (if nearest-method
+          (format "mvn test -q -B -Dtest=%s#%s" class nearest-method)
+          (format "mvn test -q -B -Dtest=%s" class))))))
 
 ;; -----------------------------------------------------------------------------
 ;; Extractors
@@ -529,18 +562,20 @@
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'spt/leader-key-map)
-  (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
   (define-key spt/leader-key-map (kbd "C") 'spt/switch-to-any-controller-file)
+  (define-key spt/leader-key-map (kbd "E") 'spt/switch-to-any-entity-file)
+  (define-key spt/leader-key-map (kbd "P") 'spt/run-test-class-command)
+  (define-key spt/leader-key-map (kbd "R") 'spt/switch-to-any-repository-file)
+  (define-key spt/leader-key-map (kbd "S") 'spt/switch-to-any-service-file)
+  (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
   (define-key spt/leader-key-map (kbd "d") 'spt/switch-to-controller-api-doc)
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
-  (define-key spt/leader-key-map (kbd "E") 'spt/switch-to-any-entity-file)
   (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
   (define-key spt/leader-key-map (kbd "j") 'spt/jump-to-entity-field)
+  (define-key spt/leader-key-map (kbd "p") 'spt/run-test-command)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
-  (define-key spt/leader-key-map (kbd "R") 'spt/switch-to-any-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
-  (define-key spt/leader-key-map (kbd "S") 'spt/switch-to-any-service-file)
   (define-key spt/leader-key-map (kbd "t") 'spt/toggle-test-and-source)
   (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class))
 (global-set-key (kbd "M-RET") 'spt/leader-key-map)
