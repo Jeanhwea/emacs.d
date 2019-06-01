@@ -241,17 +241,16 @@
 
 (defun spt/extract-java-impl-override-methods (text)
   "Extract java method in interface."
-  (let
-    ((regexp
-       (concat
-         "^  @Override[ \t\n]*"
-         "public "
-         "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
-         "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
-         "(\\([^;{]*\\))"
-         "\\( {\\|;\\)$"))
-      (addr 0)
-      (res))
+  (let ((regexp
+          (concat
+            "^  @Override[ \t\n]*"
+            "public "
+            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
+            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "(\\([^;{]*\\))"
+            "\\( {\\|;\\)$"))
+         (addr 0)
+         (res))
     (while addr
       (save-match-data
         (setq addr (string-match regexp text addr))
@@ -283,13 +282,12 @@
 
 (defun spt/extract-java-controller-apis (text)
   "Extract all api information in controller."
-  (let
-    ((regexp
-       (concat
-         "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
-         "  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$"))
-      (addr 0)
-      (res))
+  (let ((regexp
+          (concat
+            "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
+            "  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$"))
+         (addr 0)
+         (res))
     (while addr
       (save-match-data
         (setq addr (string-match regexp text addr))

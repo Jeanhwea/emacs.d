@@ -12,7 +12,7 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
-  (let  ((dir (jh/parent-dir (or file (buffer-file-name)))))
+  (let ((dir (jh/parent-dir (or file (buffer-file-name)))))
     (mapconcat 'identity
       (split-string
         (replace-regexp-in-string
@@ -41,8 +41,7 @@
 
 (defun jh/java-test-case-func-names ()
   "Generate test case name list."
-  (let
-    ((subjects (jh/java-test-subject-names (buffer-file-name))))
+  (let ((subjects (jh/java-test-subject-names (buffer-file-name))))
     (mapcar
       (lambda (name)
         (concat
