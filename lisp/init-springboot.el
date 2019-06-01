@@ -131,7 +131,7 @@
 ;; -----------------------------------------------------------------------------
 ;; Modifiers
 ;; -----------------------------------------------------------------------------
-(defun spt/insert-import-package-statement (prefix package class)
+(defun spt/insert-import-package-statement (static package class)
   "Insert `import com.package.ClassName;'"
   (save-excursion
     (progn
@@ -142,7 +142,10 @@
           (next-line)))
       (end-of-line)
       (newline)
-      (insert (format "import %s%s.%s;" prefix package class)))))
+      (insert
+        (if static
+          (format "import %s %s.%s;" static package class)
+          (format "import %s.%s;" package class))))))
 
 ;; -----------------------------------------------------------------------------
 ;; Runner
@@ -189,9 +192,9 @@
   (save-match-data
     (and (string-match "^  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
       (setq prefix (match-string 1 line)
-        type (match-string 2 line)
+        return (match-string 2 line)
         func (match-string 3 line))
-      (list prefix type func))))
+      (list prefix return func))))
 
 (defun spt/extract-java-public-method2 (text)
   "Extract java method signature."
@@ -199,18 +202,34 @@
           (concat
             "^  \\(public\\|private\\)[ \t]*"
             "\\(static\\|\\)[ \t]*"
-            "\\([a-zA-Z][ ,<>a-zA-Z0-9]+?\\|\\)[ \t]*"
-            "\\([_a-zA-Z][_a-zA-Z0-9]*\\)"
+            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
+            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
             "(\\([^;{]*\\))"
-            "\\({\\|;\\)$"
-            ))))
-
-  (save-match-data
-    (and (string-match "^  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)\(" line)
-      (setq prefix (match-string 1 line)
-        type (match-string 2 line)
-        func (match-string 3 line))
-      (list prefix type func))))
+            "\\( {\\|;\\)$"))
+         (addr 0)
+         (res))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq
+            visiable (match-string 1 text)
+            static (match-string 2 text)
+            return (match-string 3 text)
+            func (match-string 4 text)
+            args (match-string 5 text))
+          (setq res
+            (cons
+              (list
+                visiable
+                static
+                (string-trim return)
+                func
+                (string-trim args)
+                addr)
+              res))
+          (setq addr (+ addr 1)))))
+    (reverse res)))
 
 (defun spt/extract-java-inter-method (line)
   "Extract java method in interface."
@@ -225,21 +244,21 @@
 (defun spt/extract-java-impl-override-method (text)
   "Extract java method in interface."
   (let
-    ((regex
+    ((regexp
        (concat
          "^  @Override[ \t\n]*public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$"))
-      (start 0)
+      (addr 0)
       (res))
-    (while start
+    (while addr
       (save-match-data
-        (setq start (string-match regex text start))
-        (and start
+        (setq addr (string-match regexp text addr))
+        (and addr
           (setq
             type (match-string 2 text)
             func (match-string 3 text)
             args (string-trim (match-string 4 text)))
           (setq res (cons (list type func args) res))
-          (setq start (+ start 1)))))
+          (setq addr (+ addr 1)))))
     (reverse res)))
 
 (defun spt/extract-java-controller-module (line)
@@ -259,23 +278,23 @@
 (defun spt/extract-java-controller-api (text)
   "Extract all api information in controller."
   (let
-    ((regex
+    ((regexp
        (concat
          "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
          "  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$"))
-      (start 0)
+      (addr 0)
       (res))
-    (while start
+    (while addr
       (save-match-data
-        (setq start (string-match regex text start))
-        (and start
+        (setq addr (string-match regexp text addr))
+        (and addr
           (setq method (jh/upcase (match-string 1 text))
             url (match-string 3 text)
             type (match-string 5 text)
             func (match-string 6 text)
             args (string-trim (match-string 7 text)))
-          (setq res (cons (list method url type func args start) res))
-          (setq start (+ start 1)))))
+          (setq res (cons (list method url type func args addr) res))
+          (setq addr (+ addr 1)))))
     (reverse res)))
 
 (defun spt/extract-java-controller-info (file)
@@ -399,10 +418,10 @@
         type (nth 2 api)
         func (nth 3 api)
         args (nth 4 api)
-        start (nth 5 api))
+        addr (nth 5 api))
       (puthash
         (format "%s/%s/%s.md" module base func)
-        (list file start (format "%s %s%s" method full url) type func args)
+        (list file addr (format "%s %s%s" method full url) type func args)
         cache))
     cache))
 

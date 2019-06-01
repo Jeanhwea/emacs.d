@@ -9,7 +9,7 @@
   (string-equal "darwin" system-type))
 
 ;; -----------------------------------------------------------------------------
-;; string helper, using string-inflection
+;; String, convert shape
 ;; -----------------------------------------------------------------------------
 (defun jh/underscore (str)
   "convert string to `foo_bar' format"
@@ -35,6 +35,9 @@
   "convert string to `Foo_Bar' format"
   (string-inflection-capital-underscore-function str))
 
+;; -----------------------------------------------------------------------------
+;; String, dictionary related
+;; -----------------------------------------------------------------------------
 (defvar noun-cache (make-hash-table :test 'equal)
   "store all noun in english.")
 
@@ -84,6 +87,13 @@
 ;; (jh/pluralize "bus")
 ;; (jh/pluralize "city")
 ;; (jh/pluralize "boy")
+
+;; -----------------------------------------------------------------------------
+;; String, helper
+;; -----------------------------------------------------------------------------
+(defun jh/remove-trailing-blank (str)
+  "Remove trailing spaces and tabs in a string."
+  (replace-regexp-in-string "[ \t]+" " " str))
 
 
 ;; -----------------------------------------------------------------------------
@@ -148,6 +158,9 @@
   "Read content of current line."
   (string-trim (thing-at-point 'line t)))
 
+(defun jh/current-buffer ()
+  "Read content of current buffer."
+  (jh/read-file-content (buffer-file-name)))
 
 ;; -----------------------------------------------------------------------------
 ;; setup timer
