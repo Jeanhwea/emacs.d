@@ -88,23 +88,23 @@
 ;; -----------------------------------------------------------------------------
 (defun spt/entity? (file)
   "Return ture if FILE is a entity."
-  (not (null (string-match-p "^.*/entity/[0-9a-zA-Z]*\\.java$" file))))
+  (not (null (string-match-p "^.*/entity/[_A-Za-z0-9]*\\.java$" file))))
 
 (defun spt/repository? (file)
   "Return ture if FILE is a repository."
-  (not (null (string-match-p "^.*/repo/[0-9a-zA-Z]*Repository\\.java$" file))))
+  (not (null (string-match-p "^.*/repo/[_A-Za-z0-9]*Repository\\.java$" file))))
 
 (defun spt/controller? (file)
   "Return ture if FILE is a controller."
-  (not (null (string-match-p "^.*/controller/[0-9a-zA-Z]*Controller\\.java$" file))))
+  (not (null (string-match-p "^.*/controller/[_A-Za-z0-9]*Controller\\.java$" file))))
 
 (defun spt/service? (file)
   "Return ture if FILE is a service."
-  (not (null (string-match-p "^.*/service/[0-9a-zA-Z]*Service\\.java$" file))))
+  (not (null (string-match-p "^.*/service/[_A-Za-z0-9]*Service\\.java$" file))))
 
 (defun spt/implement? (file)
   "Return ture if FILE is a implement."
-  (not (null (string-match-p "^.*/impl/[0-9a-zA-Z]*Impl\\.java$" file))))
+  (not (null (string-match-p "^.*/impl/[_A-Za-z0-9]*Impl\\.java$" file))))
 
 (defun spt/component? (file)
   "Return ture if FILE is a component"
@@ -116,7 +116,7 @@
 
 (defun spt/testcase? (file)
   "Return ture if FILE is a entity."
-  (not (null (string-match-p "^.*/src/test/java/.*/[0-9a-zA-Z]*Test\\.java$" file))))
+  (not (null (string-match-p "^.*/src/test/java/.*/[_A-Za-z0-9]*Test\\.java$" file))))
 
 (defun spt/maven-project? ()
   "Return ture if current project is a maven project."
@@ -132,7 +132,7 @@
   (save-excursion
     (progn
       (goto-char (point-max))
-      (or (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" nil t)
+      (or (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$" nil t)
         (progn
           (goto-char (point-min))
           (next-line)))
@@ -146,11 +146,11 @@
           (concat
             "^  \\(public\\|private\\|protected\\)[ \t]*"
             "\\(static\\|\\)[ \t]*"
-            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
-            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|\\)"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
             "(\\([^;{]*\\))[ \t]*"
             "\\(throws\\|\\)[ \t]*"
-            "\\([a-zA-Z][_a-zA-Z0-9]*\\|\\)[ \t]*"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
             "\\( {\\|;\\)$"))
          (func))
     (save-excursion
@@ -208,7 +208,7 @@
 
 (defun spt/extract-java-imported-classes (text)
   "Extract package name and class name from line."
-  (let ((regexp "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$")
+  (let ((regexp "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$")
          (addr 0)
          (res))
     (while addr
@@ -254,11 +254,11 @@
           (concat
             "^  \\(public\\|private\\|protected\\)[ \t]*"
             "\\(static\\|\\)[ \t]*"
-            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
-            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
             "(\\([^;{]*\\))"
             "\\(throws\\|\\)[ \t]*"
-            "\\([a-zA-Z][_a-zA-Z0-9]*\\|\\)[ \t]*"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
             "\\( {\\|;\\)$"))
          (addr 0)
          (res))
@@ -289,8 +289,8 @@
   (let ((regexp
           (concat
             "^  \\(public \\|\\)"
-            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
-            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|\\)"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
             "(\\([^;{]*\\));$"))
          (addr 0)
          (res))
@@ -314,8 +314,8 @@
           (concat
             "^  @Override[ \t\n]*"
             "public "
-            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
-            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|\\)"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
             "(\\([^;{]*\\))"
             "\\( {\\|;\\)$"))
          (addr 0)
@@ -366,8 +366,8 @@
             "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping"
             "(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
             "public \\(static\\|\\)[ \t]*"
-            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
-            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\)"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
             "(\\([^;{]*\\)) {$"))
          (addr 0)
          (res))
