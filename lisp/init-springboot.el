@@ -601,8 +601,12 @@
   (interactive)
   (let ((file (buffer-file-name)))
     (if (spt/controller? file)
-      (let ((func (spt/pick-method-name)))
-        (and func (spt/find-file (spt/trans-doc-markdown-file func file))))
+      (let ((func (spt/pick-method-name))
+             (available
+               (mapcar #'caddr
+                 (hash-table-values (spt/cache-of-controller-api file)))))
+        (and func (member func available)
+          (spt/find-file (spt/trans-doc-markdown-file func file))))
       (let* ((cache (spt/cache-of-all-controller-api))
               (path (jh/relative-path file (spt/doc-root)))
               (sign (gethash path cache))
