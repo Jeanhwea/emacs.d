@@ -141,7 +141,7 @@
       (insert (jh/trim-blank (format "import %s %s.%s;" static package class))))))
 
 (defun spt/pick-method-name ()
-  "Pick the api function name in controller"
+  "Pick the method name in controller."
   (let ((regexp
           (concat
             "^  \\(public\\|private\\|protected\\)[ \t]*"
@@ -177,23 +177,36 @@
   "Run a test command."
   (interactive)
   (when (spt/testcase? (buffer-file-name))
-    (let ((class (jh/java-class-name)))
-      (spt/compilation-start (format "mvn test -q -B -Dtest=%s" class)))))
+    (let ((this-class (jh/java-class-name)))
+      (spt/compilation-start (format "mvn test -q -B -Dtest=%s" this-class)))))
 
 (defun spt/run-test-method-command ()
   "Run a test command."
   (interactive)
   (when (spt/testcase? (buffer-file-name))
-    (let ((class (jh/java-class-name))
+    (let ((this-class (jh/java-class-name))
            (nearest-method (spt/pick-method-name)))
       (spt/compilation-start
         (if nearest-method
-          (format "mvn test -q -B -Dtest=%s#%s" class nearest-method)
-          (format "mvn test -q -B -Dtest=%s" class))))))
+          (format "mvn test -q -B -Dtest=%s#%s" this-class nearest-method)
+          (format "mvn test -q -B -Dtest=%s" this-class))))))
 
 ;; -----------------------------------------------------------------------------
 ;; Extractors
 ;; -----------------------------------------------------------------------------
+(defun spt/extract-java-package (text)
+  "Extract java package name."
+  (let ((regexp "^package \\([^;]*\\);$")
+         (addr 0)
+         (res))
+    (and addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq package (match-string 1 text))
+          (setq res package))))
+    res))
+
 (defun spt/extract-java-imported-classes (text)
   "Extract package name and class name from line."
   (let ((regexp "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$")
@@ -211,6 +224,31 @@
             res (cons (list static package class) res))
           (setq addr (+ addr 1)))))
     (reverse res)))
+
+(defun spt/extract-java-class (text)
+  "Extract java package name."
+  (let ((regexp
+          (concat
+            "^\\(\\|public\\|private\\)[ \t]*"
+            "\\(class\\|interface\\)[ \t]*"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+            "\\(extends\\|implements\\|\\)[ \t]*"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
+            "{$"))
+         (addr 0)
+         (res))
+    (and addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq
+            visb (match-string 1 text)
+            class-inter (match-string 2 text)
+            name (match-string 3 text)
+            extends-impl (match-string 4 text)
+            parent (match-string 5 text))
+          (setq res (list visb class-inter name extends-impl parent)))))
+    res))
 
 (defun spt/extract-java-class-methods (text)
   "Extract java methods, return a list of signature."
@@ -237,7 +275,13 @@
             func (match-string 4 text)
             args (match-string 5 text))
           (setq
-            sign (list visb static (jh/trim-blank return) func (jh/trim-blank args) addr)
+            sign (list
+                   (jh/trim-blank visb)
+                   static
+                   (jh/trim-blank return)
+                   func
+                   (jh/trim-blank args)
+                   addr)
             res (cons sign res)
             addr (+ addr 1)))))
     (reverse res)))
@@ -380,32 +424,17 @@
 
 (defun spt/cache-of-file-meta (file)
   "Extract java class file meta information, such as class/interface, parent"
-  (let ((regexp-package-declare "^package \\([^;]*\\);$")
-         (regexp-class-declare
-           (concat
-             "^\\(\\|public\\)[ \t]*"
-             "\\(class\\|interface\\)[ \t]*"
-             "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-             "\\(extends\\|implements\\|\\)[ \t]*"
-             "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
-             "{$"))
-         (text (jh/read-file-content file))
-         (cache (make-hash-table :test 'equal)))
-    (save-match-data
-      (and (string-match regexp-package-declare text)
-        (setq package (match-string 1 text))
-        (puthash 'package package cache)))
-    (save-match-data
-      (and (string-match regexp-class-declare text)
-        (setq
-          class-inter (match-string 2 text)
-          name (match-string 3 text)
-          extends-impl (match-string 4 text)
-          parent (match-string 5 text))
-        (puthash 'class-inter class-inter cache)
-        (puthash 'name name cache)
-        (puthash 'extends-impl extends-impl cache)
-        (puthash 'parent parent cache)))
+  (let* ((cache (make-hash-table :test 'equal))
+          (text (jh/read-file-content file))
+          (class-inter (cadr (spt/extract-java-class text))))
+    (puthash 'package (spt/extract-java-package text) cache)
+    (puthash 'class (spt/extract-java-class text) cache)
+    (puthash 'imports (spt/extract-java-imported-classes text) cache)
+    (puthash 'methods
+      (if (string-equal "interface" class-inter)
+        (spt/extract-java-inter-methods text)
+        (spt/extract-java-class-methods text))
+      cache)
     cache))
 
 (defun spt/cache-of-class-in-project-if (pred)
@@ -484,9 +513,10 @@
 (defun spt/trans-doc-markdown-file (func file)
   "Transfer file to document file."
   (if (spt/controller? file)
-    (let* ((info (spt/extract-java-controller-info file))
-            (module (car info))
-            (base (cadr info)))
+    (let* ((text (jh/read-file-content file))
+            (module (spt/extract-java-controller-module text))
+            (router (or (spt/extract-java-controller-router text) ""))
+            (base (or (cadr (split-string (or router "/") "/")) "")))
       (expand-file-name
         (format "%s/%s/%s.md" module base func)
         (spt/doc-root)))))
