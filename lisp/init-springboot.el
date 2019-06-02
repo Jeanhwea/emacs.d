@@ -194,7 +194,7 @@
 ;; -----------------------------------------------------------------------------
 ;; Extractors
 ;; -----------------------------------------------------------------------------
-(defun spt/extract-java-imported-class (text)
+(defun spt/extract-java-imported-classes (text)
   "Extract package name and class name from line."
   (let ((regexp "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$")
          (addr 0)
@@ -360,7 +360,7 @@
 (defun spt/cache-of-imports (file)
   "Read imported class in the FILE, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal))
-         (imports (spt/extract-java-imported-class (jh/read-file-content file))))
+         (imports (spt/extract-java-imported-classes (jh/read-file-content file))))
     (dolist (import imports)
       (and import
         (puthash (caddr import) import cache)))
