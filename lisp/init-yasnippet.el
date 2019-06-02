@@ -97,6 +97,7 @@
 
 (defun jh/java-inter-method-signature ()
   "Complete the signature of interface's method."
+  (save-some-buffers t)
   (if (spt/implement? (buffer-file-name))
     (let* ((file (buffer-file-name))
             (cache-impl (spt/cache-of-impl-override-method file))
