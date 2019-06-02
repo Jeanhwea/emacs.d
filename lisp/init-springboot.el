@@ -118,10 +118,6 @@
   "Return ture if FILE is a entity."
   (not (null (string-match-p "^.*/src/test/java/.*/[0-9a-zA-Z]*Test\\.java$" file))))
 
-(defun spt/apiname? (func)
-  "Return ture if func is a api name."
-  (not (null (string-match-p "^\\(get\\|post\\|put\\|delete\\)" func))))
-
 (defun spt/maven-project? ()
   "Return ture if current project is a maven project."
   (file-exists-p
@@ -129,7 +125,7 @@
       (jh/git-project-root-dir default-directory))))
 
 ;; -----------------------------------------------------------------------------
-;; Modifiers
+;; Modifiers and Picker
 ;; -----------------------------------------------------------------------------
 (defun spt/insert-import-package-statement (static package class)
   "Insert `import com.package.ClassName;'"
@@ -146,6 +142,34 @@
         (if static
           (format "import %s %s.%s;" static package class)
           (format "import %s.%s;" package class))))))
+
+(defun spt/pick-method-name ()
+  "Pick the api function name in controller"
+  (let ((regexp
+          (concat
+            "^  \\(public\\|private\\|protected\\)[ \t]*"
+            "\\(static\\|\\)[ \t]*"
+            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
+            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "(\\([^;{]*\\))[ \t]*"
+            "\\(throws\\|\\)[ \t]*"
+            "\\([a-zA-Z][_a-zA-Z0-9]*\\|\\)[ \t]*"
+            "\\( {\\|;\\)$"))
+         (func))
+    (save-excursion
+      (progn
+        (search-backward-regexp regexp nil t)
+        (search-forward-regexp "(" nil t)
+        (backward-word)
+        (setq func (thing-at-point 'symbol))))
+    func))
+
+(defun spt/goto-function-body (file addr)
+  "Goto a function body"
+  (progn
+    (spt/find-file file)
+    (goto-char addr)
+    (search-forward-regexp "{$")))
 
 ;; -----------------------------------------------------------------------------
 ;; Runner
@@ -196,6 +220,8 @@
             "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
             "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
             "(\\([^;{]*\\))"
+            "\\(throws\\|\\)[ \t]*"
+            "\\([a-zA-Z][_a-zA-Z0-9]*\\|\\)[ \t]*"
             "\\( {\\|;\\)$"))
          (addr 0)
          (res))
@@ -266,61 +292,66 @@
           (setq addr (+ addr 1)))))
     (reverse res)))
 
-(defun spt/extract-java-controller-module (line)
+(defun spt/extract-java-controller-module (text)
   "Extract spring boot controller module name."
-  (save-match-data
-    (and (string-match "^package .*\\.\\([^.]*\\)\\.controller;$" line)
-      (setq module (match-string 1 line))
-      module)))
+  (let ((regexp "^package .*\\.\\([^.]*\\)\\.controller;$")
+         (addr 0)
+         (res))
+    (and addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq module (match-string 1 text))
+          (setq res module))))
+    res))
 
-(defun spt/extract-java-controller-base (line)
+(defun spt/extract-java-controller-router (line)
   "Extract spring boot controller base url and more."
-  (save-match-data
-    (and (string-match "^@RequestMapping\(\"\\([^\"]*\\)\"\)$" line)
-      (setq base (match-string 1 line))
-      base)))
+  (let ((regexp "^@RequestMapping\(\"\\([^\"]*\\)\"\)$")
+         (addr 0)
+         (res))
+    (and addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq router (match-string 1 text))
+          (setq res router))))
+    res))
 
 (defun spt/extract-java-controller-apis (text)
   "Extract all api information in controller."
   (let ((regexp
           (concat
-            "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
-            "  public \\(static \\|\\)\\([^(]+\\) \\([_a-zA-Z][_a-zA-Z0-9]*\\)(\\([^{;]*\\))\\(;\\| {\\)$"))
+            "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping"
+            "(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
+            "public \\(static\\|\\)[ \t]*"
+            "\\([a-zA-Z][ ,<>a-zA-Z0-9]* \\|\\)"
+            "\\([a-zA-Z][_a-zA-Z0-9]*\\)[ \t]*"
+            "(\\([^;{]*\\)) {$"))
          (addr 0)
          (res))
     (while addr
       (save-match-data
         (setq addr (string-match regexp text addr))
         (and addr
-          (setq method (jh/upcase (match-string 1 text))
-            url (match-string 3 text)
-            type (match-string 5 text)
+          (setq
+            method (match-string 1 text)
+            uri (match-string 3 text)
+            return (match-string 5 text)
             func (match-string 6 text)
-            args (string-trim (match-string 7 text)))
-          (setq res (cons (list method url type func args addr) res))
+            args (match-string 7 text))
+          (setq
+            api (list
+                  (jh/upcase method)
+                  uri
+                  (jh/trim-blank return)
+                  func
+                  (jh/trim-blank args)
+                  addr)
+            res (cons api res))
           (setq addr (+ addr 1)))))
     (reverse res)))
 
-(defun spt/extract-java-controller-info (file)
-  "read the base url in a java controller file."
-  (when (spt/controller? file)
-    (let*
-      ((lines (jh/read-file-content-as-lines file))
-        (text (jh/read-file-content file))
-        (module (car
-                  (remove-if 'null
-                    (mapcar #'spt/extract-java-controller-module lines))))
-        (full (or
-                (car
-                  (remove-if 'null
-                    (mapcar #'spt/extract-java-controller-base lines)))
-                ""))
-        (apis (spt/extract-java-controller-apis text))
-        (base (or
-                (cadr
-                  (split-string (or full "/") "/"))
-                "")))
-      (and module base (list module base full file apis)))))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -403,34 +434,34 @@
 
 (defun spt/cache-of-controller-api (file)
   "Read all api information in the controller FILE."
-  (let* ((cache (make-hash-table :test 'equal))
-          (info (spt/extract-java-controller-info file))
-          (module (nth 0 info))
-          (base (nth 1 info))
-          (full (nth 2 info))
-          (file (nth 3 info))
-          (apis (nth 4 info)))
-    (dolist (api apis)
-      (setq method (nth 0 api)
-        url (nth 1 api)
-        type (nth 2 api)
-        func (nth 3 api)
-        args (nth 4 api)
-        addr (nth 5 api))
-      (puthash
-        (format "%s/%s/%s.md" module base func)
-        (list file addr (format "%s %s%s" method full url) type func args)
-        cache))
-    cache))
+  (when (spt/controller? file)
+    (let* ((cache (make-hash-table :test 'equal))
+            (text (jh/read-file-content file))
+            (module (spt/extract-java-controller-module text))
+            (router (or (spt/extract-java-controller-router text) ""))
+            (base (or (cadr (split-string (or router "/") "/")) ""))
+            (apis (spt/extract-java-controller-apis text)))
+      (dolist (api apis)
+        (setq
+          method (nth 0 api)
+          uri (nth 1 api)
+          return (nth 2 api)
+          func (nth 3 api)
+          args (nth 4 api)
+          addr (nth 5 api))
+        (puthash
+          (format "%s/%s/%s.md" module base func)
+          (list (format "%s %s%s" method router uri) return func args addr file)
+          cache))
+      cache)))
 
 (defun spt/cache-of-all-controller-api ()
   "Read all api information in the whole project."
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (file (spt/source-files))
-      (when (spt/controller? file)
-        (maphash
-          (lambda (k v) (puthash k v cache))
-          (spt/cache-of-controller-api file))))
+      (maphash
+        (lambda (k v) (puthash k v cache))
+        (spt/cache-of-controller-api file)))
     cache))
 
 ;; -----------------------------------------------------------------------------
@@ -546,23 +577,14 @@
   (interactive)
   (let ((file (buffer-file-name)))
     (if (spt/controller? file)
-      (progn
-        (search-forward-regexp "  }$" nil t)
-        (search-backward-regexp "public" nil t)
-        (search-forward-regexp "(" nil t)
-        (backward-word)
-        (let ((func (thing-at-point 'symbol)))
-          (when (spt/apiname? func)
-            (spt/find-file (spt/trans-doc-markdown-file func file)))))
+      (let ((func (spt/pick-method-name)))
+        (and func (spt/find-file (spt/trans-doc-markdown-file func file))))
       (let* ((cache (spt/cache-of-all-controller-api))
               (path (jh/relative-path file (spt/doc-root)))
               (sign (gethash path cache))
-              (file (car sign))
-              (pos (cadr sign)))
-        (progn
-          (spt/find-file file)
-          (goto-char pos)
-          (search-forward-regexp "{$"))))))
+              (file (car (reverse sign)))
+              (addr (cadr (reverse sign))))
+        (and sign (spt/goto-function-body file addr))))))
 
 (defun spt/format-java-source-code ()
   "Format java source file code."

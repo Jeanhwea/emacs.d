@@ -93,7 +93,7 @@
     (let* ((cache (spt/cache-of-all-controller-api))
             (path (jh/relative-path (buffer-file-name) (spt/doc-root)))
             (signature (gethash path cache)))
-      (if (null signature) "" (nth 2 signature)))))
+      (if (null signature) "" (car signature)))))
 
 (defun jh/java-inter-method-signature ()
   "Complete the signature of interface's method."
