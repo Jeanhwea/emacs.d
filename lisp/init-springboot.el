@@ -188,12 +188,7 @@
   (interactive)
   (when (spt/testcase? (buffer-file-name))
     (let ((class (jh/java-class-name))
-           (nearest-method
-             (save-excursion
-               (progn
-                 (and (search-backward-regexp "^[ \t]*@Test" nil t)
-                   (search-forward-regexp "test[_0-9A-Za-z]+")
-                   (word-at-point))))))
+           (nearest-method (spt/pick-method-name)))
       (spt/compilation-start
         (if nearest-method
           (format "mvn test -q -B -Dtest=%s#%s" class nearest-method)
