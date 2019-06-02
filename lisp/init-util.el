@@ -154,13 +154,14 @@
   "Read a file content, and put all into a list of lines."
   (split-string (jh/read-file-content file) "\n" t))
 
+(defun jh/current-buffer ()
+  "Read content of current buffer."
+  (jh/read-file-content (buffer-file-name)))
+  
 (defun jh/current-line ()
   "Read content of current line."
   (string-trim (thing-at-point 'line t)))
 
-(defun jh/current-buffer ()
-  "Read content of current buffer."
-  (jh/read-file-content (buffer-file-name)))
 
 ;; -----------------------------------------------------------------------------
 ;; setup timer

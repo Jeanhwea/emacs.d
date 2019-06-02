@@ -138,10 +138,7 @@
           (next-line)))
       (end-of-line)
       (newline)
-      (insert
-        (if static
-          (format "import %s %s.%s;" static package class)
-          (format "import %s.%s;" package class))))))
+      (insert (jh/trim-blank (format "import %s %s.%s;" static package class))))))
 
 (defun spt/pick-method-name ()
   "Pick the api function name in controller"
@@ -197,14 +194,23 @@
 ;; -----------------------------------------------------------------------------
 ;; Extractors
 ;; -----------------------------------------------------------------------------
-(defun spt/extract-java-imported-class (line)
+(defun spt/extract-java-imported-class (text)
   "Extract package name and class name from line."
-  (save-match-data
-    (and (string-match "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$" line)
-      (setq static (match-string 1 line)
-        package (match-string 2 line)
-        class (match-string 3 line))
-      (list static package class))))
+  (let ((regexp "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([a-zA-Z0-9]*\\);$")
+         (addr 0)
+         (res))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq
+            static (match-string 1 text)
+            package (match-string 2 text)
+            class (match-string 3 text))
+          (setq
+            res (cons (list static package class) res))
+          (setq addr (+ addr 1)))))
+    (reverse res)))
 
 (defun spt/extract-java-class-methods (text)
   "Extract java methods, return a list of signature."
@@ -300,7 +306,7 @@
           (setq res module))))
     res))
 
-(defun spt/extract-java-controller-router (line)
+(defun spt/extract-java-controller-router (text)
   "Extract spring boot controller base url and more."
   (let ((regexp "^@RequestMapping\(\"\\([^\"]*\\)\"\)$")
          (addr 0)
@@ -351,28 +357,25 @@
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
 ;; -----------------------------------------------------------------------------
-(defun spt/cache-of-imported-class (file)
+(defun spt/cache-of-imports (file)
   "Read imported class in the FILE, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal))
-         (values (mapcar #'spt/extract-java-imported-class
-                   (jh/read-file-content-as-lines file))))
-    (dolist (val values)
-      (and val
-        (let ((prefix (car val)) (package (cadr val)) (class (caddr val)))
-          (puthash class (list prefix package) cache))))
+         (imports (spt/extract-java-imported-class (jh/read-file-content file))))
+    (dolist (import imports)
+      (and import
+        (puthash (caddr import) import cache)))
     cache))
 
-(defun spt/cache-of-all-imported-class ()
+(defun spt/cache-of-all-imports ()
   "Read imported class in the whole project, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (file (spt/source-files))
-      (puthash
-        (jh/java-class-name file)
-        (list "" (jh/java-package-name file))
-        cache)
+      (let ((class (jh/java-class-name file))
+             (package (jh/java-package-name file)))
+        (puthash class (list "" package class) cache))
       (maphash
         (lambda (k v) (puthash k v cache))
-        (spt/cache-of-imported-class file)))
+        (spt/cache-of-imports file)))
     cache))
 
 (defun spt/cache-of-file-meta (file)
@@ -417,14 +420,14 @@
   "Read all cache of all method in a interface."
   (let ((cache (make-hash-table :test 'equal))
          (signs (spt/extract-java-inter-methods (jh/read-file-content file))))
-    (dolist (sign signs) (puthash (apply 'format "%s$%s$%s" sign) sign cache))
+    (dolist (sign signs) (puthash (apply #'format "%s$%s$%s" sign) sign cache))
     cache))
 
 (defun spt/cache-of-impl-override-method (file)
   "Read all cache of all override method in a implement."
   (let ((cache (make-hash-table :test 'equal))
          (signs (spt/extract-java-impl-override-methods (jh/read-file-content file))))
-    (dolist (sign signs) (puthash (apply 'format "%s$%s$%s" sign) sign cache))
+    (dolist (sign signs) (puthash (apply #'format "%s$%s$%s" sign) sign cache))
     cache))
 
 (defun spt/cache-of-controller-api (file)
@@ -500,18 +503,13 @@
 (defun spt/try-import-class ()
   "Try to import CLASS."
   (interactive)
-  (save-buffer)
-  (let* ((clz (word-at-point))
-          (project-class-cache (spt/cache-of-all-imported-class))
-          (file-class-cache (spt/cache-of-imported-class (buffer-file-name)))
-          (prefix-package (gethash clz project-class-cache))
-          (file-pkg (gethash clz file-class-cache)))
-    (when (and
-            (null file-pkg)
-            (not (null prefix-package))
-            (not (string-equal (cadr prefix-package) (jh/java-package-name))))
-      (let ((pre (car prefix-package)) (pkg (cadr prefix-package)))
-        (spt/insert-import-package-statement pre pkg clz)))))
+  (progn
+    (save-buffer)
+    (let* ((word (thing-at-point 'word t))
+            (importing (gethash word (spt/cache-of-all-imports)))
+            (imported (gethash word (spt/cache-of-imports (buffer-file-name)))))
+      (when (and importing (not imported) (not (string-equal (cadr importing) (jh/java-package-name))))
+        (apply #'spt/insert-import-package-statement importing)))))
 
 (defun spt/switch-to-any-file (pred prompt)
   "Switch to controller file."
