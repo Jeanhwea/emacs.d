@@ -474,7 +474,7 @@
           addr (nth 5 api))
         (puthash
           (format "%s/%s/%s.md" module base func)
-          (list (format "%s %s%s" method router uri) return func args addr file)
+          (list (format "%s %s%s" method router uri) return func args file addr)
           cache))
       cache)))
 
@@ -482,9 +482,10 @@
   "Read all api information in the whole project."
   (let ((cache (make-hash-table :test 'equal)))
     (dolist (file (spt/source-files))
-      (maphash
-        (lambda (k v) (puthash k v cache))
-        (spt/cache-of-controller-api file)))
+      (and (spt/controller? file)
+        (maphash
+          (lambda (k v) (puthash k v cache))
+          (spt/cache-of-controller-api file))))
     cache))
 
 ;; -----------------------------------------------------------------------------
@@ -592,7 +593,7 @@
   (interactive)
   (spt/switch-to-any-file #'spt/controller? "Controller >> "))
 
-(defun spt/switch-to-controller-api-doc ()
+(defun spt/toggle-controller-and-doc ()
   "Switch to controller api document file."
   (interactive)
   (let ((file (buffer-file-name)))
@@ -606,8 +607,8 @@
       (let* ((cache (spt/cache-of-all-controller-api))
               (path (jh/relative-path file (spt/doc-root)))
               (sign (gethash path cache))
-              (file (car (reverse sign)))
-              (addr (cadr (reverse sign))))
+              (addr (car (reverse sign)))
+              (file (cadr (reverse sign))))
         (and sign (spt/goto-function-body file addr))))))
 
 (defun spt/format-java-source-code ()
@@ -649,7 +650,7 @@
   (define-key spt/leader-key-map (kbd "R") 'spt/switch-to-any-repository-file)
   (define-key spt/leader-key-map (kbd "S") 'spt/switch-to-any-service-file)
   (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
-  (define-key spt/leader-key-map (kbd "d") 'spt/switch-to-controller-api-doc)
+  (define-key spt/leader-key-map (kbd "d") 'spt/toggle-controller-and-doc)
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
   (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
@@ -658,6 +659,6 @@
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
   (define-key spt/leader-key-map (kbd "t") 'spt/toggle-test-and-source)
   (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class))
-(global-set-key (kbd "M-RET") 'spt/leader-key-map)
+(global-set-key (kbd "M-j") 'spt/leader-key-map)
 
 (provide 'init-springboot)
