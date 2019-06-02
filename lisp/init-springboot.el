@@ -199,12 +199,11 @@
   (let ((regexp "^package \\([^;]*\\);$")
          (addr 0)
          (res))
-    (and addr
-      (save-match-data
-        (setq addr (string-match regexp text addr))
-        (and addr
-          (setq package (match-string 1 text))
-          (setq res package))))
+    (save-match-data
+      (setq addr (string-match regexp text addr))
+      (and addr
+        (setq package (match-string 1 text))
+        (setq res package)))
     res))
 
 (defun spt/extract-java-imported-classes (text)
@@ -237,17 +236,16 @@
             "{$"))
          (addr 0)
          (res))
-    (and addr
-      (save-match-data
-        (setq addr (string-match regexp text addr))
-        (and addr
-          (setq
-            visb (match-string 1 text)
-            class-inter (match-string 2 text)
-            name (match-string 3 text)
-            extends-impl (match-string 4 text)
-            parent (match-string 5 text))
-          (setq res (list visb class-inter name extends-impl parent)))))
+    (save-match-data
+      (setq addr (string-match regexp text addr))
+      (and addr
+        (setq
+          visb (match-string 1 text)
+          class-inter (match-string 2 text)
+          name (match-string 3 text)
+          extends-impl (match-string 4 text)
+          parent (match-string 5 text))
+        (setq res (list visb class-inter name extends-impl parent))))
     res))
 
 (defun spt/extract-java-class-methods (text)
@@ -342,12 +340,11 @@
   (let ((regexp "^package .*\\.\\([^.]*\\)\\.controller;$")
          (addr 0)
          (res))
-    (and addr
-      (save-match-data
-        (setq addr (string-match regexp text addr))
-        (and addr
-          (setq module (match-string 1 text))
-          (setq res module))))
+    (save-match-data
+      (setq addr (string-match regexp text addr))
+      (and addr
+        (setq module (match-string 1 text))
+        (setq res module)))
     res))
 
 (defun spt/extract-java-controller-router (text)
@@ -355,12 +352,11 @@
   (let ((regexp "^@RequestMapping\(\"\\([^\"]*\\)\"\)$")
          (addr 0)
          (res))
-    (and addr
-      (save-match-data
-        (setq addr (string-match regexp text addr))
-        (and addr
-          (setq router (match-string 1 text))
-          (setq res router))))
+    (save-match-data
+      (setq addr (string-match regexp text addr))
+      (and addr
+        (setq router (match-string 1 text))
+        (setq res router)))
     res))
 
 (defun spt/extract-java-controller-apis (text)
