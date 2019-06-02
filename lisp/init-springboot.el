@@ -508,7 +508,8 @@
     (let* ((word (thing-at-point 'word t))
             (importing (gethash word (spt/cache-of-all-imports)))
             (imported (gethash word (spt/cache-of-imports (buffer-file-name)))))
-      (when (and importing (not imported) (not (string-equal (cadr importing) (jh/java-package-name))))
+      (and importing (not imported)
+        (not (string-equal (cadr importing) (jh/java-package-name)))
         (apply #'spt/insert-import-package-statement importing)))))
 
 (defun spt/switch-to-any-file (pred prompt)
