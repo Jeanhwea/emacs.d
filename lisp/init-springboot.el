@@ -195,9 +195,14 @@
   "Run a test command."
   (interactive)
   (when (spt/testcase? (buffer-file-name))
-    (let ((this-class (jh/java-class-name))
-           (nearest-method (spt/pick-method-name)))
-      (spt/compilation-start (spt/maven-test-command this-class nearest-method)))))
+    (let* ((test-methods (mapcar #'cadr
+                          (spt/extract-java-junit-test-methods
+                            (jh/current-buffer))))
+           (nearest-method (spt/pick-method-name))
+           (this-class (jh/java-class-name))
+           (this-method (if (member nearest-method test-methods) nearest-method))
+           )
+      (spt/compilation-start (spt/maven-test-command this-class this-method)))))
 
 ;; -----------------------------------------------------------------------------
 ;; Extractors
@@ -336,6 +341,35 @@
             return (match-string 1 text)
             func (match-string 2 text)
             args (match-string 3 text))
+          (setq
+            sign (list (jh/trim-blank return) func (jh/trim-blank args) addr)
+            res (cons sign res)
+            addr (+ addr 1))
+          (setq addr (+ addr 1)))))
+    (reverse res)))
+
+(defun spt/extract-java-junit-test-methods (text)
+  "Extract java method in interface."
+  (let ((regexp
+          (concat
+            "^  @\\(Test\\|Test([^)]*)\\)[ \t\n]*"
+            "public "
+            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+            "(\\([^;{]*\\))[ \t]*"
+            "\\(throws\\|\\)[ \t]*"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
+            "\\( {\\|;\\)$"))
+         (addr 0)
+         (res))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq
+            return (match-string 2 text)
+            func (match-string 3 text)
+            args (match-string 4 text))
           (setq
             sign (list (jh/trim-blank return) func (jh/trim-blank args) addr)
             res (cons sign res)
