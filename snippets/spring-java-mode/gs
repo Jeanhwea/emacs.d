@@ -2,7 +2,7 @@
 # name: JPA Getter and Setter with Field
 # key: gs
 # --
-@Column(name = "${2:$(jh/upcase yas-text)}", nullable = true, unique = true)
+@Column(name = "${2:$(jh/upcase yas-text)}")
 private ${1:String} ${2:fieldName};
 
 public $1 get${2:$(jh/pascalcase yas-text)}() {

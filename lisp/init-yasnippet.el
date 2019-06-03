@@ -112,6 +112,6 @@
       (if todo
         (mapcar (lambda (sign) (apply 'format "%s %s(%s)" sign)) todo)
         '("String toString()")))
-    ("String toString()")))
+    '("String toString()")))
 
 (provide 'init-yasnippet)
