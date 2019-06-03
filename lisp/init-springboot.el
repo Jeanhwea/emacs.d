@@ -86,25 +86,29 @@
 ;; -----------------------------------------------------------------------------
 ;; Predictors
 ;; -----------------------------------------------------------------------------
+(defun spt/source? (file)
+  "Return ture if FILE is a java source file."
+  (string-match-p "\\.java$" file))
+
 (defun spt/entity? (file)
   "Return ture if FILE is a entity."
-  (not (null (string-match-p "^.*/entity/[_A-Za-z0-9]*\\.java$" file))))
+  (string-match-p "^.*/entity/[_A-Za-z0-9]*\\.java$" file))
 
 (defun spt/repository? (file)
   "Return ture if FILE is a repository."
-  (not (null (string-match-p "^.*/repo/[_A-Za-z0-9]*Repository\\.java$" file))))
+  (string-match-p "^.*/repo/[_A-Za-z0-9]*Repository\\.java$" file))
 
 (defun spt/controller? (file)
   "Return ture if FILE is a controller."
-  (not (null (string-match-p "^.*/controller/[_A-Za-z0-9]*Controller\\.java$" file))))
+  (string-match-p "^.*/controller/[_A-Za-z0-9]*Controller\\.java$" file))
 
 (defun spt/service? (file)
   "Return ture if FILE is a service."
-  (not (null (string-match-p "^.*/service/[_A-Za-z0-9]*Service\\.java$" file))))
+  (string-match-p "^.*/service/[_A-Za-z0-9]*Service\\.java$" file))
 
 (defun spt/implement? (file)
   "Return ture if FILE is a implement."
-  (not (null (string-match-p "^.*/impl/[_A-Za-z0-9]*Impl\\.java$" file))))
+  (string-match-p "^.*/impl/[_A-Za-z0-9]*Impl\\.java$" file))
 
 (defun spt/component? (file)
   "Return ture if FILE is a component"
@@ -116,7 +120,7 @@
 
 (defun spt/testcase? (file)
   "Return ture if FILE is a entity."
-  (not (null (string-match-p "^.*/src/test/java/.*/[_A-Za-z0-9]*Test\\.java$" file))))
+  (string-match-p "^.*/src/test/java/.*/[_A-Za-z0-9]*Test\\.java$" file))
 
 (defun spt/maven-project? ()
   "Return ture if current project is a maven project."
@@ -656,7 +660,7 @@
 (defun spt/jump-to-class-methods ()
   "Jump to class methods"
   (interactive)
-  (and (string-match-p "\.java$" (buffer-file-name))
+  (and (spt/source? (buffer-file-name))
     (let* ((signs (spt/extract-java-class-methods (jh/current-buffer)))
             (lookup (make-hash-table :test 'equal)))
       (progn
@@ -674,7 +678,7 @@
   (interactive)
   (let ((file (buffer-file-name))
          (prev-point (point)))
-    (when (string-match-p "\\.java$" file)
+    (and (spt/source? file)
       (progn
         (meghanada-code-beautify)
         (save-buffer)
