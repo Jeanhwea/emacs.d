@@ -269,7 +269,7 @@
             "\\(static\\|\\)[ \t]*"
             "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
             "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "(\\([^;{]*\\))"
+            "(\\([^;{]*\\))[ \t]*"
             "\\(throws\\|\\)[ \t]*"
             "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
             "\\( {\\|;\\)$"))
@@ -653,6 +653,22 @@
               (file (cadr (reverse sign))))
         (and sign (spt/goto-function-body file addr))))))
 
+(defun spt/jump-to-class-methods ()
+  "Jump to class methods"
+  (interactive)
+  (and (string-match-p "\.java$" (buffer-file-name))
+    (let* ((signs (spt/extract-java-class-methods (jh/current-buffer)))
+            (lookup (make-hash-table :test 'equal)))
+      (progn
+        (dolist (sign signs)
+          (let
+            ((key (jh/trim-blank (apply #'format "%s %s %s %s(%s)" sign)))
+              (addr (car (reverse sign))))
+            (puthash key addr lookup)))
+        (setq read (completing-read "Goto method >> " (hash-table-keys lookup))
+          addr (gethash read lookup))
+        (and read addr (spt/goto-function-body (buffer-file-name) addr))))))
+
 (defun spt/format-java-source-code ()
   "Format java source file code."
   (interactive)
@@ -696,6 +712,7 @@
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
   (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
+  (define-key spt/leader-key-map (kbd "m") 'spt/jump-to-class-methods)
   (define-key spt/leader-key-map (kbd "p") 'spt/run-test-method-command)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
