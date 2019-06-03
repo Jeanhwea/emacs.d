@@ -649,7 +649,7 @@
       (let* ((cache (spt/cache-of-all-controller-api))
               (path (jh/relative-path file (spt/doc-root)))
               (sign (gethash path cache))
-              (addr (car (reverse sign)))
+              (addr (car (last sign)))
               (file (cadr (reverse sign))))
         (and sign (spt/goto-function-body file addr))))))
 
@@ -663,7 +663,7 @@
         (dolist (sign signs)
           (let
             ((key (jh/trim-blank (apply #'format "%s %s %s %s(%s)" sign)))
-              (addr (car (reverse sign))))
+              (addr (car (last sign))))
             (puthash key addr lookup)))
         (setq read (completing-read "Goto method >> " (hash-table-keys lookup))
           addr (gethash read lookup))
@@ -693,9 +693,26 @@
 (defun spt/toggle-interface-and-implement ()
   "Toggle interface and implement file."
   (interactive)
-  (let ((file (buffer-file-name))
-         (other-file (spt/trans-impl-and-inter (buffer-file-name))))
-    (or (spt/testcase? file) (spt/find-file other-file))))
+  (or (spt/testcase? (buffer-file-name))
+    (let ((file (buffer-file-name))
+           (other-file (spt/trans-impl-and-inter (buffer-file-name))))
+      (if
+        (or (not (file-exists-p other-file)) (spt/implement? file))
+        (spt/find-file other-file)
+        (let ((lookup (make-hash-table :test 'equal))
+               (line (jh/trim-blank (jh/current-line)))
+               (methods
+                 (spt/extract-java-impl-override-methods
+                   (jh/read-file-content other-file))))
+          (progn
+            (dolist (method methods)
+              (let ((key (jh/trim-blank (apply #'format "%s %s(%s);" method)))
+                     (addr (car (last method))))
+                (puthash key addr lookup)))
+            (setq addr (gethash line lookup))
+            (if addr
+              (spt/goto-function-body other-file addr)
+              (spt/find-file other-file))))))))
 
 ;; -----------------------------------------------------------------------------
 ;; key bindings
