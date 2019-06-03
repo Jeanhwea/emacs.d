@@ -173,12 +173,23 @@
 ;; -----------------------------------------------------------------------------
 ;; maven springboot test
 ;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
+(defun spt/maven-test-command (class &optional package)
+  "Return maven test command."
+  (let ((subjects (if package (concat class "#" package) class)))
+    (concat "mvn test"
+      " -Dtest=" subjects
+      " -Dfile.encoding=UTF-8"
+      " -Dlogging.level.root=OFF"
+      " -Dlogging.level.org.springframework=OFF"
+      " -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN"
+      " --quiet --batch-mode")))
+
 (defun spt/run-test-class-command ()
   "Run a test command."
   (interactive)
   (when (spt/testcase? (buffer-file-name))
     (let ((this-class (jh/java-class-name)))
-      (spt/compilation-start (format "mvn test -q -B -Dtest=%s" this-class)))))
+      (spt/compilation-start (spt/maven-test-command this-class)))))
 
 (defun spt/run-test-method-command ()
   "Run a test command."
@@ -186,10 +197,7 @@
   (when (spt/testcase? (buffer-file-name))
     (let ((this-class (jh/java-class-name))
            (nearest-method (spt/pick-method-name)))
-      (spt/compilation-start
-        (if nearest-method
-          (format "mvn test -q -B -Dtest=%s#%s" this-class nearest-method)
-          (format "mvn test -q -B -Dtest=%s" this-class))))))
+      (spt/compilation-start (spt/maven-test-command this-class nearest-method)))))
 
 ;; -----------------------------------------------------------------------------
 ;; Extractors
