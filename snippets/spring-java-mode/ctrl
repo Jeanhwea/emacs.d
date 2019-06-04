@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("${1:$(jh/java-controller-base-url-mapping yas-text)}")
+@RequestMapping("${1:$(jh/java-controller-router yas-text)}")
 public class ${1:`(jh/java-class-name)`} {
 
 $>public static final Logger logger = LoggerFactory.getLogger($1.class);

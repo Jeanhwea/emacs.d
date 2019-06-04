@@ -24,13 +24,6 @@
   (let ((class (jh/filename-without-extension (or file (buffer-file-name)))))
     (jh/pascalcase class)))
 
-(defun jh/java-test-case-name ()
-  "Generate test case name with random time string."
-  (concat
-    "test"
-    (replace-regexp-in-string "Test$" "" (jh/java-class-name))
-    (format-time-string "%H%M%S")))
-
 (defun jh/java-test-subject-names (file)
   "Genearate test subject names."
   (when (spt/testcase? file)
@@ -57,7 +50,7 @@
       "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"
       "" whatever)))
 
-(defun jh/java-controller-base-url-mapping (ctrl)
+(defun jh/java-controller-router (ctrl)
   "Return a url mapping from name."
   (let ((entity (jh/java-whatever-to-entity-name ctrl)))
     (concat "/"
