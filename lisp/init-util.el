@@ -166,6 +166,16 @@
   "Read content of current line."
   (string-trim (thing-at-point 'line t)))
 
+(defun jh/save-variable (var filename)
+  "Save variable to a FILE."
+  (let ((file (expand-file-name filename
+                (expand-file-name "var" user-emacs-directory)))
+         (newbuf (generate-new-buffer filename)))
+    (with-current-buffer newbuf
+      (prin1 var (current-buffer))
+      (write-file file)
+      (kill-buffer newbuf))))
+
 
 ;; -----------------------------------------------------------------------------
 ;; setup timer

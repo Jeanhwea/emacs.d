@@ -70,3 +70,4 @@ flycheck_*.el
 /transient/
 /undo/
 /url/
+/var/

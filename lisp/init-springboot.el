@@ -464,13 +464,28 @@
             null (match-string 2 line)
             type (match-string 3 line)
             length (match-string 5 line))
-          (setq column (list name null type length)))
-      column)))
+          (setq column (list name null type length))))
+    column))
+
+(defun spt/extract-table (line)
+  "Extract table name."
+  (let ((regexp
+          (concat
+            "^\\(Table\\|View\\)"
+            "[ \t]*\\([_A-Za-z0-9]+\\)$"))
+         (table))
+    (and (save-match-data (string-match regexp line)
+          (setq
+            tabview (match-string 1 line)
+            name (match-string 2 line))
+          (and tabview name
+            (setq table (list tabview name)))))
+    table))
 
 (defun spt/query-table-columns (name)
-  "Add document string here."
+  "Query columns of a table."
   (let ((sqlbuf (sql-find-sqli-buffer))
-         (outbuf (format "*Columns of Table %s*" name))
+         (outbuf (format "*Columns of %s*" name))
          (columns))
     (unless sqlbuf
       (user-error "No SQL interactive buffer found"))
@@ -479,8 +494,35 @@
       (with-current-buffer outbuf
         (let ((lines (cddr (split-string (buffer-string) "\n" t))))
           (setq columns (mapcar #'spt/extract-table-columns lines)))
-        (delete-window) outbuf))
+        (delete-window)
+        (kill-buffer outbuf)))
     columns))
+
+(defun spt/query-all-table ()
+  "Query all table name."
+  (let ((sqlbuf (sql-find-sqli-buffer))
+         (outbuf "*All Table Names*")
+         (tables))
+    (unless sqlbuf
+      (user-error "No SQL interactive buffer found"))
+    (progn
+      (sql-execute-feature sqlbuf outbuf :list-all nil nil)
+      (with-current-buffer outbuf
+        (let ((lines (cddr (split-string (buffer-string) "\n" t))))
+          (setq tables (remove-if 'null (mapcar #'spt/extract-table lines))))
+        (delete-window)
+        (kill-buffer outbuf)))
+    tables))
+
+(defun spt/cache-of-table-columns ()
+  "Read all table columns, then put them into a cache."
+  (let ((cache (make-hash-table :test 'equal))
+         (tables (spt/query-all-table)))
+    (dolist (table tables)
+      (and table
+        (let ((name (cadr table)))
+          (puthash name (spt/query-table-columns name) cache))))
+    cache))
 
 
 ;; -----------------------------------------------------------------------------
