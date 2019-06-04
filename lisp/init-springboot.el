@@ -200,12 +200,11 @@
   (interactive)
   (when (spt/testcase? (buffer-file-name))
     (let* ((test-methods (mapcar #'cadr
-                          (spt/extract-java-junit-test-methods
-                            (jh/current-buffer))))
-           (nearest-method (spt/pick-method-name))
-           (this-class (jh/java-class-name))
-           (this-method (if (member nearest-method test-methods) nearest-method))
-           )
+                           (spt/extract-java-junit-test-methods
+                             (jh/current-buffer))))
+            (nearest-method (spt/pick-method-name))
+            (this-class (jh/java-class-name))
+            (this-method (if (member nearest-method test-methods) nearest-method)))
       (spt/compilation-start (spt/maven-test-command this-class this-method)))))
 
 ;; -----------------------------------------------------------------------------
@@ -215,13 +214,12 @@
   "Extract java package name."
   (let ((regexp "^package \\([^;]*\\);$")
          (addr 0)
-         (res))
+         (package))
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
-        (setq package (match-string 1 text))
-        (setq res package)))
-    res))
+        (setq package (match-string 1 text))))
+    package))
 
 (defun spt/extract-java-imported-classes (text)
   "Extract package name and class name from line."
@@ -241,7 +239,7 @@
           (setq addr (+ addr 1)))))
     (reverse res)))
 
-(defun spt/extract-java-class (text)
+(defun spt/extract-java-clazz (text)
   "Extract java package name."
   (let ((regexp
           (concat
@@ -252,7 +250,7 @@
             "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
             "{$"))
          (addr 0)
-         (res))
+         (clazz))
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
@@ -262,8 +260,8 @@
           name (match-string 3 text)
           extends-impl (match-string 4 text)
           parent (match-string 5 text))
-        (setq res (list visb class-inter name extends-impl parent))))
-    res))
+        (setq clazz (list visb class-inter name extends-impl parent))))
+    clazz))
 
 (defun spt/extract-java-class-methods (text)
   "Extract java methods, return a list of signature."
@@ -385,25 +383,23 @@
   "Extract spring boot controller module name."
   (let ((regexp "^package .*\\.\\([^.]*\\)\\.controller;$")
          (addr 0)
-         (res))
+         (module))
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
-        (setq module (match-string 1 text))
-        (setq res module)))
-    res))
+        (setq module (match-string 1 text))))
+    module))
 
 (defun spt/extract-java-controller-router (text)
   "Extract spring boot controller base url and more."
   (let ((regexp "^@RequestMapping\(\"\\([^\"]*\\)\"\)$")
          (addr 0)
-         (res))
+         (router))
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
-        (setq router (match-string 1 text))
-        (setq res router)))
-    res))
+        (setq router (match-string 1 text))))
+    router))
 
 (defun spt/extract-java-controller-apis (text)
   "Extract all api information in controller."
@@ -439,6 +435,17 @@
           (setq addr (+ addr 1)))))
     (reverse res)))
 
+(defun spt/extract-java-entity-table (text)
+  "Extract java package name."
+  (let ((regexp "^@Table(\\(name = \\|\\)\"\\([^\"]*\\)\")[ \t]*$")
+         (addr 0)
+         (table))
+    (save-match-data
+      (setq addr (string-match regexp text addr))
+      (and addr
+        (setq table (match-string 2 text))))
+    table))
+
 ;; -----------------------------------------------------------------------------
 ;; Database
 ;; -----------------------------------------------------------------------------
@@ -463,15 +470,17 @@
 (defun spt/query-table-columns (name)
   "Add document string here."
   (let ((sqlbuf (sql-find-sqli-buffer))
-         (outbuf (format "*Columns of Table %s*" name)))
+         (outbuf (format "*Columns of Table %s*" name))
+         (columns))
     (unless sqlbuf
       (user-error "No SQL interactive buffer found"))
     (progn
       (sql-execute-feature sqlbuf outbuf :list-table nil name)
       (with-current-buffer outbuf
         (let ((lines (cddr (split-string (buffer-string) "\n" t))))
-          (princ (mapcar #'spt/extract-table-columns lines)))
-        (delete-window) outbuf))))
+          (setq columns (mapcar #'spt/extract-table-columns lines)))
+        (delete-window) outbuf))
+    columns))
 
 
 ;; -----------------------------------------------------------------------------
@@ -502,9 +511,9 @@
   "Extract java class file meta information, such as class/interface, parent"
   (let* ((cache (make-hash-table :test 'equal))
           (text (jh/read-file-content file))
-          (class-inter (cadr (spt/extract-java-class text))))
+          (class-inter (cadr (spt/extract-java-clazz text))))
     (puthash 'package (spt/extract-java-package text) cache)
-    (puthash 'class (spt/extract-java-class text) cache)
+    (puthash 'class (spt/extract-java-clazz text) cache)
     (puthash 'imports (spt/extract-java-imported-classes text) cache)
     (puthash 'methods
       (if (string-equal "interface" class-inter)
