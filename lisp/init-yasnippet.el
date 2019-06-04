@@ -114,4 +114,9 @@
         '("String toString()")))
     '("String toString()")))
 
+(defun jh/java-database-table-column (&optional tabname)
+  "Complete the @Column using a given database."
+  (let (columns (spt/cache-of-table-columns tabname))
+    columns))
+
 (provide 'init-yasnippet)

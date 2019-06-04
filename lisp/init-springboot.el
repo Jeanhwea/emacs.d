@@ -461,11 +461,11 @@
     (and
       (save-match-data (string-match regexp line)
         (setq
-          name (match-string 1 line)
+          tabname (match-string 1 line)
           null (match-string 2 line)
           type (match-string 3 line)
           length (match-string 5 line))
-        (setq column (list name null type length))))
+        (setq column (list tabname null type length))))
     column))
 
 (defun spt/extract-table (line)
@@ -478,20 +478,20 @@
     (and (save-match-data (string-match regexp line)
           (setq
             tabview (match-string 1 line)
-            name (match-string 2 line))
-          (and tabview name
-            (setq table (list tabview name)))))
+            tabname (match-string 2 line))
+          (and tabview tabname
+            (setq table (list tabview tabname)))))
     table))
 
-(defun spt/query-table-columns (name)
+(defun spt/query-table-columns (tabname)
   "Query columns of a table."
   (let ((sqlbuf (sql-find-sqli-buffer))
-         (outbuf (format "*Columns of %s*" name))
+         (outbuf (format "*Columns of %s*" tabname))
          (columns))
     (unless sqlbuf
       (user-error "No SQL interactive buffer found"))
     (progn
-      (sql-execute-feature sqlbuf outbuf :list-table nil name)
+      (sql-execute-feature sqlbuf outbuf :list-table nil tabname)
       (with-current-buffer outbuf
         (let ((lines (cddr (split-string (buffer-string) "\n" t))))
           (setq columns (remove-if 'null (mapcar #'spt/extract-table-columns lines))))
@@ -515,10 +515,10 @@
         (kill-buffer outbuf)))
     tables))
 
-(defun spt/cache-of-table-columns (name)
+(defun spt/cache-of-table-columns (tabname)
   "Read all table columns, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal))
-         (columns (spt/query-table-columns name)))
+         (columns (spt/query-table-columns tabname)))
     (dolist (column columns)
       (let ((col (car column)))
         (and col
