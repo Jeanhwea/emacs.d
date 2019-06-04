@@ -439,6 +439,40 @@
           (setq addr (+ addr 1)))))
     (reverse res)))
 
+;; -----------------------------------------------------------------------------
+;; Database
+;; -----------------------------------------------------------------------------
+(defun spt/extract-table-columns (line)
+  "Extract table column information."
+  (let ((regexp
+          (concat
+            "^[ \t]*\\([_A-Za-z0-9]*\\)"
+            "[ \t]*\\(NOT NULL\\|\\)"
+            "[ \t]*\\([_A-Za-z0-9]*\\)"
+            "\\((\\([0-9]*\\))\\|\\)$"))
+         (column))
+    (and (save-match-data (string-match regexp line)
+          (setq
+            name (match-string 1 line)
+            null (match-string 2 line)
+            type (match-string 3 line)
+            length (match-string 5 line))
+          (setq column (list name null type length)))
+      column)))
+
+(defun spt/query-table-columns (name)
+  "Add document string here."
+  (let ((sqlbuf (sql-find-sqli-buffer))
+         (outbuf (format "*Columns of Table %s*" name)))
+    (unless sqlbuf
+      (user-error "No SQL interactive buffer found"))
+    (progn
+      (sql-execute-feature sqlbuf outbuf :list-table nil name)
+      (with-current-buffer outbuf
+        (let ((lines (cddr (split-string (buffer-string) "\n" t))))
+          (princ (mapcar #'spt/extract-table-columns lines)))
+        (delete-window) outbuf))))
+
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -717,6 +751,7 @@
             (if addr
               (spt/goto-function-body other-file addr)
               (spt/find-file other-file))))))))
+
 
 ;; -----------------------------------------------------------------------------
 ;; key bindings

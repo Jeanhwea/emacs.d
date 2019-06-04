@@ -157,7 +157,11 @@
 (defun jh/current-buffer ()
   "Read content of current buffer."
   (jh/read-file-content (buffer-file-name)))
-  
+
+(defun jh/current-buffer-lines ()
+  "Read content of current buffer as line."
+  (split-string (jh/current-buffer) "\n" t))
+
 (defun jh/current-line ()
   "Read content of current line."
   (string-trim (thing-at-point 'line t)))
