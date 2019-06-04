@@ -116,7 +116,8 @@
 
 (defun jh/java-database-table-column (&optional tabname)
   "Complete the @Column using a given database."
-  (let (columns (spt/cache-of-table-columns tabname))
+  (let* ((tabname (or (spt/extract-java-entity-table (jh/current-buffer))))
+         (columns (spt/cache-of-table-columns tabname)))
     columns))
 
 (provide 'init-yasnippet)
