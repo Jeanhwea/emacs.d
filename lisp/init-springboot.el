@@ -453,18 +453,19 @@
   "Extract table column information."
   (let ((regexp
           (concat
-            "^[ \t]*\\([_A-Za-z0-9]*\\)"
+            "^[ \t]*\\([_A-Za-z0-9]+\\)"
             "[ \t]*\\(NOT NULL\\|\\)"
-            "[ \t]*\\([_A-Za-z0-9]*\\)"
-            "\\((\\([0-9]*\\))\\|\\)$"))
+            "[ \t]*\\([_A-Za-z0-9]+\\)"
+            "\\((\\([0-9]+\\))\\|\\)$"))
          (column))
-    (and (save-match-data (string-match regexp line)
-          (setq
-            name (match-string 1 line)
-            null (match-string 2 line)
-            type (match-string 3 line)
-            length (match-string 5 line))
-          (setq column (list name null type length))))
+    (and
+      (save-match-data (string-match regexp line)
+        (setq
+          name (match-string 1 line)
+          null (match-string 2 line)
+          type (match-string 3 line)
+          length (match-string 5 line))
+        (setq column (list name null type length))))
     column))
 
 (defun spt/extract-table (line)
@@ -493,7 +494,7 @@
       (sql-execute-feature sqlbuf outbuf :list-table nil name)
       (with-current-buffer outbuf
         (let ((lines (cddr (split-string (buffer-string) "\n" t))))
-          (setq columns (mapcar #'spt/extract-table-columns lines)))
+          (setq columns (remove-if 'null (mapcar #'spt/extract-table-columns lines))))
         (delete-window)
         (kill-buffer outbuf)))
     columns))
@@ -514,14 +515,27 @@
         (kill-buffer outbuf)))
     tables))
 
-(defun spt/cache-of-table-columns ()
+(defun spt/cache-of-table-columns (name)
   "Read all table columns, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal))
-         (tables (spt/query-all-table)))
-    (dolist (table tables)
-      (and table
-        (let ((name (cadr table)))
-          (puthash name (spt/query-table-columns name) cache))))
+         (columns (spt/query-table-columns name)))
+    (dolist (column columns)
+      (let ((col (car column)))
+        (and col
+          (setq
+            field (jh/camelcase (or (car column) ""))
+            nullable (if (string-equal "NOT NULL" (cadr column)) "false" nil)
+            type (cond
+                   ((string-equal "NUMBER" (caddr column)) "long")
+                   ((string-equal "CHAR" (caddr column)) "String")
+                   ((string-equal "VARCHAR" (caddr column)) "String")
+                   ((string-equal "VARCHAR2" (caddr column)) "String")
+                   ((string-equal "CLOB" (caddr column)) "byte []")
+                   ((string-equal "DATE" (caddr column)) "Timestamp")
+                   ((string-equal "BLOB" (caddr column)) "byte []")
+                   (t "void"))
+            length (cadddr column)))
+        (puthash col (list field type col nullable length) cache)))
     cache))
 
 
