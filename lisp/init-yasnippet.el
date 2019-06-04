@@ -114,10 +114,44 @@
         '("String toString()")))
     '("String toString()")))
 
-(defun jh/java-database-table-column (&optional tabname)
+(defvar col-cache
+  (make-hash-table :test 'equal))
+(puthash "E_CODE" '("long" "eCode" "E_CODE" nil nil) col-cache)
+(puthash "E_NAME" '("String" "name" "E_NAME" "false" "32") col-cache)
+
+(defvar column-desc-cache nil
+  "Holder the column desc.")
+
+(defun jh/java-column-names (&optional tabname)
   "Complete the @Column using a given database."
-  (let* ((tabname (or (spt/extract-java-entity-table (jh/current-buffer))))
-         (columns (spt/cache-of-table-columns tabname)))
-    columns))
+  (let* ((tabname (or (spt/extract-java-entity-table (jh/current-buffer)))))
+    (setq column-desc-cache col-cache)
+    (hash-table-keys column-desc-cache)))
+
+(defun jh/java-column-name (&optional tabname)
+  "Complete the @Column using a given database."
+  (let* ((tabname (or (spt/extract-java-entity-table (jh/current-buffer)))))
+    (progn
+      (setq
+        column-desc-cache col-cache ; (spt/cache-of-table-columns tabname)
+        colname (completing-read "Database Column >> " (hash-table-keys column-desc-cache))))
+    colname))
+
+(defun jh/java-column-args (colname)
+  "Build the arguments in @Column(...) from desc."
+  (let* ((desc (gethash colname column-desc-cache))
+          (null (nth 3 desc))
+          (length (nth 4 desc))
+          (nullable-arg (if null (concat ", nullable = " null) ""))
+          (length-arg (if length (concat ", length = " length) "")))
+    (concat nullable-arg length-arg)))
+
+(defun jh/java-column-return-type (colname)
+  "Get field type from desc."
+  (car (gethash colname column-desc-cache)))
+
+(defun jh/java-column-field (colname)
+  "Get field name from desc."
+  (cadr (gethash colname column-desc-cache)))
 
 (provide 'init-yasnippet)

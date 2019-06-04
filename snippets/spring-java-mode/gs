@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: JPA Getter and Setter with Field
+# name: JPA Getter and Setter with Field version 2
 # key: gs
 # --
 @Column(name = "${2:$(jh/upcase yas-text)}")

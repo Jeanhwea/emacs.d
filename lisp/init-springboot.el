@@ -535,7 +535,7 @@
                    ((string-equal "BLOB" (caddr column)) "byte []")
                    (t "void"))
             length (cadddr column)))
-        (puthash col (list field type col nullable length) cache)))
+        (puthash col (list type field col nullable length) cache)))
     cache))
 
 
