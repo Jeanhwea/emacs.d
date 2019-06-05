@@ -164,6 +164,6 @@
   "Get field name."
   (let* ((tabinfo (jh/java-get-local-tabinfo))
           (col (gethash colname tabinfo)))
-    (and col (jh/pascalcase (car col)))))
+    (and col (jh/camelcase (car col)))))
 
 (provide 'init-yasnippet)
