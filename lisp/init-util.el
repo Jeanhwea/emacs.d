@@ -3,10 +3,10 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/windows? ()
   "test if system-type is windows?"
-  (string-equal "windows-nt" system-type))
+  (string= "windows-nt" system-type))
 (defun jh/mac? ()
   "test if system-type is mac?"
-  (string-equal "darwin" system-type))
+  (string= "darwin" system-type))
 
 ;; -----------------------------------------------------------------------------
 ;; String, convert shape
@@ -123,7 +123,7 @@
 (defun jh/root-dir-p (dir)
   "Return ture if DIR is a root directory"
   (let ((path (jh/absolute-path dir)))
-    (string-equal path (jh/parent-dir path))))
+    (string= path (jh/parent-dir path))))
 
 (defun jh/directory-sequence-recursively (dirs)
   "Return a list of dir, dir's parent, dir's great parent and more, which dir is the head of dirs."

@@ -449,7 +449,7 @@
 ;; -----------------------------------------------------------------------------
 ;; Database
 ;; -----------------------------------------------------------------------------
-(defun spt/extract-table-columns (line)
+(defun spt/extract-table-column (line)
   "Extract table column information."
   (let ((regexp
           (concat
@@ -457,16 +457,19 @@
             "[ \t]*\\(NOT NULL\\|\\)"
             "[ \t]*\\([_A-Za-z0-9]+\\)"
             "\\((\\([0-9]+\\))\\|\\)$"))
-         (column))
+         (col))
     (and
       (save-match-data (string-match regexp line)
         (setq
-          tabname (match-string 1 line)
-          null (match-string 2 line)
-          type (match-string 3 line)
+          colname (match-string 1 line)
+          not-null (match-string 2 line)
+          dbtype (match-string 3 line)
           length (match-string 5 line))
-        (setq column (list tabname null type length))))
-    column))
+        (setq
+          col (list colname
+                (and (string= "NOT NULL" not-null) "false")
+                dbtype length))))
+    col))
 
 (defun spt/extract-table (line)
   "Extract table name."
@@ -496,7 +499,7 @@
         (let ((lines (cddr (split-string (buffer-string) "\n" t))))
           (setq columns
             (remove-if
-              'null (mapcar #'spt/extract-table-columns lines)))))
+              'null (mapcar #'spt/extract-table-column lines)))))
       (kill-buffer outbuf))
     columns))
 
@@ -533,26 +536,10 @@
   "Read all table columns, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal))
          (columns (spt/query-table-columns tabname)))
-    (dolist (column columns)
-      (let ((col (car column)))
-        (and col
-          (setq
-            field (jh/camelcase (or (car column) ""))
-            nullable (if (string-equal "NOT NULL" (cadr column)) "false" nil)
-            type (cond
-                   ((string-equal "BLOB" (caddr column)) "byte[]")
-                   ((string-equal "CHAR" (caddr column)) "String")
-                   ((string-equal "CLOB" (caddr column)) "String")
-                   ((string-equal "DATE" (caddr column)) "Timestamp")
-                   ((string-equal "NUMBER" (caddr column)) "long")
-                   ((string-equal "NVARCHAR2" (caddr column)) "String")
-                   ((string-equal "VARCHAR" (caddr column)) "String")
-                   ((string-equal "VARCHAR2" (caddr column)) "String")
-                   (t "void"))
-            length (cadddr column)))
-        (puthash col (list type field col nullable length) cache)))
+    (dolist (col columns)
+      (let ((colname (car col)))
+        (and colname (puthash colname col cache))))
     cache))
-
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -587,7 +574,7 @@
     (puthash 'class (spt/extract-java-clazz text) cache)
     (puthash 'imports (spt/extract-java-imported-classes text) cache)
     (puthash 'methods
-      (if (string-equal "interface" class-inter)
+      (if (string= "interface" class-inter)
         (spt/extract-java-inter-methods text)
         (spt/extract-java-class-methods text))
       cache)
@@ -696,7 +683,7 @@
             (importing (gethash word (spt/cache-of-all-imports)))
             (imported (gethash word (spt/cache-of-imports (buffer-file-name)))))
       (and importing (not imported)
-        (not (string-equal (cadr importing) (jh/java-package-name)))
+        (not (string= (cadr importing) (jh/java-package-name)))
         (apply #'spt/insert-import-package-statement importing)))))
 
 (defun spt/switch-to-any-file (pred prompt)

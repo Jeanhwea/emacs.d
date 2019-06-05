@@ -130,32 +130,40 @@
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
   (let* ((tabinfo (jh/java-get-local-tabinfo))
-          (desc (gethash colname tabinfo))
-          (type (nth 0 desc))
-          (null (nth 3 desc))
-          (length (nth 4 desc))
-          (nullable-arg (if null (concat ", nullable = " null) ""))
+          (col (gethash colname tabinfo))
+          (nullable (nth 1 col))
+          (dbtype (nth 2 col))
+          (length (nth 3 col))
+          (nullable-arg (if nullable (concat ", nullable = " null) ""))
           (length-arg
-            (if length
-              (cond
-                ((string= "String" type) (concat ", length = " length))
-                (t "")) ""))
+            (cond
+              ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
+                (concat ", length = " length))
+              (t "")))
           (addition-arg
             (cond
-              ((string= "byte[]" type) ", columnDefinition = \"BLOB\"")
+              ((string= "BLOB" dbtype) ", columnDefinition = \"BLOB\"")
+              ((string= "CLOB" dbtype) ", columnDefinition = \"CLOB\"")
               (t ""))))
     (concat nullable-arg length-arg addition-arg)))
 
 (defun jh/java-column-type (colname)
   "Get field type."
   (let* ((tabinfo (jh/java-get-local-tabinfo))
-          (desc (gethash colname tabinfo)))
-    (and desc (car desc))))
+          (col (gethash colname tabinfo)))
+    (and col
+      (let ((dbtype (nth 2 col)))
+        (cond
+          ((member dbtype '("BLOB")) "byte[]")
+          ((member dbtype '("CHAR" "CLOB" "NVARCHAR2" "VARCHAR" "VARCHAR2")) "String")
+          ((member dbtype '("DATE")) "Timestamp")
+          ((member dbtype '("NUMBER")) "long")
+          (t "void"))))))
 
 (defun jh/java-column-field (colname)
   "Get field name."
   (let* ((tabinfo (jh/java-get-local-tabinfo))
-          (desc (gethash colname tabinfo)))
-    (and desc (cadr desc))))
+          (col (gethash colname tabinfo)))
+    (and col (jh/pascalcase (car col)))))
 
 (provide 'init-yasnippet)

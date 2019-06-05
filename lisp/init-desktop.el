@@ -208,22 +208,22 @@
     (let ((current-theme (car custom-enabled-themes)))
       (cond
         ;; sanityinc-solarized-dark -> sanityinc-solarized-light
-        ((string-equal current-theme "sanityinc-solarized-dark")
+        ((string= current-theme "sanityinc-solarized-dark")
           (load-theme 'sanityinc-solarized-light t))
         ;; sanityinc-solarized-light -> sanityinc-tomorrow-bright
-        ((string-equal current-theme "sanityinc-solarized-light")
+        ((string= current-theme "sanityinc-solarized-light")
           (load-theme 'sanityinc-tomorrow-bright t))
         ;; sanityinc-tomorrow-bright -> sanityinc-solarized-day
-        ((string-equal current-theme "sanityinc-tomorrow-bright")
+        ((string= current-theme "sanityinc-tomorrow-bright")
           (load-theme 'sanityinc-tomorrow-day t))
         ;; sanityinc-tomorrow-day -> sanityinc-solarized-night
-        ((string-equal current-theme "sanityinc-tomorrow-day")
+        ((string= current-theme "sanityinc-tomorrow-day")
           (load-theme 'sanityinc-tomorrow-night t))
         ;; sanityinc-tomorrow-night -> sanityinc-solarized-blue
-        ((string-equal current-theme "sanityinc-tomorrow-night")
+        ((string= current-theme "sanityinc-tomorrow-night")
           (load-theme 'sanityinc-tomorrow-blue t))
         ;; sanityinc-tomorrow-blue -> sanityinc-solarized-eighties
-        ((string-equal current-theme "sanityinc-tomorrow-blue")
+        ((string= current-theme "sanityinc-tomorrow-blue")
           (load-theme 'sanityinc-tomorrow-eighties t))
         ;; default -> sanityinc-solarized-dark
         (t (load-theme 'sanityinc-solarized-dark t)))))
