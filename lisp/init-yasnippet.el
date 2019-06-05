@@ -113,11 +113,14 @@
   (if (local-variable-p 'tabinfo) tabinfo
     (let* ((table (spt/extract-java-entity-table (jh/current-buffer)))
             (tabname (if table table
-                       (completing-read "Load Table >> "
-                         (mapcar #'cadr (spt/query-all-table)))))
+                       (completing-read "Load Table >> " (jh/java-table-names))))
             (columns (spt/cache-of-table-columns tabname)))
       (set (make-local-variable 'tabinfo) columns)
       tabinfo)))
+
+(defun jh/java-table-names ()
+  "Return all table name."
+  (mapcar #'cadr (spt/query-all-table)))
 
 (defun jh/java-column-names ()
   "Return all column name."

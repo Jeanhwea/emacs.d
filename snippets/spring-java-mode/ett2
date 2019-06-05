@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "`(jh/upcase (jh/java-class-name))`")
+@Table(name = "${1:$$(yas-choose-value (jh/java-table-names))}")
 public class `(jh/java-class-name)` extends MesEntity {
 $0
 }
