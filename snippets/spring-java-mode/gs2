@@ -1,6 +1,14 @@
 # -*- mode: snippet -*-
-# name: JPA Getter and Setter with Field
+# name: JPA Getter and Setter with Field v2
 # key: gs2
 # --
 @Column(name = "${1:$$(yas-choose-value (jh/java-column-names))}"${1:$(jh/java-column-args yas-text)})
-private ${2:${1:$(jh/java-column-return-type yas-text)}}
+private ${2:${1:$(jh/java-column-type yas-text)}} ${3:${1:$(jh/java-column-field yas-text)}};
+
+public $2 get${3:$(jh/pascalcase yas-text)}() {
+ return this.$3;
+}
+
+public void set${3:$(jh/pascalcase yas-text)}($2 $3) {
+ this.$3 = $3;
+}

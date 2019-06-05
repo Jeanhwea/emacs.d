@@ -530,7 +530,7 @@
                    ((string-equal "CHAR" (caddr column)) "String")
                    ((string-equal "VARCHAR" (caddr column)) "String")
                    ((string-equal "VARCHAR2" (caddr column)) "String")
-                   ((string-equal "CLOB" (caddr column)) "byte []")
+                   ((string-equal "CLOB" (caddr column)) "String")
                    ((string-equal "DATE" (caddr column)) "Timestamp")
                    ((string-equal "BLOB" (caddr column)) "byte []")
                    (t "void"))

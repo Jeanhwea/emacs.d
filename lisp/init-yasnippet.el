@@ -107,44 +107,43 @@
         '("String toString()")))
     '("String toString()")))
 
-(defvar col-cache
-  (make-hash-table :test 'equal))
-(puthash "E_CODE" '("long" "eCode" "E_CODE" nil nil) col-cache)
-(puthash "E_NAME" '("String" "name" "E_NAME" "false" "32") col-cache)
+(defun jh/java-get-local-tabinfo ()
+  "Get tabinfo in current buffer."
+  (interactive)
+  (if (local-variable-p 'tabinfo) tabinfo
+    (let* ((table (spt/extract-java-entity-table (jh/current-buffer)))
+            (tabname (if table table
+                       (completing-read "Load Table >> "
+                         (mapcar #'cadr (spt/query-all-table)))))
+            (columns (spt/cache-of-table-columns tabname)))
+      (set (make-local-variable 'tabinfo) columns)
+      tabinfo)))
 
-(defvar column-desc-cache nil
-  "Holder the column desc.")
-
-(defun jh/java-column-names (&optional tabname)
-  "Complete the @Column using a given database."
-  (let* ((tabname (or (spt/extract-java-entity-table (jh/current-buffer)))))
-    (setq column-desc-cache col-cache)
-    (hash-table-keys column-desc-cache)))
-
-(defun jh/java-column-name (&optional tabname)
-  "Complete the @Column using a given database."
-  (let* ((tabname (or (spt/extract-java-entity-table (jh/current-buffer)))))
-    (progn
-      (setq
-        column-desc-cache col-cache ; (spt/cache-of-table-columns tabname)
-        colname (completing-read "Database Column >> " (hash-table-keys column-desc-cache))))
-    colname))
+(defun jh/java-column-names ()
+  "Return all column name."
+  (let ((tabinfo (jh/java-get-local-tabinfo)))
+    (hash-table-keys tabinfo)))
 
 (defun jh/java-column-args (colname)
-  "Build the arguments in @Column(...) from desc."
-  (let* ((desc (gethash colname column-desc-cache))
+  "Build the arguments in @Column(...)"
+  (let* ((tabinfo (jh/java-get-local-tabinfo))
+          (desc (gethash colname tabinfo))
           (null (nth 3 desc))
           (length (nth 4 desc))
           (nullable-arg (if null (concat ", nullable = " null) ""))
           (length-arg (if length (concat ", length = " length) "")))
     (concat nullable-arg length-arg)))
 
-(defun jh/java-column-return-type (colname)
-  "Get field type from desc."
-  (car (gethash colname column-desc-cache)))
+(defun jh/java-column-type (colname)
+  "Get field type."
+  (let* ((tabinfo (jh/java-get-local-tabinfo))
+          (desc (gethash colname tabinfo)))
+    (and desc (car desc))))
 
 (defun jh/java-column-field (colname)
-  "Get field name from desc."
-  (cadr (gethash colname column-desc-cache)))
+  "Get field name."
+  (let* ((tabinfo (jh/java-get-local-tabinfo))
+          (desc (gethash colname tabinfo)))
+    (and desc (cadr desc))))
 
 (provide 'init-yasnippet)
