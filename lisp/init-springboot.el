@@ -515,6 +515,20 @@
         (kill-buffer outbuf)))
     tables))
 
+(defun spt/query-all-table-columns ()
+  "Query all table columns."
+  (let ((tabnames (mapcar #'cadr (spt/query-all-table)))
+         (table-columns))
+    (dolist (tabname tabnames)
+      (let ((columns (spt/query-table-columns tabname)))
+        (dolist (col columns)
+          (setq table-columns
+            (cons (cons tabname col) table-columns)))))
+    (print table-columns)
+    (mapconcat 'identity table-columns "\n")))
+
+;; (jh/save-variable (spt/query-all-table-columns) "columns.txt")
+
 (defun spt/cache-of-table-columns (tabname)
   "Read all table columns, then put them into a cache."
   (let ((cache (make-hash-table :test 'equal))
@@ -526,13 +540,14 @@
             field (jh/camelcase (or (car column) ""))
             nullable (if (string-equal "NOT NULL" (cadr column)) "false" nil)
             type (cond
-                   ((string-equal "NUMBER" (caddr column)) "long")
+                   ((string-equal "BLOB" (caddr column)) "byte []")
                    ((string-equal "CHAR" (caddr column)) "String")
-                   ((string-equal "VARCHAR" (caddr column)) "String")
-                   ((string-equal "VARCHAR2" (caddr column)) "String")
                    ((string-equal "CLOB" (caddr column)) "String")
                    ((string-equal "DATE" (caddr column)) "Timestamp")
-                   ((string-equal "BLOB" (caddr column)) "byte []")
+                   ((string-equal "NUMBER" (caddr column)) "long")
+                   ((string-equal "NVARCHAR2" (caddr column)) "String")
+                   ((string-equal "VARCHAR" (caddr column)) "String")
+                   ((string-equal "VARCHAR2" (caddr column)) "String")
                    (t "void"))
             length (cadddr column)))
         (puthash col (list type field col nullable length) cache)))
