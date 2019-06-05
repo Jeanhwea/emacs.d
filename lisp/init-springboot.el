@@ -494,9 +494,10 @@
       (sql-execute-feature sqlbuf outbuf :list-table nil tabname)
       (with-current-buffer outbuf
         (let ((lines (cddr (split-string (buffer-string) "\n" t))))
-          (setq columns (remove-if 'null (mapcar #'spt/extract-table-columns lines))))
-        (delete-window)
-        (kill-buffer outbuf)))
+          (setq columns
+            (remove-if
+              'null (mapcar #'spt/extract-table-columns lines)))))
+      (kill-buffer outbuf))
     columns))
 
 (defun spt/query-all-table ()
@@ -510,9 +511,9 @@
       (sql-execute-feature sqlbuf outbuf :list-all nil nil)
       (with-current-buffer outbuf
         (let ((lines (cddr (split-string (buffer-string) "\n" t))))
-          (setq tables (remove-if 'null (mapcar #'spt/extract-table lines))))
-        (delete-window)
-        (kill-buffer outbuf)))
+          (setq tables
+            (remove-if 'null (mapcar #'spt/extract-table lines)))))
+      (kill-buffer outbuf))
     tables))
 
 (defun spt/query-all-table-columns ()
@@ -524,7 +525,6 @@
         (dolist (col columns)
           (setq table-columns
             (cons (cons tabname col) table-columns)))))
-    (print table-columns)
     (mapconcat 'identity table-columns "\n")))
 
 ;; (jh/save-variable (spt/query-all-table-columns) "columns.txt")
@@ -540,7 +540,7 @@
             field (jh/camelcase (or (car column) ""))
             nullable (if (string-equal "NOT NULL" (cadr column)) "false" nil)
             type (cond
-                   ((string-equal "BLOB" (caddr column)) "byte []")
+                   ((string-equal "BLOB" (caddr column)) "byte[]")
                    ((string-equal "CHAR" (caddr column)) "String")
                    ((string-equal "CLOB" (caddr column)) "String")
                    ((string-equal "DATE" (caddr column)) "Timestamp")

@@ -131,11 +131,20 @@
   "Build the arguments in @Column(...)"
   (let* ((tabinfo (jh/java-get-local-tabinfo))
           (desc (gethash colname tabinfo))
+          (type (nth 0 desc))
           (null (nth 3 desc))
           (length (nth 4 desc))
           (nullable-arg (if null (concat ", nullable = " null) ""))
-          (length-arg (if length (concat ", length = " length) "")))
-    (concat nullable-arg length-arg)))
+          (length-arg
+            (if length
+              (cond
+                ((string= "String" type) (concat ", length = " length))
+                (t "")) ""))
+          (addition-arg
+            (cond
+              ((string= "byte[]" type) ",columnDefinition = \"BLOB\"")
+              (t ""))))
+    (concat nullable-arg length-arg addition-arg)))
 
 (defun jh/java-column-type (colname)
   "Get field type."
