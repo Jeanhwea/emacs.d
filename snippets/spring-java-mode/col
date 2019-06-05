@@ -2,4 +2,4 @@
 # name: @Column annotation
 # key: col
 # --
-@Column(name = "${1:column_name}")$0
+@Column(name = "${1:$$(yas-choose-value (jh/java-column-names))}"${1:$(jh/java-column-args yas-text)})$0
