@@ -142,7 +142,7 @@
                 (t "")) ""))
           (addition-arg
             (cond
-              ((string= "byte[]" type) ",columnDefinition = \"BLOB\"")
+              ((string= "byte[]" type) ", columnDefinition = \"BLOB\"")
               (t ""))))
     (concat nullable-arg length-arg addition-arg)))
 
