@@ -379,6 +379,27 @@
           (setq addr (+ addr 1)))))
     (reverse res)))
 
+(defun spt/extract-java-entity-fields (text)
+  "Extract all fields information in entity."
+  (let ((regexp
+          (concat
+            "^  @\\(JoinColumn\\|Column\\)(.*)[ \t\n]*"
+            "private[ \t]+\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
+            "[ \t]+\\([_a-zA-Z0-9]+\\);"))
+         (addr 0)
+         (res))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (setq
+            type (match-string 2 text)
+            name (match-string 3 text))
+          (setq field (list name type addr)
+            res (cons field res))
+          (setq addr (+ addr 1)))))
+    (reverse res)))
+
 (defun spt/extract-java-controller-module (text)
   "Extract spring boot controller module name."
   (let ((regexp "^package .*\\.\\([^.]*\\)\\.controller;$")
@@ -549,9 +570,6 @@
       (let ((colname (car col)))
         (and colname (puthash colname col cache))))
     cache))
-
-;; (length (spt/query-table-columns "T_DEPARTMENT"))
-;; (hash-table-count (spt/cache-of-table-columns "T_DEPARTMENT"))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
