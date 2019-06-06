@@ -519,27 +519,25 @@
 (defun spt/query-table-columns (tabname)
   "Query columns of a table."
   (let* ((query
-           (format
-             (concat
-               "SELECT TAB.COLUMN_NAME ||"
-               "         ',' || TAB.DATA_TYPE ||"
-               "         ',' || TAB.DATA_LENGTH ||"
-               "         ',' || TAB.NULLABLE ||"
-               "         ',' || CONS.CONSTRAINT_TYPE ||"
-               "         ',' || REPLACE(CMT.COMMENTS, TO_CHAR(CHR(13)) || TO_CHAR(CHR(10)), '')"
-               "  FROM USER_TAB_COLUMNS TAB"
-               "         LEFT JOIN"
-               "         USER_CONS_COLUMNS CONS_NAME"
-               "             ON TAB.TABLE_NAME = CONS_NAME.TABLE_NAME AND TAB.COLUMN_NAME = CONS_NAME.COLUMN_NAME"
-               "         LEFT JOIN"
-               "         USER_CONSTRAINTS CONS"
-               "             ON CONS_NAME.CONSTRAINT_NAME = CONS.CONSTRAINT_NAME"
-               "         LEFT JOIN"
-               "         USER_COL_COMMENTS CMT"
-               "             ON TAB.TABLE_NAME = CMT.TABLE_NAME AND TAB.COLUMN_NAME = CMT.COLUMN_NAME"
-               " WHERE TAB.TABLE_NAME = '%s'"
-               "    ORDER BY CONS.CONSTRAINT_TYPE;")
-             tabname))
+           (concat
+             "SELECT TAB.COLUMN_NAME ||"
+             "         ',' || TAB.DATA_TYPE ||"
+             "         ',' || TAB.DATA_LENGTH ||"
+             "         ',' || TAB.NULLABLE ||"
+             "         ',' || CONS.CONSTRAINT_TYPE ||"
+             "         ',' || REPLACE(CMT.COMMENTS, TO_CHAR(CHR(13)) || TO_CHAR(CHR(10)), '')"
+             "  FROM USER_TAB_COLUMNS TAB"
+             "         LEFT JOIN"
+             "         USER_CONS_COLUMNS CONS_NAME"
+             "             ON TAB.TABLE_NAME = CONS_NAME.TABLE_NAME AND TAB.COLUMN_NAME = CONS_NAME.COLUMN_NAME"
+             "         LEFT JOIN"
+             "         USER_CONSTRAINTS CONS"
+             "             ON CONS_NAME.CONSTRAINT_NAME = CONS.CONSTRAINT_NAME"
+             "         LEFT JOIN"
+             "         USER_COL_COMMENTS CMT"
+             "             ON TAB.TABLE_NAME = CMT.TABLE_NAME AND TAB.COLUMN_NAME = CMT.COLUMN_NAME"
+             " WHERE TAB.TABLE_NAME = '" tabname "'"
+             "    ORDER BY CONS.CONSTRAINT_TYPE;"))
           (lines (split-string (spt/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'spt/extract-table-column lines))))
 
