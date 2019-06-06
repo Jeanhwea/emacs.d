@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: @JsonIgnore Annotation
+# key: ji
+# --
+@JsonIgnore

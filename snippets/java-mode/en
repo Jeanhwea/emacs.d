@@ -1,35 +1,37 @@
 # -*- mode: snippet -*-
-# name: enum
+# name: Enumeration Class
 # key: en
 # --
 package `(jh/java-package-name)`;
 
-/**
- * ${1:TODO:}
- *
- * @author Jinghui Hu
- * @version v1.0
- * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
- */
-public enum ${2:`(jh/java-class-name)`} {
+import java.util.Optional;
 
-$>Enum1,
-$>${3:Unknown};
-$>/**
-$> * 从字符串构造对应的枚举
-$> *
-$> * @return 枚举类型
-$> * @author Jinghui Hu
-$> * @version v1.0
-$> * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
-$> */
-$>public static $2 of(String str) {
-$>$>if (str == null) { return $2.$3; }
-$>$>for ($2 value : $2.values()) {
-$>$>$>if (true/* str == ... */) {
-$>$>$>$>return value;
-$>$>$>}
-$>$>}
-$>$>return  $2.$3;
+public enum ${1:`(jh/java-class-name)`} {
+
+$>Enum1$0,
+$>${2:Unknown}("未知");
+
+$>private String value;
+
+$>$1(String str) {
+$>$>this.value = str;
+$>}
+
+$>private String getValue() {
+$>$>return this.value;
+$>}
+
+$>public static $1 of(String str) {
+$>$>return Optional.ofNullable(str)
+$>$>$>$>.map(
+$>$>$>$>$>$>val -> {
+$>$>$>$>$>$>$>for ($1 element : $1.values()) {
+$>$>$>$>$>$>$>$>if (element.getValue().equals(val)) {
+$>$>$>$>$>$>$>$>$>return element;
+$>$>$>$>$>$>$>$>}
+$>$>$>$>$>$>$>}
+$>$>$>$>$>$>$>return $1.Unknown;
+$>$>$>$>$>$>})
+$>$>$>$>.orElse($1.Unknown);
 $>}
 }
