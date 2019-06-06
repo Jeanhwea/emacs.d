@@ -120,7 +120,7 @@
 
 (defun jh/java-table-names ()
   "Return all table name."
-  (mapcar #'cadr (spt/query-all-table)))
+  (mapcar #'car (spt/query-all-tables)))
 
 (defun jh/java-column-names ()
   "Return all column name."
@@ -131,10 +131,15 @@
   "Build the arguments in @Column(...)"
   (let* ((tabinfo (jh/java-get-local-tabinfo))
           (col (gethash colname tabinfo))
-          (nullable (nth 1 col))
-          (dbtype (nth 2 col))
-          (length (nth 3 col))
-          (nullable-arg (if nullable (concat ", nullable = " null) ""))
+          (colname (nth 0 col))
+          (dbtype (nth 1 col))
+          (length (nth 2 col))
+          (nullable (nth 3 col))
+          (unique (nth 4 col))
+          (nullable-arg
+            (if (string= "N" nullable) ", nullable = false"  ""))
+          (unique-arg
+            (if (string= "U" unique) ", unique = true" ""))
           (length-arg
             (cond
               ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
@@ -145,14 +150,14 @@
               ((string= "BLOB" dbtype) ", columnDefinition = \"BLOB\"")
               ((string= "CLOB" dbtype) ", columnDefinition = \"CLOB\"")
               (t ""))))
-    (concat nullable-arg length-arg addition-arg)))
+    (concat nullable-arg unique-arg length-arg addition-arg)))
 
 (defun jh/java-column-type (colname)
   "Get field type."
   (let* ((tabinfo (jh/java-get-local-tabinfo))
           (col (gethash colname tabinfo)))
     (and col
-      (let ((dbtype (nth 2 col)))
+      (let ((dbtype (nth 1 col)))
         (cond
           ((member dbtype '("BLOB")) "byte[]")
           ((member dbtype '("CHAR" "CLOB" "NVARCHAR2" "VARCHAR" "VARCHAR2")) "String")
@@ -160,10 +165,17 @@
           ((member dbtype '("NUMBER")) "long")
           (t "void"))))))
 
-(defun jh/java-column-field (colname)
-  "Get field name."
+(defun jh/java-column-comments (colname)
+  "Get field comments."
   (let* ((tabinfo (jh/java-get-local-tabinfo))
           (col (gethash colname tabinfo)))
-    (and col (jh/camelcase (car col)))))
+    (and col
+      (let ((comments (nth 5 col)))
+        (if (string= comments "") ""
+          (concat " // " comments))))))
+
+(defun jh/java-column-field (colname)
+  "Get field name."
+  (and colname (jh/camelcase colname)))
 
 (provide 'init-yasnippet)

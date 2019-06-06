@@ -449,88 +449,99 @@
 ;; -----------------------------------------------------------------------------
 ;; Database
 ;; -----------------------------------------------------------------------------
+(defun spt/extract-table (line)
+  "Extract table name."
+  (let ((regexp
+          (concat
+            "[ \t]*\\([_A-Za-z0-9]+\\),"
+            "\\(TABLE\\|VIEW\\),"
+            "[ \t]*\\(.*\\)$"))
+         (table))
+    (and (save-match-data (string-match regexp line)
+          (setq
+            tabname (match-string 1 line)
+            tabtype (match-string 2 line)
+            comments (match-string 3 line))
+          (and tabname
+            (setq table (list tabname tabtype comments)))))
+    table))
+
 (defun spt/extract-table-column (line)
   "Extract table column information."
   (let ((regexp
           (concat
-            "^[ \t]*\\([_A-Za-z0-9]+\\)"
-            "[ \t]*\\(NOT NULL\\|\\)"
-            "[ \t]*\\([_A-Za-z0-9]+\\)"
-            "\\((\\([0-9]+\\))\\|\\)$"))
+            "[ \t]*\\([_A-Za-z0-9]+\\),"
+            "[ \t]*\\([_A-Za-z0-9]+\\),"
+            "[ \t]*\\([_A-Za-z0-9]*\\),"
+            "[ \t]*\\([_A-Za-z0-9]*\\),"
+            "[ \t]*\\([_A-Za-z0-9]*\\),"
+            "[ \t]*\\(.*\\)$"))
          (col))
     (and
       (save-match-data (string-match regexp line)
         (setq
           colname (match-string 1 line)
-          not-null (match-string 2 line)
-          dbtype (match-string 3 line)
-          length (match-string 5 line))
-        (setq
-          col (list colname
-                (and (string= "NOT NULL" not-null) "false")
-                dbtype length))))
+          dbtype (match-string 2 line)
+          length (match-string 3 line)
+          nullable (match-string 4 line)
+          unique (match-string 5 line)
+          comments (match-string 6 line))
+        (and colname
+          (setq col (list colname dbtype length nullable unique comments)))))
     col))
 
-(defun spt/extract-table (line)
-  "Extract table name."
-  (let ((regexp
-          (concat
-            "^\\(Table\\|View\\)"
-            "[ \t]*\\([_A-Za-z0-9]+\\)$"))
-         (table))
-    (and (save-match-data (string-match regexp line)
-          (setq
-            tabview (match-string 1 line)
-            tabname (match-string 2 line))
-          (and tabview tabname
-            (setq table (list tabview tabname)))))
-    table))
+(defun spt/sql-execute (query)
+  "Execute a query."
+  (let ((sqlbuf (sql-find-sqli-buffer))
+         (outbuf "*SQL RESULT SET*")
+         (result))
+    (unless sqlbuf
+      (user-error "No SQL interactive buffer found"))
+    (progn
+      (switch-to-buffer outbuf)
+      (sql-execute sqlbuf outbuf query nil nil)
+      (setq result (buffer-string))
+      (kill-buffer outbuf))
+    result))
+
+(defun spt/query-all-tables ()
+  "Get all table information."
+  (let* ((query
+           (concat
+             "SELECT USER_TAB_COMMENTS.TABLE_NAME ||"
+             "         ',' || USER_TAB_COMMENTS.TABLE_TYPE ||"
+             "         ',' || USER_TAB_COMMENTS.COMMENTS"
+             "  FROM USER_TAB_COMMENTS"
+             " ORDER BY USER_TAB_COMMENTS.TABLE_NAME;"))
+          (lines (split-string (spt/sql-execute query) "\n")))
+    (remove-if 'null (mapcar #'spt/extract-table lines))))
 
 (defun spt/query-table-columns (tabname)
   "Query columns of a table."
-  (let ((sqlbuf (sql-find-sqli-buffer))
-         (outbuf (format "*Columns of %s*" tabname))
-         (columns))
-    (unless sqlbuf
-      (user-error "No SQL interactive buffer found"))
-    (progn
-      (sql-execute-feature sqlbuf outbuf :list-table nil tabname)
-      (with-current-buffer outbuf
-        (let ((lines (cddr (split-string (buffer-string) "\n" t))))
-          (setq columns
-            (remove-if
-              'null (mapcar #'spt/extract-table-column lines)))))
-      (kill-buffer outbuf))
-    columns))
-
-(defun spt/query-all-table ()
-  "Query all table name."
-  (let ((sqlbuf (sql-find-sqli-buffer))
-         (outbuf "*All Table Names*")
-         (tables))
-    (unless sqlbuf
-      (user-error "No SQL interactive buffer found"))
-    (progn
-      (sql-execute-feature sqlbuf outbuf :list-all nil nil)
-      (with-current-buffer outbuf
-        (let ((lines (cddr (split-string (buffer-string) "\n" t))))
-          (setq tables
-            (remove-if 'null (mapcar #'spt/extract-table lines)))))
-      (kill-buffer outbuf))
-    tables))
-
-(defun spt/query-all-table-columns ()
-  "Query all table columns."
-  (let ((tabnames (mapcar #'cadr (spt/query-all-table)))
-         (table-columns))
-    (dolist (tabname tabnames)
-      (let ((columns (spt/query-table-columns tabname)))
-        (dolist (col columns)
-          (setq table-columns
-            (cons (cons tabname col) table-columns)))))
-    (mapconcat 'identity table-columns "\n")))
-
-;; (jh/save-variable (spt/query-all-table-columns) "columns.txt")
+  (let* ((query
+           (format
+             (concat
+               "SELECT TAB.COLUMN_NAME ||"
+               "         ',' || TAB.DATA_TYPE ||"
+               "         ',' || TAB.DATA_LENGTH ||"
+               "         ',' || TAB.NULLABLE ||"
+               "         ',' || CONS.CONSTRAINT_TYPE ||"
+               "         ',' || REPLACE(CMT.COMMENTS, TO_CHAR(CHR(13)) || TO_CHAR(CHR(10)), '')"
+               "  FROM USER_TAB_COLUMNS TAB"
+               "         LEFT JOIN"
+               "         USER_CONS_COLUMNS CONS_NAME"
+               "             ON TAB.TABLE_NAME = CONS_NAME.TABLE_NAME AND TAB.COLUMN_NAME = CONS_NAME.COLUMN_NAME"
+               "         LEFT JOIN"
+               "         USER_CONSTRAINTS CONS"
+               "             ON CONS_NAME.CONSTRAINT_NAME = CONS.CONSTRAINT_NAME"
+               "         LEFT JOIN"
+               "         USER_COL_COMMENTS CMT"
+               "             ON TAB.TABLE_NAME = CMT.TABLE_NAME AND TAB.COLUMN_NAME = CMT.COLUMN_NAME"
+               " WHERE TAB.TABLE_NAME = '%s'"
+               "    ORDER BY CONS.CONSTRAINT_TYPE;")
+             tabname))
+          (lines (split-string (spt/sql-execute query) "\n")))
+    (remove-if 'null (mapcar #'spt/extract-table-column lines))))
 
 (defun spt/cache-of-table-columns (tabname)
   "Read all table columns, then put them into a cache."
@@ -540,6 +551,9 @@
       (let ((colname (car col)))
         (and colname (puthash colname col cache))))
     cache))
+
+;; (length (spt/query-table-columns "T_DEPARTMENT"))
+;; (hash-table-count (spt/cache-of-table-columns "T_DEPARTMENT"))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
