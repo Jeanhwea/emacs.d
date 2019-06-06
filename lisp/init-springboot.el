@@ -633,8 +633,8 @@
     cache))
 
 (defun spt/cache-of-controller-api (file)
-  "Read all api information in the controller FILE."
-  (when (spt/controller? file)
+  "Read api information in the controller FILE."
+  (and (spt/controller? file)
     (let* ((cache (make-hash-table :test 'equal))
             (text (jh/read-file-content file))
             (module (spt/extract-java-controller-module text))
@@ -664,6 +664,16 @@
           (lambda (k v) (puthash k v cache))
           (spt/cache-of-controller-api file))))
     cache))
+
+(defun spt/cache-of-entity-fields (file)
+  "Read fields information in the entity FILE."
+  (and (spt/entity? file)
+    (let* ((cache (make-hash-table :test 'equal))
+            (text (jh/read-file-content file))
+            (fields (spt/extract-java-entity-fields text)))
+      (dolist (field fields)
+        (puthash (car field) field cache))
+      cache)))
 
 ;; -----------------------------------------------------------------------------
 ;; Transfer file to others
