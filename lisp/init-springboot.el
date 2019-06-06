@@ -383,7 +383,8 @@
   "Extract all fields information in entity."
   (let ((regexp
           (concat
-            "^  @\\(JoinColumn\\|Column\\)(.*)[ \t\n]*"
+            "^  @\\(JoinColumn\\|Column\\)"
+            "(\\(name = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
             "private[ \t]+\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
             "[ \t]+\\([_a-zA-Z0-9]+\\);"))
          (addr 0)
@@ -393,9 +394,10 @@
         (setq addr (string-match regexp text addr))
         (and addr
           (setq
-            type (match-string 2 text)
-            name (match-string 3 text))
-          (setq field (list name type addr)
+            colname (match-string 3 text)
+            type (match-string 4 text)
+            name (match-string 5 text))
+          (setq field (list colname type name addr)
             res (cons field res))
           (setq addr (+ addr 1)))))
     (reverse res)))
@@ -427,7 +429,7 @@
   (let ((regexp
           (concat
             "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping"
-            "(\\(value = \\|\\)\"\\([^\"]*\\).*)[ \t\n]*"
+            "(\\(value = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
             "public \\(static\\|\\)[ \t]*"
             "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\)"
             "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
@@ -458,7 +460,7 @@
 
 (defun spt/extract-java-entity-table (text)
   "Extract java package name."
-  (let ((regexp "^@Table(\\(name = \\|\\)\"\\([^\"]*\\)\")[ \t]*$")
+  (let ((regexp "^@Table(\\(name = \\|\\)\"\\([^\"]*\\)\"[^)]*)[ \t]*$")
          (addr 0)
          (table))
     (save-match-data
@@ -672,7 +674,7 @@
             (text (jh/read-file-content file))
             (fields (spt/extract-java-entity-fields text)))
       (dolist (field fields)
-        (puthash (car field) field cache))
+        (puthash (caddr field) field cache))
       cache)))
 
 ;; -----------------------------------------------------------------------------
