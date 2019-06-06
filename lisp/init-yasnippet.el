@@ -152,6 +152,20 @@
               (t ""))))
     (concat nullable-arg unique-arg length-arg addition-arg)))
 
+(defun jh/java-column-header (colname)
+  "Build additional header, like @Lob, @Basic(...) blabla."
+  (let* ((tabinfo (jh/java-get-local-tabinfo))
+          (col (gethash colname tabinfo))
+          (colname (nth 0 col))
+          (dbtype (nth 1 col))
+          (cond
+            ((string= "BLOB" dbtype)
+              (concat
+                "@JsonIgnore\n"
+                "  @Lob\n"
+                "  @Basic(fetch = FetchType.LAZY)\n"))
+            (t "")))))
+
 (defun jh/java-column-type (colname)
   "Get field type."
   (let* ((tabinfo (jh/java-get-local-tabinfo))
