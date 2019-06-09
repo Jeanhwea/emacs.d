@@ -7,4 +7,5 @@
     (sqlind-minor-mode 1)
     (hl-line-mode 1)))
 
+
 (provide 'init-sql)
