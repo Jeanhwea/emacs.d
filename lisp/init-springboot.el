@@ -564,14 +564,6 @@
           (lines (split-string (spt/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'spt/extract-table-column lines))))
 
-(defun spt/cache-of-table-columns (tabname)
-  "Read all table columns, then put them into a cache."
-  (let ((cache (make-hash-table :test 'equal))
-         (columns (spt/query-table-columns tabname)))
-    (dolist (col columns)
-      (let ((colname (car col)))
-        (and colname (puthash colname col cache))))
-    cache))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -676,6 +668,15 @@
       (dolist (field fields)
         (puthash (caddr field) field cache))
       cache)))
+
+(defun spt/cache-of-table-columns (tabname)
+  "Read all table columns, then put them into a cache."
+  (let ((cache (make-hash-table :test 'equal))
+         (columns (spt/query-table-columns tabname)))
+    (dolist (col columns)
+      (let ((colname (car col)))
+        (and colname (puthash colname col cache))))
+    cache))
 
 ;; -----------------------------------------------------------------------------
 ;; Transfer file to others

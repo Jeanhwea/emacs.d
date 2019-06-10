@@ -124,8 +124,15 @@
 
 (defun jh/java-column-names ()
   "Return all column name."
-  (let ((tabinfo (jh/java-get-local-tabinfo)))
-    (hash-table-keys tabinfo)))
+  (let* ((file (buffer-file-name))
+          (tabinfo (jh/java-get-local-tabinfo))
+          (origin (hash-table-keys tabinfo))
+          (common-filter '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID"))
+          (file-filter (and (spt/entity? file)
+                         (mapcar #'car
+                           (hash-table-values (spt/cache-of-entity-fields file)))))
+          (filter (append common-filter file-filter)))
+    (and filter (remove-if (lambda (x) (member x filter)) origin))))
 
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
