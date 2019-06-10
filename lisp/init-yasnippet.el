@@ -164,14 +164,14 @@
   (let* ((tabinfo (jh/java-get-local-tabinfo))
           (col (gethash colname tabinfo))
           (colname (nth 0 col))
-          (dbtype (nth 1 col))
-          (cond
-            ((string= "BLOB" dbtype)
-              (concat
-                "@JsonIgnore\n"
-                "  @Lob\n"
-                "  @Basic(fetch = FetchType.LAZY)\n"))
-            (t "")))))
+          (dbtype (nth 1 col)))
+    (cond
+      ((string= "BLOB" dbtype)
+        (concat
+          "@JsonIgnore\n"
+          "  @Lob\n"
+          "  @Basic(fetch = FetchType.LAZY)\n"))
+      (t ""))))
 
 (defun jh/java-column-type (colname)
   "Get field type."
