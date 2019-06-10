@@ -565,7 +565,7 @@
     (remove-if 'null (mapcar #'spt/extract-table-column lines))))
 
 (defun spt/dump-table-colums ()
-  "Dump table data to csv."
+  "Dump table data."
   (interactive)
   (let* ((limit 10)
           (table (spt/extract-java-entity-table (jh/current-buffer)))
@@ -600,7 +600,7 @@
                        (string-match-p "^[0-9]+ rows selected.$" line)))
                    (split-string (spt/sql-execute query) "\n"))))
     (progn
-      (switch-to-buffer (concat tabname ".csv"))
+      (switch-to-buffer (concat tabname ".txt"))
       (kill-region (point-min) (point-max))
       (setq i 1)
       (dolist
