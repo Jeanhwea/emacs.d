@@ -567,7 +567,7 @@
 (defun spt/dump-table-colums ()
   "Dump table data to csv."
   (interactive)
-  (let* ((limit (and arg 10))
+  (let* ((limit 10)
           (table (spt/extract-java-entity-table (jh/current-buffer)))
           (tabname (if table table
                      (completing-read "Dump Table >> " (jh/java-table-names))))
