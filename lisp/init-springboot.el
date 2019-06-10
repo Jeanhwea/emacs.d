@@ -564,6 +564,56 @@
           (lines (split-string (spt/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'spt/extract-table-column lines))))
 
+(defun spt/dump-table-colums ()
+  "Dump table data to csv."
+  (interactive)
+  (let* ((limit (and arg 10))
+          (table (spt/extract-java-entity-table (jh/current-buffer)))
+          (tabname (if table table
+                     (completing-read "Dump Table >> " (jh/java-table-names))))
+          (columns (spt/query-table-columns tabname))
+          (display-columns
+            (sort (remove-if 'null
+                    (mapcar (lambda (col)
+                              (let ((colname (car col))
+                                     (dbtype (cadr col)))
+                                (cond
+                                  ((member dbtype
+                                     '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER"))
+                                    colname)
+                                  (t nil))))
+                      columns))
+              #'string<))
+          (seleted-columns
+            (mapconcat
+              (lambda (colname) (format "t.%s" colname))
+              display-columns
+              " || 's-e-p-a-r-a-t-o-r' || "))
+          (query (concat
+                   "SELECT " seleted-columns " AS HEADER"
+                   " FROM " tabname " t"
+                   " WHERE ROWNUM < " (int-to-string limit) ";"))
+          (lines (remove-if
+                   (lambda (line)
+                     (or (string= "HEADER" line)
+                       (string-match-p "^-*$" line)
+                       (string-match-p "^[0-9]+ rows selected.$" line)))
+                   (split-string (spt/sql-execute query) "\n"))))
+    (progn
+      (switch-to-buffer (concat tabname ".csv"))
+      (kill-region (point-min) (point-max))
+      (setq i 1)
+      (dolist
+        (line lines)
+        (insert (format "-------------------- %d --------------------\n" i))
+        (setq j 0)
+        (dolist (coldata (split-string line "s-e-p-a-r-a-t-o-r"))
+          (insert (concat (nth j display-columns) ": " coldata "\n"))
+          (setq j (+ j 1)))
+        (setq i (+ i 1))
+        (insert "\n"))
+      (goto-char (point-min)))))
+
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
