@@ -113,7 +113,7 @@
           (tabname (if table table
                      (completing-read "Dump Table >> " (jh/java-table-names))))
           (columns (spt/query-table-columns tabname))
-          (visiable-dbtypes '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER" "CLOB" "DATE"))
+          (visiable-dbtypes '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER" "DATE"))
           (display-columns
             (delete-duplicates
               (remove-if 'null
