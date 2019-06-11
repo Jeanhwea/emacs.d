@@ -27,9 +27,13 @@
 (defun jh/java-test-subject-names (file)
   "Genearate test subject names."
   (when (spt/testcase? file)
-    (let ((text (jh/read-file-content (spt/trans-test-and-source file))))
+    (let* ((source-file (spt/trans-test-and-source file))
+            (text (jh/read-file-content source-file))
+            (class-inter (cadr (spt/extract-java-clazz text))))
       (remove-duplicates
-        (mapcar #'cadddr (spt/extract-java-class-methods text))
+        (if (string= "interface" class-inter)
+          (mapcar #'cadr (spt/extract-java-inter-methods text))
+          (mapcar #'cadddr (spt/extract-java-class-methods text)))
         :test 'equal))))
 
 (defun jh/java-test-case-func-names ()
@@ -170,6 +174,10 @@
         (concat
           "@JsonIgnore\n"
           "  @Lob\n"
+          "  @Basic(fetch = FetchType.LAZY)\n"))
+      ((string= "CLOB" dbtype)
+        (concat
+          "@Lob\n"
           "  @Basic(fetch = FetchType.LAZY)\n"))
       (t ""))))
 
