@@ -127,7 +127,7 @@
           (seleted-columns
             (mapconcat
               (lambda (colname) (format "t.%s" colname))
-              display-columns " || 's-e-p-a-r-a-t-o-r' || "))
+              display-columns " || '$ep' || "))
           (query (concat
                    "SELECT " seleted-columns " AS HEADER"
                    " FROM " tabname " t"
@@ -150,7 +150,7 @@
                   ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
                   "\n"))
         (setq j 0)
-        (dolist (coldata (split-string line "s-e-p-a-r-a-t-o-r"))
+        (dolist (coldata (split-string line "$ep"))
           (insert (concat (nth j display-columns) ": " coldata "\n"))
           (setq j (+ j 1)))
         (dolist (column columns)
