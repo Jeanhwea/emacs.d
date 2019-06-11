@@ -170,14 +170,10 @@
           (colname (nth 0 col))
           (dbtype (nth 1 col)))
     (cond
-      ((string= "BLOB" dbtype)
+      ((member dbtype '("CLOB" "BLOB"))
         (concat
           "@JsonIgnore\n"
           "  @Lob\n"
-          "  @Basic(fetch = FetchType.LAZY)\n"))
-      ((string= "CLOB" dbtype)
-        (concat
-          "@Lob\n"
           "  @Basic(fetch = FetchType.LAZY)\n"))
       (t ""))))
 
