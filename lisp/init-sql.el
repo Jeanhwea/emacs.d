@@ -113,22 +113,21 @@
           (tabname (if table table
                      (completing-read "Dump Table >> " (jh/java-table-names))))
           (columns (spt/query-table-columns tabname))
+          (visiable-dbtypes '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER" "CLOB" "DATE"))
           (display-columns
-            (delete-duplicates (remove-if 'null
-                                 (mapcar (lambda (col)
-                                           (let ((colname (car col))
-                                                  (dbtype (cadr col)))
-                                             (cond
-                                               ((member dbtype
-                                                  '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER" "CLOB"))
-                                                 colname)
-                                               (t nil))))
-                                   columns))))
+            (delete-duplicates
+              (remove-if 'null
+                (mapcar
+                  (lambda (col)
+                    (let ((colname (car col)) (dbtype (cadr col)))
+                      (cond
+                        ((member dbtype visiable-dbtypes) colname)
+                        (t nil))))
+                  columns)) :test 'equal))
           (seleted-columns
             (mapconcat
               (lambda (colname) (format "t.%s" colname))
-              display-columns
-              " || 's-e-p-a-r-a-t-o-r' || "))
+              display-columns " || 's-e-p-a-r-a-t-o-r' || "))
           (query (concat
                    "SELECT " seleted-columns " AS HEADER"
                    " FROM " tabname " t"
@@ -145,13 +144,25 @@
       (setq i 1)
       (dolist
         (line lines)
-        (insert (format "-------------------- %d --------------------\n" i))
+        (insert (concat
+                  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+                  " Row " (int-to-string i) " "
+                  ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+                  "\n"))
         (setq j 0)
         (dolist (coldata (split-string line "s-e-p-a-r-a-t-o-r"))
           (insert (concat (nth j display-columns) ": " coldata "\n"))
           (setq j (+ j 1)))
+        (dolist (column columns)
+          (if (not (member (cadr column) visiable-dbtypes))
+            (insert (concat (car column) ": <<" (cadr column) ">>\n"))))
         (setq i (+ i 1))
         (insert "\n"))
       (goto-char (point-min)))))
+
+;; -----------------------------------------------------------------------------
+;; postgres
+;; -----------------------------------------------------------------------------
+
 
 (provide 'init-sql)

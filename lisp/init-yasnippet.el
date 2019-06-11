@@ -183,7 +183,7 @@
           ((member dbtype '("BLOB")) "byte[]")
           ((member dbtype '("CHAR" "CLOB" "NVARCHAR2" "VARCHAR" "VARCHAR2")) "String")
           ((member dbtype '("DATE")) "Timestamp")
-          ((member dbtype '("NUMBER")) "long")
+          ((member dbtype '("NUMBER")) "double")
           (t "void"))))))
 
 (defun jh/java-column-comments (colname)
