@@ -560,30 +560,29 @@
              "         USER_COL_COMMENTS CMT"
              "             ON TAB.TABLE_NAME = CMT.TABLE_NAME AND TAB.COLUMN_NAME = CMT.COLUMN_NAME"
              " WHERE TAB.TABLE_NAME = '" tabname "'"
-             "    ORDER BY CONS.CONSTRAINT_TYPE;"))
+             "    ORDER BY TAB.COLUMN_ID, CONS.CONSTRAINT_TYPE;"))
           (lines (split-string (spt/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'spt/extract-table-column lines))))
 
 (defun spt/dump-table-colums ()
   "Dump table data."
   (interactive)
-  (let* ((limit 10)
+  (let* ((limit 100)
           (table (spt/extract-java-entity-table (jh/current-buffer)))
           (tabname (if table table
                      (completing-read "Dump Table >> " (jh/java-table-names))))
           (columns (spt/query-table-columns tabname))
           (display-columns
-            (sort (remove-if 'null
-                    (mapcar (lambda (col)
-                              (let ((colname (car col))
-                                     (dbtype (cadr col)))
-                                (cond
-                                  ((member dbtype
-                                     '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER"))
-                                    colname)
-                                  (t nil))))
-                      columns))
-              #'string<))
+            (delete-duplicates (remove-if 'null
+                                 (mapcar (lambda (col)
+                                           (let ((colname (car col))
+                                                  (dbtype (cadr col)))
+                                             (cond
+                                               ((member dbtype
+                                                  '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER"))
+                                                 colname)
+                                               (t nil))))
+                                   columns))))
           (seleted-columns
             (mapconcat
               (lambda (colname) (format "t.%s" colname))
