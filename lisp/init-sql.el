@@ -108,7 +108,7 @@
 (defun jh/dump-oracle-table-colums ()
   "Dump table data."
   (interactive)
-  (let* ((limit 100)
+  (let* ((limit 1000)
           (table (spt/extract-java-entity-table (jh/current-buffer)))
           (tabname (if table table
                      (completing-read "Dump Table >> " (jh/java-table-names))))
