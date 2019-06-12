@@ -38,10 +38,9 @@
     (and (save-match-data (string-match regexp line)
           (setq
             tabname (match-string 1 line)
-            tabtype (match-string 2 line)
             comments (match-string 3 line))
           (and tabname
-            (setq table (list tabname tabtype comments)))))
+            (setq table (list tabname comments)))))
     table))
 
 (defun jh/extract-table-column-in-oracle (line)
