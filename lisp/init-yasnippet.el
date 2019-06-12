@@ -62,6 +62,14 @@
         (mapcar #'jh/pluralize
           (split-string (jh/kebabcase entity) "-")) "/"))))
 
+(defun jh/java-pluralize-entity (entity)
+  "Convert the entity name to plural form."
+  (let* ((rev-subnames (reverse (split-string (jh/kebabcase entity) "-")))
+         (end (jh/pluralize (car rev-subnames)))
+         (front (cdr rev-subnames))
+         (subnames (reverse (cons end front))))
+    (jh/pascalcase (mapconcat 'identity subnames "-"))))
+
 (defun jh/java-implement-name-to-interface-name (name)
   "Convert `*Impl' to `*'"
   (jh/pascalcase
