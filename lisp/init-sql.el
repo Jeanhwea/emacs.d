@@ -7,6 +7,9 @@
     (sqlind-minor-mode 1)
     (hl-line-mode 1)))
 
+(when (jh/windows?)
+  (setq sql-mysql-options '("-C" "-f" "-t" "-n")))
+
 ;; -----------------------------------------------------------------------------
 ;; sql helper
 ;; -----------------------------------------------------------------------------
@@ -143,18 +146,18 @@
       (setq i 1)
       (dolist
         (line lines)
-        (insert (concat
-                  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-                  " Row " (int-to-string i) " "
-                  ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-                  "\n"))
+        (insert
+          (concat
+            "##############################" (format " Row %d " i)
+            "##############################" "\n"))
         (setq j 0)
         (dolist (coldata (split-string line "$ep"))
           (insert (concat (nth j display-columns) ": " coldata "\n"))
           (setq j (+ j 1)))
         (dolist (column columns)
           (if (not (member (cadr column) visiable-dbtypes))
-            (insert (concat (car column) ": <<" (cadr column) ">>\n"))))
+            (insert
+              (format "%s: <<%s>>\n" (car column) (cadr column)))))
         (setq i (+ i 1))
         (insert "\n"))
       (goto-char (point-min)))))
