@@ -4,7 +4,7 @@
 # --
 package `(jh/java-package-name)`;
 
-import java.util.Optional;
+import java.util.Arrays;
 
 public enum ${1:`(jh/java-class-name)`} {
 
@@ -22,16 +22,9 @@ $>$>return this.value;
 $>}
 
 $>public static $1 of(String str) {
-$>$>return Optional.ofNullable(str)
-$>$>$>$>.map(
-$>$>$>$>$>$>val -> {
-$>$>$>$>$>$>$>for ($1 element : $1.values()) {
-$>$>$>$>$>$>$>$>if (element.getValue().equals(val)) {
-$>$>$>$>$>$>$>$>$>return element;
-$>$>$>$>$>$>$>$>}
-$>$>$>$>$>$>$>}
-$>$>$>$>$>$>$>return $1.Unknown;
-$>$>$>$>$>$>})
+$>$>return Arrays.asList($1.values()).stream()
+$>$>$>$>.filter(element -> element.getValue().equals(str))
+$>$>$>$>.findFirst()
 $>$>$>$>.orElse($1.Unknown);
 $>}
 }
