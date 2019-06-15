@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: JPA Accessor
+# key: ac
+# --
+@Column(name = "${2:$(jh/underscore yas-text)}")
+private ${1:String} ${2:fieldName};
+
+@JsonProperty("$2")
+public $1 $2() {
+ return this.$2;
+}
+
+public void $2($1 $2) {
+ this.$2 = $2;
+}

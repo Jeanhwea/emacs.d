@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Accessor
-# key: ac
+# name: Getter and Setter
+# key: gs
 # --
 private ${1:String} ${2:fieldName};
 

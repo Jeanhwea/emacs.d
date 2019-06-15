@@ -1,14 +1,15 @@
 # -*- mode: snippet -*-
-# name: JPA Getter and Setter with Field v2
-# key: gs2
+# name: JPA Field Accessor v2
+# key: ac2
 # --
 ${1:$(jh/java-column-header yas-text)}@Column(name = "${1:$$(yas-choose-value (jh/java-column-names))}"${1:$(jh/java-column-args yas-text)})
 private ${2:${1:$(jh/java-column-type yas-text)}} ${3:${1:$(jh/java-column-field yas-text)}};${1:$(jh/java-column-comments yas-text)}
 
-public $2 get${3:$(jh/pascalcase yas-text)}() {
+@JsonProperty("$3")
+public $2 $3() {
  return this.$3;
 }
 
-public void set${3:$(jh/pascalcase yas-text)}($2 $3) {
+public void $3($2 $3) {
  this.$3 = $3;
 }
