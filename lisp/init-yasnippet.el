@@ -179,10 +179,7 @@
           (dbtype (nth 1 col)))
     (cond
       ((member dbtype '("CLOB" "BLOB"))
-        (concat
-          "@JsonIgnore\n"
-          "  @Lob\n"
-          "  @Basic(fetch = FetchType.LAZY)\n"))
+        "@Lob\n  @Basic(fetch = FetchType.LAZY)\n")
       (t ""))))
 
 (defun jh/java-column-type (colname)
