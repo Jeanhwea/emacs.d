@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: Accessor
+# key: ac
+# --
+private ${1:String} ${2:fieldName};
+
+public $1 $2() {
+ return this.$2;
+}
+
+public void $2($1 $2) {
+ this.$2 = $2;
+}

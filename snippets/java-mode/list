@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: List
+# key: list
+# --
+List<String> ${1:name}${2: = new ArrayList<>();}$0
