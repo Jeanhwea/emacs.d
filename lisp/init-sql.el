@@ -114,22 +114,32 @@
           (table (spt/extract-java-entity-table (jh/current-buffer)))
           (tabname (if table table
                      (completing-read "Dump Table >> " (jh/java-table-names))))
-          (columns (spt/query-table-columns tabname))
+          (columns (hash-table-values (spt/cache-of-table-columns tabname)))
           (visiable-dbtypes '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER" "DATE"))
-          (display-columns
-            (delete-duplicates
-              (remove-if 'null
-                (mapcar
-                  (lambda (col)
-                    (let ((colname (car col)) (dbtype (cadr col)))
-                      (cond
-                        ((member dbtype visiable-dbtypes) colname)
-                        (t nil))))
-                  columns)) :test 'equal))
+          (visiable-columns
+            (remove-if-not
+              (lambda (column)
+                (let ((dbtype (cadr column)))
+                  (member dbtype visiable-dbtypes)))
+              columns))
+          (invisiable-columns
+            (remove-if
+              (lambda (column)
+                (let ((dbtype (cadr column)))
+                  (member dbtype visiable-dbtypes)))
+              columns))
           (seleted-columns
             (mapconcat
-              (lambda (colname) (format "t.%s" colname))
-              display-columns " || '$ep' || "))
+              (lambda (column)
+                (let ((colname (car column))
+                       (dbtype (cadr column)))
+                  (cond
+                    ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
+                      (format "REPLACE(t.%s, TO_CHAR(CHR(13)) || TO_CHAR(CHR(10), '_r_n')" colname))
+                    ((string= dbtype "DATE")
+                      (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
+                    (t (format "t.%s" colname)))))
+              visiable-columns " || '$ep' || "))
           (query (concat
                    "SELECT " seleted-columns " AS HEADER"
                    " FROM " tabname " t"
@@ -152,12 +162,10 @@
             "##############################" "\n"))
         (setq j 0)
         (dolist (coldata (split-string line "$ep"))
-          (insert (concat (nth j display-columns) ": " coldata "\n"))
+          (insert (concat (car (nth j visiable-columns)) ": " coldata "\n"))
           (setq j (+ j 1)))
-        (dolist (column columns)
-          (if (not (member (cadr column) visiable-dbtypes))
-            (insert
-              (format "%s: <<%s>>\n" (car column) (cadr column)))))
+        (dolist (column invisiable-columns)
+          (insert (format "%s: <<%s>>\n" (car column) (cadr column))))
         (setq i (+ i 1))
         (insert "\n"))
       (goto-char (point-min)))))
