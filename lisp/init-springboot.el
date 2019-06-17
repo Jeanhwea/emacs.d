@@ -594,6 +594,24 @@
     cache))
 
 ;; -----------------------------------------------------------------------------
+;; company
+;; -----------------------------------------------------------------------------
+(defun spt/company-jpa-backend (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'spt/company-jpa-backend))
+    (prefix
+      (and (eq major-mode 'java-mode)
+        (looking-back "find\\>")
+        (match-string 0)))
+    (candidates
+      (when (equal arg "find")
+        (list "findById" "findByCode" "findAllById" "findAllByCode")))
+    (meta (format "This value is named %s" arg))))
+
+;; (add-to-list 'company-backends 'spt/company-jpa-backend)
+
+;; -----------------------------------------------------------------------------
 ;; Transfer file to others
 ;; -----------------------------------------------------------------------------
 (defun spt/trans-test-and-source (file)
@@ -793,6 +811,7 @@
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
   (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
+  (define-key spt/leader-key-map (kbd "j") 'spt/company-jpa-backend)
   (define-key spt/leader-key-map (kbd "m") 'spt/jump-to-class-methods)
   (define-key spt/leader-key-map (kbd "p") 'spt/run-test-method-command)
   (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
