@@ -2,14 +2,6 @@
 # name: Define Public Method
 # key: m
 # --
-/**
- * ${1:TODO:}
- *
- * @return ${2:TODO: add return type}
- * @author Jinghui Hu
- * @version v1.0
- * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
- */
-public void ${3:methodName}($4) {
+public void ${1:methodName}($2) {
 $>$0
 }
