@@ -117,6 +117,7 @@
          highlight-indent-guides
          htmlize
          js-comint
+         keyfreq
          lua-mode
          magit
          markdown-mode

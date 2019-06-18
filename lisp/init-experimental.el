@@ -76,5 +76,8 @@
     highlight-indent-guides-responsive 'top
     highlight-indent-guides-highlighter-function 'jh/highlighter))
 
+(when (require 'keyfreq)
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
 
 (provide 'init-experimental)
