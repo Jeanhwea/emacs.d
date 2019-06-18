@@ -135,7 +135,7 @@
                        (dbtype (cadr column)))
                   (cond
                     ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
-                      (format "REPLACE(t.%s, TO_CHAR(CHR(13)) || TO_CHAR(CHR(10), '_r_n')" colname))
+                      (format "REPLACE(t.%s, TO_CHAR(CHR(13))||TO_CHAR(CHR(10)), '_r_n')" colname))
                     ((string= dbtype "DATE")
                       (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
                     (t (format "t.%s" colname)))))
