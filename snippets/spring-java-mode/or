@@ -3,6 +3,7 @@
 # key: or
 # --
 @Override
-public ${1:$$(yas-choose-value (jh/java-inter-method-signature))} {$0
-$> return null;
+public ${1:$$(yas-choose-value (jh/java-inter-method-signature))} {
+$>$0// TODO:
+$>return null;
 }
