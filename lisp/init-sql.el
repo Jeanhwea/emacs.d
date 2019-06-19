@@ -107,6 +107,16 @@
           (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/extract-table-column-in-oracle lines))))
 
+(defun jh/dump-oracle-tables ()
+  "Dump talbe name and comments."
+  (interactive)
+  (let ((tables (jh/query-all-tables-in-oracle)))
+    (progn
+      (switch-to-buffer "tables.txt")
+      (dolist (table tables)
+        (insert (apply 'format "%s %s\n" table)))
+      (goto-char (point-min)))))
+
 (defun jh/dump-oracle-table-columns ()
   "Dump table data."
   (interactive)
@@ -135,7 +145,7 @@
                        (dbtype (cadr column)))
                   (cond
                     ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
-                      (format "REPLACE(REPLACE(t.%s, TO_CHAR(CHR(13)), ''), TO_CHAR(CHR(10)), '_r_n')" colname))
+                      (format "REPLACE(REPLACE(t.%s, TO_CHAR(CHR(13)), '\r'), TO_CHAR(CHR(10)), '\n')" colname))
                     ((string= dbtype "DATE")
                       (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
                     (t (format "t.%s" colname)))))
