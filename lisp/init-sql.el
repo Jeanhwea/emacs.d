@@ -142,46 +142,63 @@
             (mapconcat
               (lambda (column)
                 (let ((colname (car column))
-                       (dbtype (cadr column)))
+                       (dbtype (cadr column))
+                       (length (caddr column)))
                   (cond
                     ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
-                      (format "REPLACE(REPLACE(NVL(t.%s, 'NULL'), TO_CHAR(CHR(13)), '\\r'), TO_CHAR(CHR(10)), '\\n')" colname))
+                      (format "REPLACE(REPLACE(NVL(t.%s,'NULL'),TO_CHAR(CHR(13)),'\\r'),TO_CHAR(CHR(10)),'\\n')" colname))
                     ((string= dbtype "DATE")
-                      (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
+                      (format "TO_CHAR(t.%s,'YYYY-MM-DD HH:MM:SS')" colname))
                     (t (format "t.%s" colname)))))
-              visiable-columns " || '$ep' || "))
+              visiable-columns "  ||'$ep'||\n"))
           (query (concat
-                   "SELECT " seleted-columns " AS HEADER"
+                   "SELECT " seleted-columns " AS HEADER\n"
                    " FROM " tabname " t"
                    " WHERE ROWNUM < " (int-to-string limit) ";"))
-          (lines (remove-if
-                   (lambda (line)
-                     (or (string= "HEADER" line)
-                       (string-match-p "^-*$" line)
-                       (string-match-p "^[0-9]+ rows selected.$" line)))
-                   (split-string (jh/sql-execute query) "\n"))))
+          (lines (cdr (remove-if
+                        (lambda (line)
+                          (or (string= "HEADER" line)
+                            (string-match-p "^-*$" line)
+                            (string-match-p "^[0-9]+ rows selected.$" line)))
+                        (split-string (jh/sql-execute query) "\n")))))
     (progn
-      (switch-to-buffer (concat tabname ".txt"))
+      (switch-to-buffer (concat tabname ".yml"))
+      (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
+
+      ;; insert rows data
       (setq i 1)
-      (dolist
-        (line lines)
+      (dolist (line lines)
+        ;; insert row counter
         (insert
           (concat
             "##############################" (format " Row %d " i)
             "##############################" "\n"))
         (setq j 0)
+
+        ;; insert visibale columns
         (dolist (coldata (split-string line "$ep"))
           (let* ((colname (car (nth j visiable-columns)))
-                 (dbtype (cadr (nth j visiable-columns)))
-                 (colvalue
-                   (if (and (string= dbtype "NUMBER") (string= coldata "")) "NULL" coldata)))
-            (insert (format "%s: %s\n" colname colvalue)))
+                  (dbtype (cadr (nth j visiable-columns)))
+                  (nullable (nth 3 (nth j visiable-columns)))
+                  (star (if (string= nullable "N") "*" ""))
+                  (colvalue
+                    (if (and (string= dbtype "NUMBER") (string= coldata "")) "NULL" coldata)))
+            (insert (format "%s%s: %s\n" star colname colvalue)))
           (setq j (+ j 1)))
+
+        ;; insert invisiable columns
         (dolist (column invisiable-columns)
-          (insert (format "%s: <<%s>>\n" (car column) (cadr column))))
-        (setq i (+ i 1))
-        (insert "\n"))
+          (let* ((colname (car column))
+                  (dbtype (cadr column))
+                  (nullable (nth 3 (nth j visiable-columns)))
+                  (star (if (string= nullable "N") "*" "")))
+            (insert (format "%s%s: <<%s>>\n" star colname dbtype))))
+
+        ;; skip a blank line
+        (insert "\n")
+        (setq i (+ i 1)))
+      ;; go to the beigining
       (goto-char (point-min)))))
 
 ;; -----------------------------------------------------------------------------
