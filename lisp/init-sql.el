@@ -145,7 +145,7 @@
                        (dbtype (cadr column)))
                   (cond
                     ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
-                      (format "REPLACE(REPLACE(t.%s, TO_CHAR(CHR(13)), '\r'), TO_CHAR(CHR(10)), '\n')" colname))
+                      (format "REPLACE(REPLACE(NVL(t.%s, 'NULL'), TO_CHAR(CHR(13)), '\\r'), TO_CHAR(CHR(10)), '\\n')" colname))
                     ((string= dbtype "DATE")
                       (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
                     (t (format "t.%s" colname)))))
@@ -172,7 +172,11 @@
             "##############################" "\n"))
         (setq j 0)
         (dolist (coldata (split-string line "$ep"))
-          (insert (concat (car (nth j visiable-columns)) ": " coldata "\n"))
+          (let* ((colname (car (nth j visiable-columns)))
+                 (dbtype (cadr (nth j visiable-columns)))
+                 (colvalue
+                   (if (and (string= dbtype "NUMBER") (string= coldata "")) "NULL" coldata)))
+            (insert (format "%s: %s\n" colname colvalue)))
           (setq j (+ j 1)))
         (dolist (column invisiable-columns)
           (insert (format "%s: <<%s>>\n" (car column) (cadr column))))
