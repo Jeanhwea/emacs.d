@@ -107,7 +107,7 @@
           (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/extract-table-column-in-oracle lines))))
 
-(defun jh/dump-oracle-table-colums ()
+(defun jh/dump-oracle-table-columns ()
   "Dump table data."
   (interactive)
   (let* ((limit 1000)
