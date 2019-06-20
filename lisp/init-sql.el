@@ -147,7 +147,7 @@
                        (length (caddr column)))
                   (cond
                     ((member dbtype string-types)
-                      (format "REPLACE(REPLACE(NVL(t.%s,'NULL'),TO_CHAR(CHR(13)),''),TO_CHAR(CHR(10)),'#ew')" colname))
+                      (format "REPLACE(REPLACE(NVL(t.%s,'#il'),TO_CHAR(CHR(13)),''),TO_CHAR(CHR(10)),'#ew')" colname))
                     ((string= dbtype "DATE")
                       (format "TO_CHAR(t.%s,'YYYY-MM-DD HH:MM:SS')" colname))
                     (t (format "t.%s" colname)))))
@@ -181,10 +181,18 @@
                   (star (if (string= nullable "N") "*" ""))
                   (colvalue
                     (cond
-                      ((and (string= dbtype "NUMBER") (string= coldata "")) "NULL")
-                      ((and (member dbtype string-types) (string-match-p "#ew" coldata))
-                        (concat "|\n    " (replace-regexp-in-string "#ew" "\n    " coldata)))
-                      (t coldata))))
+                      ((and (string= dbtype "NUMBER") (string= coldata "")) "null")
+                      ((and (member dbtype string-types) )
+                        (cond
+                          ((string-match-p "#ew" coldata)
+                            (concat "|\n    " (replace-regexp-in-string "#ew" "\n    " coldata)))
+                          ((> (length coldata) 80)
+                            (concat ">\n    " coldata))
+                          (t (if (string= coldata "#il") "null"
+                               (concat "\""
+                                 (replace-regexp-in-string "\"" "\\\"" coldata)
+                                 "\"")))))
+                      (t (if (string= coldata "#il") "null" coldata)))))
             (insert (format "  %s%s: %s\n" star colname colvalue)))
           (setq j (+ j 1)))
         ;; insert invisiable columns
@@ -193,7 +201,7 @@
                   (dbtype (cadr column))
                   (nullable (nth 3 (nth j visiable-columns)))
                   (star (if (string= nullable "N") "*" "")))
-            (insert (format "  %s%s: <<%s>>\n" star colname dbtype))))
+            (insert (format "  %s%s: ##%s##\n" star colname dbtype))))
         ;; skip a blank line
         (insert "\n")
         (setq i (+ i 1)))
