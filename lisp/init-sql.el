@@ -147,21 +147,18 @@
                        (length (caddr column)))
                   (cond
                     ((member dbtype string-types)
-                      (format "REPLACE(REPLACE(NVL(t.%s,'#il'),TO_CHAR(CHR(13)),''),TO_CHAR(CHR(10)),'#ew')" colname))
+                      (format "REPLACE(REPLACE(NVL(t.%s,'#il'), TO_CHAR(CHR(13)),''), TO_CHAR(CHR(10)), '#ew')" colname))
                     ((string= dbtype "DATE")
-                      (format "TO_CHAR(t.%s,'YYYY-MM-DD HH:MM:SS')" colname))
+                      (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
                     (t (format "t.%s" colname)))))
-              visiable-columns "  ||'$ep'||\n"))
+              visiable-columns " ||'$ep'||\n"))
           (query (concat
-                   "SELECT " seleted-columns " AS HEADER\n"
-                   " FROM " tabname " t"
-                   " WHERE ROWNUM < " (int-to-string limit) ";"))
-          (lines (cdr (remove-if
-                        (lambda (line)
-                          (or (string= "HEADER" line)
-                            (string-match-p "^-*$" line)
-                            (string-match-p "^[0-9]+ rows selected.$" line)))
-                        (split-string (jh/sql-execute query) "\n")))))
+                   "SELECT 'li#e'|| " seleted-columns
+                   "\nFROM " tabname " t"
+                   "\nWHERE ROWNUM < " (int-to-string limit) ";"))
+          (lines (remove-if-not
+                   (lambda (line) (string-match-p "^li#e" line))
+                   (split-string (jh/sql-execute query) "\n"))))
     (progn
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
@@ -174,7 +171,7 @@
         (insert (format "- ### Row %d ###\n" i))
         (setq j 0)
         ;; insert visibale columns
-        (dolist (coldata (split-string line "$ep"))
+        (dolist (coldata (split-string (replace-regexp-in-string "^li#e" "" line) "$ep"))
           (let* ((colname (car (nth j visiable-columns)))
                   (dbtype (cadr (nth j visiable-columns)))
                   (nullable (nth 3 (nth j visiable-columns)))
