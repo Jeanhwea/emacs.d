@@ -429,7 +429,7 @@
   (let ((regexp
           (concat
             "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping"
-            "(\\(value = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
+            "([ \t\n]*\\(value = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
             "public \\(static\\|\\)[ \t]*"
             "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\)"
             "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
