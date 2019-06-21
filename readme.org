@@ -35,21 +35,6 @@
 
 ** Cheatsheet
 
-*** Function Keys
-| key | binding                                    |
-|-----+--------------------------------------------|
-| F1  | magit-status                               |
-| F2  | magit-blame                                |
-| F3  | magit-log-all                              |
-| F4  | bar-browse                                 |
-| F5  | jh/pop-agenda-list-and-close-other-windows |
-| F6  | jh/org-capture-task                        |
-| F7  | elfeed                                     |
-| F8  | jh/open-shrimp-shell-as-temporary-shell    |
-| F9  | make-frame-command                         |
-| F10 | delete-frame                               |
-| F11 | jh/toggle-frame-fullscreen-mode            |
-| F12 | jh/toggle-light-dark-theme                 |
 
 *** smerge-mode
 #+BEGIN_SRC elisp

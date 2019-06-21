@@ -50,7 +50,7 @@
     "Capture a task with default template in org-mode"
     (interactive)
     (org-capture nil "t"))
-  (define-key global-map (kbd "<f6>") 'jh/org-capture-task)
+  (define-key global-map (kbd "<f9>") 'jh/org-capture-task)
   (define-key global-map (kbd "C-c t") 'jh/org-capture-task)
 
   (defun jh/pop-agenda-list-and-close-other-windows (split)
@@ -60,7 +60,6 @@
     (when (not split)
       (delete-other-windows)))
   (define-key global-map (kbd "C-c a") 'jh/pop-agenda-list-and-close-other-windows)
-  (define-key global-map (kbd "<f5>") 'jh/pop-agenda-list-and-close-other-windows)
 
   (add-hook 'org-mode-hook
     (lambda ()

@@ -33,8 +33,12 @@
 ;; windows and frames
 ;; -----------------------------------------------------------------------------
 (global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "<f9>") 'make-frame-command)
-(global-set-key (kbd "<f10>") 'delete-frame)
+(global-set-key (kbd "<f1>") 'delete-other-windows)
+(global-set-key (kbd "<f2>") 'split-window-below)
+(global-set-key (kbd "<f3>") 'split-window-right)
+(global-set-key (kbd "<f4>") 'delete-window)
+(global-set-key (kbd "<f7>") 'make-frame-command)
+(global-set-key (kbd "<f8>") 'delete-frame)
 (global-set-key (kbd "<f11>") 'toggle-frame-fullscreen)
 (defun jh/toggle-frame ()
   "toggle fullscreen in different platform"

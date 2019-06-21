@@ -72,7 +72,6 @@
   ;; display feeds last 18 months ago, total items not greater than 100, and
   ;; remove junk, show unread only
   (setq-default elfeed-search-filter elfeed-search-default-filter)
-  (global-set-key (kbd "<f7>") 'elfeed)
   (global-set-key (kbd "C-c e") 'elfeed))
 
 
