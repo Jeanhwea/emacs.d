@@ -154,7 +154,7 @@
                 (cond
                   ((string-match-p "#ew" coldata)
                     (concat "|\n    " (replace-regexp-in-string "#ew" "\n    " coldata)))
-                  ((> (dblen coldata) 80)
+                  ((> (length coldata) 80)
                     (concat ">\n    " coldata))
                   (t (if (string= coldata "#il") "null"
                        (concat "\""
