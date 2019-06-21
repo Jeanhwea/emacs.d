@@ -141,34 +141,43 @@
                    "\nWHERE ROWNUM < " (int-to-string limit) ";")))
     query))
 
+(defun jh/stringify-oracle-column-value (column coldata)
+  "Make column data to a readable string."
+  (let* ((colname (nth 0 column))
+          (dbtype (nth 1 column))
+          (nullable (nth 3 column))
+          (star (if (string= nullable "N") "*" ""))
+          (colvalue
+            (cond
+              ((and (string= dbtype "NUMBER") (string= coldata "")) "null")
+              ((and (member dbtype jh/oracle-string-datatype) )
+                (cond
+                  ((string-match-p "#ew" coldata)
+                    (concat "|\n    " (replace-regexp-in-string "#ew" "\n    " coldata)))
+                  ((> (length coldata) 80)
+                    (concat ">\n    " coldata))
+                  (t (if (string= coldata "#il") "null"
+                       (concat "\""
+                         (replace-regexp-in-string "\"" "\\\"" coldata)
+                         "\"")))))
+              (t (if (string= coldata "#il") "null" coldata)))))
+    (format "  %s%s: %s\n" star colname colvalue)))
+
 (defun jh/dump-oracle-table-columns ()
   "Dump table data."
   (interactive)
   (let* ((limit 1000)
           (table (and (buffer-file-name) (spt/extract-java-entity-table (jh/current-buffer))))
-          (tabname (if table table
-                     (completing-read "Dump Table >> " (jh/java-table-names))))
+          (tabname (if table table (completing-read "Dump Table >> " (jh/java-table-names))))
           (columns (hash-table-values (spt/cache-of-table-columns tabname)))
           (visible-dbtypes '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER" "DATE"))
-          (visible-columns
-            (remove-if-not
-              (lambda (column)
-                (let ((dbtype (cadr column)))
-                  (member dbtype visible-dbtypes)))
-              columns))
-          (invisible-columns
-            (remove-if
-              (lambda (column)
-                (let ((dbtype (cadr column)))
-                  (member dbtype visible-dbtypes)))
-              columns))
+          (visible-columns (remove-if-not (lambda (column) (member (cadr column) visible-dbtypes)) columns))
+          (invisible-columns (remove-if (lambda (column) (member (cadr column) visible-dbtypes)) columns))
           (query (jh/gen-oracle-select-query tabname visible-columns))
-          (lines (remove-if-not
-                   (lambda (line) (string-match-p "^li#e" line))
-                   (split-string (jh/sql-execute query) "\n"))))
+          (rawlist (split-string (jh/sql-execute query) "\n"))
+          (lines (mapcar (lambda (line) (replace-regexp-in-string "^li#e" "" line))
+                   (remove-if-not (lambda (line) (string-match-p "^li#e" line)) rawlist))))
     (progn
-      (print visible-columns)
-      (print query)
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
@@ -180,32 +189,13 @@
         (insert (format "- ### Row %d ###\n" i))
         (setq j 0)
         ;; insert visibale columns
-        (dolist (coldata (split-string (replace-regexp-in-string "^li#e" "" line) "$ep"))
-          (let* ((column (nth j visible-columns))
-                  (colname (nth 0 column))
-                  (dbtype (nth 1 column))
-                  (nullable (nth 3 column))
-                  (star (if (string= nullable "N") "*" ""))
-                  (colvalue
-                    (cond
-                      ((and (string= dbtype "NUMBER") (string= coldata "")) "null")
-                      ((and (member dbtype jh/oracle-string-datatype) )
-                        (cond
-                          ((string-match-p "#ew" coldata)
-                            (concat "|\n    " (replace-regexp-in-string "#ew" "\n    " coldata)))
-                          ((> (length coldata) 80)
-                            (concat ">\n    " coldata))
-                          (t (if (string= coldata "#il") "null"
-                               (concat "\""
-                                 (replace-regexp-in-string "\"" "\\\"" coldata)
-                                 "\"")))))
-                      (t (if (string= coldata "#il") "null" coldata)))))
-            (insert (format "  %s%s: %s\n" star colname colvalue)))
+        (dolist (coldata (split-string line "$ep"))
+          (insert (jh/stringify-oracle-column-value (nth j visible-columns) coldata))
           (setq j (+ j 1)))
         ;; insert invisible columns
         (dolist (column invisible-columns)
-          (let* ((colname (car column))
-                  (dbtype (cadr column))
+          (let* ((colname (nth 0 column))
+                  (dbtype (nth 1 column))
                   (nullable (nth 3 (nth j visible-columns)))
                   (star (if (string= nullable "N") "*" "")))
             (insert (format "  %s%s: ##%s##\n" star colname dbtype))))
