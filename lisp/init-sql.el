@@ -198,7 +198,7 @@
                   (dbtype (nth 1 column))
                   (nullable (nth 3 (nth j visible-columns)))
                   (star (if (string= nullable "N") "*" "")))
-            (insert (format "  %s%s: ##%s##\n" star colname dbtype))))
+            (insert (format "  %s%s: ##<%s>##\n" star colname dbtype))))
         ;; skip a blank line
         (insert "\n")
         (setq i (+ i 1)))
