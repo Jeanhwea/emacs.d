@@ -152,7 +152,7 @@
           (col (gethash colname tabinfo))
           (colname (nth 0 col))
           (dbtype (nth 1 col))
-          (length (nth 2 col))
+          (dblen (nth 2 col))
           (nullable (nth 3 col))
           (unique (nth 4 col))
           (nullable-arg
@@ -162,7 +162,7 @@
           (length-arg
             (cond
               ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
-                (concat ", length = " length))
+                (concat ", length = " dblen))
               (t "")))
           (addition-arg
             (cond

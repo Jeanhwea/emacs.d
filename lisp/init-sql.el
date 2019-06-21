@@ -62,12 +62,12 @@
         (setq
           colname (match-string 1 line)
           dbtype (match-string 2 line)
-          length (match-string 3 line)
+          dblen (match-string 3 line)
           nullable (match-string 4 line)
           unique (match-string 5 line)
           comments (match-string 6 line))
         (and colname
-          (setq col (list colname dbtype length nullable unique comments)))))
+          (setq col (list colname dbtype dblen nullable unique comments)))))
     col))
 
 (defun jh/query-all-tables-in-oracle ()
@@ -127,7 +127,7 @@
              (lambda (column)
                (let ((colname (nth 0 column))
                       (dbtype (nth 1 column))
-                      (length (nth 2 column)))
+                      (dblen (nth 2 column)))
                  (cond
                    ((member dbtype jh/oracle-string-datatype)
                      (format "REPLACE(REPLACE(NVL(t.%s,'#il'), TO_CHAR(CHR(13)),''), TO_CHAR(CHR(10)), '#ew')" colname))
@@ -154,7 +154,7 @@
                 (cond
                   ((string-match-p "#ew" coldata)
                     (concat "|\n    " (replace-regexp-in-string "#ew" "\n    " coldata)))
-                  ((> (length coldata) 80)
+                  ((> (dblen coldata) 80)
                     (concat ">\n    " coldata))
                   (t (if (string= coldata "#il") "null"
                        (concat "\""
