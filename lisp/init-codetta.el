@@ -26,7 +26,7 @@
   "Execute shell command and capture outputs."
   (let ((cmd
           (mapconcat
-            (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\)[ \t]*" "" line))
+            (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\|--\\|rem\\)[ \t]*" "" line))
             (ct/command-lines) "\n")))
     (shell-command-to-string cmd)))
 
