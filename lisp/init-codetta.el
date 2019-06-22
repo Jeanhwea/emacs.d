@@ -24,10 +24,9 @@
 
 (defun ct/execute-command ()
   "Execute shell command and capture outputs."
-  (let ((comment-prefix "^[ \t]*\\(#\\|//\\|;;\\)")
-         (cmd
+  (let ((cmd
           (mapconcat
-            (lambda (line) (replace-regexp-in-string comment-prefix "" line))
+            (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\)" "" line))
             (ct/command-lines) " ")))
     (shell-command-to-string cmd)))
 

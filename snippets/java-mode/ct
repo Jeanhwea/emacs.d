@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: codatta
+# key: ct
+# --
+// codetta: start
+// $0
+// codetta: output
+// codetta: end
