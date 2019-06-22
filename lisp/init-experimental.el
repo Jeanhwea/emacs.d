@@ -80,4 +80,6 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
+(when (require 'restclient))
+
 (provide 'init-experimental)

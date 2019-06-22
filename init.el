@@ -131,6 +131,7 @@
          projectile
          protobuf-mode
          rainbow-delimiters
+         restclient
          sicp
          smex
          sql-indent
