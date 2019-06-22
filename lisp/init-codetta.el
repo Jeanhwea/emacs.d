@@ -47,10 +47,8 @@
   (let ((sp (ct/start-point))
          (op (ct/output-point))
          (ep (ct/end-point)))
-    (or sp op ep
-      (error "Please leave inside a codetta command region first"))
-    (save-excursion
-      (ct/insert-output (ct/execute-command)))))
+    (and sp op ep
+      (save-excursion (ct/insert-output (ct/execute-command))))))
 
 
 (provide 'init-codetta)
