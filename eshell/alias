@@ -4,7 +4,7 @@ alias f find-file $1
 alias ff find-file $1
 alias fo find-file-other-window $1
 alias pr cd (jh/git-project-root-dir default-directory)
-alias mg magit .
+alias gs magit-status
 alias l ls -al
 alias ll ls -alh
 alias lt ls -alt
