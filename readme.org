@@ -192,3 +192,4 @@ read from right to left
 
 ** Link
 1. [[http://mirrors.ustc.edu.cn/gnu/emacs/windows/][emacs-windows-download]]
+2. [[http://mirror.hust.edu.cn/gnu/emacs/windows/][emacs-windows-download2]]
