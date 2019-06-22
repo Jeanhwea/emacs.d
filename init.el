@@ -41,6 +41,7 @@
 (require 'init-markdown)
 (require 'init-yasnippet)
 (require 'init-springboot)
+(require 'init-keymate)
 
 ;; -----------------------------------------------------------------------------
 ;; programming language

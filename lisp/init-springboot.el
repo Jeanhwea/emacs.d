@@ -809,7 +809,6 @@
   (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
   (define-key spt/leader-key-map (kbd "d") 'spt/toggle-controller-and-doc)
   (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
-  (define-key spt/leader-key-map (kbd "f") 'spt/format-java-source-code)
   (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
   (define-key spt/leader-key-map (kbd "j") 'spt/company-jpa-backend)
   (define-key spt/leader-key-map (kbd "m") 'spt/jump-to-class-methods)
