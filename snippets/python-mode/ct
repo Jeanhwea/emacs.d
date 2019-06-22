@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: codetta
+# key: ct
+# --
+# codetta: start
+# python -c "import this"
+# codetta: output
+# codetta: end

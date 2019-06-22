@@ -27,7 +27,7 @@
   (let ((cmd
           (mapconcat
             (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\)[ \t]*" "" line))
-            (ct/command-lines) " ")))
+            (ct/command-lines) "\n")))
     (shell-command-to-string cmd)))
 
 (defun ct/insert-output (str)
