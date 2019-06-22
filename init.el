@@ -32,6 +32,7 @@
 ;; plugin
 ;; -----------------------------------------------------------------------------
 (require 'init-completion)
+(require 'init-codetta)
 (require 'init-dired)
 (require 'init-elfeed)
 (require 'init-git)

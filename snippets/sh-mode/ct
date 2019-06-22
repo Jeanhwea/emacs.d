@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: codetta
+# key: ct
+# --
+# codetta: start
+# for (( i=0 ; i<5 ; i=i+1 )) ; do echo echo $i ; done$0
+# codetta: output
+# codetta: end
