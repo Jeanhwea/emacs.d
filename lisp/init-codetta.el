@@ -24,11 +24,11 @@
 
 (defun ct/execute-command ()
   "Execute shell command and capture outputs."
-  (let ((cmd
-          (mapconcat
-            (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\|--\\|rem\\)[ \t]*" "" line))
-            (ct/command-lines) "\n")))
-    (shell-command-to-string cmd)))
+  (let ((default-directory (and (jh/git-project-root-dir (buffer-file-name)) default-directory))
+         (commands (mapconcat
+                (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\|--\\|rem\\)[ \t]*" "" line))
+                (ct/command-lines) "\n")))
+    (shell-command-to-string commands)))
 
 (defun ct/insert-output (str)
   "Insert STR to output."
