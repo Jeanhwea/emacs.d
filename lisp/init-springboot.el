@@ -142,7 +142,7 @@
           (next-line)))
       (end-of-line)
       (newline)
-      (insert (jh/trim-blank (format "import %s %s.%s;" static package class))))))
+      (insert (jh/strip (format "import %s %s.%s;" static package class))))))
 
 (defun spt/pick-method-name ()
   "Pick the method name in controller."
@@ -288,13 +288,7 @@
             func (match-string 4 text)
             args (match-string 5 text))
           (setq
-            sign (list
-                   (jh/trim-blank visb)
-                   static
-                   (jh/trim-blank return)
-                   func
-                   (jh/trim-blank args)
-                   addr)
+            sign (list (jh/strip visb) static (jh/strip return) func (jh/strip args) addr)
             res (cons sign res)
             addr (+ addr 1)))))
     (reverse res)))
@@ -318,7 +312,7 @@
             func (match-string 3 text)
             args (match-string 4 text))
           (setq
-            sign (list (jh/trim-blank return) func (jh/trim-blank args) addr)
+            sign (list (jh/strip return) func (jh/strip args) addr)
             res (cons sign res)
             addr (+ addr 1)))))
     (reverse res)))
@@ -344,7 +338,7 @@
             func (match-string 2 text)
             args (match-string 3 text))
           (setq
-            sign (list (jh/trim-blank return) func (jh/trim-blank args) addr)
+            sign (list (jh/strip return) func (jh/strip args) addr)
             res (cons sign res)
             addr (+ addr 1))
           (setq addr (+ addr 1)))))
@@ -373,7 +367,7 @@
             func (match-string 3 text)
             args (match-string 4 text))
           (setq
-            sign (list (jh/trim-blank return) func (jh/trim-blank args) addr)
+            sign (list (jh/strip return) func (jh/strip args) addr)
             res (cons sign res)
             addr (+ addr 1))
           (setq addr (+ addr 1)))))
@@ -447,13 +441,7 @@
             func (match-string 6 text)
             args (match-string 7 text))
           (setq
-            api (list
-                  (jh/upcase method)
-                  uri
-                  (jh/trim-blank return)
-                  func
-                  (jh/trim-blank args)
-                  addr)
+            api (list (jh/upcase method) uri (jh/strip return) func (jh/strip args) addr)
             res (cons api res))
           (setq addr (+ addr 1)))))
     (reverse res)))
@@ -743,7 +731,7 @@
       (progn
         (dolist (sign signs)
           (let
-            ((key (jh/trim-blank (apply #'format "%s %s %s %s(%s)" sign)))
+            ((key (jh/strip (apply #'format "%s %s %s %s(%s)" sign)))
               (addr (car (last sign))))
             (puthash key addr lookup)))
         (setq read (completing-read "Goto method >> " (hash-table-keys lookup))
@@ -781,13 +769,13 @@
         (or (not (file-exists-p other-file)) (spt/implement? file))
         (spt/find-file other-file)
         (let ((lookup (make-hash-table :test 'equal))
-               (line (jh/trim-blank (jh/current-line)))
+               (line (jh/strip (jh/current-line)))
                (methods
                  (spt/extract-java-impl-override-methods
                    (jh/read-file-content other-file))))
           (progn
             (dolist (method methods)
-              (let ((key (jh/trim-blank (apply #'format "%s %s(%s);" method)))
+              (let ((key (jh/strip (apply #'format "%s %s(%s);" method)))
                      (addr (car (last method))))
                 (puthash key addr lookup)))
             (setq addr (gethash line lookup))
