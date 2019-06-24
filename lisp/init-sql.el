@@ -74,11 +74,11 @@
   "Get all table information using oracle database."
   (let* ((query
            (concat
-             "SELECT USER_TAB_COMMENTS.TABLE_NAME ||"
-             "         ',' || USER_TAB_COMMENTS.TABLE_TYPE ||"
-             "         ',' || USER_TAB_COMMENTS.COMMENTS"
-             "  FROM USER_TAB_COMMENTS"
-             " ORDER BY USER_TAB_COMMENTS.TABLE_NAME;"))
+             "SELECT tc.TABLE_NAME ||','|| tc.TABLE_TYPE ||','|| "
+             "  REPLACE(REPLACE(tc.COMMENTS, TO_CHAR(CHR(13)), ''), TO_CHAR(CHR(10)), '_r_n')"
+             "  FROM USER_TAB_COMMENTS tc"
+             " WHERE REGEXP_LIKE(tc.TABLE_NAME, '^[0-9A-Za-z][_0-9A-Za-z]*$')"
+             " ORDER BY tc.TABLE_NAME;"))
           (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/extract-table-in-oracle lines))))
 
@@ -114,7 +114,9 @@
     (progn
       (switch-to-buffer "tables.txt")
       (dolist (table tables)
-        (insert (apply 'format "%s %s\n" table)))
+        (let ((colname (nth 0 table))
+               (comments (jh/strip (nth 1 table))))
+          (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
 (defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
