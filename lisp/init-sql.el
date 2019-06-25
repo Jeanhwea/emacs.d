@@ -187,12 +187,11 @@
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
-      (insert (format "### %s ###\n\n" tabname))
       ;; insert rows data
       (setq i 1)
       (dolist (line lines)
         ;; insert row counter
-        (insert (format "- ### Row %d ###\n" i))
+        (insert (format "- ### Row %d of %s ###\n" i tabname))
         (setq j 0)
         ;; insert columns
         (dolist (coldata (split-string line "$ep"))
