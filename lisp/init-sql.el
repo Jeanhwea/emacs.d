@@ -134,9 +134,9 @@
                    ((member dbtype jh/oracle-string-datatype)
                      (format "REPLACE(REPLACE(NVL(t.%s,'#il'), TO_CHAR(CHR(13)),''), TO_CHAR(CHR(10)), '#ew')" colname))
                    ((string= dbtype "CLOB")
-                     (format "'### CLOB('||length(t.%s)||') ###'" colname))
+                     (format "NVL(TO_CHAR(LENGTH(t.%s)),'#il')" colname))
                    ((string= dbtype "BLOB")
-                     (format "'### BLOB('||length(t.%s)||') ###'" colname))
+                     (format "NVL(TO_CHAR(LENGTH(t.%s)),'#il')" colname))
                    ((string= dbtype "DATE")
                      (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
                    (t (format "t.%s" colname)))))
@@ -166,6 +166,9 @@
                        (concat "\""
                          (replace-regexp-in-string "\"" "\\\"" coldata)
                          "\"")))))
+              ((member dbtype '("BLOB" "CLOB"))
+                (if (string= coldata "#il") (format "### %s(null) ###" dbtype)
+                  (format "### %s(%s) ###" dbtype (file-size-human-readable (string-to-number coldata)))))
               (t (if (string= coldata "#il") "null" coldata)))))
     (format "  %s%s: %s\n" star colname colvalue)))
 
@@ -184,6 +187,7 @@
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
+      (insert (format "### %s ###\n\n" tabname))
       ;; insert rows data
       (setq i 1)
       (dolist (line lines)
