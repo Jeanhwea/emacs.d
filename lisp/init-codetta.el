@@ -24,7 +24,7 @@
 
 (defun ct/execute-command ()
   "Execute shell command and capture outputs."
-  (let ((default-directory (and (jh/git-project-root-dir (buffer-file-name)) default-directory))
+  (let ((default-directory (or (jh/git-project-root-dir (buffer-file-name)) default-directory))
          (commands (mapconcat
                 (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\|--\\|rem\\)[ \t]*" "" line))
                 (ct/command-lines) "\n")))
