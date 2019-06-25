@@ -39,11 +39,11 @@
             "[ \t]*\\(.*\\)$"))
          (table))
     (and (save-match-data (string-match regexp line)
-          (setq
-            tabname (match-string 1 line)
-            comments (match-string 3 line))
-          (and tabname
-            (setq table (list tabname comments)))))
+         (setq
+           tabname (match-string 1 line)
+           comments (match-string 3 line))
+         (and tabname
+           (setq table (list tabname comments)))))
     table))
 
 (defun jh/extract-table-column-in-oracle (line)
@@ -172,12 +172,23 @@
               (t (if (string= coldata "#il") "null" coldata)))))
     (format "  %s%s: %s\n" star colname colvalue)))
 
+(defun jh/guess-table-name ()
+  "Guess table name."
+  (let ((tabnames (jh/java-table-names))
+         (anno (spt/extract-java-entity-table (jh/current-buffer)))
+         (name (file-name-sans-extension (buffer-name)))
+         (symb (symbol-at-point)))
+    (cond
+      ((member anno tabnames) anno)
+      ((member name tabnames) name)
+      ((member symb tabnames) symb)
+      (t (completing-read "Dump Table >> " tabnames)))))
+
 (defun jh/dump-oracle-table-columns ()
   "Dump table data."
   (interactive)
   (let* ((limit 1000)
-          (table (and (buffer-file-name) (spt/extract-java-entity-table (jh/current-buffer))))
-          (tabname (if table table (completing-read "Dump Table >> " (jh/java-table-names))))
+          (tabname (jh/guess-table-name))
           (columns (hash-table-values (spt/cache-of-table-columns tabname)))
           (query (jh/gen-oracle-select-query tabname columns))
           (rawlist (split-string (jh/sql-execute query) "\n"))
