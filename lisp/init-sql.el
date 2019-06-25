@@ -133,6 +133,10 @@
                  (cond
                    ((member dbtype jh/oracle-string-datatype)
                      (format "REPLACE(REPLACE(NVL(t.%s,'#il'), TO_CHAR(CHR(13)),''), TO_CHAR(CHR(10)), '#ew')" colname))
+                   ((string= dbtype "CLOB")
+                     (format "'### CLOB('||length(t.%s)||') ###'" colname))
+                   ((string= dbtype "BLOB")
+                     (format "'### BLOB('||length(t.%s)||') ###'" colname))
                    ((string= dbtype "DATE")
                      (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
                    (t (format "t.%s" colname)))))
@@ -172,10 +176,7 @@
           (table (and (buffer-file-name) (spt/extract-java-entity-table (jh/current-buffer))))
           (tabname (if table table (completing-read "Dump Table >> " (jh/java-table-names))))
           (columns (hash-table-values (spt/cache-of-table-columns tabname)))
-          (visible-dbtypes '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2" "NUMBER" "DATE"))
-          (visible-columns (remove-if-not (lambda (column) (member (cadr column) visible-dbtypes)) columns))
-          (invisible-columns (remove-if (lambda (column) (member (cadr column) visible-dbtypes)) columns))
-          (query (jh/gen-oracle-select-query tabname visible-columns))
+          (query (jh/gen-oracle-select-query tabname columns))
           (rawlist (split-string (jh/sql-execute query) "\n"))
           (lines (mapcar (lambda (line) (replace-regexp-in-string "^li#e" "" line))
                    (remove-if-not (lambda (line) (string-match-p "^li#e" line)) rawlist))))
@@ -183,25 +184,16 @@
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
-
       ;; insert rows data
       (setq i 1)
       (dolist (line lines)
         ;; insert row counter
         (insert (format "- ### Row %d ###\n" i))
         (setq j 0)
-        ;; insert visibale columns
+        ;; insert columns
         (dolist (coldata (split-string line "$ep"))
-          (insert (jh/stringify-oracle-column-value (nth j visible-columns) coldata))
+          (insert (jh/stringify-oracle-column-value (nth j columns) coldata))
           (setq j (+ j 1)))
-        ;; insert invisible columns
-        (dolist (column invisible-columns)
-          (let* ((colname (nth 0 column))
-                  (dbtype (nth 1 column))
-                  (nullable (nth 3 (nth j visible-columns)))
-                  (star (if (string= nullable "N") "*" "")))
-            (insert (format "  %s%s: ##<%s>##\n" star colname dbtype))))
-        ;; skip a blank line
         (insert "\n")
         (setq i (+ i 1)))
       ;; go to the beigining
