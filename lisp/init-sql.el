@@ -124,7 +124,8 @@
 
 (defun jh/gen-oracle-select-query (tabname columns)
   "Generate Oracle query string."
-  (let* ((selected
+  (let* ((limit 1000)
+          (selected
            (mapconcat
              (lambda (column)
                (let ((colname (nth 0 column))
@@ -188,8 +189,7 @@
 (defun jh/dump-oracle-table-columns ()
   "Dump table data."
   (interactive)
-  (let* ((limit 1000)
-          (tabname (jh/guess-table-name))
+  (let* ((tabname (jh/guess-table-name))
           (columns (hash-table-values (spt/cache-of-table-columns tabname)))
           (query (jh/gen-oracle-select-query tabname columns))
           (rawlist (split-string (jh/sql-execute query) "\n"))
