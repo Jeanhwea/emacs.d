@@ -178,7 +178,7 @@
          (anno (and (buffer-file-name)
                  (spt/extract-java-entity-table (jh/current-buffer))))
          (name (file-name-sans-extension (buffer-name)))
-         (symb (symbol-at-point)))
+         (symb (symbol-name (symbol-at-point))))
     (cond
       ((member anno tabnames) anno)
       ((member name tabnames) name)
