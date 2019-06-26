@@ -6,6 +6,11 @@
     ((eq major-mode 'python-mode) (elpy-format-code))
     (t (message "Ops, no format backend!"))))
 
+(defun km/reveal-in-file-manager ()
+  "Open the folder containing this buffer file"
+  (interactive)
+  (browse-url default-directory))
+
 (defun km/M-x ()
   "Start a command M-x with prefix `^jh/'"
   (interactive)
@@ -15,6 +20,7 @@
   (define-prefix-command 'km/leader-key-map)
   (define-key km/leader-key-map (kbd "c") 'ct/expand-command)
   (define-key km/leader-key-map (kbd "f") 'km/format-source-codes)
+  (define-key km/leader-key-map (kbd "r") 'km/reveal-in-file-manager)
   (define-key km/leader-key-map (kbd "x") 'km/M-x))
 (global-set-key (kbd "M-k") 'km/leader-key-map)
 
