@@ -175,7 +175,8 @@
 (defun jh/guess-table-name ()
   "Guess table name."
   (let ((tabnames (jh/java-table-names))
-         (anno (spt/extract-java-entity-table (jh/current-buffer)))
+         (anno (and (buffer-file-name)
+                 (spt/extract-java-entity-table (jh/current-buffer))))
          (name (file-name-sans-extension (buffer-name)))
          (symb (symbol-at-point)))
     (cond
