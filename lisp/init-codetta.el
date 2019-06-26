@@ -20,14 +20,17 @@
   "Get the command lines."
   (let ((sp (ct/start-point))
          (op (ct/output-point)))
-    (and sp op (cdr (split-string (buffer-substring sp op) "\n")))))
+    (and sp op
+      (cdr (split-string
+             (buffer-substring-no-properties sp op) "\n")))))
 
 (defun ct/execute-command ()
   "Execute shell command and capture outputs."
-  (let ((default-directory (or (jh/git-project-root-dir (buffer-file-name)) default-directory))
-         (commands (mapconcat
-                (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\|--\\|rem\\)[ \t]*" "" line))
-                (ct/command-lines) "\n")))
+  (let* ((default-directory (or (jh/git-project-root-dir (buffer-file-name)) default-directory))
+          (rawcmds (mapconcat
+                     (lambda (line) (replace-regexp-in-string "^[ \t]*\\(#\\|//\\|;;\\|--\\|rem\\)[ \t]*" "" line))
+                     (ct/command-lines) "\n"))
+          (commands (if (jh/windows?) (jh/trim rawcmds) rawcmds)))
     (shell-command-to-string commands)))
 
 (defun ct/insert-output (str)
