@@ -122,31 +122,31 @@
 (defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
   "Oracle string datatype list")
 
-(defun jh/gen-oracle-select-query (tabname columns)
+(defvar jh/oracle-lob-datatype '("CLOB" "BLOB")
+  "Oracle string datatype list")
+
+(defun jh/format-oracle-select-column(column)
+  "Format oracle column placeholder at the select place."
+  (let ((colname (nth 0 column))
+         (dbtype (nth 1 column))
+         (dblen (nth 2 column)))
+    (cond
+      ((member dbtype jh/oracle-string-datatype)
+        (format "REPLACE(REPLACE(NVL(t.%s,'#il'), TO_CHAR(CHR(13)),''), TO_CHAR(CHR(10)), '#ew')" colname))
+      ((member dbtype jh/oracle-lob-datatype)
+        (format "NVL(TO_CHAR(LENGTH(t.%s)),'#il')" colname))
+      ((string= dbtype "DATE")
+        (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
+      (t (format "t.%s" colname)))))
+
+(defun jh/gen-oracle-select-query (tabname columns &optional limit)
   "Generate Oracle query string."
-  (let* ((limit 1000)
-          (selected
-           (mapconcat
-             (lambda (column)
-               (let ((colname (nth 0 column))
-                      (dbtype (nth 1 column))
-                      (dblen (nth 2 column)))
-                 (cond
-                   ((member dbtype jh/oracle-string-datatype)
-                     (format "REPLACE(REPLACE(NVL(t.%s,'#il'), TO_CHAR(CHR(13)),''), TO_CHAR(CHR(10)), '#ew')" colname))
-                   ((string= dbtype "CLOB")
-                     (format "NVL(TO_CHAR(LENGTH(t.%s)),'#il')" colname))
-                   ((string= dbtype "BLOB")
-                     (format "NVL(TO_CHAR(LENGTH(t.%s)),'#il')" colname))
-                   ((string= dbtype "DATE")
-                     (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
-                   (t (format "t.%s" colname)))))
-             columns " ||'$ep'||\n"))
-          (query (concat
-                   "SELECT 'li#e'|| " selected
-                   "\nFROM " tabname " t"
-                   "\nWHERE ROWNUM < " (int-to-string limit) ";")))
-    query))
+  (let ((limit (or limit 1000))
+         (sltcol (mapconcat #'jh/format-oracle-select-column columns " ||'$ep'||\n")))
+    (concat
+      "SELECT 'li#e'|| " sltcol
+      "\nFROM " tabname " t"
+      "\nWHERE ROWNUM < " (int-to-string limit) ";")))
 
 (defun jh/stringify-oracle-column-value (column coldata)
   "Make column data to a readable string."
@@ -167,9 +167,10 @@
                        (concat "\""
                          (replace-regexp-in-string "\"" "\\\"" coldata)
                          "\"")))))
-              ((member dbtype '("BLOB" "CLOB"))
+              ((member dbtype jh/oracle-lob-datatype)
                 (if (string= coldata "#il") (format "### %s(null) ###" dbtype)
-                  (format "### %s(%s) ###" dbtype (file-size-human-readable (string-to-number coldata)))))
+                  (format "### %s(%s) ###" dbtype
+                    (file-size-human-readable (string-to-number coldata)))))
               (t (if (string= coldata "#il") "null" coldata)))))
     (format "  %s%s: %s\n" star colname colvalue)))
 
