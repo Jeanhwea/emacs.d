@@ -9,13 +9,21 @@
 
 (when (jh/windows?)
   (setq sql-mysql-program "mysql")
-  (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4"))
-  (defun jh/sql-handle-prompt (output)
-    "handle prompt on windows."
-    (cond
-      ((eq sql-product 'mysql) (concat "\n" output "\nmysql> "))
-      (t output)))
+  (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4")))
+
+;; https://www.emacswiki.org/emacs/SqlMode
+(defun jh/sql-handle-prompt (output)
+  "handle prompt on windows."
+  (cond
+    ((eq sql-product 'mysql)
+      (if (jh/windows?) (concat "\n" output "\nmysql> ") (concat "\n" output)))
+    (t output)))
+
+(defun jh/sql-interactive-hook ()
+  "Add hooks to `sql-interactive-mode-hook'."
   (add-hook 'comint-preoutput-filter-functions 'jh/sql-handle-prompt))
+
+(add-hook 'sql-interactive-mode-hook #'jh/sql-interactive-hook)
 
 ;; -----------------------------------------------------------------------------
 ;; sql helper
