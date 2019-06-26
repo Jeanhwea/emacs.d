@@ -75,7 +75,7 @@
   (let* ((query
            (concat
              "SELECT tc.TABLE_NAME ||','|| tc.TABLE_TYPE ||','|| "
-             "  REPLACE(REPLACE(tc.COMMENTS, TO_CHAR(CHR(13)), ''), TO_CHAR(CHR(10)), '_r_n')"
+             "  REPLACE(REPLACE(tc.COMMENTS, CHR(13), ''), CHR(10), '_r_n')"
              "  FROM USER_TAB_COMMENTS tc"
              " WHERE REGEXP_LIKE(tc.TABLE_NAME, '^[0-9A-Za-z][_0-9A-Za-z]*$')"
              " ORDER BY tc.TABLE_NAME;"))
@@ -91,7 +91,7 @@
              "         ',' || TAB.DATA_LENGTH ||"
              "         ',' || TAB.NULLABLE ||"
              "         ',' || CONS.CONSTRAINT_TYPE ||"
-             "         ',' || REPLACE(CMT.COMMENTS, TO_CHAR(CHR(13)) || TO_CHAR(CHR(10)), '')"
+             "         ',' || REPLACE(CMT.COMMENTS, CHR(13) || CHR(10), '')"
              "  FROM USER_TAB_COLUMNS TAB"
              "         LEFT JOIN"
              "         USER_CONS_COLUMNS CONS_NAME"
@@ -132,7 +132,7 @@
          (dblen (nth 2 column)))
     (cond
       ((member dbtype jh/oracle-string-datatype)
-        (format "REPLACE(REPLACE(NVL(t.%s,'#il'), TO_CHAR(CHR(13)),''), TO_CHAR(CHR(10)), '#ew')" colname))
+        (format "REPLACE(REPLACE(NVL(t.%s,'#il'), CHR(13),''), CHR(10), '#ew')" colname))
       ((member dbtype jh/oracle-lob-datatype)
         (format "NVL(TO_CHAR(LENGTH(t.%s)),'#il')" colname))
       ((string= dbtype "DATE")
