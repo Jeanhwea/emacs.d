@@ -13,7 +13,7 @@
   (defun jh/sql-handle-prompt (output)
     "handle prompt on windows."
     (cond
-      ((eq sql-product 'mysql) (concat output "\nmysql> "))
+      ((eq sql-product 'mysql) (concat "\n" output "\nmysql> "))
       (t output)))
   (add-hook 'comint-preoutput-filter-functions 'jh/sql-handle-prompt))
 
