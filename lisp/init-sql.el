@@ -8,7 +8,14 @@
     (hl-line-mode 1)))
 
 (when (jh/windows?)
-  (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4")))
+  (setq sql-mysql-program "mysql")
+  (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4"))
+  (defun jh/sql-handle-prompt (output)
+    "handle prompt on windows."
+    (cond
+      ((eq sql-product 'mysql) (concat output "\nmysql> "))
+      (t output)))
+  (add-hook 'comint-preoutput-filter-functions 'jh/sql-handle-prompt))
 
 ;; -----------------------------------------------------------------------------
 ;; sql helper
