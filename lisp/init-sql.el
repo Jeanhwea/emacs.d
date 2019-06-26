@@ -8,7 +8,7 @@
     (hl-line-mode 1)))
 
 (when (jh/windows?)
-  (setq sql-mysql-options '("-C" "-f" "-t" "-n")))
+  (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4")))
 
 ;; -----------------------------------------------------------------------------
 ;; sql helper
