@@ -32,7 +32,12 @@
 ;; -----------------------------------------------------------------------------
 ;; windows and frames
 ;; -----------------------------------------------------------------------------
-(global-set-key (kbd "M-o") 'other-window)
+(defun jh/save-buffer-and-other-window ()
+  "save current buffer goto other window."
+  (progn
+    (save-buffer)
+    (other-window)))
+(global-set-key (kbd "M-o") 'jh/save-buffer-and-other-window)
 (global-set-key (kbd "<f1>") 'delete-other-windows)
 (global-set-key (kbd "<f2>") 'split-window-below)
 (global-set-key (kbd "<f3>") 'split-window-right)
