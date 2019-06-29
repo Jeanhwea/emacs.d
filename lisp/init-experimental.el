@@ -2,6 +2,10 @@
 ;; engine-mode
 ;; -----------------------------------------------------------------------------
 (when (require 'engine-mode)
+  (defengine allacronyms
+    "https://www.allacronyms.com/%s/abbreviated"
+    :keybinding "a")
+
   (defengine codelf
     "https://unbug.github.io/codelf/#%s"
     :keybinding "v")
