@@ -89,36 +89,37 @@
 ;; -----------------------------------------------------------------------------
 ;; iterm2
 ;; -----------------------------------------------------------------------------
-(defun jh/iterm2-applescript (lines)
-  "Generate Applescript for STR."
-  (concat "osascript "
-    "-e 'tell app \"iTerm2\"' "
-    "-e 'tell current window' "
-    "-e 'tell current session' "
-    (mapconcat #'(lambda (line) (concat "-e 'delay 0.05' " "-e 'write text \"" line "\"' ")) lines " ")
-    "-e 'end tell' "
-    "-e 'end tell' "
-    "-e 'end tell' "))
+(when (jh/mac?)
+  (defun jh/iterm2-osascript (lines)
+    "Generate osascript for STR."
+    (concat "osascript "
+      "-e 'tell app \"iTerm2\"' "
+      "-e 'tell current window' "
+      "-e 'tell current session' "
+      (mapconcat #'(lambda (line) (concat "-e 'delay 0.05' " "-e 'write text \"" line "\"' ")) lines " ")
+      "-e 'end tell' "
+      "-e 'end tell' "
+      "-e 'end tell' "))
 
-(defun jh/iterm2-send-string (&optional cmd)
-  "Send CMD to a running iTerm instance."
-  (interactive)
-  (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
-  (let* ((lines (split-string cmd "\n"))
-          (script (jh/iterm2-applescript lines)))
-    (shell-command-to-string script)))
+  (defun jh/iterm2-send-string (&optional cmd)
+    "Send CMD to a running iTerm instance."
+    (interactive)
+    (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
+    (let* ((lines (split-string cmd "\n"))
+            (script (jh/iterm2-osascript lines)))
+      (shell-command-to-string script)))
 
-(defun jh/iterm2-cd (&optional dir)
-  "Change iterm2 directory."
-  (interactive)
-  (jh/iterm2-send-string (concat "cd " (or dir default-directory))))
+  (defun jh/iterm2-cd (&optional dir)
+    "Change iterm2 directory."
+    (interactive)
+    (jh/iterm2-send-string (concat "cd " (or dir default-directory))))
 
-(defun jh/iterm2-send-string-project (&optional cmd)
-  "Send CMD to a running iTerm instance."
-  (interactive)
-  (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
-  (progn
-    (jh/iterm2-cd (jh/git-project-root-dir default-directory))
-    (jh/iterm2-send-string cmd)))
+  (defun jh/iterm2-send-string-project (&optional cmd)
+    "Send CMD to a running iTerm instance."
+    (interactive)
+    (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
+    (progn
+      (jh/iterm2-cd (jh/git-project-root-dir default-directory))
+      (jh/iterm2-send-string cmd))))
 
 (provide 'init-experimental)
