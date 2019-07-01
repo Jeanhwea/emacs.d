@@ -135,11 +135,15 @@
     (interactive)
     (jh/iterm2-send-string (concat "cd " (or dir default-directory))))
 
-  (defun jh/iterm2-send-string-project (&optional cmd)
-    "Send CMD to a running iTerm instance."
+  (defun jh/iterm2-send-region ()
+    "Send selected text to iterm2."
     (interactive)
-    (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
-    (progn
-      (jh/iterm2-send-string cmd))))
+    (if (use-region-p)
+      (let ((beg (region-beginning))
+             (end (region-end)))
+        (progn
+          (jh/iterm2-send-string (buffer-substring beg end))
+          (deactivate-mark)))
+      (error "select a region first!"))))
 
 (provide 'init-experimental)
