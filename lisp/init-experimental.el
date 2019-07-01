@@ -126,7 +126,7 @@
     (interactive)
     (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
     (let* ((lines (split-string cmd "\n"))
-            (lines (jh/iterm2-maybe-remove-blank-lines lines))
+            ;; (lines (jh/iterm2-maybe-remove-blank-lines lines))
             (script (jh/iterm2-osascript lines)))
       (shell-command script)))
 
