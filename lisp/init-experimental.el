@@ -90,13 +90,33 @@
 ;; iterm2
 ;; -----------------------------------------------------------------------------
 (when (jh/mac?)
+  (defun jh/iterm2-maybe-escape-string (line)
+    "escape double quote."
+    (let* ((line (replace-regexp-in-string "\\\\" "\\\\" line nil t))
+            (line (replace-regexp-in-string "\"" "\\\"" line nil t))
+            (line (replace-regexp-in-string "\'" "'\"'\"'" line nil t)))
+      line))
+
+  (defun jh/iterm2-maybe-remove-blank-lines (lines)
+    "Maybe remove blank lines."
+    (remove-if (lambda (line) (string-match-p "^[ \t]*$" line)) lines))
+
+  (defun jh/iterm2-write-line (line)
+    "write line statement."
+    (let* ((line (jh/iterm2-maybe-escape-string line)))
+      (concat
+        "-e 'delay 0.05' "
+        "-e 'write text \""
+        line
+        "\"' ")))
+
   (defun jh/iterm2-osascript (lines)
     "Generate osascript for STR."
     (concat "osascript "
       "-e 'tell app \"iTerm2\"' "
       "-e 'tell current window' "
       "-e 'tell current session' "
-      (mapconcat #'(lambda (line) (concat "-e 'delay 0.05' " "-e 'write text \"" line "\"' ")) lines " ")
+      (mapconcat #'jh/iterm2-write-line lines " ")
       "-e 'end tell' "
       "-e 'end tell' "
       "-e 'end tell' "))
@@ -106,8 +126,9 @@
     (interactive)
     (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
     (let* ((lines (split-string cmd "\n"))
+            (lines (jh/iterm2-maybe-remove-blank-lines lines))
             (script (jh/iterm2-osascript lines)))
-      (shell-command-to-string script)))
+      (shell-command script)))
 
   (defun jh/iterm2-cd (&optional dir)
     "Change iterm2 directory."
@@ -119,7 +140,6 @@
     (interactive)
     (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
     (progn
-      (jh/iterm2-cd (jh/git-project-root-dir default-directory))
       (jh/iterm2-send-string cmd))))
 
 (provide 'init-experimental)
