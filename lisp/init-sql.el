@@ -42,6 +42,13 @@
       (kill-buffer outbuf))
     result))
 
+(defun jh/sql-escape-string (str)
+  "escape string in sql text."
+  (let* ((str (replace-regexp-in-string "\\\\" "\\\\" str nil t))
+          (str (replace-regexp-in-string "\"" "\\\"" str nil t))
+          (str (replace-regexp-in-string "\'" "'\"'\"'" str nil t)))
+    str))
+
 ;; -----------------------------------------------------------------------------
 ;; oracle
 ;; -----------------------------------------------------------------------------
@@ -179,9 +186,7 @@
                   ((> (length coldata) 80)
                     (concat ">\n    " coldata))
                   (t (if (string= coldata "#il") "null"
-                       (concat "\""
-                         (replace-regexp-in-string "\"" "\\\"" coldata)
-                         "\"")))))
+                       (concat "\"" (jh/sql-escape-string coldata) "\"")))))
               ((member dbtype jh/oracle-lob-datatype)
                 (if (string= coldata "#il") (format "### %s(null) ###" dbtype)
                   (format "### %s(%s) ###" dbtype
