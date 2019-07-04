@@ -99,6 +99,7 @@
          csv-mode
          cuda-mode
          dashboard
+         docker
          dockerfile-mode
          edit-indirect
          elfeed
