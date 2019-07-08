@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Insert Shell
+# key: sh
+# --
+#+BEGIN_SRC sh :exports both :results output
+  $0
+#+END_SRC
