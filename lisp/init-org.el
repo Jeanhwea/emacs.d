@@ -39,7 +39,10 @@
           "** TODO %?\n   %a"))
     org-enforce-todo-dependencies t
     org-log-redeadline 'time
-    org-log-done 'time)
+    org-log-done 'time
+    org-html-postamble t
+    org-html-postamble-format
+      '(("en" "<p class=\"author\">Last Updated %T. Created by %a at %d.</p>")))
 
   (when (jh/mac?)
     (setq org-babel-python-command "python3"))
