@@ -49,6 +49,6 @@
   (define-key km/leader-key-map (kbd "f") 'km/format-source-codes)
   (define-key km/leader-key-map (kbd "r") 'km/reveal-in-file-manager)
   (define-key km/leader-key-map (kbd "x") 'km/M-x))
-(global-set-key (kbd "M-k") 'km/leader-key-map)
+(global-set-key (kbd "M-]") 'km/leader-key-map)
 
 (provide 'init-keymate)

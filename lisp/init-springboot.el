@@ -805,6 +805,6 @@
   (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
   (define-key spt/leader-key-map (kbd "t") 'spt/toggle-test-and-source)
   (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class))
-(global-set-key (kbd "M-j") 'spt/leader-key-map)
+(global-set-key (kbd "M-[") 'spt/leader-key-map)
 
 (provide 'init-springboot)
