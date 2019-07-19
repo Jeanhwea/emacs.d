@@ -231,4 +231,21 @@
   ;; default use solarized light theme
   (load-theme 'sanityinc-solarized-light t))
 
+;; -----------------------------------------------------------------------------
+;; transparency
+;; -----------------------------------------------------------------------------
+(defun jh/toggle-transparency ()
+  "Toggle frame transparency."
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (set-frame-parameter
+      nil 'alpha
+      (if (eql (cond
+                 ((numberp alpha) alpha)
+                 ((numberp (cdr alpha)) (cdr alpha))
+                 ((numberp (cadr alpha)) (cadr alpha)))
+            100)
+        '(85 . 50) '(100 . 100)))))
+(global-set-key (kbd "<f10>") 'jh/toggle-transparency)
+
 (provide 'init-desktop)
