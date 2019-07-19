@@ -45,8 +45,7 @@
 (defun jh/sql-escape-string (str)
   "escape string in sql text."
   (let* ((str (replace-regexp-in-string "\\\\" "\\\\" str nil t))
-          (str (replace-regexp-in-string "\"" "\\\"" str nil t))
-          (str (replace-regexp-in-string "\'" "'\"'\"'" str nil t)))
+          (str (replace-regexp-in-string "\"" "\\\"" str nil t)))
     str))
 
 ;; -----------------------------------------------------------------------------
