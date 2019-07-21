@@ -100,18 +100,19 @@
     (setq ad-return-value (concat ad-return-value ".gz")))
 
   (defun jh/undofile-expired-p (filename)
-  "Return ture if the undo file is expired."
-  (let
-    ((expired-seconds (* 100 60 60 24)) ; file expired time limits to 100 days
-      (last-modification-time
-        (file-attribute-modification-time
-          (file-attributes
-            (expand-file-name filename)))))
-    (time-less-p (time-add last-modification-time expired-seconds)
-      (current-time))))
+    "Return ture if the undo file is expired."
+    (let
+      ((expired-seconds (* 100 60 60 24)) ; file expired time limits to 100 days
+        (last-modification-time
+          (file-attribute-modification-time
+            (file-attributes
+              (expand-file-name filename)))))
+      (time-less-p (time-add last-modification-time expired-seconds)
+        (current-time))))
+
   (defun jh/undofile-size-exceed-p (filename)
     "Return ture if the undo file exceeds maximum size limits."
-    (let ((max-size-limit (* 8 1024))   ; file size limits to 8k
+    (let ((max-size-limit (* 5 1024))   ; file size limits to 8k
            (file-size (file-attribute-size (file-attributes filename))))
       (> file-size max-size-limit)))
 
