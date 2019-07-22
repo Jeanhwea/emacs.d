@@ -241,12 +241,12 @@
   (let ((alpha (frame-parameter nil 'alpha)))
     (set-frame-parameter
       nil 'alpha
-      (if (eql (cond
-                 ((numberp alpha) alpha)
-                 ((numberp (cdr alpha)) (cdr alpha))
-                 ((numberp (cadr alpha)) (cadr alpha)))
-            100)
-        '(85 . 50) '(100 . 100)))))
+      (unless (eql (cond
+                     ((numberp alpha) alpha)
+                     ((numberp (cdr alpha)) (cdr alpha))
+                     ((numberp (cadr alpha)) (cadr alpha)))
+                100)
+        '(100 . 100) '(85 . 50)))))
 (global-set-key (kbd "<f10>") 'jh/toggle-transparency)
 
 (provide 'init-desktop)

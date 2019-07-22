@@ -1,5 +1,5 @@
 (add-hook 'python-mode-hook
-  (lambda()
+  (lambda ()
     (when (and (when (require 'ggtags)) (derived-mode-p 'python-mode))
       (ggtags-mode 1))
     (setq
