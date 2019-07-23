@@ -90,6 +90,7 @@
          ;; --------------------------------------------------------------------
          ace-jump-mode
          ag
+         auctex
          browse-at-remote
          color-theme-sanityinc-solarized
          color-theme-sanityinc-tomorrow
