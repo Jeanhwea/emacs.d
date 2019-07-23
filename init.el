@@ -112,6 +112,7 @@
          exec-path-from-shell
          expand-region
          fancy-narrow
+         figlet
          fill-column-indicator
          flycheck
          ggtags

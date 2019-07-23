@@ -65,6 +65,13 @@
         (jh/grip dir file))
       (error "Buffer '%s' is not a Markdown file!" file))))
 
+;; -----------------------------------------------------------------------------
+;; figlet
+;; -----------------------------------------------------------------------------
+(when (require 'figlet)
+  (setq
+    figlet-default-font "big"
+    figlet-options '("-k")))
 
 ;; -----------------------------------------------------------------------------
 ;; highlight-indent-guides
