@@ -3,7 +3,8 @@
     "e:\\Video\\capture"
     "~/Video/capture"))
 
-(defvar capture-prog "ffmpeg")
+(defvar capture-prog "ffmpeg"
+  "ffmpeg executable path.")
 (defvar capture-buffer "*ffmpeg-capture*")
 
 (defun jh/ffmpeg-capture-filename ()
