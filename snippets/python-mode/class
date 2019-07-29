@@ -2,5 +2,9 @@
 # name: Define Class
 # key: class
 # --
-class ${1:ClassName}:
-$>$0
+# -*- coding: utf-8 -*-
+
+class ${1:$$(jh/python-class-name)}(object):
+
+$>def __init__(self):
+$>$>super($1, self).__init__($0)

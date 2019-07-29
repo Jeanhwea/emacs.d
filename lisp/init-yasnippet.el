@@ -8,7 +8,7 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; helper function for yasnippets
+;; java helper function for yasnippets
 ;; -----------------------------------------------------------------------------
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
@@ -207,5 +207,13 @@
 (defun jh/java-column-field (colname)
   "Get field name."
   (and colname (jh/camelcase colname)))
+
+;; -----------------------------------------------------------------------------
+;; python helper function for yasnippets
+;; -----------------------------------------------------------------------------
+(defun jh/python-class-name (&optional file)
+  "Return the class name for java."
+  (let ((class (jh/filename-without-extension (or file (buffer-file-name)))))
+    (jh/pascalcase class)))
 
 (provide 'init-yasnippet)
