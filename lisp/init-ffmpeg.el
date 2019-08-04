@@ -28,7 +28,7 @@
     (start-process "ffmpeg" capture-buffer capture-prog
       "-f" "avfoundation"
       "-framerate" (int-to-string FPS)
-      "-i" "1:1"
+      "-i" "1"
       FILENAME)))
 
 (defun jh/ffmpeg-capture-run ()
