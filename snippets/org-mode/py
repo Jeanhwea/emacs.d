@@ -2,6 +2,6 @@
 # name: Insert Python Code
 # key: py
 # --
-#+BEGIN_SRC python :preamble "# -*- coding: utf-8 -*-" :exports both :session ${1:default} :results ${2:output pp}
+#+BEGIN_SRC python :results output
   $0
 #+END_SRC
