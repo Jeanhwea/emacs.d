@@ -38,6 +38,7 @@
           (file+headline "todos.org" "TODOs")
           "** TODO %?\n   %a"))
     org-enforce-todo-dependencies t
+    org-confirm-babel-evaluate nil
     org-log-redeadline 'time
     org-log-done 'time
     org-html-postamble t
