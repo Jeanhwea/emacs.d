@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: console.tab
+# key: tab
+# --
+console.table($0);
