@@ -187,21 +187,26 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/shrimp-project-name ()
   "Return the project name."
-  (let ((project-root
-          (directory-file-name
-            (jh/git-project-root-dir default-directory))))
-    (replace-regexp-in-string
-      (regexp-quote (jh/parent-dir project-root)) "" project-root nil 'literal)))
+  (let* ((project-root (jh/git-project-root-dir default-directory))
+          (root (and project-root (directory-file-name project-root))))
+    (and root
+      (replace-regexp-in-string
+        (regexp-quote (jh/parent-dir root)) "" root nil 'literal))))
+
+(defun jh/shrimp-shell-name ()
+  "Return the shell name."
+  (let ((name (jh/shrimp-project-name)))
+    (if name (format "*shrimp[%s]*" name) "*shrimp*")))
 
 (defun jh/shrimp-open ()
   "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
   (interactive)
-  (let ((shrimp-shell-name "*shrimp*"))
-    (progn
-      (when (get-buffer shrimp-shell-name)
-        (kill-buffer shrimp-shell-name))
-      (eshell)
-      (rename-buffer shrimp-shell-name))))
+  (let ((shrimp-shell-name (jh/shrimp-shell-name)))
+    (if (get-buffer shrimp-shell-name)
+      (switch-to-buffer shrimp-shell-name)
+      (progn
+        (eshell)
+        (rename-buffer shrimp-shell-name)))))
 (global-set-key (kbd "C-c s") 'jh/shrimp-open)
 
 ;; -----------------------------------------------------------------------------
