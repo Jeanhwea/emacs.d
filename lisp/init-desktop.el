@@ -169,23 +169,31 @@
     (delete-file (buffer-file-name))
     (kill-this-buffer)))
 
-(defun jh/rename-this-buffer-and-file (NAME)
-  "Rename both current buffer and file it's visiting to NAME."
+(defun jh/rename-this-buffer-and-file (name)
+  "Rename both current buffer and file it's visiting to name."
   (interactive "sNew name: ")
-  (let ((name (buffer-name))
+  (let ((buffername (buffer-name))
          (filename (buffer-file-name)))
     (unless filename
-      (error "Buffer '%s' is not visiting a file!" name))
+      (error "Buffer '%s' is not visiting a file!" buffername))
     (progn
       (when (file-exists-p filename)
-        (rename-file filename NAME 1))
-      (set-visited-file-name NAME)
-      (rename-buffer NAME))))
+        (rename-file filename name 1))
+      (set-visited-file-name name)
+      (rename-buffer name))))
 
 ;; -----------------------------------------------------------------------------
 ;; shrimp shell
 ;; -----------------------------------------------------------------------------
-(defun jh/open-shrimp-shell-as-temporary-shell ()
+(defun jh/shrimp-project-name ()
+  "Return the project name."
+  (let ((project-root
+          (directory-file-name
+            (jh/git-project-root-dir default-directory))))
+    (replace-regexp-in-string
+      (regexp-quote (jh/parent-dir project-root)) "" project-root nil 'literal)))
+
+(defun jh/shrimp-open ()
   "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
   (interactive)
   (let ((shrimp-shell-name "*shrimp*"))
@@ -194,7 +202,7 @@
         (kill-buffer shrimp-shell-name))
       (eshell)
       (rename-buffer shrimp-shell-name))))
-(global-set-key (kbd "C-c s") 'jh/open-shrimp-shell-as-temporary-shell)
+(global-set-key (kbd "C-c s") 'jh/shrimp-open)
 
 ;; -----------------------------------------------------------------------------
 ;; theme
