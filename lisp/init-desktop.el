@@ -201,12 +201,10 @@
 (defun jh/shrimp-open ()
   "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
   (interactive)
-  (let ((shrimp-shell-name (jh/shrimp-shell-name)))
-    (if (get-buffer shrimp-shell-name)
-      (switch-to-buffer shrimp-shell-name)
-      (progn
-        (eshell)
-        (rename-buffer shrimp-shell-name)))))
+  (let ((name (jh/shrimp-shell-name)))
+    (if (get-buffer name)
+      (switch-to-buffer name)
+      (let ((eshell-buffer-name name)) (eshell)))))
 (global-set-key (kbd "C-c s") 'jh/shrimp-open)
 
 ;; -----------------------------------------------------------------------------
