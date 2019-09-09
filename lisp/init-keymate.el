@@ -37,6 +37,14 @@
   (interactive)
   (browse-url default-directory))
 
+(defun km/shell-send-region ()
+  "Send selected text to shell."
+  (interactive)
+  (when (jh/mac?)
+    (if (use-region-p)
+      (jh/iterm2-send-region)
+      (jh/iterm2-send-string (thing-at-point 'line)))))
+
 (defun km/M-x ()
   "Start a command M-x with prefix `^jh/'"
   (interactive)
@@ -48,6 +56,7 @@
   (define-key km/leader-key-map (kbd "d") 'km/drop-file)
   (define-key km/leader-key-map (kbd "f") 'km/format-source-codes)
   (define-key km/leader-key-map (kbd "r") 'km/reveal-in-file-manager)
+  (define-key km/leader-key-map (kbd "s") 'km/shell-send-region)
   (define-key km/leader-key-map (kbd "x") 'km/M-x))
 (global-set-key (kbd "M-]") 'km/leader-key-map)
 
