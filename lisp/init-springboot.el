@@ -183,9 +183,6 @@
     (concat "mvn test"
       " -Dtest=" subjects
       " -Dfile.encoding=UTF-8"
-      " -Dlogging.level.root=OFF"
-      " -Dlogging.level.org.springframework=OFF"
-      " -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN"
       " --quiet --batch-mode")))
 
 (defun spt/run-test-class-command ()
