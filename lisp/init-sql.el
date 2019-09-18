@@ -157,7 +157,7 @@
       ((member dbtype jh/oracle-lob-datatype)
         (format "NVL(TO_CHAR(LENGTH(t.%s)),'#il')" colname))
       ((string= dbtype "DATE")
-        (format "TO_CHAR(t.%s, 'YYYY-MM-DD HH:MM:SS')" colname))
+        (format "TO_CHAR(t.%s, 'yyyy-mm-dd hh24:mi:ss')" colname))
       (t (format "t.%s" colname)))))
 
 (defun jh/gen-oracle-select-query (tabname columns &optional limit)
