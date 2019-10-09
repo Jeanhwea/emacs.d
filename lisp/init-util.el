@@ -103,6 +103,10 @@
   "Remove spaces and tabs in STR."
   (and str (replace-regexp-in-string "[ \t]*" "" str)))
 
+(defun jh/concat-lines (&rest lines)
+  "Concatenate lines to a single string."
+  (mapconcat 'identity lines "\n"))
+
 
 ;; -----------------------------------------------------------------------------
 ;; file and directory helper
