@@ -54,7 +54,8 @@
 (defun jh/oracle-gen-list-table-query (&optional separator)
   "generate list table query."
   (let ((sep (if separator separator ",")))
-    (jh/concat-lines "SELECT"
+    (jh/concat-lines
+      "SELECT"
       (format "  utbs.TABLE_NAME || '%s' ||" sep)
       "  ("
       "    SELECT REPLACE(REPLACE(utbc.COMMENTS, CHR(13), ''), CHR(10), '\\n')"
