@@ -51,6 +51,20 @@
 ;; -----------------------------------------------------------------------------
 ;; oracle
 ;; -----------------------------------------------------------------------------
+(defun jh/oracle-gen-list-table-query (&optional separator)
+  "generate list table query."
+  (let ((sep (if separator separator ",")))
+    (mapconcat 'identity
+      (list "SELECT"
+        (format "  utbs.TABLE_NAME || '%s' ||" sep)
+        "  ("
+        "    SELECT REPLACE(REPLACE(utbc.COMMENTS, CHR(13), ''), CHR(10), '\\n')"
+        "      FROM USER_TAB_COMMENTS utbc"
+        "     WHERE utbc.TABLE_NAME = utbs.TABLE_NAME AND ROWNUM <= 1"
+        "  )"
+        "  FROM USER_TABLES utbs"
+        " ORDER BY utbs.TABLE_NAME;") "\n")))
+
 (defun jh/extract-table-in-oracle (line)
   "Extract table name, when using oracle database."
   (let ((regexp
