@@ -61,6 +61,12 @@
     ((spt/repository? file)
       (expand-file-name "../.." (jh/parent-dir file)))))
 
+(defun spt/project-name ()
+  "Return project name."
+  (let ((root (spt/project-root)))
+    (replace-regexp-in-string "/" ""
+      (replace-regexp-in-string (jh/parent-dir root) "" root))))
+
 (defun spt/source-files ()
   "Return a list of `*.java' files in the project."
   (let ((dir (expand-file-name "src" (spt/project-root))))
