@@ -54,6 +54,7 @@ $>public $2 put$2(@PathVariable long $6, @RequestBody Map<String, Object> params
 $>$>return this.$4.replace$2($6, params);
 $>}
 
+$>@ResponseStatus(HttpStatus.NO_CONTENT)
 $>@DeleteMapping("/{$6}")
 $>public void delete$2(@PathVariable long $6) {
 $>$>this.$4.delete$2($6);
