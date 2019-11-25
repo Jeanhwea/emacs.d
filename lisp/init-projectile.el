@@ -4,6 +4,7 @@
 (when (require 'projectile)
   (projectile-mode 1)
   (setq-default
+    projectile-globally-ignored-directories '("node_modules" ".git")
     projectile-mode-line-prefix " Proj"
     projectile-completion-system 'ivy
     projectile-create-missing-test-files t)
