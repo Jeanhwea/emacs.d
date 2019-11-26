@@ -62,7 +62,7 @@
 
 (defun jh/oracle-gen-list-table-query (&optional separator)
   "Generate list table query."
-  (let ((sep (if separator separator ",")))
+  (let ((sep (or separator ",")))
     (jh/concat-lines
       "SELECT"
       (format "  utbs.TABLE_NAME || '%s' ||" sep)
@@ -76,7 +76,7 @@
 
 (defun jh/oracle-gen-list-table-column-query (tabname &optional separator)
   "Generate list table columns query."
-  (let ((sep (if separator separator ",")))
+  (let ((sep (or separator ",")))
     (concat
       "SELECT"
       (format "  utbc.COLUMN_NAME || '%s' ||" sep)
@@ -109,16 +109,27 @@
       "  FROM USER_TAB_COLUMNS utbc"
       (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
 
-(defun jh/oracle-gen-select-query (tabname colinfos)
+;; normalize column helper
+(defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
+  "Oracle string datatype list")
+
+(defvar jh/oracle-lob-datatype '("CLOB" "BLOB")
+  "Oracle string datatype list")
+
+(defun jh/normalize-column-select-string (colinfo &optional pretty)
+  "Add document string here."
+  (if pretty (car colinfo)
+    (format "  %s" (car colinfo))))
+
+(defun jh/oracle-gen-select-query (tabname colinfos &optional limit seperator)
   "Generate SELECT query."
-  (jh/concat-lines
-    "SELECT"
-    (mapconcat
-      #'(lambda (colinfo)
-          (format "  %s" (car colinfo)))
-      colinfos ",\n")
-    "FROM"
-    (format "  %s;" tabname)))
+  (let ((limit (or limit 1000))
+         (sep (or seperator ",\n")))
+    (jh/concat-lines
+      "SELECT"
+      (mapconcat #'jh/normalize-column-select-string colinfos sep)
+      "FROM" (format "  %s" tabname)
+      "WHERE" (format "  ROWNUM < %d;" limit))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -305,11 +316,6 @@
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
-(defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
-  "Oracle string datatype list")
-
-(defvar jh/oracle-lob-datatype '("CLOB" "BLOB")
-  "Oracle string datatype list")
 
 (defun jh/format-oracle-select-column(column)
   "Format oracle column placeholder at the select place."
