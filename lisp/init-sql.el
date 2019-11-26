@@ -149,14 +149,15 @@
 
 (defun jh/oracle-gen-normalize-select-query (tabname &optional limit)
   "generate SELECT query with normalized column select string."
-  (let ((limit (or limit 1000)) (fsep "||'$ep'||\n")
+  (let ((limit (or limit 1000)) (lpre "li#e") (fsep "$ep")
          (colinfos (jh/oracle-list-table-columns tabname)))
     (jh/concat-lines
-      "SELECT 'li#e'||"
+      (format "SELECT '%s'||" lpre)
       (mapconcat
         #'(lambda (colinfo)
             (format "  %s" (jh/oracle-normalize-column colinfo)))
-        colinfos fsep)
+        colinfos (format "||'%s'||\n" fsep))
+      "AS CONTENT"
       "FROM" (format "  %s t" tabname)
       "WHERE" (format "  ROWNUM < %d;" limit))))
 
