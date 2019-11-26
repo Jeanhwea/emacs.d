@@ -211,4 +211,14 @@
     (when (time-less-p now start)
       (run-at-time timestr nil func))))
 
+
+;; -----------------------------------------------------------------------------
+;; clipboard
+;; -----------------------------------------------------------------------------
+(defun jh/sent-to-clipboard (text)
+  "Sent text to clipboard."
+  (with-temp-buffer
+    (insert text)
+    (kill-ring-save (point-min) (point-max))))
+
 (provide 'init-util)

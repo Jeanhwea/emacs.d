@@ -117,6 +117,7 @@
     "FROM"
     (format "  %s;" tabname)))
 
+
 ;; regexp util and line parser
 (defun jh/oracle-parse-table-info (line)
   "Convert oracle line string to (tabname, tabcmt), otherwise return nil."
@@ -175,6 +176,21 @@
           (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/oracle-parse-table-columns-info lines))))
 
+;; -----------------------------------------------------------------------------
+;;   ____ ___  __  __ __  __    _    _   _ ____  ____
+;;  / ___/ _ \|  \/  |  \/  |  / \  | \ | |  _ \/ ___|
+;; | |  | | | | |\/| | |\/| | / _ \ |  \| | | | \___ \
+;; | |__| |_| | |  | | |  | |/ ___ \| |\  | |_| |___) |
+;;  \____\___/|_|  |_|_|  |_/_/   \_\_| \_|____/|____/
+;; -----------------------------------------------------------------------------
+(defun jh/oracle-copy-insert-query ()
+  "Copy insert query to clipboard."
+  (interactive)
+  (let*
+    ((tabnames (mapcar #'car (jh/oracle-list-tables)))
+      (tabname (completing-read "Dump Table >> " tabnames)))
+    (jh/sent-to-clipboard
+      (jh/oracle-gen-select-query tabname (jh/oracle-list-table-columns tabname)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
