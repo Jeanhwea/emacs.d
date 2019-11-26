@@ -49,8 +49,93 @@
     str))
 
 ;; -----------------------------------------------------------------------------
-;; oracle
+;;   ___  ____      _    ____ _     _____
+;;  / _ \|  _ \    / \  / ___| |   | ____|
+;; | | | | |_) |  / _ \| |   | |   |  _|
+;; | |_| |  _ <  / ___ \ |___| |___| |___
+;;  \___/|_| \_\/_/   \_\____|_____|_____|
 ;; -----------------------------------------------------------------------------
+
+;; regexp util and line parser
+(defun jh/oracle-parse-table-info (line)
+  "Convert oracle line string to (tabname, tabcmt), otherwise return nil."
+  (let ((regexp
+          (concat
+            "[ \t]*\\([_A-Za-z0-9]+\\),"
+            "\\(TABLE\\|VIEW\\),"
+            "[ \t]*\\(.*\\)$"))
+         (tabinfo))
+    (and (save-match-data (string-match regexp line)
+          (setq
+            tabname (match-string 1 line)
+            tabcmt (match-string 3 line))
+          (and tabname
+            (setq tabinfo (list tabname tabcmt)))))
+    tabinfo))
+
+(defun jh/oracle-parse-table-columns (line)
+  "Convert oracle line string to (colname dbtype dblen nullable unique colcmt)."
+  (let ((regexp
+          (concat
+            "[ \t]*\\([_A-Za-z0-9]+\\),"
+            "[ \t]*\\([_A-Za-z0-9]+\\),"
+            "[ \t]*\\([_A-Za-z0-9]*\\),"
+            "[ \t]*\\([_A-Za-z0-9]*\\),"
+            "[ \t]*\\([_A-Za-z0-9]*\\),"
+            "[ \t]*\\(.*\\)$"))
+         (colinfo))
+    (and
+      (save-match-data (string-match regexp line)
+        (setq
+          colname (match-string 1 line)
+          dbtype (match-string 2 line)
+          dblen (match-string 3 line)
+          nullable (match-string 4 line)
+          unique (match-string 5 line)
+          colcmt (match-string 6 line))
+        (and colname
+          (setq colinfo (list colname dbtype dblen nullable unique colcmt)))))
+    colinfo))
+
+;; SQL-level helper
+(defun jh/oracle-list-tables ()
+  "List all tables in database."
+  (let* ((query
+           (concat
+             "SELECT tc.TABLE_NAME ||','|| tc.TABLE_TYPE ||','|| "
+             "  REPLACE(REPLACE(tc.COMMENTS, CHR(13), ''), CHR(10), '_r_n')"
+             "  FROM USER_TAB_COMMENTS tc"
+             " WHERE REGEXP_LIKE(tc.TABLE_NAME, '^[0-9A-Za-z][_0-9A-Za-z]*$')"
+             " ORDER BY tc.TABLE_NAME;"))
+          (lines (split-string (jh/sql-execute query) "\n")))
+    (remove-if 'null (mapcar #'jh/oracle-parse-table-info lines))))
+
+(defun jh/oracle-list-table-columns (tabname)
+  "List all columns in a table with given TABNAME."
+  (let* ((query
+           (concat
+             "SELECT TAB.COLUMN_NAME ||"
+             "         ',' || TAB.DATA_TYPE ||"
+             "         ',' || TAB.DATA_LENGTH ||"
+             "         ',' || TAB.NULLABLE ||"
+             "         ',' || CONS.CONSTRAINT_TYPE ||"
+             "         ',' || REPLACE(CMT.COMMENTS, CHR(13) || CHR(10), '')"
+             "  FROM USER_TAB_COLUMNS TAB"
+             "         LEFT JOIN"
+             "         USER_CONS_COLUMNS CONS_NAME"
+             "             ON TAB.TABLE_NAME = CONS_NAME.TABLE_NAME AND TAB.COLUMN_NAME = CONS_NAME.COLUMN_NAME"
+             "         LEFT JOIN"
+             "         USER_CONSTRAINTS CONS"
+             "             ON CONS_NAME.CONSTRAINT_NAME = CONS.CONSTRAINT_NAME"
+             "         LEFT JOIN"
+             "         USER_COL_COMMENTS CMT"
+             "             ON TAB.TABLE_NAME = CMT.TABLE_NAME AND TAB.COLUMN_NAME = CMT.COLUMN_NAME"
+             " WHERE TAB.TABLE_NAME = '" tabname "'"
+             "    ORDER BY TAB.COLUMN_ID, CONS.CONSTRAINT_TYPE;"))
+          (lines (split-string (jh/sql-execute query) "\n")))
+    (remove-if 'null (mapcar #'jh/oracle-parse-table-columns lines))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun jh/oracle-gen-list-table-query (&optional separator)
   "generate list table query."
   (let ((sep (if separator separator ",")))
@@ -249,7 +334,11 @@
       (goto-char (point-min)))))
 
 ;; -----------------------------------------------------------------------------
-;; postgres
+;;  ____   ___  ____ _____ ____ ____  _____ ____
+;; |  _ \ / _ \/ ___|_   _/ ___|  _ \| ____/ ___|
+;; | |_) | | | \___ \ | || |  _| |_) |  _| \___ \
+;; |  __/| |_| |___) || || |_| |  _ <| |___ ___) |
+;; |_|    \___/|____/ |_| \____|_| \_\_____|____/
 ;; -----------------------------------------------------------------------------
 
 
