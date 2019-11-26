@@ -56,29 +56,84 @@
 ;;  \___/|_| \_\/_/   \_\____|_____|_____|
 ;; -----------------------------------------------------------------------------
 
+;; Query generator
+(defun jh/oracle-gen-list-table-query (&optional separator)
+  "Generate list table query."
+  (let ((sep (if separator separator ",")))
+    (jh/concat-lines
+      "SELECT"
+      (format "  utbs.TABLE_NAME || '%s' ||" sep)
+      "  ("
+      "    SELECT REPLACE(REPLACE(utbc.COMMENTS, CHR(13), ''), CHR(10), '\\n')"
+      "      FROM USER_TAB_COMMENTS utbc"
+      "     WHERE utbc.TABLE_NAME = utbs.TABLE_NAME AND ROWNUM <= 1"
+      "  ) AS CONTENT"
+      "  FROM USER_TABLES utbs"
+      " ORDER BY utbs.TABLE_NAME;")))
+
+(defun jh/oracle-gen-list-table-column-query (tabname &optional separator)
+  "Generate list table columns query."
+  (let ((sep (if separator separator ",")))
+    (concat
+      "SELECT"
+      (format "  utbc.COLUMN_NAME || '%s' ||" sep)
+      (format "  utbc.DATA_TYPE || '%s' ||" sep)
+      (format "  utbc.DATA_LENGTH || '%s' ||" sep)
+      (format "  DECODE(utbc.NULLABLE, 'N', '*', '') || '%s' ||" sep)
+      "  (SELECT 'U'"
+      "     FROM USER_CONS_COLUMNS uccl, USER_CONSTRAINTS ucst"
+      "    WHERE ucst.CONSTRAINT_NAME = uccl.CONSTRAINT_NAME AND"
+      "          utbc.COLUMN_NAME = uccl.COLUMN_NAME AND"
+      "          utbc.TABLE_NAME = uccl.TABLE_NAME AND"
+      "          ucst.CONSTRAINT_TYPE = 'U'"
+      "    GROUP BY ucst.CONSTRAINT_NAME"
+      (format "   HAVING COUNT(1) = 1) || '%s' ||" sep)
+      "  (SELECT 'P'"
+      "     FROM USER_CONS_COLUMNS uccl, USER_CONSTRAINTS ucst"
+      "    WHERE ucst.CONSTRAINT_NAME = uccl.CONSTRAINT_NAME AND"
+      "          utbc.COLUMN_NAME = uccl.COLUMN_NAME AND"
+      "          utbc.TABLE_NAME = uccl.TABLE_NAME AND"
+      "          ucst.CONSTRAINT_TYPE = 'P' AND"
+      (format "          ROWNUM <= 1) || '%s' ||" sep)
+      (format "  utbc.DATA_PRECISION || '%s' ||" sep)
+      "  ("
+      "    SELECT REPLACE(REPLACE(uclc.COMMENTS, CHR(13), ''), CHR(10), '\n')"
+      "      FROM USER_COL_COMMENTS uclc"
+      "     WHERE uclc.COLUMN_NAME = utbc.COLUMN_NAME AND"
+      "           uclc.TABLE_NAME = utbc.TABLE_NAME AND"
+      "           ROWNUM <= 1"
+      "  ) AS CONTENT"
+      "  FROM USER_TAB_COLUMNS utbc"
+      (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
+
+(defun jh/oracle-gen-select-query (tabname)
+  "Generate SELECT query."
+  )
+
 ;; regexp util and line parser
 (defun jh/oracle-parse-table-info (line)
   "Convert oracle line string to (tabname, tabcmt), otherwise return nil."
   (let ((regexp
           (concat
             "[ \t]*\\([_A-Za-z0-9]+\\),"
-            "\\(TABLE\\|VIEW\\),"
             "[ \t]*\\(.*\\)$"))
          (tabinfo))
     (and (save-match-data (string-match regexp line)
           (setq
             tabname (match-string 1 line)
-            tabcmt (match-string 3 line))
+            tabcmt (match-string 2 line))
           (and tabname
             (setq tabinfo (list tabname tabcmt)))))
     tabinfo))
 
-(defun jh/oracle-parse-table-columns (line)
+(defun jh/oracle-parse-table-columns-info (line)
   "Convert oracle line string to (colname dbtype dblen nullable unique colcmt)."
   (let ((regexp
           (concat
             "[ \t]*\\([_A-Za-z0-9]+\\),"
             "[ \t]*\\([_A-Za-z0-9]+\\),"
+            "[ \t]*\\([_A-Za-z0-9]*\\),"
+            "[ \t]*\\([_A-Za-z0-9]*\\),"
             "[ \t]*\\([_A-Za-z0-9]*\\),"
             "[ \t]*\\([_A-Za-z0-9]*\\),"
             "[ \t]*\\([_A-Za-z0-9]*\\),"
@@ -92,63 +147,29 @@
           dblen (match-string 3 line)
           nullable (match-string 4 line)
           unique (match-string 5 line)
-          colcmt (match-string 6 line))
+          pk (match-string 6 line)
+          precision (match-string 7 line)
+          colcmt (match-string 8 line))
         (and colname
-          (setq colinfo (list colname dbtype dblen nullable unique colcmt)))))
+          (setq colinfo
+            (list colname dbtype dblen nullable unique pk precision colcmt)))))
     colinfo))
 
 ;; SQL-level helper
 (defun jh/oracle-list-tables ()
   "List all tables in database."
-  (let* ((query
-           (concat
-             "SELECT tc.TABLE_NAME ||','|| tc.TABLE_TYPE ||','|| "
-             "  REPLACE(REPLACE(tc.COMMENTS, CHR(13), ''), CHR(10), '_r_n')"
-             "  FROM USER_TAB_COMMENTS tc"
-             " WHERE REGEXP_LIKE(tc.TABLE_NAME, '^[0-9A-Za-z][_0-9A-Za-z]*$')"
-             " ORDER BY tc.TABLE_NAME;"))
+  (let* ((query (jh/oracle-gen-list-table-query))
           (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/oracle-parse-table-info lines))))
 
 (defun jh/oracle-list-table-columns (tabname)
   "List all columns in a table with given TABNAME."
-  (let* ((query
-           (concat
-             "SELECT TAB.COLUMN_NAME ||"
-             "         ',' || TAB.DATA_TYPE ||"
-             "         ',' || TAB.DATA_LENGTH ||"
-             "         ',' || TAB.NULLABLE ||"
-             "         ',' || CONS.CONSTRAINT_TYPE ||"
-             "         ',' || REPLACE(CMT.COMMENTS, CHR(13) || CHR(10), '')"
-             "  FROM USER_TAB_COLUMNS TAB"
-             "         LEFT JOIN"
-             "         USER_CONS_COLUMNS CONS_NAME"
-             "             ON TAB.TABLE_NAME = CONS_NAME.TABLE_NAME AND TAB.COLUMN_NAME = CONS_NAME.COLUMN_NAME"
-             "         LEFT JOIN"
-             "         USER_CONSTRAINTS CONS"
-             "             ON CONS_NAME.CONSTRAINT_NAME = CONS.CONSTRAINT_NAME"
-             "         LEFT JOIN"
-             "         USER_COL_COMMENTS CMT"
-             "             ON TAB.TABLE_NAME = CMT.TABLE_NAME AND TAB.COLUMN_NAME = CMT.COLUMN_NAME"
-             " WHERE TAB.TABLE_NAME = '" tabname "'"
-             "    ORDER BY TAB.COLUMN_ID, CONS.CONSTRAINT_TYPE;"))
+  (let* ((query (jh/oracle-gen-list-table-column-query tabname))
           (lines (split-string (jh/sql-execute query) "\n")))
-    (remove-if 'null (mapcar #'jh/oracle-parse-table-columns lines))))
+    (remove-if 'null (mapcar #'jh/oracle-parse-table-columns-info lines))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun jh/oracle-gen-list-table-query (&optional separator)
-  "generate list table query."
-  (let ((sep (if separator separator ",")))
-    (jh/concat-lines
-      "SELECT"
-      (format "  utbs.TABLE_NAME || '%s' ||" sep)
-      "  ("
-      "    SELECT REPLACE(REPLACE(utbc.COMMENTS, CHR(13), ''), CHR(10), '\\n')"
-      "      FROM USER_TAB_COMMENTS utbc"
-      "     WHERE utbc.TABLE_NAME = utbs.TABLE_NAME AND ROWNUM <= 1"
-      "  )"
-      "  FROM USER_TABLES utbs"
-      " ORDER BY utbs.TABLE_NAME;")))
 
 (defun jh/extract-table-in-oracle (line)
   "Extract table name, when using oracle database."
