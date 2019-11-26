@@ -124,10 +124,9 @@
       "  FROM USER_TAB_COLUMNS utbc"
       (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
 
-(defun jh/oracle-gen-select-query (tabname &optional limit)
+(defun jh/oracle-gen-select-query (tabname colinfos &optional limit)
   "Generate SELECT query."
-  (let ((limit (or limit 100)) (fsep ",\n")
-         (colinfos (jh/oracle-list-table-columns tabname)))
+  (let ((limit (or limit 100)) (fsep ",\n"))
     (jh/concat-lines
       "SELECT"
       (mapconcat #'(lambda (colinfo) (format "  %s" (car colinfo))) colinfos fsep)
@@ -157,10 +156,9 @@
           colname))
       (t (format "t.%s" colname)))))
 
-(defun jh/oracle-gen-uniform-select-query (tabname &optional limit)
+(defun jh/oracle-gen-uniform-select-query (tabname colinfos &optional limit)
   "generate SELECT query with uniformed column select string."
-  (let ((limit (or limit 100))
-         (colinfos (jh/oracle-list-table-columns tabname)))
+  (let ((limit (or limit 100)))
     (jh/concat-lines
       (format "SELECT '%s'||" jh/oracle-lpre)
       (mapconcat
@@ -300,18 +298,19 @@
 
 (defun jh/oracle-fetch-result-set (tabname)
   "Fetch oracle result set."
-  (mapcar
-    #'(lambda (line)
-        (split-string
-          (replace-regexp-in-string
-            (concat "^" jh/oracle-lpre) "" line)
-          jh/oracle-fsep))
-    (remove-if-not
+  (let ((colinfos (jh/oracle-list-table-columns tabname)))
+    (mapcar
       #'(lambda (line)
-          (string-match-p (concat "^" jh/oracle-lpre) line))
-      (split-string
-        (jh/sql-execute
-          (jh/oracle-gen-uniform-select-query tabname)) "\n"))))
+          (split-string
+            (replace-regexp-in-string
+              (concat "^" jh/oracle-lpre) "" line)
+            jh/oracle-fsep))
+      (remove-if-not
+        #'(lambda (line)
+            (string-match-p (concat "^" jh/oracle-lpre) line))
+        (split-string
+          (jh/sql-execute
+            (jh/oracle-gen-uniform-select-query tabname colinfos)) "\n")))))
 
 ;; -----------------------------------------------------------------------------
 ;; Interactive Commands
@@ -352,7 +351,8 @@
     ((tabnames (mapcar #'car (jh/oracle-list-tables)))
       (tabname (completing-read "Dump Table >> " tabnames)))
     (jh/sent-to-clipboard
-      (jh/oracle-gen-select-query tabname))))
+      (jh/oracle-gen-select-query tabname
+        (jh/oracle-list-table-columns tabname)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
