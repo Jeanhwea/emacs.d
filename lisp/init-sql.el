@@ -183,11 +183,11 @@
             "[ \t]*\\(.*\\)$"))
          (tabinfo))
     (and (save-match-data (string-match regexp line)
-          (setq
-            tabname (match-string 1 line)
-            tabcmt (match-string 2 line))
-          (and tabname
-            (setq tabinfo (list tabname tabcmt)))))
+         (setq
+           tabname (match-string 1 line)
+           tabcmt (match-string 2 line))
+         (and tabname
+           (setq tabinfo (list tabname tabcmt)))))
     tabinfo))
 
 (defun jh/oracle-parse-table-columns-info (line)
@@ -241,40 +241,79 @@
 ;; Prettify Result Set
 ;; -----------------------------------------------------------------------------
 
-(defun jh/oracle-stringify-column-data (dbtype coldata)
+(defun jh/oracle-stringify-result-data (cell dbtype)
   "Make coldate to a string according to dbtype."
   (cond
-    ((and (string= dbtype "NUMBER") (string= coldata "")) "null")
+    ((and (string= dbtype "NUMBER") (string= cell "")) "null")
     ((member dbtype jh/oracle-string-datatype)
       (cond
         ;; multi-line string
-        ((string-match-p jh/oracle-lsep coldata)
+        ((string-match-p jh/oracle-lsep cell)
           (jh/concat-lines "|"
             (mapconcat #'(lambda (line) (concat "    " line))
-              (split-string coldata jh/oracle-lsep) "\n")))
+              (split-string cell jh/oracle-lsep) "\n")))
         ;; long line string
-        ((> (length coldata) 120) (concat ">\n    " coldata))
+        ((> (length cell) 120) (concat ">\n    " cell))
         ;; null string
-        ((string= coldata jh/oracle-nsep) "null")
+        ((string= cell jh/oracle-nsep) "null")
         ;; default string
-        (t (concat "\"" (jh/sql-escape-string coldata) "\""))))
+        (t (concat "\"" (jh/sql-escape-string cell) "\""))))
     ((member dbtype jh/oracle-lob-datatype)
       (cond
         ;; null lob
-        ((string= coldata jh/oracle-nsep)
+        ((string= cell jh/oracle-nsep)
           (format "### %s(null) ###" dbtype))
         ;; default lob, just display size
         (t (format "### %s(%s) ###" dbtype
-             (file-size-human-readable (string-to-number coldata))))))
+             (file-size-human-readable (string-to-number cell))))))
     ;; default return value
-    (t (if (string= coldata jh/oracle-nsep) "null" coldata))))
+    (t (if (string= cell jh/oracle-nsep) "null" cell))))
 
-(defun jh/oracle-stringify-column-value (colinfo coldata)
-  "Make column data to a readable string."
+(defun jh/oracle-stringify-result-cell (cell colinfo)
+  "Convert result cell to a readable string."
   (let ((colname (nth 0 colinfo))
          (star (if (string= (nth 3 colinfo) "N") "*" ""))
-         (colvalue (jh/oracle-stringify-column-data (nth 1 colinfo) coldata)))
+         (colvalue (jh/oracle-stringify-result-data cell (nth 1 colinfo))))
     (format "  %s%s: %s\n" star colname colvalue)))
+
+(defun jh/oracle-stringify-result-row (index row colinfos)
+  "Convert nth row line string to YAML file block."
+  (let
+    (
+      (res (format "- ### Row %d ###" index)))
+    (setq i 0)
+    (dolist (cell row)
+      (setq res
+        (jh/concat-lines res
+          (jh/oracle-stringify-result-cell cell (nth i colinfos))))
+      (setq i (+ i 1)))
+    res))
+
+(defun jh/oracle-stringify-result-set (lines colinfos)
+  "Convert result set to YAML file content."
+  (let ((res))
+    (setq i 0)
+    (dolist (line lines)
+      (setq res
+        (jh/concat-lines res ""
+          (jh/oracle-stringify-result-row i line colinfos))
+        (setq i (+ i 1))))
+    res))
+
+(defun jh/oracle-fetch-result-set (tabname)
+  "Fetch oracle result set."
+  (mapcar
+    #'(lambda (line)
+        (split-string
+          (replace-regexp-in-string
+            (concat "^" jh/oracle-lpre) "" line)
+          jh/oracle-fsep))
+    (remove-if-not
+      #'(lambda (line)
+          (string-match-p (concat "^" jh/oracle-lpre) line))
+      (split-string
+        (jh/sql-execute
+          (jh/oracle-gen-uniform-select-query tabname)) "\n"))))
 
 ;; -----------------------------------------------------------------------------
 ;; Interactive Commands
