@@ -109,9 +109,10 @@
       "  FROM USER_TAB_COLUMNS utbc"
       (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
 
-(defun jh/oracle-gen-select-query (tabname colinfos &optional limit)
+(defun jh/oracle-gen-select-query (tabname &optional limit)
   "Generate SELECT query."
-  (let ((limit (or limit 1000)) (fsep ",\n"))
+  (let ((limit (or limit 1000)) (fsep ",\n")
+         (colinfos (jh/oracle-list-table-columns tabname)))
     (jh/concat-lines
       "SELECT"
       (mapconcat #'(lambda (colinfo) (format "  %s" (car colinfo))) colinfos fsep)
@@ -146,9 +147,10 @@
           colname))
       (t (format "t.%s" colname)))))
 
-(defun jh/oracle-gen-normalize-select-query (tabname colinfos &optional limit)
+(defun jh/oracle-gen-normalize-select-query (tabname &optional limit)
   "generate SELECT query with normalized column select string."
-  (let ((limit (or limit 1000)) (fsep "||'$ep'||\n"))
+  (let ((limit (or limit 1000)) (fsep "||'$ep'||\n")
+         (colinfos (jh/oracle-list-table-columns tabname)))
     (jh/concat-lines
       "SELECT 'li#e'||"
       (mapconcat
@@ -247,8 +249,7 @@
     ((tabnames (mapcar #'car (jh/oracle-list-tables)))
       (tabname (completing-read "Dump Table >> " tabnames)))
     (jh/sent-to-clipboard
-      (jh/oracle-gen-select-query tabname
-        (jh/oracle-list-table-columns tabname)))))
+      (jh/oracle-gen-select-query tabname))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
