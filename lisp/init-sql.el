@@ -48,15 +48,18 @@
           (str (replace-regexp-in-string "\"" "\\\"" str nil t)))
     str))
 
-;; -----------------------------------------------------------------------------
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   ___  ____      _    ____ _     _____
 ;;  / _ \|  _ \    / \  / ___| |   | ____|
 ;; | | | | |_) |  / _ \| |   | |   |  _|
 ;; | |_| |  _ <  / ___ \ |___| |___| |___
 ;;  \___/|_| \_\/_/   \_\____|_____|_____|
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; -----------------------------------------------------------------------------
+;; Query Generator
 ;; -----------------------------------------------------------------------------
 
-;; Query generator
 (defun jh/oracle-gen-list-table-query (&optional separator)
   "Generate list table query."
   (let ((sep (if separator separator ",")))
@@ -118,7 +121,10 @@
     (format "  %s;" tabname)))
 
 
+;; -----------------------------------------------------------------------------
 ;; regexp util and line parser
+;; -----------------------------------------------------------------------------
+
 (defun jh/oracle-parse-table-info (line)
   "Convert oracle line string to (tabname, tabcmt), otherwise return nil."
   (let ((regexp
@@ -163,7 +169,11 @@
             (list colname dbtype dblen nullable unique pk precision colcmt)))))
     colinfo))
 
+
+;; -----------------------------------------------------------------------------
 ;; SQL-level helper
+;; -----------------------------------------------------------------------------
+
 (defun jh/oracle-list-tables ()
   "List all tables in database."
   (let* ((query (jh/oracle-gen-list-table-query))
@@ -176,13 +186,11 @@
           (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/oracle-parse-table-columns-info lines))))
 
+
 ;; -----------------------------------------------------------------------------
-;;   ____ ___  __  __ __  __    _    _   _ ____  ____
-;;  / ___/ _ \|  \/  |  \/  |  / \  | \ | |  _ \/ ___|
-;; | |  | | | | |\/| | |\/| | / _ \ |  \| | | | \___ \
-;; | |__| |_| | |  | | |  | |/ ___ \| |\  | |_| |___) |
-;;  \____\___/|_|  |_|_|  |_/_/   \_\_| \_|____/|____/
+;; interactive commands
 ;; -----------------------------------------------------------------------------
+
 (defun jh/oracle-copy-insert-query ()
   "Copy insert query to clipboard."
   (interactive)
@@ -190,8 +198,10 @@
     ((tabnames (mapcar #'car (jh/oracle-list-tables)))
       (tabname (completing-read "Dump Table >> " tabnames)))
     (jh/sent-to-clipboard
-      (jh/oracle-gen-select-query tabname (jh/oracle-list-table-columns tabname)))))
+      (jh/oracle-gen-select-query tabname
+        (jh/oracle-list-table-columns tabname)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun jh/extract-table-in-oracle (line)
