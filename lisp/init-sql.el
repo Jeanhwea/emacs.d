@@ -79,7 +79,7 @@
       (format "  utbc.COLUMN_NAME || '%s' ||" sep)
       (format "  utbc.DATA_TYPE || '%s' ||" sep)
       (format "  utbc.DATA_LENGTH || '%s' ||" sep)
-      (format "  DECODE(utbc.NULLABLE, 'N', '*', '') || '%s' ||" sep)
+      (format "  DECODE(utbc.NULLABLE, 'N', 'N', '') || '%s' ||" sep)
       "  (SELECT 'U'"
       "     FROM USER_CONS_COLUMNS uccl, USER_CONSTRAINTS ucst"
       "    WHERE ucst.CONSTRAINT_NAME = uccl.CONSTRAINT_NAME AND"
@@ -106,9 +106,16 @@
       "  FROM USER_TAB_COLUMNS utbc"
       (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
 
-(defun jh/oracle-gen-select-query (tabname)
+(defun jh/oracle-gen-select-query (tabname colinfos)
   "Generate SELECT query."
-  )
+  (jh/concat-lines
+    "SELECT"
+    (mapconcat
+      #'(lambda (colinfo)
+          (format "  %s" (car colinfo)))
+      colinfos ",\n")
+    "FROM"
+    (format "  %s;" tabname)))
 
 ;; regexp util and line parser
 (defun jh/oracle-parse-table-info (line)
