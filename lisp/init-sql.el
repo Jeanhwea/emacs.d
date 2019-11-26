@@ -329,6 +329,22 @@
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
+(defun jh/oracle-dump-rows ()
+  "Dump table row data."
+  (interactive)
+  (let ((tabname (jh/guess-table-name)))
+    (progn
+      (switch-to-buffer (concat tabname ".yml"))
+      (or (eq major-mode 'yaml-mode) (yaml-mode))
+      (kill-region (point-min) (point-max))
+      ;; insert title
+      (insert (format "### Dump rows of %s ###" tabname))
+      (insert (jh/oracle-stringify-result-set
+                (jh/oracle-fetch-result-set tabname)
+                (jh/oracle-list-table-columns tabname)))
+      ;; go to the beigining
+      (goto-char (point-min)))))
+
 (defun jh/oracle-copy-insert-query ()
   "Copy insert query to clipboard."
   (interactive)
