@@ -109,6 +109,15 @@
       "  FROM USER_TAB_COLUMNS utbc"
       (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
 
+(defun jh/oracle-gen-select-query (tabname colinfos &optional limit)
+  "Generate SELECT query."
+  (let ((limit (or limit 1000)) (fsep ",\n"))
+    (jh/concat-lines
+      "SELECT"
+      (mapconcat #'(lambda (colinfo) (format "  %s" (car colinfo))) colinfos fsep)
+      "FROM" (format "  %s" tabname)
+      "WHERE" (format "  ROWNUM < %d;" limit))))
+
 ;; normalize column helper
 (defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
   "Oracle string datatype list")
@@ -116,21 +125,38 @@
 (defvar jh/oracle-lob-datatype '("CLOB" "BLOB")
   "Oracle string datatype list")
 
-(defun jh/normalize-column-select-string (colinfo &optional pretty)
-  "Add document string here."
-  (if pretty (car colinfo)
-    (format "  %s" (car colinfo))))
+(defun jh/oracle-normalize-column (colinfo)
+  "normalize oracle column select string."
+  (let ((nlsep "#ew")
+         (nsep "#il")
+         (colname (nth 0 colinfo))
+         (dbtype (nth 1 colinfo)))
+    (cond
+      ((member dbtype jh/oracle-string-datatype)
+        (format
+          "REPLACE(REPLACE(NVL(t.%s,'%s'),CHR(13),''),CHR(10),'%s')"
+          colname nlsep nlsep))
+      ((member dbtype jh/oracle-lob-datatype)
+        (format
+          "NVL(TO_CHAR(LENGTH(t.%s)),'%s')"
+          colname nsep))
+      ((string= dbtype "DATE")
+        (format
+          "TO_CHAR(t.%s, 'yyyy-mm-dd hh24:mi:ss')"
+          colname))
+      (t (format "t.%s" colname)))))
 
-(defun jh/oracle-gen-select-query (tabname colinfos &optional limit seperator)
-  "Generate SELECT query."
-  (let ((limit (or limit 1000))
-         (sep (or seperator ",\n")))
+(defun jh/oracle-gen-normalize-select-query (tabname colinfos &optional limit)
+  "generate SELECT query with normalized column select string."
+  (let ((limit (or limit 1000)) (fsep "||'$ep'||\n"))
     (jh/concat-lines
-      "SELECT"
-      (mapconcat #'jh/normalize-column-select-string colinfos sep)
-      "FROM" (format "  %s" tabname)
+      "SELECT 'li#e'||"
+      (mapconcat
+        #'(lambda (colinfo)
+            (format "  %s" (jh/oracle-normalize-column colinfo)))
+        colinfos fsep)
+      "FROM" (format "  %s t" tabname)
       "WHERE" (format "  ROWNUM < %d;" limit))))
-
 
 ;; -----------------------------------------------------------------------------
 ;; regexp util and line parser
