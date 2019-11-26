@@ -26,7 +26,7 @@
 (add-hook 'sql-interactive-mode-hook #'jh/sql-interactive-hook)
 
 ;; -----------------------------------------------------------------------------
-;; sql helper
+;; SQL Helper
 ;; -----------------------------------------------------------------------------
 (defun jh/sql-execute (query)
   "Execute a query."
@@ -172,7 +172,7 @@
       "WHERE" (format "  ROWNUM < %d;" limit))))
 
 ;; -----------------------------------------------------------------------------
-;; regexp util and line parser
+;; Regexp and Line Parser
 ;; -----------------------------------------------------------------------------
 
 (defun jh/oracle-parse-table-info (line)
@@ -221,7 +221,7 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; SQL-level helper
+;; SQL-level Helper
 ;; -----------------------------------------------------------------------------
 
 (defun jh/oracle-list-tables ()
@@ -238,7 +238,7 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; Prettify Result Set
+;; Result Set Helper
 ;; -----------------------------------------------------------------------------
 
 (defun jh/oracle-stringify-result-data (cell dbtype)
@@ -278,9 +278,7 @@
 
 (defun jh/oracle-stringify-result-row (index row colinfos)
   "Convert nth row line string to YAML file block."
-  (let
-    (
-      (res (format "- ### Row %d ###" index)))
+  (let ((res (format "- ### Row %d ###" index)))
     (setq i 0)
     (dolist (cell row)
       (setq res
