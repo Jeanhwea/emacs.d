@@ -111,7 +111,7 @@
 
 (defun jh/oracle-gen-select-query (tabname &optional limit)
   "Generate SELECT query."
-  (let ((limit (or limit 1000)) (fsep ",\n")
+  (let ((limit (or limit 100)) (fsep ",\n")
          (colinfos (jh/oracle-list-table-columns tabname)))
     (jh/concat-lines
       "SELECT"
@@ -149,7 +149,7 @@
 
 (defun jh/oracle-gen-normalize-select-query (tabname &optional limit)
   "generate SELECT query with normalized column select string."
-  (let ((limit (or limit 1000)) (lpre "li#e") (fsep "$ep")
+  (let ((limit (or limit 100)) (lpre "li#e") (fsep "$ep")
          (colinfos (jh/oracle-list-table-columns tabname)))
     (jh/concat-lines
       (format "SELECT '%s'||" lpre)
@@ -361,7 +361,7 @@
 
 (defun jh/gen-oracle-select-query (tabname columns &optional limit)
   "Generate Oracle query string."
-  (let ((limit (or limit 1000))
+  (let ((limit (or limit 100))
          (sltcol (mapconcat #'jh/format-oracle-select-column columns " ||'$ep'||\n")))
     (concat
       "SELECT 'li#e'|| " sltcol
