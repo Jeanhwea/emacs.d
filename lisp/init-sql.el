@@ -274,28 +274,28 @@
   (let ((colname (nth 0 colinfo))
          (star (if (string= (nth 3 colinfo) "N") "*" ""))
          (colvalue (jh/oracle-stringify-result-data cell (nth 1 colinfo))))
-    (format "  %s%s: %s\n" star colname colvalue)))
+    (format "  %s%s: %s" star colname colvalue)))
 
 (defun jh/oracle-stringify-result-row (index row colinfos)
   "Convert nth row line string to YAML file block."
   (let ((res (format "- ### Row %d ###" index)))
-    (setq i 0)
+    (setq j 0)
     (dolist (cell row)
       (setq res
         (jh/concat-lines res
-          (jh/oracle-stringify-result-cell cell (nth i colinfos))))
-      (setq i (+ i 1)))
+          (jh/oracle-stringify-result-cell cell (nth j colinfos))))
+      (setq j (+ j 1)))
     res))
 
-(defun jh/oracle-stringify-result-set (lines colinfos)
+(defun jh/oracle-stringify-result-set (rows colinfos)
   "Convert result set to YAML file content."
   (let ((res))
-    (setq i 0)
-    (dolist (line lines)
+    (setq i 1)
+    (dolist (row rows)
       (setq res
         (jh/concat-lines res ""
-          (jh/oracle-stringify-result-row i line colinfos))
-        (setq i (+ i 1))))
+          (jh/oracle-stringify-result-row i row colinfos)))
+      (setq i (+ i 1)))
     res))
 
 (defun jh/oracle-fetch-result-set (tabname)
