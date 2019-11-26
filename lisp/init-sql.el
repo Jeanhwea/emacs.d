@@ -345,8 +345,8 @@
       ;; go to the beigining
       (goto-char (point-min)))))
 
-(defun jh/oracle-copy-insert-query ()
-  "Copy insert query to clipboard."
+(defun jh/oracle-copy-select-query ()
+  "Copy select query to clipboard."
   (interactive)
   (let*
     ((tabnames (mapcar #'car (jh/oracle-list-tables)))
