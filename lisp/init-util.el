@@ -217,8 +217,6 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/sent-to-clipboard (text)
   "Sent text to clipboard."
-  (with-temp-buffer
-    (insert text)
-    (kill-ring-save (point-min) (point-max))))
+  (kill-new text))
 
 (provide 'init-util)
