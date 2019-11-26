@@ -57,6 +57,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; -----------------------------------------------------------------------------
+;; Variables
+;; -----------------------------------------------------------------------------
+
+;; datatypes
+(defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
+  "Oracle string datatype list")
+(defvar jh/oracle-lob-datatype '("CLOB" "BLOB")
+  "Oracle string datatype list")
+;; separators
+(defvar jh/oracle-lsep "#ew" "Oracle newline separator")
+(defvar jh/oracle-nsep "#il" "Oracle null separator")
+(defvar jh/oracle-fsep "$ep" "Oracle field separator")
+(defvar jh/oracle-lpre "li#e" "Oracle line prefix")
+
+;; -----------------------------------------------------------------------------
 ;; Query Generator
 ;; -----------------------------------------------------------------------------
 
@@ -119,28 +134,21 @@
       "FROM" (format "  %s" tabname)
       "WHERE" (format "  ROWNUM < %d;" limit))))
 
-;; normalize column helper
-(defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
-  "Oracle string datatype list")
 
-(defvar jh/oracle-lob-datatype '("CLOB" "BLOB")
-  "Oracle string datatype list")
 
 (defun jh/oracle-normalize-column (colinfo)
   "normalize oracle column select string."
-  (let ((nlsep "#ew")
-         (nsep "#il")
-         (colname (nth 0 colinfo))
+  (let ((colname (nth 0 colinfo))
          (dbtype (nth 1 colinfo)))
     (cond
       ((member dbtype jh/oracle-string-datatype)
         (format
           "REPLACE(REPLACE(NVL(t.%s,'%s'),CHR(13),''),CHR(10),'%s')"
-          colname nlsep nlsep))
+          colname jh/oracle-lsep jh/oracle-lsep))
       ((member dbtype jh/oracle-lob-datatype)
         (format
           "NVL(TO_CHAR(LENGTH(t.%s)),'%s')"
-          colname nsep))
+          colname jh/oracle-nsep))
       ((string= dbtype "DATE")
         (format
           "TO_CHAR(t.%s, 'yyyy-mm-dd hh24:mi:ss')"
@@ -149,14 +157,14 @@
 
 (defun jh/oracle-gen-normalize-select-query (tabname &optional limit)
   "generate SELECT query with normalized column select string."
-  (let ((limit (or limit 100)) (lpre "li#e") (fsep "$ep")
+  (let ((limit (or limit 100))
          (colinfos (jh/oracle-list-table-columns tabname)))
     (jh/concat-lines
-      (format "SELECT '%s'||" lpre)
+      (format "SELECT '%s'||" jh/oracle-lpre)
       (mapconcat
         #'(lambda (colinfo)
             (format "  %s" (jh/oracle-normalize-column colinfo)))
-        colinfos (format "||'%s'||\n" fsep))
+        colinfos (format "||'%s'||\n" jh/oracle-fsep))
       "AS CONTENT"
       "FROM" (format "  %s t" tabname)
       "WHERE" (format "  ROWNUM < %d;" limit))))
