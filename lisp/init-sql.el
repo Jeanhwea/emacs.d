@@ -134,10 +134,12 @@
       "FROM" (format "  %s" tabname)
       "WHERE" (format "  ROWNUM < %d;" limit))))
 
+;; -----------------------------------------------------------------------------
+;; Normalization Helper
+;; -----------------------------------------------------------------------------
 
-
-(defun jh/oracle-normalize-column (colinfo)
-  "normalize oracle column select string."
+(defun jh/oracle-uniform-column (colinfo)
+  "uniform oracle column select string."
   (let ((colname (nth 0 colinfo))
          (dbtype (nth 1 colinfo)))
     (cond
@@ -155,15 +157,15 @@
           colname))
       (t (format "t.%s" colname)))))
 
-(defun jh/oracle-gen-normalize-select-query (tabname &optional limit)
-  "generate SELECT query with normalized column select string."
+(defun jh/oracle-gen-uniform-select-query (tabname &optional limit)
+  "generate SELECT query with uniformed column select string."
   (let ((limit (or limit 100))
          (colinfos (jh/oracle-list-table-columns tabname)))
     (jh/concat-lines
       (format "SELECT '%s'||" jh/oracle-lpre)
       (mapconcat
         #'(lambda (colinfo)
-            (format "  %s" (jh/oracle-normalize-column colinfo)))
+            (format "  %s" (jh/oracle-uniform-column colinfo)))
         colinfos (format "||'%s'||\n" jh/oracle-fsep))
       "AS CONTENT"
       "FROM" (format "  %s t" tabname)
@@ -236,7 +238,46 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; interactive commands
+;; Prettify Result Set
+;; -----------------------------------------------------------------------------
+
+(defun jh/oracle-stringify-column-data (dbtype coldata)
+  "Make coldate to a string according to dbtype."
+  (cond
+    ((and (string= dbtype "NUMBER") (string= coldata "")) "null")
+    ((member dbtype jh/oracle-string-datatype)
+      (cond
+        ;; multi-line string
+        ((string-match-p jh/oracle-lsep coldata)
+          (jh/concat-lines "|"
+            (mapconcat #'(lambda (line) (concat "    " line))
+              (split-string coldata jh/oracle-lsep) "\n")))
+        ;; long line string
+        ((> (length coldata) 120) (concat ">\n    " coldata))
+        ;; null string
+        ((string= coldata jh/oracle-nsep) "null")
+        ;; default string
+        (t (concat "\"" (jh/sql-escape-string coldata) "\""))))
+    ((member dbtype jh/oracle-lob-datatype)
+      (cond
+        ;; null lob
+        ((string= coldata jh/oracle-nsep)
+          (format "### %s(null) ###" dbtype))
+        ;; default lob, just display size
+        (t (format "### %s(%s) ###" dbtype
+             (file-size-human-readable (string-to-number coldata))))))
+    ;; default return value
+    (t (if (string= coldata jh/oracle-nsep) "null" coldata))))
+
+(defun jh/oracle-stringify-column-value (colinfo coldata)
+  "Make column data to a readable string."
+  (let ((colname (nth 0 colinfo))
+         (star (if (string= (nth 3 colinfo) "N") "*" ""))
+         (colvalue (jh/oracle-stringify-column-data (nth 1 colinfo) coldata)))
+    (format "  %s%s: %s\n" star colname colvalue)))
+
+;; -----------------------------------------------------------------------------
+;; Interactive Commands
 ;; -----------------------------------------------------------------------------
 
 (defun jh/oracle-dump-tables ()
@@ -387,17 +428,17 @@
               ((and (string= dbtype "NUMBER") (string= coldata "")) "null")
               ((and (member dbtype jh/oracle-string-datatype) )
                 (cond
-                  ((string-match-p "#ew" coldata)
-                    (concat "|\n    " (replace-regexp-in-string "#ew" "\n    " coldata)))
+                  ((string-match-p jh/oracle-lsep coldata)
+                    (concat "|\n    " (replace-regexp-in-string jh/oracle-lsep "\n    " coldata)))
                   ((> (length coldata) 80)
                     (concat ">\n    " coldata))
-                  (t (if (string= coldata "#il") "null"
+                  (t (if (string= coldata jh/oracle-nsep) "null"
                        (concat "\"" (jh/sql-escape-string coldata) "\"")))))
               ((member dbtype jh/oracle-lob-datatype)
-                (if (string= coldata "#il") (format "### %s(null) ###" dbtype)
+                (if (string= coldata jh/oracle-nsep) (format "### %s(null) ###" dbtype)
                   (format "### %s(%s) ###" dbtype
                     (file-size-human-readable (string-to-number coldata)))))
-              (t (if (string= coldata "#il") "null" coldata)))))
+              (t (if (string= coldata jh/oracle-nsep) "null" coldata)))))
     (format "  %s%s: %s\n" star colname colvalue)))
 
 (defun jh/guess-table-name ()
