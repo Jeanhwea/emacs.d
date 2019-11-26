@@ -191,6 +191,18 @@
 ;; interactive commands
 ;; -----------------------------------------------------------------------------
 
+(defun jh/oracle-dump-tables ()
+  "Dump talbe name and comments."
+  (interactive)
+  (let ((tables (jh/oracle-list-tables)))
+    (progn
+      (switch-to-buffer "tables.txt")
+      (dolist (table tables)
+        (let ((colname (nth 0 table))
+               (comments (jh/strip (nth 1 table))))
+          (insert (format "%s %s\n" colname comments))))
+      (goto-char (point-min)))))
+
 (defun jh/oracle-copy-insert-query ()
   "Copy insert query to clipboard."
   (interactive)
