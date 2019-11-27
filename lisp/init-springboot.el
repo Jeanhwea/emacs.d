@@ -145,28 +145,23 @@
       (let
         (
           ;; -------------------------------------------------------------------
-          ;;  ____
-          ;; |  _ \ __ _ _ __ ___  ___ _ __
-          ;; | |_) / _` | '__/ __|/ _ \ '__|
-          ;; |  __/ (_| | |  \__ \  __/ |
-          ;; |_|   \__,_|_|  |___/\___|_|
           ;; -------------------------------------------------------------------
           ;;
           ;; class name
           (clzname
-           (jh/pascalcase
-             (jh/filename-without-extension file)))
+            (jh/pascalcase
+              (jh/filename-without-extension file)))
           ;; function name
           (fctname
-            (replace-regexp-in-string
-              (jh/parent-dir (jh/parent-dir file)) ""
-              (jh/parent-dir file)))
+            (replace-regexp-in-string "/$" ""
+              (replace-regexp-in-string
+                (jh/parent-dir (jh/parent-dir file)) ""
+                (jh/parent-dir file))))
           ;; module name
           (mdlname
-            (car (split-string
-                   (replace-regexp-in-string app-root ""
-                     (jh/parent-dir file))
-                   "/" t)))
+            (car
+              (split-string
+                (replace-regexp-in-string app-root "" (jh/parent-dir file)) "/" t)))
           ;; package name
           (pkgname
             (mapconcat 'identity
@@ -174,11 +169,14 @@
                 (replace-regexp-in-string source-root ""
                   (jh/parent-dir file))
                 "/" t) "."))
+          ;;
           ;; -------------------------------------------------------------------
           ;; -------------------------------------------------------------------
           )
         (and mdlname
-          (push (list clzname fctname mdlname pkgname) res))))
+          (not (string= "common" mdlname))
+          (member fctname spt/poi-names)
+          (push (list clzname fctname mdlname pkgname file) res))))
     res))
 
 
