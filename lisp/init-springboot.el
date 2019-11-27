@@ -83,7 +83,9 @@
     ((dir
        (file-name-as-directory
          (expand-file-name "src/main/java" (spt/project-root)))))
-    (and (file-exists-p dir) dir)))
+    (or (file-exists-p dir)
+      (error "Folder `src/main/java' is not exists!"))
+    dir))
 
 (defun spt/test-root ()
   "Return current test case root dir."
@@ -91,7 +93,9 @@
     ((dir
        (file-name-as-directory
          (expand-file-name "src/test/java" (spt/project-root)))))
-    (and (file-exists-p dir) dir)))
+    (or (file-exists-p dir)
+      (error "Folder `src/test/java' is not exists!"))
+    dir))
 
 (defun spt/module-root (file)
   "Return the root dir of module."
@@ -118,15 +122,11 @@
 
 (defun spt/source-files ()
   "Return a list of `*.java' files in the source folder."
-  (let ((source-root (spt/source-root)))
-    (or source-root (error "Folder `src/main/java' is not exists!"))
-    (directory-files-recursively source-root "^.*\\.java$")))
+  (directory-files-recursively (spt/source-root) "^.*\\.java$"))
 
 (defun spt/test-files ()
   "Return a list of `*.java' files in the test folder."
-  (let ((test-root (spt/test-root)))
-    (or test-root (error "Folder `src/test/java' is not exists!"))
-    (directory-files-recursively test-root "^.*\\.java$")))
+  (directory-files-recursively (spt/test-root) "^.*\\.java$"))
 
 
 ;; -----------------------------------------------------------------------------
