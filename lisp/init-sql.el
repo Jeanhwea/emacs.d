@@ -145,7 +145,7 @@
       ((member dbtype jh/oracle-string-datatype)
         (format
           "REPLACE(REPLACE(NVL(t.%s,'%s'),CHR(13),''),CHR(10),'%s')"
-          colname jh/oracle-lsep jh/oracle-lsep))
+          colname jh/oracle-nsep jh/oracle-lsep))
       ((member dbtype jh/oracle-lob-datatype)
         (format
           "NVL(TO_CHAR(LENGTH(t.%s)),'%s')"
@@ -165,7 +165,7 @@
         #'(lambda (colinfo)
             (format "  %s" (jh/oracle-uniform-column colinfo)))
         colinfos (format "||'%s'||\n" jh/oracle-fsep))
-      "AS CONTENT"
+      "AS" "  CONTENT"
       "FROM" (format "  %s t" tabname)
       "WHERE" (format "  ROWNUM < %d;" limit))))
 
@@ -257,19 +257,19 @@
 ;; Result Set Helper
 ;; -----------------------------------------------------------------------------
 
-(defun jh/oracle-stringify-result-data (cell dbtype)
+(defun jh/oracle-yamlfy-result-data (cell dbtype)
   "Make coldate to a string according to dbtype."
   (cond
     ((and (string= dbtype "NUMBER") (string= cell "")) "null")
     ((member dbtype jh/oracle-string-datatype)
       (cond
-        ;; multi-line string
-        ((string-match-p jh/oracle-lsep cell)
+        ;; multiple line string
+        ((string-match-p (format ".*%s.*" jh/oracle-lsep) cell)
           (jh/concat-lines "|"
             (mapconcat #'(lambda (line) (concat "    " line))
               (split-string cell jh/oracle-lsep) "\n")))
-        ;; long line string
-        ((> (length cell) 120) (concat ">\n    " cell))
+        ;; long line string, which length is greater than 40
+        ((> (length cell) 40) (concat ">\n    " cell))
         ;; null string
         ((string= cell jh/oracle-nsep) "null")
         ;; default string
@@ -285,32 +285,32 @@
     ;; default return value
     (t (if (string= cell jh/oracle-nsep) "null" cell))))
 
-(defun jh/oracle-stringify-result-cell (cell colinfo)
+(defun jh/oracle-yamlfy-result-cell (cell colinfo)
   "Convert result cell to a readable string."
   (let ((colname (nth 0 colinfo))
          (star (if (string= (nth 3 colinfo) "N") "*" ""))
-         (colvalue (jh/oracle-stringify-result-data cell (nth 1 colinfo))))
+         (colvalue (jh/oracle-yamlfy-result-data cell (nth 1 colinfo))))
     (format "  %s%s: %s" star colname colvalue)))
 
-(defun jh/oracle-stringify-result-row (index row colinfos)
+(defun jh/oracle-yamlfy-result-row (index row colinfos)
   "Convert nth row line string to YAML file block."
   (let ((res (format "- ### Row %d ###" index)))
     (setq j 0)
     (dolist (cell row)
       (setq res
         (jh/concat-lines res
-          (jh/oracle-stringify-result-cell cell (nth j colinfos))))
+          (jh/oracle-yamlfy-result-cell cell (nth j colinfos))))
       (setq j (+ j 1)))
     res))
 
-(defun jh/oracle-stringify-result-set (rows colinfos)
+(defun jh/oracle-yamlfy-result-set (rows colinfos)
   "Convert result set to YAML file content."
   (let ((res))
     (setq i 1)
     (dolist (row rows)
       (setq res
         (jh/concat-lines res ""
-          (jh/oracle-stringify-result-row i row colinfos)))
+          (jh/oracle-yamlfy-result-row i row colinfos)))
       (setq i (+ i 1)))
     res))
 
@@ -356,7 +356,7 @@
       (kill-region (point-min) (point-max))
       ;; insert title
       (insert (format "### Dump rows of %s ###" tabname))
-      (insert (jh/oracle-stringify-result-set
+      (insert (jh/oracle-yamlfy-result-set
                 (jh/oracle-fetch-result-set tabname)
                 (jh/oracle-list-columns tabname)))
       ;; go to the beigining
