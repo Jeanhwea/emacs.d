@@ -65,8 +65,7 @@
   (let*
     ((re (format "^.*%s\\.java$" (or entry "Application")))
       (dirs (directory-files-recursively default-directory re)))
-    (or dirs
-      (error "Failed to get application root!"))
+    (or dirs (error "Failed to get application root!"))
     (jh/parent-dir (car dirs))))
 
 (defun spt/doc-root ()
@@ -75,7 +74,8 @@
     ((dir
        (file-name-as-directory
          (expand-file-name "doc" (spt/project-root)))))
-    (and (file-exists-p dir) dir)))
+    (or (file-exists-p dir) (error "Folder `doc' is not exists!"))
+    dir))
 
 (defun spt/source-root ()
   "Return current source root dir."
