@@ -465,11 +465,11 @@
 ;; -----------------------------------------------------------------------------
 (defun spt/query-all-tables ()
   "Get all table information."
-  (jh/query-all-tables-in-oracle))
+  (jh/oracle-list-tables))
 
 (defun spt/query-table-columns (tabname)
   "Query columns of a table."
-  (jh/query-table-columns-in-oracle tabname))
+  (jh/oracle-list-columns tabname))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
