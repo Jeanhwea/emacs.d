@@ -25,6 +25,10 @@
 ;;
 ;; -----------------------------------------------------------------------------
 
+;; variables
+(defvar spt/bundle-of-interest
+  '("entity" "repo" "service" "controller" "impl" "helper")
+  "springboot bundle of interest names.")
 
 ;; -----------------------------------------------------------------------------
 ;;  ____    _  _____  _    ____    _    ____  _____
@@ -133,10 +137,6 @@
 ;; |____/ \____/_/   \_\_| \_|_| \_|_____|_| \_\
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/bundle-of-interest
-  '("entity" "repo" "service" "controller" "impl" "helper")
-  "springboot bundle of interest names.")
-
 (defun spt/scan-source-files ()
   "Scan source files, construct class, module, bundle and package name."
   (let ((source-root (spt/source-root))
@@ -215,18 +215,14 @@
       (mdldir (expand-file-name (spt/app-root) mdlname))
       (blddir
         (cond
-          ((string= "impl" bundle)
-            (if (string= bldname "repo") "repo/impl" "service/impl"))
+          ((string= "impl" bundle) "service/impl")
+          ((member bundle '("entity" "repo")) (format "domain/%s" bundle))
           (t bundle)))
       (filename
         (cond
-          ((string= "impl" bundle)
-            (format "%s%s.java" ettname
-              (if (string= bldname "repo") "RepositoryImpl" "ServiceImpl")))
-          ((string= "repo" bundle)
-            (format "%sRepository.java" ettname))
-          ((string= "entity" bundle)
-            (format "%s.java" ettname))
+          ((string= "impl" bundle) (format "%sServiceImpl.java" ettname))
+          ((string= "repo" bundle) (format "%sRepository.java" ettname))
+          ((string= "entity" bundle) (format "%s.java" ettname))
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
