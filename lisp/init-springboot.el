@@ -205,6 +205,8 @@
 
 (defun spt/coerce-to-file-name (fileinfo bundle)
   "Force fileinfo to bundle filename."
+  (or (member bundle spt/bundle-of-interest)
+    (error (concat "Unknown bundle type: " bundle)))
   (let*
     ((clzname (nth 0 fileinfo))
       (bldname (nth 1 fileinfo))
@@ -226,8 +228,7 @@
           ((string= "entity" bundle)
             (format "%s.java" ettname))
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
-    (and (member bundle spt/bundle-of-interest)
-      (expand-file-name filename (expand-file-name blddir mdldir)))))
+    (expand-file-name filename (expand-file-name blddir mdldir))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
