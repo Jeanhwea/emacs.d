@@ -68,11 +68,15 @@
   "Oracle string datatype list")
 (defvar jh/oracle-lob-datatype '("CLOB" "BLOB")
   "Oracle string datatype list")
+
 ;; separators
 (defvar jh/oracle-lsep "#ew" "Oracle newline separator")
 (defvar jh/oracle-nsep "#il" "Oracle null separator")
 (defvar jh/oracle-fsep "$ep" "Oracle field separator")
 (defvar jh/oracle-lpre "li#e" "Oracle line prefix")
+
+;; parameter
+(defvar jh/oracle-row-limit 1000 "Oracle row limit")
 
 ;; -----------------------------------------------------------------------------
 ;;
@@ -130,7 +134,7 @@
 
 (defun jh/oracle-gen-select-query (tabname colinfos &optional limit)
   "Generate SELECT query."
-  (let ((limit (or limit 100)) (fsep ",\n"))
+  (let ((limit (or limit jh/oracle-row-limit)) (fsep ",\n"))
     (jh/concat-lines
       "SELECT"
       (mapconcat #'(lambda (colinfo) (format "  %s" (car colinfo))) colinfos fsep)
@@ -163,7 +167,7 @@
 
 (defun jh/oracle-gen-uniform-select-query (tabname colinfos &optional limit)
   "generate SELECT query with uniformed column select string."
-  (let ((limit (or limit 100)))
+  (let ((limit (or limit jh/oracle-row-limit)))
     (jh/concat-lines
       (format "SELECT '%s'||" jh/oracle-lpre)
       (mapconcat
