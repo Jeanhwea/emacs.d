@@ -178,6 +178,10 @@
       "FROM" (format "  %s t" tabname)
       "WHERE" (format "  ROWNUM < %d;" limit))))
 
+(defun jh/oracle-gen-uniform-count-query (tabname)
+  "generate COUNT query."
+  (format "SELECT '%s'|| COUNT(1) AS TOTAL FROM %s;" jh/oracle-lpre tabname))
+
 ;; -----------------------------------------------------------------------------
 ;;
 ;; Regexp and Line Parser
@@ -395,6 +399,19 @@
         (split-string
           (jh/sql-execute
             (jh/oracle-gen-uniform-select-query tabname colinfos)) "\n")))))
+
+(defun jh/oracle-fetch-result-count (tabname)
+  "Fetch total count."
+  (string-to-number
+    (replace-regexp-in-string
+      (concat "^" jh/oracle-lpre) ""
+      (car
+        (remove-if-not
+          #'(lambda (line)
+              (string-match-p (concat "^" jh/oracle-lpre) line))
+          (split-string
+            (jh/sql-execute
+              (jh/oracle-gen-uniform-count-query tabname)) "\n"))))))
 
 ;; -----------------------------------------------------------------------------
 ;;
