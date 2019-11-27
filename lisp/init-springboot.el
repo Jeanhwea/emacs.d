@@ -61,7 +61,9 @@
   (let*
     ((re (format "^.*%s\\.java$" (or entry "Application")))
       (dirs (directory-files-recursively default-directory re)))
-    (and dirs (jh/parent-dir (car dirs)))))
+    (or dirs
+      (error "Failed to get application root!"))
+    (jh/parent-dir (car dirs))))
 
 (defun spt/doc-root ()
   "Return current document root dir."
@@ -177,6 +179,55 @@
           (member bldname spt/bundle-of-interest)
           (push (list clzname bldname mdlname pkgname file) res))))
     res))
+
+
+;; -----------------------------------------------------------------------------
+;;  ______        _____ _____ ____ _   _ _____ ____
+;; / ___\ \      / /_ _|_   _/ ___| | | | ____|  _ \
+;; \___ \\ \ /\ / / | |  | || |   | |_| |  _| | |_) |
+;;  ___) |\ V  V /  | |  | || |___|  _  | |___|  _ <
+;; |____/  \_/\_/  |___| |_| \____|_| |_|_____|_| \_\
+;; -----------------------------------------------------------------------------
+
+(defun spt/coerce-to-entity-name (fileinfo)
+  "Force to convert to entity name."
+  (let
+    ((clzname (nth 0 fileinfo))
+      (bldname (nth 1 fileinfo)))
+    (cond
+      ((string= "repo" bldname)
+        (replace-regexp-in-string "Repository$" "" clzname))
+      ((string= "impl" bldname)
+        (replace-regexp-in-string
+          "\\(Service\\|Repository\\)Impl$" "" clzname))
+      (t (replace-regexp-in-string
+           (concat (jh/pascalcase bldname) "$") "" clzname)))))
+
+(defun spt/coerce-to-file-name (fileinfo bundle)
+  "Force fileinfo to bundle filename."
+  (let*
+    ((clzname (nth 0 fileinfo))
+      (bldname (nth 1 fileinfo))
+      (mdlname (nth 2 fileinfo))
+      (ettname (spt/coerce-to-entity-name fileinfo))
+      (mdldir (expand-file-name (spt/app-root) mdlname))
+      (blddir
+        (cond
+          ((string= "impl" bundle)
+            (if (string= bldname "repo") "repo/impl" "service/impl"))
+          (t bundle)))
+      (filename
+        (cond
+          ((string= "impl" bundle)
+            (format "%s%s.java" ettname
+              (if (string= bldname "repo") "RepositoryImpl" "ServiceImpl")))
+          ((string= "repo" bundle)
+            (format "%sRepository.java" ettname))
+          ((string= "entity" bundle)
+            (format "%s.java" ettname))
+          (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
+    (and (member bundle spt/bundle-of-interest)
+      (expand-file-name filename (expand-file-name blddir mdldir)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
