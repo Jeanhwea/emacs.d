@@ -13,7 +13,7 @@
 
 ;; https://www.emacswiki.org/emacs/SqlMode
 (defun jh/sql-handle-prompt (output)
-  "handle prompt on windows."
+  "Handle prompt on windows."
   (cond
     ((eq sql-product 'mysql)
       (if (jh/windows?) (concat "\n" output "\nmysql> ") (concat "\n" output)))
@@ -45,7 +45,7 @@
     result))
 
 (defun jh/sql-escape-string (str)
-  "escape string in sql text."
+  "Escape string in sql text."
   (let* ((str (replace-regexp-in-string "\\\\" "\\\\" str nil t))
           (str (replace-regexp-in-string "\"" "\\\"" str nil t)))
     str))
@@ -260,42 +260,42 @@
 
 ;; -----------------------------------------------------------------------------
 ;;
-;; Result Set Helper
+;; YAML
 ;; -----------------------------------------------------------------------------
 
-(defun jh/oracle-yamlfy-result-data (cell dbtype)
+(defun jh/oracle-yamlfy-result-cell-value (value dbtype)
   "Make coldate to a string according to dbtype."
   (cond
-    ((and (string= dbtype "NUMBER") (string= cell "")) "null")
+    ((and (string= dbtype "NUMBER") (string= value "")) "null")
     ((member dbtype jh/oracle-string-datatype)
       (cond
         ;; multiple line string
-        ((string-match-p (format ".*%s.*" jh/oracle-lsep) cell)
+        ((string-match-p (format ".*%s.*" jh/oracle-lsep) value)
           (jh/concat-lines "|"
             (mapconcat #'(lambda (line) (concat "    " line))
-              (split-string cell jh/oracle-lsep) "\n")))
+              (split-string value jh/oracle-lsep) "\n")))
         ;; long line string, which length is greater than 40
-        ((> (length cell) 40) (concat ">\n    " cell))
+        ((> (length value) 40) (concat ">\n    " value))
         ;; null string
-        ((string= cell jh/oracle-nsep) "null")
+        ((string= value jh/oracle-nsep) "null")
         ;; default string
-        (t (concat "\"" (jh/sql-escape-string cell) "\""))))
+        (t (concat "\"" (jh/sql-escape-string value) "\""))))
     ((member dbtype jh/oracle-lob-datatype)
       (cond
         ;; null lob
-        ((string= cell jh/oracle-nsep)
+        ((string= value jh/oracle-nsep)
           (format "### %s(null) ###" dbtype))
         ;; default lob, just display size
         (t (format "### %s(%s) ###" dbtype
-             (file-size-human-readable (string-to-number cell))))))
+             (file-size-human-readable (string-to-number value))))))
     ;; default return value
-    (t (if (string= cell jh/oracle-nsep) "null" cell))))
+    (t (if (string= value jh/oracle-nsep) "null" value))))
 
 (defun jh/oracle-yamlfy-result-cell (cell colinfo)
   "Convert result cell to a readable string."
   (let ((colname (nth 0 colinfo))
          (star (if (string= (nth 3 colinfo) "N") "*" ""))
-         (colvalue (jh/oracle-yamlfy-result-data cell (nth 1 colinfo))))
+         (colvalue (jh/oracle-yamlfy-result-cell-value cell (nth 1 colinfo))))
     (format "  %s%s: %s" star colname colvalue)))
 
 (defun jh/oracle-yamlfy-result-row (index row colinfos)
@@ -315,10 +315,66 @@
     (setq i 1)
     (dolist (row rows)
       (setq res
-        (jh/concat-lines res ""
+        (jh/concat-lines
+          (if (eq i 1) res (concat res "\n"))
           (jh/oracle-yamlfy-result-row i row colinfos)))
       (setq i (+ i 1)))
     res))
+
+;; -----------------------------------------------------------------------------
+;;
+;; CSV
+;; -----------------------------------------------------------------------------
+
+(defun jh/oracle-csvfy-result-cell-value (value dbtype)
+  "Make coldate to a string according to dbtype."
+  (cond
+    ((and (string= dbtype "NUMBER") (string= value "")) "null")
+    ((member dbtype jh/oracle-string-datatype)
+      (cond
+        ;; null string
+        ((string= value jh/oracle-nsep) "null")
+        ;; default string
+        (t (concat "\"" (jh/sql-escape-string value) "\""))))
+    ((member dbtype jh/oracle-lob-datatype)
+      (cond
+        ;; null lob
+        ((string= value jh/oracle-nsep)
+          (format "### %s(null) ###" dbtype))
+        ;; default lob, just display size
+        (t (format "### %s(%s) ###" dbtype
+             (file-size-human-readable (string-to-number value))))))
+    ;; default return value
+    (t (if (string= value jh/oracle-nsep) "null" value))))
+
+(defun jh/oracle-csvfy-result-cell (cell colinfo)
+  "Convert result cell to a readable string."
+  (jh/oracle-csvfy-result-cell-value cell (nth 1 colinfo)))
+
+(defun jh/oracle-csvfy-result-row (row colinfos separator)
+  "Convert nth row line string to CSV file block."
+  (let ((res))
+    (setq j 0)
+    (dolist (cell row)
+      (setq res
+        (concat (if (eq j 0) res (concat res separator))
+          (jh/oracle-csvfy-result-cell cell (nth j colinfos))))
+      (setq j (+ j 1)))
+    res))
+
+(defun jh/oracle-csvfy-result-set (rows colinfos &optional separator)
+  "Convert result set to CSV file content."
+  (let* ((sep (or separator ",")) (res (mapconcat #'car colinfos sep)))
+    (dolist (row rows)
+      (setq res
+        (jh/concat-lines res
+          (jh/oracle-csvfy-result-row row colinfos sep))))
+    res))
+
+;; -----------------------------------------------------------------------------
+;;
+;; Result Set Helper
+;; -----------------------------------------------------------------------------
 
 (defun jh/oracle-fetch-result-set (tabname)
   "Fetch oracle result set."
@@ -353,7 +409,7 @@
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
-(defun jh/oracle-dump-rows ()
+(defun jh/oracle-dump-rows-as-yaml ()
   "Dump table row data."
   (interactive)
   (let ((tabname (jh/oracle-guess-tabname)))
@@ -364,6 +420,21 @@
       ;; insert title
       (insert (format "### Dump rows of %s ###" tabname))
       (insert (jh/oracle-yamlfy-result-set
+                (jh/oracle-fetch-result-set tabname)
+                (jh/oracle-list-columns tabname)))
+      ;; go to the beigining
+      (goto-char (point-min)))))
+
+(defun jh/oracle-dump-rows-as-csv ()
+  "Dump table row data."
+  (interactive)
+  (let ((tabname (jh/oracle-guess-tabname)))
+    (progn
+      (switch-to-buffer (concat tabname ".csv"))
+      (or (eq major-mode 'csv-mode) (csv-mode))
+      (kill-region (point-min) (point-max))
+      ;; csv content
+      (insert (jh/oracle-csvfy-result-set
                 (jh/oracle-fetch-result-set tabname)
                 (jh/oracle-list-columns tabname)))
       ;; go to the beigining
