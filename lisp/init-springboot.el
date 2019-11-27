@@ -135,7 +135,7 @@
   '("entity" "repo" "service" "controller" "impl" "helper")
   "springboot bundle of interest names.")
 
-(defun spt/scan-source ()
+(defun spt/scan-source-files ()
   "Scan source files, construct class, module, bundle and package name."
   (let ((source-root (spt/source-root))
          (app-root (spt/app-root))
