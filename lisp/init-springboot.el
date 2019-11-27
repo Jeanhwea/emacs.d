@@ -141,12 +141,16 @@
   "Scan source files, construct class, module, bundle and package name."
   (let ((source-root (spt/source-root))
          (app-root (spt/app-root))
-         (res '()))
+         (fileinfos))
     (dolist (file (spt/source-files))
-      (let
+      (let*
         (
           ;; -------------------------------------------------------------------
-          ;; -------------------------------------------------------------------
+          ;; preparing
+          (relative-folder-list
+            (split-string
+              (replace-regexp-in-string
+                app-root "" (jh/parent-dir file)) "/" t))
           ;;
           ;; class name
           (clzname
@@ -154,15 +158,10 @@
               (jh/filename-without-extension file)))
           ;; bundle name
           (bldname
-            (replace-regexp-in-string "/$" ""
-              (replace-regexp-in-string
-                (jh/parent-dir (jh/parent-dir file)) ""
-                (jh/parent-dir file))))
+            (car (last relative-folder-list)))
           ;; module name
           (mdlname
-            (car
-              (split-string
-                (replace-regexp-in-string app-root "" (jh/parent-dir file)) "/" t)))
+            (car relative-folder-list))
           ;; package name
           (pkgname
             (mapconcat 'identity
@@ -170,15 +169,16 @@
                 (replace-regexp-in-string source-root ""
                   (jh/parent-dir file))
                 "/" t) "."))
-          ;;
-          ;; -------------------------------------------------------------------
           ;; -------------------------------------------------------------------
           )
         (and mdlname
           (not (string= "common" mdlname))
           (member bldname spt/bundle-of-interest)
-          (push (list clzname bldname mdlname pkgname file) res))))
-    res))
+          (let
+            ((fileinfo
+               (list clzname bldname mdlname pkgname file)))
+            (add-to-list 'fileinfos fileinfo t)))))
+    fileinfos))
 
 
 ;; -----------------------------------------------------------------------------
