@@ -182,26 +182,23 @@
 
 
 ;; -----------------------------------------------------------------------------
-;;  ______        _____ _____ ____ _   _ _____ ____
-;; / ___\ \      / /_ _|_   _/ ___| | | | ____|  _ \
-;; \___ \\ \ /\ / / | |  | || |   | |_| |  _| | |_) |
-;;  ___) |\ V  V /  | |  | || |___|  _  | |___|  _ <
-;; |____/  \_/\_/  |___| |_| \____|_| |_|_____|_| \_\
+;;  _____ ___ _     _____ __  __    _  _____ _____
+;; |  ___|_ _| |   | ____|  \/  |  / \|_   _| ____|
+;; | |_   | || |   |  _| | |\/| | / _ \ | | |  _|
+;; |  _|  | || |___| |___| |  | |/ ___ \| | | |___
+;; |_|   |___|_____|_____|_|  |_/_/   \_\_| |_____|
 ;; -----------------------------------------------------------------------------
 
-(defun spt/coerce-to-entity-name (fileinfo)
+(defun spt/coerce-to-entity-name (clzname bldname)
   "Force to convert to entity name."
-  (let
-    ((clzname (nth 0 fileinfo))
-      (bldname (nth 1 fileinfo)))
-    (cond
-      ((string= "repo" bldname)
-        (replace-regexp-in-string "Repository$" "" clzname))
-      ((string= "impl" bldname)
-        (replace-regexp-in-string
-          "\\(Service\\|Repository\\)Impl$" "" clzname))
-      (t (replace-regexp-in-string
-           (concat (jh/pascalcase bldname) "$") "" clzname)))))
+  (cond
+    ((string= "repo" bldname)
+      (replace-regexp-in-string "Repository$" "" clzname))
+    ((string= "impl" bldname)
+      (replace-regexp-in-string
+        "\\(Service\\|Repository\\)Impl$" "" clzname))
+    (t (replace-regexp-in-string
+         (concat (jh/pascalcase bldname) "$") "" clzname))))
 
 (defun spt/coerce-to-file-name (fileinfo bundle)
   "Force fileinfo to bundle filename."
@@ -211,7 +208,7 @@
     ((clzname (nth 0 fileinfo))
       (bldname (nth 1 fileinfo))
       (mdlname (nth 2 fileinfo))
-      (ettname (spt/coerce-to-entity-name fileinfo))
+      (ettname (spt/coerce-to-entity-name clzname bldname))
       (mdldir (expand-file-name (spt/app-root) mdlname))
       (blddir
         (cond
@@ -225,6 +222,29 @@
           ((string= "entity" bundle) (format "%s.java" ettname))
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
+
+(defun spt/lookup-fileinfos (bundle entity)
+  "Lookup fileinfos list."
+  (let ((res))
+    (dolist (fileinfo (spt/scan-source-files))
+      (let ((clzname (nth 0 fileinfo)) (bldname (nth 1 fileinfo)))
+        (and (string= bundle bldname)
+          (string= entity (spt/coerce-to-entity-name clzname bldname))
+          (add-to-list 'res fileinfo))))
+    res))
+
+(defun spt/get-alternative-filename (bundle)
+  "Get alternative filename with selected bundle."
+  (let*
+    ((file (buffer-file-name))
+      (clzname (jh/pascalcase (jh/filename-without-extension file)))
+      (bldname (car (last (split-string file "/" t))))
+      (lookup (spt/lookup-fileinfos bundle
+                (spt/coerce-to-entity-name clzname bldname))))
+    (if lookup
+      (car (last (car lookup)))
+      ;; TODO
+      )))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
