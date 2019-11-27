@@ -64,7 +64,7 @@
   "Return current source root dir."
   (let*
     ((re (format "^.*%s\\.java$" (or entry "Application")))
-      (dirs (directory-files-recursively default-directory re)))
+      (dirs (directory-files-recursively (spt/source-root) re)))
     (or dirs (error "Failed to get application root!"))
     (jh/parent-dir (car dirs))))
 
@@ -137,47 +137,48 @@
 ;; |____/ \____/_/   \_\_| \_|_| \_|_____|_| \_\
 ;; -----------------------------------------------------------------------------
 
+(defun spt/filename-to-fileinfo (&optional file)
+  "Convert filename to fileinfo."
+  (let*
+    (
+      ;; preparing
+      (file (or file (buffer-file-name)))
+      (relative-folder-list
+        (split-string
+          (replace-regexp-in-string
+            (spt/app-root) "" (jh/parent-dir file)) "/" t))
+      ;;
+      ;; class name
+      (clzname
+        (jh/pascalcase
+          (jh/filename-without-extension file)))
+      ;; bundle name
+      (bldname
+        (car (last relative-folder-list)))
+      ;; module name
+      (mdlname
+        (car relative-folder-list))
+      ;; package name
+      (pkgname
+        (mapconcat 'identity
+          (split-string
+            (replace-regexp-in-string (spt/source-root) ""
+              (jh/parent-dir file))
+            "/" t) ".")))
+    (list clzname bldname mdlname pkgname file)))
+
 (defun spt/scan-source-files ()
   "Scan source files, construct class, module, bundle and package name."
-  (let ((source-root (spt/source-root))
-         (app-root (spt/app-root))
-         (fileinfos))
+  (let ((fileinfos))
     (dolist (file (spt/source-files))
       (let*
-        (
-          ;; -------------------------------------------------------------------
-          ;; preparing
-          (relative-folder-list
-            (split-string
-              (replace-regexp-in-string
-                app-root "" (jh/parent-dir file)) "/" t))
-          ;;
-          ;; class name
-          (clzname
-            (jh/pascalcase
-              (jh/filename-without-extension file)))
-          ;; bundle name
-          (bldname
-            (car (last relative-folder-list)))
-          ;; module name
-          (mdlname
-            (car relative-folder-list))
-          ;; package name
-          (pkgname
-            (mapconcat 'identity
-              (split-string
-                (replace-regexp-in-string source-root ""
-                  (jh/parent-dir file))
-                "/" t) "."))
-          ;; -------------------------------------------------------------------
-          )
+        ((fileinfo (spt/filename-to-fileinfo file))
+          (bldname (nth 1 fileinfo))
+          (mdlname (nth 2 fileinfo)))
         (and mdlname
           (not (string= "common" mdlname))
           (member bldname spt/bundle-of-interest)
-          (let
-            ((fileinfo
-               (list clzname bldname mdlname pkgname file)))
-            (add-to-list 'fileinfos fileinfo t)))))
+          (add-to-list 'fileinfos fileinfo t))))
     fileinfos))
 
 
@@ -189,16 +190,18 @@
 ;; |_|   |___|_____|_____|_|  |_/_/   \_\_| |_____|
 ;; -----------------------------------------------------------------------------
 
-(defun spt/coerce-to-entity-name (clzname bldname)
+(defun spt/coerce-to-entity-name (fileinfo)
   "Force to convert to entity name."
-  (cond
+  (let
+    ((clzname (nth 0 fileinfo)) (bldname (nth 1 fileinfo)))
+    (cond
     ((string= "repo" bldname)
       (replace-regexp-in-string "Repository$" "" clzname))
     ((string= "impl" bldname)
       (replace-regexp-in-string
         "\\(Service\\|Repository\\)Impl$" "" clzname))
     (t (replace-regexp-in-string
-         (concat (jh/pascalcase bldname) "$") "" clzname))))
+         (concat (jh/pascalcase bldname) "$") "" clzname)))))
 
 (defun spt/coerce-to-file-name (fileinfo bundle)
   "Force fileinfo to bundle filename."
