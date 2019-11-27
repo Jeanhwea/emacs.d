@@ -73,7 +73,7 @@
 (defvar jh/oracle-lsep "#ew" "Oracle newline separator")
 (defvar jh/oracle-nsep "#il" "Oracle null separator")
 (defvar jh/oracle-fsep "$ep" "Oracle field separator")
-(defvar jh/oracle-lpre "|#>" "Oracle line prefix")
+(defvar jh/oracle-lpre ":) " "Oracle line prefix")
 
 ;; parameter
 (defvar jh/oracle-row-limit 1000 "Oracle row limit")
