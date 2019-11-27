@@ -25,27 +25,67 @@
 ;;
 ;; -----------------------------------------------------------------------------
 
+
 ;; -----------------------------------------------------------------------------
-;; Helpers
+;;  ____    _  _____  _    ____    _    ____  _____
+;; |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____|
+;; | | | |/ _ \ | | / _ \ |  _ \ / _ \ \___ \|  _|
+;; | |_| / ___ \| |/ ___ \| |_) / ___ \ ___) | |___
+;; |____/_/   \_\_/_/   \_\____/_/   \_\____/|_____|
 ;; -----------------------------------------------------------------------------
+
+(defun spt/query-all-tables ()
+  "Get all table information."
+  (jh/oracle-list-tables))
+
+(defun spt/query-table-columns (tabname)
+  "Query columns of a table."
+  (jh/oracle-list-columns tabname))
+
+
+;; -----------------------------------------------------------------------------
+;;  _____ ___  _     ____  _____ ____
+;; |  ___/ _ \| |   |  _ \| ____|  _ \
+;; | |_ | | | | |   | | | |  _| | |_) |
+;; |  _|| |_| | |___| |_| | |___|  _ <
+;; |_|   \___/|_____|____/|_____|_| \_\
+;; -----------------------------------------------------------------------------
+
 (defun spt/project-root ()
   "Return current project root dir."
-  (let ((dir (jh/git-project-root-dir default-directory)))
-    (when (spt/maven-project?) dir)))
+  (or (jh/git-project-root-dir default-directory)
+    (error "This file is not inside a GIT repository")))
 
-(defun spt/app-root ()
+(defun spt/app-root (&optional entry)
   "Return current source root dir."
-  (let ((dirs
-          (remove-if-not
-            (lambda (dir) (file-exists-p (expand-file-name "Application.java" dir)))
-            (jh/directory-sequence default-directory))))
-    (and dirs (car dirs))))
+  (let*
+    ((re (format "^.*%s\\.java$" (or entry "Application")))
+      (dirs (directory-files-recursively default-directory re)))
+    (and dirs (jh/parent-dir (car dirs)))))
 
 (defun spt/doc-root ()
   "Return current document root dir."
-  (let* ((dir (spt/project-root))
-          (doc (file-name-as-directory (expand-file-name "doc" dir))))
-    (when (file-exists-p doc) doc)))
+  (let
+    ((dir
+       (file-name-as-directory
+         (expand-file-name "doc" (spt/project-root)))))
+    (and (file-exists-p dir) dir)))
+
+(defun spt/source-root ()
+  "Return current source root dir."
+  (let
+    ((dir
+       (file-name-as-directory
+         (expand-file-name "src/main/java" (spt/project-root)))))
+    (and (file-exists-p dir) dir)))
+
+(defun spt/test-root ()
+  "Return current test case root dir."
+  (let
+    ((dir
+       (file-name-as-directory
+         (expand-file-name "src/test/java" (spt/project-root)))))
+    (and (file-exists-p dir) dir)))
 
 (defun spt/module-root (file)
   "Return the root dir of module."
@@ -61,17 +101,85 @@
     ((spt/repository? file)
       (expand-file-name "../.." (jh/parent-dir file)))))
 
+
+;; -----------------------------------------------------------------------------
+;;  _____ ___ _     _____
+;; |  ___|_ _| |   | ____|
+;; | |_   | || |   |  _|
+;; |  _|  | || |___| |___
+;; |_|   |___|_____|_____|
+;; -----------------------------------------------------------------------------
+
+(defun spt/source-files ()
+  "Return a list of `*.java' files in the source folder."
+  (let ((source-root (spt/source-root)))
+    (or source-root (error "Folder `src/main/java' is not exists!"))
+    (directory-files-recursively source-root "^.*\\.java$")))
+
+(defun spt/test-files ()
+  "Return a list of `*.java' files in the test folder."
+  (let ((test-root (spt/test-root)))
+    (or test-root (error "Folder `src/test/java' is not exists!"))
+    (directory-files-recursively test-root "^.*\\.java$")))
+
+
+;; -----------------------------------------------------------------------------
+;;  ____   ____    _    _   _ _   _ _____ ____
+;; / ___| / ___|  / \  | \ | | \ | | ____|  _ \
+;; \___ \| |     / _ \ |  \| |  \| |  _| | |_) |
+;;  ___) | |___ / ___ \| |\  | |\  | |___|  _ <
+;; |____/ \____/_/   \_\_| \_|_| \_|_____|_| \_\
+;; -----------------------------------------------------------------------------
+
+(defvar spt/poi-names
+  '("entity" "repo" "service" "controller" "impl" "helper")
+  "springboot package of interest names.")
+
+(defun spt/scan-source ()
+  "Scan source files, construct class, module, function and package name."
+  (let ((source-root (spt/source-root))
+         (source-files (spt/source-files))
+         (app-root (spt/app-root))
+         (res '()))
+    (dolist (file source-files)
+      (let
+        (
+          ;; read class name
+          (clzname
+           (jh/pascalcase
+             (jh/filename-without-extension file)))
+          ;; read function name
+          (fctname
+            (replace-regexp-in-string
+              (jh/parent-dir (jh/parent-dir file)) ""
+              (jh/parent-dir file)))
+          ;; read module name
+          (mdlname
+            (car (split-string
+                   (replace-regexp-in-string app-root ""
+                     (jh/parent-dir file))
+                   "/" t)))
+          ;; read package name
+          (pkgname
+            (mapconcat 'identity
+              (split-string
+                (replace-regexp-in-string source-root ""
+                  (jh/parent-dir file))
+                "/" t) "."))
+          ;; ----------------------------------------
+          )
+        (and mdlname
+          (push (list clzname fctname mdlname pkgname) res))))
+    res))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun spt/project-name ()
   "Return project name."
   (let ((root (spt/project-root)))
     (replace-regexp-in-string "/" ""
       (replace-regexp-in-string (jh/parent-dir root) "" root))))
-
-(defun spt/source-files ()
-  "Return a list of `*.java' files in the project."
-  (let ((dir (expand-file-name "src" (spt/project-root))))
-    (when (file-directory-p dir)
-      (directory-files-recursively dir "^.*\\.java$"))))
 
 (defun spt/find-file (file)
   "Open a FILE."
@@ -81,6 +189,9 @@
   "Run compilation command."
   (let ((default-directory (or dir (spt/project-root))))
     (compilation-start cmd)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun spt/file-to-entity (file)
   "Return the entity name from a file name."
@@ -459,17 +570,6 @@
       (and addr
         (setq table (match-string 2 text))))
     table))
-
-;; -----------------------------------------------------------------------------
-;; Database
-;; -----------------------------------------------------------------------------
-(defun spt/query-all-tables ()
-  "Get all table information."
-  (jh/oracle-list-tables))
-
-(defun spt/query-table-columns (tabname)
-  "Query columns of a table."
-  (jh/oracle-list-columns tabname))
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
