@@ -26,8 +26,10 @@
 (add-hook 'sql-interactive-mode-hook #'jh/sql-interactive-hook)
 
 ;; -----------------------------------------------------------------------------
+;;
 ;; SQL Helper
 ;; -----------------------------------------------------------------------------
+
 (defun jh/sql-execute (query)
   "Execute a query."
   (let ((sqlbuf (sql-find-sqli-buffer))
@@ -57,6 +59,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; -----------------------------------------------------------------------------
+;;
 ;; Variables
 ;; -----------------------------------------------------------------------------
 
@@ -72,6 +75,7 @@
 (defvar jh/oracle-lpre "li#e" "Oracle line prefix")
 
 ;; -----------------------------------------------------------------------------
+;;
 ;; Query Generator
 ;; -----------------------------------------------------------------------------
 
@@ -89,10 +93,10 @@
       "  FROM USER_TABLES utbs"
       " ORDER BY utbs.TABLE_NAME;")))
 
-(defun jh/oracle-gen-list-table-column-query (tabname &optional separator)
+(defun jh/oracle-gen-list-column-query (tabname &optional separator)
   "Generate list table columns query."
   (let ((sep (or separator ",")))
-    (concat
+    (jh/concat-lines
       "SELECT"
       (format "  utbc.COLUMN_NAME || '%s' ||" sep)
       (format "  utbc.DATA_TYPE || '%s' ||" sep)
@@ -115,7 +119,7 @@
       (format "          ROWNUM <= 1) || '%s' ||" sep)
       (format "  utbc.DATA_PRECISION || '%s' ||" sep)
       "  ("
-      "    SELECT REPLACE(REPLACE(uclc.COMMENTS, CHR(13), ''), CHR(10), '\n')"
+      "    SELECT REPLACE(REPLACE(uclc.COMMENTS, CHR(13), ''), CHR(10), '\\n')"
       "      FROM USER_COL_COMMENTS uclc"
       "     WHERE uclc.COLUMN_NAME = utbc.COLUMN_NAME AND"
       "           uclc.TABLE_NAME = utbc.TABLE_NAME AND"
@@ -134,7 +138,8 @@
       "WHERE" (format "  ROWNUM < %d;" limit))))
 
 ;; -----------------------------------------------------------------------------
-;; Normalization Helper
+;;
+;; Machine-level SELECT Query Builder
 ;; -----------------------------------------------------------------------------
 
 (defun jh/oracle-uniform-column (colinfo)
@@ -170,6 +175,7 @@
       "WHERE" (format "  ROWNUM < %d;" limit))))
 
 ;; -----------------------------------------------------------------------------
+;;
 ;; Regexp and Line Parser
 ;; -----------------------------------------------------------------------------
 
@@ -217,8 +223,8 @@
             (list colname dbtype dblen nullable unique pk precision colcmt)))))
     colinfo))
 
-
 ;; -----------------------------------------------------------------------------
+;;
 ;; SQL-level Helper
 ;; -----------------------------------------------------------------------------
 
@@ -230,12 +236,12 @@
 
 (defun jh/oracle-list-columns (tabname)
   "List all columns in a table with given TABNAME."
-  (let* ((query (jh/oracle-gen-list-table-column-query tabname))
+  (let* ((query (jh/oracle-gen-list-column-query tabname))
           (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/oracle-parse-columns-info lines))))
 
-
 ;; -----------------------------------------------------------------------------
+;;
 ;; Frontend Helper
 ;; -----------------------------------------------------------------------------
 
@@ -252,8 +258,8 @@
       ((member symb tabnames) symb)
       (t (completing-read "Dump Table >> " tabnames)))))
 
-
 ;; -----------------------------------------------------------------------------
+;;
 ;; Result Set Helper
 ;; -----------------------------------------------------------------------------
 
@@ -331,6 +337,7 @@
             (jh/oracle-gen-uniform-select-query tabname colinfos)) "\n")))))
 
 ;; -----------------------------------------------------------------------------
+;;
 ;; Interactive Commands
 ;; -----------------------------------------------------------------------------
 
@@ -362,6 +369,19 @@
       ;; go to the beigining
       (goto-char (point-min)))))
 
+(defun jh/oracle-copy-list-table-query ()
+  "Copy list table query to clipboard"
+  (interactive)
+  (jh/sent-to-clipboard (jh/oracle-gen-list-table-query)))
+
+(defun jh/oracle-copy-list-column-query ()
+  "Copy select query to clipboard."
+  (interactive)
+  (let*
+    ((tabnames (mapcar #'car (jh/oracle-list-tables)))
+      (tabname (completing-read "Dump Table >> " tabnames)))
+    (jh/sent-to-clipboard (jh/oracle-gen-list-column-query tabname))))
+
 (defun jh/oracle-copy-select-query ()
   "Copy select query to clipboard."
   (interactive)
@@ -369,8 +389,7 @@
     ((tabnames (mapcar #'car (jh/oracle-list-tables)))
       (tabname (completing-read "Dump Table >> " tabnames)))
     (jh/sent-to-clipboard
-      (jh/oracle-gen-select-query tabname
-        (jh/oracle-list-columns tabname)))))
+      (jh/oracle-gen-select-query tabname (jh/oracle-list-columns tabname)))))
 
 
 ;; -----------------------------------------------------------------------------
