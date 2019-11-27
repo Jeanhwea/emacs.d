@@ -144,29 +144,38 @@
     (dolist (file source-files)
       (let
         (
-          ;; read class name
+          ;; -------------------------------------------------------------------
+          ;;  ____
+          ;; |  _ \ __ _ _ __ ___  ___ _ __
+          ;; | |_) / _` | '__/ __|/ _ \ '__|
+          ;; |  __/ (_| | |  \__ \  __/ |
+          ;; |_|   \__,_|_|  |___/\___|_|
+          ;; -------------------------------------------------------------------
+          ;;
+          ;; class name
           (clzname
            (jh/pascalcase
              (jh/filename-without-extension file)))
-          ;; read function name
+          ;; function name
           (fctname
             (replace-regexp-in-string
               (jh/parent-dir (jh/parent-dir file)) ""
               (jh/parent-dir file)))
-          ;; read module name
+          ;; module name
           (mdlname
             (car (split-string
                    (replace-regexp-in-string app-root ""
                      (jh/parent-dir file))
                    "/" t)))
-          ;; read package name
+          ;; package name
           (pkgname
             (mapconcat 'identity
               (split-string
                 (replace-regexp-in-string source-root ""
                   (jh/parent-dir file))
                 "/" t) "."))
-          ;; ----------------------------------------
+          ;; -------------------------------------------------------------------
+          ;; -------------------------------------------------------------------
           )
         (and mdlname
           (push (list clzname fctname mdlname pkgname) res))))
