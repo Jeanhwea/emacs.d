@@ -131,17 +131,16 @@
 ;; |____/ \____/_/   \_\_| \_|_| \_|_____|_| \_\
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/poi-names
+(defvar spt/bundle-of-interest
   '("entity" "repo" "service" "controller" "impl" "helper")
-  "springboot package of interest names.")
+  "springboot bundle of interest names.")
 
 (defun spt/scan-source ()
-  "Scan source files, construct class, module, function and package name."
+  "Scan source files, construct class, module, bundle and package name."
   (let ((source-root (spt/source-root))
-         (source-files (spt/source-files))
          (app-root (spt/app-root))
          (res '()))
-    (dolist (file source-files)
+    (dolist (file (spt/source-files))
       (let
         (
           ;; -------------------------------------------------------------------
@@ -151,8 +150,8 @@
           (clzname
             (jh/pascalcase
               (jh/filename-without-extension file)))
-          ;; function name
-          (fctname
+          ;; bundle name
+          (bldname
             (replace-regexp-in-string "/$" ""
               (replace-regexp-in-string
                 (jh/parent-dir (jh/parent-dir file)) ""
@@ -175,8 +174,8 @@
           )
         (and mdlname
           (not (string= "common" mdlname))
-          (member fctname spt/poi-names)
-          (push (list clzname fctname mdlname pkgname file) res))))
+          (member bldname spt/bundle-of-interest)
+          (push (list clzname bldname mdlname pkgname file) res))))
     res))
 
 
