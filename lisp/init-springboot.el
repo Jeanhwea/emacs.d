@@ -263,7 +263,7 @@
 ;; |  _ \ / \  |  _ \/ ___|| ____|  _ \
 ;; | |_) / _ \ | |_) \___ \|  _| | |_) |
 ;; |  __/ ___ \|  _ < ___) | |___|  _ <
-;; |_| /_/   \_\_| \_\____/|_____|_| \_\
+;; |_| /_/   \_\_| \_\____/|_____|_| \_\  for JAVA
 ;; -----------------------------------------------------------------------------
 
 (defun spt/t ()
@@ -272,8 +272,9 @@
 (defun spt/l ()
   (jh/read-file-content-as-lines (buffer-file-name)))
 
+
 (defun spt/parse-java-package (text)
-  "Parse java package name in source file."
+  "Parse java package name. like `package com.example;' "
   (let
     ((regexp "^package \\([^;]*\\);$")
       (addr 0)
@@ -284,8 +285,8 @@
         (setq package (match-string 1 text))))
     package))
 
-(defun spt/parse-java-define (text)
-  "Parse java define info."
+(defun spt/parse-java-frontinfo (text)
+  "Parse java front info. like `public class ClassName ...' "
   (let
     ((params (make-hash-table :test 'equal))
       (regexp
@@ -317,7 +318,7 @@
     params))
 
 (defun spt/parse-java-imports (text)
-  "Parse java imports, return a list of (static pkgname clzname)."
+  "Parse java imports, like `import com.example.ClassName;' "
   (let
     ((regexp "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$")
       (addr 0)
@@ -379,7 +380,7 @@
     fields))
 
 (defun spt/parse-java-class-methods (text)
-  "Parse java class methods, return a list of signature."
+  "Parse java class methods. like `public static funcName(...)' "
   (let
     ((regexp
        (concat
@@ -419,7 +420,7 @@
     methods))
 
 (defun spt/parse-java-iface-methods (text)
-  "Extract java interface methods in interface."
+  "Parse java interface methods. like `public static funcName(...)'"
   (let
     ((regexp
        (concat
@@ -453,7 +454,7 @@
 (defun spt/parse-java-meta (text)
   "Parse java class meta info to hashtable."
   (let
-    ((metainfo (spt/parse-java-define text)))
+    ((metainfo (spt/parse-java-frontinfo text)))
 
     ;; add pacakage name
     (puthash 'pkgname (spt/parse-java-package text) metainfo)
@@ -475,6 +476,14 @@
       (puthash 'methods (spt/parse-java-class-methods text) metainfo))
 
     metainfo))
+
+;; -----------------------------------------------------------------------------
+;;  ____   _    ____  ____  _____ ____
+;; |  _ \ / \  |  _ \/ ___|| ____|  _ \
+;; | |_) / _ \ | |_) \___ \|  _| | |_) |
+;; |  __/ ___ \|  _ < ___) | |___|  _ <
+;; |_| /_/   \_\_| \_\____/|_____|_| \_\  for Spring
+;; -----------------------------------------------------------------------------
 
 (defun spt/extract-java-impl-override-methods (text)
   "Extract java method in interface."
