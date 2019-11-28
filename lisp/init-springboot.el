@@ -638,52 +638,31 @@
         (setq tabname (match-string 2 text))))
     tabname))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
+;; -----------------------------------------------------------------------------
+;;   ____ ___  __  __ ____   _    _   ___   __
+;;  / ___/ _ \|  \/  |  _ \ / \  | \ | \ \ / /
+;; | |  | | | | |\/| | |_) / _ \ |  \| |\ V /
+;; | |__| |_| | |  | |  __/ ___ \| |\  | | |
+;;  \____\___/|_|  |_|_| /_/   \_\_| \_| |_|
+;; -----------------------------------------------------------------------------
 
 (defun spt/compilation-start (cmd &optional dir)
   "Run compilation command."
   (let ((default-directory (or dir (spt/project-root))))
     (compilation-start cmd)))
 
-;; -----------------------------------------------------------------------------
-;; Predictors
-;; -----------------------------------------------------------------------------
-(defun spt/source? (file)
-  "Return ture if FILE is a java source file."
-  (string-match-p "\\.java$" file))
-
-(defun spt/entity? (file)
-  "Return ture if FILE is a entity."
-  (string-match-p "^.*/entity/[_A-Za-z0-9]*\\.java$" file))
-
-(defun spt/repository? (file)
-  "Return ture if FILE is a repository."
-  (string-match-p "^.*/repo/[_A-Za-z0-9]*Repository\\.java$" file))
-
-(defun spt/controller? (file)
-  "Return ture if FILE is a controller."
-  (string-match-p "^.*/controller/[_A-Za-z0-9]*Controller\\.java$" file))
-
-(defun spt/service? (file)
-  "Return ture if FILE is a service."
-  (string-match-p "^.*/service/[_A-Za-z0-9]*Service\\.java$" file))
-
-(defun spt/implement? (file)
-  "Return ture if FILE is a implement."
-  (string-match-p "^.*/impl/[_A-Za-z0-9]*Impl\\.java$" file))
-
-(defun spt/testcase? (file)
-  "Return ture if FILE is a entity."
-  (string-match-p "^.*/src/test/java/.*/[_A-Za-z0-9]*Test\\.java$" file))
-
-(defun spt/maven-project? ()
-  "Return ture if current project is a maven project."
-  (file-exists-p
-    (expand-file-name "pom.xml"
-      (jh/git-project-root-dir default-directory))))
+(defun spt/company-jpa-backend (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'spt/company-jpa-backend))
+    (prefix
+      (and (eq major-mode 'java-mode)
+        (looking-back "find\\>")
+        (match-string 0)))
+    (candidates
+      (when (equal arg "find")
+        (list "findById" "findByCode" "findAllById" "findAllByCode")))
+    (meta (format "This value is named %s" arg))))
 
 ;; -----------------------------------------------------------------------------
 ;; Modifiers and Picker
@@ -730,10 +709,15 @@
     (search-forward-regexp "{$")))
 
 ;; -----------------------------------------------------------------------------
-;; Runner
+;;  ____  _   _ _   _ _   _ _____ ____
+;; |  _ \| | | | \ | | \ | | ____|  _ \
+;; | |_) | | | |  \| |  \| |  _| | |_) |
+;; |  _ <| |_| | |\  | |\  | |___|  _ <
+;; |_| \_\\___/|_| \_|_| \_|_____|_| \_\ for Maven Springboot Test
 ;; -----------------------------------------------------------------------------
-;; maven springboot test
+;;
 ;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
+
 (defun spt/maven-test-command (class &optional package)
   "Return maven test command."
   (let ((subjects (if package (concat class "#" package) class)))
@@ -760,10 +744,6 @@
             (this-class (jh/java-class-name))
             (this-method (if (member nearest-method test-methods) nearest-method)))
       (spt/compilation-start (spt/maven-test-command this-class this-method)))))
-
-;; -----------------------------------------------------------------------------
-;; Extractors
-;; -----------------------------------------------------------------------------
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -881,18 +861,7 @@
 ;; -----------------------------------------------------------------------------
 ;; company
 ;; -----------------------------------------------------------------------------
-(defun spt/company-jpa-backend (command &optional arg &rest ignored)
-  (interactive (list 'interactive))
-  (cl-case command
-    (interactive (company-begin-backend 'spt/company-jpa-backend))
-    (prefix
-      (and (eq major-mode 'java-mode)
-        (looking-back "find\\>")
-        (match-string 0)))
-    (candidates
-      (when (equal arg "find")
-        (list "findById" "findByCode" "findAllById" "findAllByCode")))
-    (meta (format "This value is named %s" arg))))
+
 
 ;; (add-to-list 'company-backends 'spt/company-jpa-backend)
 
