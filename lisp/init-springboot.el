@@ -30,29 +30,13 @@
   '("entity" "repo" "service" "controller" "impl" "helper")
   "springboot bundle of interest names.")
 
-;; -----------------------------------------------------------------------------
-;;  ____    _  _____  _    ____    _    ____  _____
-;; |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____|
-;; | | | |/ _ \ | | / _ \ |  _ \ / _ \ \___ \|  _|
-;; | |_| / ___ \| |/ ___ \| |_) / ___ \ ___) | |___
-;; |____/_/   \_\_/_/   \_\____/_/   \_\____/|_____|
-;; -----------------------------------------------------------------------------
-
-(defun spt/query-all-tables ()
-  "Get all table information."
-  (jh/oracle-list-tables))
-
-(defun spt/query-table-columns (tabname)
-  "Query columns of a table."
-  (jh/oracle-list-columns tabname))
-
 
 ;; -----------------------------------------------------------------------------
-;;  _____ ___  _     ____  _____ ____
-;; |  ___/ _ \| |   |  _ \| ____|  _ \
-;; | |_ | | | | |   | | | |  _| | |_) |
-;; |  _|| |_| | |___| |_| | |___|  _ <
-;; |_|   \___/|_____|____/|_____|_| \_\
+;;  __  __      _        ___        __
+;; |  \/  | ___| |_ __ _|_ _|_ __  / _| ___
+;; | |\/| |/ _ \ __/ _` || || '_ \| |_ / _ \
+;; | |  | |  __/ || (_| || || | | |  _| (_) |
+;; |_|  |_|\___|\__\__,_|___|_| |_|_|  \___/
 ;; -----------------------------------------------------------------------------
 
 (defun spt/project-root ()
@@ -64,7 +48,7 @@
   "Return current source root dir."
   (let*
     ((re (format "^.*%s\\.java$" (or entry "Application")))
-      (dirs (directory-files-recursively (spt/source-root) re)))
+      (dirs (directory-files-recursively (spt/src-root) re)))
     (or dirs (error "Failed to get application root!"))
     (jh/parent-dir (car dirs))))
 
@@ -77,7 +61,7 @@
     (or (file-exists-p dir) (error "Folder `doc' is not exists!"))
     dir))
 
-(defun spt/source-root ()
+(defun spt/src-root ()
   "Return current source root dir."
   (let
     ((dir
@@ -97,72 +81,12 @@
       (error "Folder `src/test/java' is not exists!"))
     dir))
 
-;; -----------------------------------------------------------------------------
-;;  _____ ___ _     _____
-;; |  ___|_ _| |   | ____|
-;; | |_   | || |   |  _|
-;; |  _|  | || |___| |___
-;; |_|   |___|_____|_____|
-;; -----------------------------------------------------------------------------
+(defun spt/project-name ()
+  "Return project name."
+  (let ((root (spt/project-root)))
+    (replace-regexp-in-string "/" ""
+      (replace-regexp-in-string (jh/parent-dir root) "" root))))
 
-(defun spt/source-files ()
-  "Return a list of `*.java' files in the source folder."
-  (directory-files-recursively (spt/source-root) "^.*\\.java$"))
-
-(defun spt/test-files ()
-  "Return a list of `*.java' files in the test folder."
-  (directory-files-recursively (spt/test-root) "^.*\\.java$"))
-
-
-;; -----------------------------------------------------------------------------
-;;  ____   ____    _    _   _ _   _ _____ ____
-;; / ___| / ___|  / \  | \ | | \ | | ____|  _ \
-;; \___ \| |     / _ \ |  \| |  \| |  _| | |_) |
-;;  ___) | |___ / ___ \| |\  | |\  | |___|  _ <
-;; |____/ \____/_/   \_\_| \_|_| \_|_____|_| \_\
-;; -----------------------------------------------------------------------------
-
-(defun spt/filename-to-fileinfo (&optional file)
-  "Convert filename to fileinfo."
-  (let*
-    (
-      ;; preparing
-      (file (or file (buffer-file-name)))
-      (tail-folder-list
-        (split-string
-          (replace-regexp-in-string
-            (spt/app-root) "" (jh/parent-dir file)) "/" t))
-      ;;
-      ;; class name
-      (clzname
-        (jh/pascalcase
-          (jh/filename-without-extension file)))
-      ;; bundle name
-      (bldname (car (last tail-folder-list)))
-      ;; module name
-      (mdlname (car tail-folder-list))
-      ;; package name
-      (pkgname
-        (mapconcat 'identity
-          (split-string
-            (replace-regexp-in-string (spt/source-root) ""
-              (jh/parent-dir file))
-            "/" t) ".")))
-    (list clzname bldname mdlname pkgname file)))
-
-(defun spt/scan-source-files ()
-  "Scan source files, construct class, module, bundle and package name."
-  (let ((fileinfos))
-    (dolist (file (spt/source-files))
-      (let*
-        ((fileinfo (spt/filename-to-fileinfo file))
-          (bldname (nth 1 fileinfo))
-          (mdlname (nth 2 fileinfo)))
-        (and mdlname
-          (not (string= "common" mdlname))
-          (member bldname spt/bundle-of-interest)
-          (add-to-list 'fileinfos fileinfo t))))
-    fileinfos))
 
 ;; -----------------------------------------------------------------------------
 ;;   ____           _
@@ -201,11 +125,74 @@
 
 
 ;; -----------------------------------------------------------------------------
-;;  _____ ___ _     _____ __  __    _  _____ _____
-;; |  ___|_ _| |   | ____|  \/  |  / \|_   _| ____|
-;; | |_   | || |   |  _| | |\/| | / _ \ | | |  _|
-;; |  _|  | || |___| |___| |  | |/ ___ \| | | |___
-;; |_|   |___|_____|_____|_|  |_/_/   \_\_| |_____|
+;;  ____   ____    _    _   _ _   _ _____ ____
+;; / ___| / ___|  / \  | \ | | \ | | ____|  _ \
+;; \___ \| |     / _ \ |  \| |  \| |  _| | |_) |
+;;  ___) | |___ / ___ \| |\  | |\  | |___|  _ <
+;; |____/ \____/_/   \_\_| \_|_| \_|_____|_| \_\
+;; -----------------------------------------------------------------------------
+
+(defun spt/source-files ()
+  "Return a list of `*.java' files in the source folder."
+  (directory-files-recursively (spt/src-root) "^.*\\.java$"))
+
+(defun spt/test-files ()
+  "Return a list of `*.java' files in the test folder."
+  (directory-files-recursively (spt/test-root) "^.*\\.java$"))
+
+(defun spt/doc-files ()
+  "Return a list of `*.md' files in the document folder."
+  (directory-files-recursively (spt/doc-root) "^.*\\.md$"))
+
+(defun spt/filename-to-fileinfo (&optional file)
+  "Convert filename to fileinfo."
+  (let*
+    (
+      ;; preparing
+      (file (or file (buffer-file-name)))
+      (tail-folder-list
+        (split-string
+          (replace-regexp-in-string
+            (spt/app-root) "" (jh/parent-dir file)) "/" t))
+      ;;
+      ;; class name
+      (clzname
+        (jh/pascalcase
+          (jh/filename-without-extension file)))
+      ;; bundle name
+      (bldname (car (last tail-folder-list)))
+      ;; module name
+      (mdlname (car tail-folder-list))
+      ;; package name
+      (pkgname
+        (mapconcat 'identity
+          (split-string
+            (replace-regexp-in-string (spt/src-root) ""
+              (jh/parent-dir file))
+            "/" t) ".")))
+    (list clzname bldname mdlname pkgname file)))
+
+(defun spt/scan-source-files ()
+  "Scan source files, construct class, module, bundle and package name."
+  (let ((fileinfos))
+    (dolist (file (spt/source-files))
+      (let*
+        ((fileinfo (spt/filename-to-fileinfo file))
+          (bldname (nth 1 fileinfo))
+          (mdlname (nth 2 fileinfo)))
+        (and mdlname
+          (not (string= "common" mdlname))
+          (member bldname spt/bundle-of-interest)
+          (add-to-list 'fileinfos fileinfo t))))
+    fileinfos))
+
+
+;; -----------------------------------------------------------------------------
+;;  _   _ _____ _     ____  _____ ____
+;; | | | | ____| |   |  _ \| ____|  _ \
+;; | |_| |  _| | |   | |_) |  _| | |_) |
+;; |  _  | |___| |___|  __/| |___|  _ <
+;; |_| |_|_____|_____|_|   |_____|_| \_\
 ;; -----------------------------------------------------------------------------
 
 (defun spt/coerce-to-entity (fileinfo)
@@ -264,6 +251,23 @@
 
 
 ;; -----------------------------------------------------------------------------
+;;  ____    _  _____  _    ____    _    ____  _____
+;; |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____|
+;; | | | |/ _ \ | | / _ \ |  _ \ / _ \ \___ \|  _|
+;; | |_| / ___ \| |/ ___ \| |_) / ___ \ ___) | |___
+;; |____/_/   \_\_/_/   \_\____/_/   \_\____/|_____|
+;; -----------------------------------------------------------------------------
+
+(defun spt/query-all-tables ()
+  "Get all table information."
+  (jh/oracle-list-tables))
+
+(defun spt/query-table-columns (tabname)
+  "Query columns of a table."
+  (jh/oracle-list-columns tabname))
+
+
+;; -----------------------------------------------------------------------------
 ;;  ____   _    ____  ____  _____ ____
 ;; |  _ \ / \  |  _ \/ ___|| ____|  _ \
 ;; | |_) / _ \ | |_) \___ \|  _| | |_) |
@@ -274,11 +278,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun spt/project-name ()
-  "Return project name."
-  (let ((root (spt/project-root)))
-    (replace-regexp-in-string "/" ""
-      (replace-regexp-in-string (jh/parent-dir root) "" root))))
+
 
 
 (defun spt/compilation-start (cmd &optional dir)
@@ -783,21 +783,6 @@
 ;; -----------------------------------------------------------------------------
 ;; Transfer file to others
 ;; -----------------------------------------------------------------------------
-(defun spt/trans-test-and-source (file)
-  "Transfer file between test and source."
-  (if (spt/testcase? file)
-    (replace-regexp-in-string "Test\\.java$" ".java"
-      (replace-regexp-in-string "src/test/java" "src/main/java" file))
-    (replace-regexp-in-string "\\.java$" "Test.java"
-      (replace-regexp-in-string "src/main/java" "src/test/java" file))))
-
-(defun spt/trans-impl-and-inter (file)
-  "Transfer file between implementation and interface."
-  (if (spt/implement? file)
-    (replace-regexp-in-string "/impl/" "/"
-      (replace-regexp-in-string "Impl\\.java$" ".java" file))
-    (replace-regexp-in-string "/\\([_A-Za-z][_A-Za-z0-9]*\\.java\\)$" "/impl/\\1"
-      (replace-regexp-in-string "\\.java$" "Impl.java" file))))
 
 (defun spt/trans-doc-markdown-file (func file)
   "Transfer file to document file."
@@ -872,41 +857,38 @@
           (goto-char (point-max))
           (goto-char prev-point))))))
 
-(defun spt/toggle-test-and-source ()
-  "Toggle between implementation and test."
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (if (spt/implement? file)
-      (find-file (spt/trans-test-and-source (spt/trans-impl-and-inter file)))
-      (find-file (spt/trans-test-and-source file)))))
-
-(defun spt/toggle-interface-and-implement ()
-  "Toggle interface and implement file."
-  (interactive)
-  (or (spt/testcase? (buffer-file-name))
-    (let ((file (buffer-file-name))
-           (other-file (spt/trans-impl-and-inter (buffer-file-name))))
-      (if
-        (or (not (file-exists-p other-file)) (spt/implement? file))
-        (find-file other-file)
-        (let ((lookup (make-hash-table :test 'equal))
-               (line (jh/strip (jh/current-line)))
-               (methods
-                 (spt/extract-java-impl-override-methods
-                   (jh/read-file-content other-file))))
-          (progn
-            (dolist (method methods)
-              (let ((key (jh/strip (apply #'format "%s %s(%s);" method)))
-                     (addr (car (last method))))
-                (puthash key addr lookup)))
-            (setq addr (gethash line lookup))
-            (if addr
-              (spt/goto-function-body other-file addr)
-              (find-file other-file))))))))
+;; (defun spt/toggle-interface-and-implement ()
+;;   "Toggle interface and implement file."
+;;   (interactive)
+;;   (or (spt/testcase? (buffer-file-name))
+;;     (let ((file (buffer-file-name))
+;;            (other-file (spt/trans-impl-and-inter (buffer-file-name))))
+;;       (if
+;;         (or (not (file-exists-p other-file)) (spt/implement? file))
+;;         (find-file other-file)
+;;         (let ((lookup (make-hash-table :test 'equal))
+;;                (line (jh/strip (jh/current-line)))
+;;                (methods
+;;                  (spt/extract-java-impl-override-methods
+;;                    (jh/read-file-content other-file))))
+;;           (progn
+;;             (dolist (method methods)
+;;               (let ((key (jh/strip (apply #'format "%s %s(%s);" method)))
+;;                      (addr (car (last method))))
+;;                 (puthash key addr lookup)))
+;;             (setq addr (gethash line lookup))
+;;             (if addr
+;;               (spt/goto-function-body other-file addr)
+;;               (find-file other-file))))))))
 
 
 ;; -----------------------------------------------------------------------------
-;; key bindings
+;;  _  __            ____  _           _ _
+;; | |/ /___ _   _  | __ )(_)_ __   __| (_)_ __   __ _ ___
+;; | ' // _ \ | | | |  _ \| | '_ \ / _` | | '_ \ / _` / __|
+;; | . \  __/ |_| | | |_) | | | | | (_| | | | | | (_| \__ \
+;; |_|\_\___|\__, | |____/|_|_| |_|\__,_|_|_| |_|\__, |___/
+;;           |___/                               |___/
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'spt/leader-key-map)
@@ -924,7 +906,6 @@
   (define-key spt/leader-key-map (kbd "j") 'spt/company-jpa-backend)
   (define-key spt/leader-key-map (kbd "m") 'spt/jump-to-class-methods)
   (define-key spt/leader-key-map (kbd "p") 'spt/run-test-method-command)
-  (define-key spt/leader-key-map (kbd "t") 'spt/toggle-test-and-source)
   (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class))
 (global-set-key (kbd "M-[") 'spt/leader-key-map)
 
