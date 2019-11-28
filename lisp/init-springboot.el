@@ -52,6 +52,14 @@
     (or dirs (error "Failed to get application root!"))
     (jh/parent-dir (car dirs))))
 
+(defun spt/app-test-root (&optional entry)
+  "Return current source root dir."
+  (let*
+    ((re (format "^.*%s\\.java$" (or entry "ApplicationTest")))
+      (dirs (directory-files-recursively (spt/test-root) re)))
+    (or dirs (error "Failed to get application test root!"))
+    (jh/parent-dir (car dirs))))
+
 (defun spt/doc-root ()
   "Return current document root dir."
   (let
@@ -242,6 +250,78 @@
   "Return a list of `*.java' files in the test folder."
   (directory-files-recursively (spt/test-root) "^.*\\.java$"))
 
+(defun spt/testfile-to-testinfo (&optional file)
+  "Convert test filename to testinfo."
+  (let*
+    (
+      ;; preparing data
+      (file (or file (buffer-file-name)))
+      (tail-folder-list
+        (split-string
+          (replace-regexp-in-string
+            (spt/app-test-root) "" (jh/parent-dir file)) "/" t))
+      ;; class name
+      (clzname
+        (jh/pascalcase
+          (jh/filename-without-extension file)))
+      ;; bundle name
+      (bldname (car (last tail-folder-list)))
+      ;; module name
+      (mdlname (car tail-folder-list))
+      ;; package name
+      (pkgname
+        (mapconcat 'identity
+          (split-string
+            (replace-regexp-in-string (spt/src-root) ""
+              (jh/parent-dir file))
+            "/" t) ".")))
+    (list clzname bldname mdlname pkgname file)))
+
+(defun spt/scan-test-files ()
+  "Scan test files."
+  (let ((testinfos))
+    (dolist (file (spt/test-files))
+      (let*
+        ((testinfo (spt/testfile-to-testinfo file))
+          (bldname (nth 1 testinfo))
+          (mdlname (nth 2 testinfo)))
+        (and mdlname
+          (not (string= "common" mdlname))
+          (member bldname spt/bundle-of-interest)
+          (add-to-list 'testinfos testinfo t))))
+    testinfos))
+
+(defun spt/coerce-to-testfile (file)
+  "Force file to test file path."
+  (let
+    ((dir (jh/parent-dir file))
+      (clzname (jh/filename-without-extension file)))
+    (if (string-match-p ".*Test$" clzname) file
+      (expand-file-name
+        (format "%sTest.java" clzname)
+        (replace-regexp-in-string "src/main/java" "src/test/java" dir)))))
+
+(defun spt/coerce-to-srcfile (file)
+  "Force file to source file path."
+  (let
+    ((dir (jh/parent-dir file))
+      (clzname (jh/filename-without-extension file)))
+    (if
+      (string-match-p ".*Test$" clzname)
+      (expand-file-name
+        (format "%s.java" (replace-regexp-in-string "Test$" "" clzname))
+        (replace-regexp-in-string "src/test/java" "src/main/java" dir))
+      file)))
+
+(defun spt/swap-test-and-source ()
+  "swap between source file and test file."
+  (interactive)
+  (let*
+    ((file (buffer-file-name))
+      (clzname (jh/filename-without-extension file)))
+    (find-file
+      (if (string-match-p ".*Test$" clzname)
+        (spt/coerce-to-srcfile file) (spt/coerce-to-testfile file)))))
 
 ;; -----------------------------------------------------------------------------
 ;;  _   _ _____ _     ____  _____ ____
@@ -256,7 +336,7 @@
   (directory-files-recursively (spt/doc-root) "^.*\\.md$"))
 
 (defun spt/docfile-to-docinfo (&optional file)
-  "Convert document filename to fileinfo."
+  "Convert document filename to docinfo."
   (let*
     (
       ;; preparing data
@@ -1028,6 +1108,7 @@
   (define-key spt/leader (kbd "i") #'(lambda () (interactive) (spt/switch-to "impl")))
   (define-key spt/leader (kbd "c") #'(lambda () (interactive) (spt/switch-to "controller")))
   (define-key spt/leader (kbd "h") #'(lambda () (interactive) (spt/switch-to "helper")))
+  (define-key spt/leader (kbd "t") #'spt/swap-test-and-source)
 
   ;; todo
   (define-key spt/leader (kbd "P") 'spt/run-test-class-command)
