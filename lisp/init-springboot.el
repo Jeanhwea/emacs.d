@@ -189,29 +189,29 @@
 (defvar spt/file-cache nil
   "File cache that stores all java class file.")
 
+(defun spt/file-cache-key (fileinfo)
+  "Construct file cache key via FILEINFO."
+  (let
+    ((entity (spt/coerce-to-entity fileinfo))
+      (bldname (nth 1 fileinfo)))
+    (concat entity "/" bldname)))
+
 (defun spt/file-cache-init ()
   "Initial file cache if possible."
-  (and spt/file-cache
-    ((setq spt/file-cache (make-hash-table :test 'equal))
-      (dolist (fileinfo (spt/scan-source-files))
-        (let ((entity (spt/coerce-to-entity (nth 0 fileinfo)))
-               (bldname (nth 1 fileinfo)))
-          (puthash (concat entity "/" bldname) fileinfo spt/file-cache))))))
+  (or spt/file-cache
+    (setq spt/file-cache (make-hash-table :test 'equal))
+    (dolist (fileinfo (spt/scan-source-files))
+      (puthash (spt/file-cache-key fileinfo) fileinfo spt/file-cache))))
 
-(defun spt/file-cache-put (file)
+(defun spt/file-cache-put (fileinfo)
   "Put a file to file cache."
   (and (spt/file-cache-init)
-    (let*
-      ((fileinfo (spt/filename-to-fileinfo file))
-        (entity (spt/coerce-to-entity (nth 0 fileinfo)))
-        (bldname (nth 1 fileinfo)))
-      (puthash (concat entity "/" bldname) fileinfo spt/file-cache))))
+    (puthash (spt/file-cache-key fileinfo) fileinfo spt/file-cache)))
 
-(defun spt/file-cache-get (clazz bundle)
+(defun spt/file-cache-get (fileinfo bundle)
   "Get a file to file cache."
   (and (spt/file-cache-init)
-    (let ((entity (spt/coerce-to-entity clazz)))
-      (gethash (concat entity "/" bundle) spt/file-cache))))
+    (gethash (spt/file-cache-key fileinfo) spt/file-cache)))
 
 
 ;; -----------------------------------------------------------------------------
@@ -240,8 +240,7 @@
   (or (member bundle spt/bundle-of-interest)
     (error (concat "Unknown bundle type: " bundle)))
   (let*
-    ((clzname (nth 0 fileinfo))
-      (mdlname (nth 2 fileinfo))
+    ((mdlname (nth 2 fileinfo))
       (ettname (spt/coerce-to-entity fileinfo))
       (mdldir (expand-file-name mdlname (spt/app-root)))
       (blddir
@@ -261,14 +260,13 @@
   "Get alternative filename with selected BUNDLE."
   (let*
     ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
-      (clzname (nth 0 fileinfo))
-      (lookup
-        (spt/file-cache-get clzname bundle)))
+      (lookup (spt/file-cache-get fileinfo bundle)))
     (if lookup
       ;; if found, return the first filename
-      (car (last (car lookup)))
+      (car (last lookup))
       ;; otherwise, construct a filename
-      (spt/coerce-to-filename fileinfo bundle))))
+      (and (spt/file-cache-put fileinfo)
+        (spt/coerce-to-filename fileinfo bundle)))))
 
 ;; -----------------------------------------------------------------------------
 ;;
