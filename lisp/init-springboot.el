@@ -712,6 +712,8 @@
         (list "findById" "findByCode" "findAllById" "findAllByCode")))
     (meta (format "This value is named %s" arg))))
 
+;; (add-to-list 'company-backends 'spt/company-jpa-backend)
+
 ;; -----------------------------------------------------------------------------
 ;; Modifiers and Picker
 ;; -----------------------------------------------------------------------------
@@ -905,13 +907,6 @@
       (let ((colname (car col)))
         (and colname (puthash colname col cache))))
     cache))
-
-;; -----------------------------------------------------------------------------
-;; company
-;; -----------------------------------------------------------------------------
-
-
-;; (add-to-list 'company-backends 'spt/company-jpa-backend)
 
 ;; -----------------------------------------------------------------------------
 ;; Transfer file to others
