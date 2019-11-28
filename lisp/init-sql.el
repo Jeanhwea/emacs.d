@@ -76,7 +76,7 @@
 (defvar jh/oracle-lpre ":) " "Oracle line prefix")
 
 ;; parameter
-(defvar jh/oracle-row-limit 1000 "Oracle row limit")
+(defvar jh/oracle-row-limit 200 "Oracle row limit")
 
 ;; -----------------------------------------------------------------------------
 ;;
@@ -458,6 +458,7 @@
       (insert (jh/oracle-csvfy-result-set
                 (jh/oracle-fetch-result-set tabname)
                 (jh/oracle-list-columns tabname)))
+      ;; (csv-align-fields t (point-min) (point-max))
       ;; go to the beigining
       (goto-char (point-min)))))
 
