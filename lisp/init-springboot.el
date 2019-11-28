@@ -190,28 +190,27 @@
 ;; |_|   |___|_____|_____|_|  |_/_/   \_\_| |_____|
 ;; -----------------------------------------------------------------------------
 
-(defun spt/coerce-to-entity-name (fileinfo)
+(defun spt/coerce-to-entity (fileinfo)
   "Force to convert to entity name."
   (let
     ((clzname (nth 0 fileinfo)) (bldname (nth 1 fileinfo)))
     (cond
-    ((string= "repo" bldname)
-      (replace-regexp-in-string "Repository$" "" clzname))
-    ((string= "impl" bldname)
-      (replace-regexp-in-string
-        "\\(Service\\|Repository\\)Impl$" "" clzname))
-    (t (replace-regexp-in-string
-         (concat (jh/pascalcase bldname) "$") "" clzname)))))
+      ((string= "repo" bldname)
+        (replace-regexp-in-string "Repository$" "" clzname))
+      ((string= "impl" bldname)
+        (replace-regexp-in-string
+          "\\(Service\\|Repository\\)Impl$" "" clzname))
+      (t (replace-regexp-in-string
+           (concat (jh/pascalcase bldname) "$") "" clzname)))))
 
-(defun spt/coerce-to-file-name (fileinfo bundle)
+(defun spt/coerce-to-filename (fileinfo bundle)
   "Force fileinfo to bundle filename."
   (or (member bundle spt/bundle-of-interest)
     (error (concat "Unknown bundle type: " bundle)))
   (let*
     ((clzname (nth 0 fileinfo))
-      (bldname (nth 1 fileinfo))
       (mdlname (nth 2 fileinfo))
-      (ettname (spt/coerce-to-entity-name clzname bldname))
+      (ettname (spt/coerce-to-entity fileinfo))
       (mdldir (expand-file-name (spt/app-root) mdlname))
       (blddir
         (cond
@@ -230,24 +229,35 @@
   "Lookup fileinfos list."
   (let ((res))
     (dolist (fileinfo (spt/scan-source-files))
-      (let ((clzname (nth 0 fileinfo)) (bldname (nth 1 fileinfo)))
+      (let ((bldname (nth 1 fileinfo)))
         (and (string= bundle bldname)
-          (string= entity (spt/coerce-to-entity-name clzname bldname))
+          (string= entity (spt/coerce-to-entity fileinfo))
           (add-to-list 'res fileinfo))))
     res))
 
 (defun spt/get-alternative-filename (bundle)
-  "Get alternative filename with selected bundle."
+  "Get alternative filename with selected BUNDLE."
   (let*
-    ((file (buffer-file-name))
-      (clzname (jh/pascalcase (jh/filename-without-extension file)))
-      (bldname (car (last (split-string file "/" t))))
-      (lookup (spt/lookup-fileinfos bundle
-                (spt/coerce-to-entity-name clzname bldname))))
+    ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
+      (lookup
+        (spt/lookup-fileinfos bundle
+          (spt/coerce-to-entity fileinfo))))
     (if lookup
+      ;; if found, return the first filename
       (car (last (car lookup)))
-      ;; TODO
-      )))
+      ;; otherwise, construct a filename
+      (spt/coerce-to-filename fileinfo bundle))))
+
+;; -----------------------------------------------------------------------------
+;;
+;; Interactive Commands
+;; -----------------------------------------------------------------------------
+(defun spt/switch-to-file ()
+  "Switch to related file."
+  (interactive)
+  (let ((bundle (completing-read "Switch to >> "
+                  spt/bundle-of-interest)))
+    (find-file (spt/get-alternative-filename bundle))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
