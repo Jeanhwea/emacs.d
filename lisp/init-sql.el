@@ -161,8 +161,8 @@
           colname jh/oracle-nsep))
       ((string= dbtype "DATE")
         (format
-          "TO_CHAR(t.%s, 'yyyy-mm-dd hh24:mi:ss')"
-          colname))
+          "NVL(TO_CHAR(t.%s,'yyyy-mm-dd hh24:mi:ss'),'%s')"
+          colname jh/oracle-nsep))
       (t (format "t.%s" colname)))))
 
 (defun jh/oracle-gen-uniform-select-query (tabname colinfos &optional limit)
@@ -292,9 +292,9 @@
       (cond
         ;; null lob
         ((string= value jh/oracle-nsep)
-          (format "### %s(null) ###" dbtype))
+          (format "# %s(null) #" dbtype))
         ;; default lob, just display size
-        (t (format "### %s(%s) ###" dbtype
+        (t (format "# %s(%s) #" dbtype
              (file-size-human-readable (string-to-number value))))))
     ;; default return value
     (t (if (string= value jh/oracle-nsep) "null" value))))
@@ -348,9 +348,9 @@
       (cond
         ;; null lob
         ((string= value jh/oracle-nsep)
-          (format "### %s(null) ###" dbtype))
+          (format "%s(null)" dbtype))
         ;; default lob, just display size
-        (t (format "### %s(%s) ###" dbtype
+        (t (format "%s(%s)" dbtype
              (file-size-human-readable (string-to-number value))))))
     ;; default return value
     (t (if (string= value jh/oracle-nsep) "null" value))))
