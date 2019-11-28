@@ -233,7 +233,7 @@
         (spt/bundle-entity-cache-put fileinfo)
         (spt/coerce-to-filename fileinfo bundle)))))
 
-(defun spt/switch-to-file (&optional bundle)
+(defun spt/switch-to (&optional bundle)
   "Switch to related file."
   (find-file
     (spt/get-alternative-filename
@@ -976,23 +976,23 @@
 ;;           |___/                               |___/
 ;; -----------------------------------------------------------------------------
 (progn
-  (define-prefix-command 'spt/leader-key-map)
+  (define-prefix-command 'spt/leader)
 
   ;; switcher keybinding
-  (define-key spt/leader-key-map (kbd "e") #'(lambda () (interactive) (spt/switch-to-file "entity")))
-  (define-key spt/leader-key-map (kbd "r") #'(lambda () (interactive) (spt/switch-to-file "repo")))
-  (define-key spt/leader-key-map (kbd "s") #'(lambda () (interactive) (spt/switch-to-file "service")))
-  (define-key spt/leader-key-map (kbd "i") #'(lambda () (interactive) (spt/switch-to-file "impl")))
-  (define-key spt/leader-key-map (kbd "c") #'(lambda () (interactive) (spt/switch-to-file "controller")))
-  (define-key spt/leader-key-map (kbd "h") #'(lambda () (interactive) (spt/switch-to-file "helper")))
+  (define-key spt/leader (kbd "e") #'(lambda () (interactive) (spt/switch-to "entity")))
+  (define-key spt/leader (kbd "r") #'(lambda () (interactive) (spt/switch-to "repo")))
+  (define-key spt/leader (kbd "s") #'(lambda () (interactive) (spt/switch-to "service")))
+  (define-key spt/leader (kbd "i") #'(lambda () (interactive) (spt/switch-to "impl")))
+  (define-key spt/leader (kbd "c") #'(lambda () (interactive) (spt/switch-to "controller")))
+  (define-key spt/leader (kbd "h") #'(lambda () (interactive) (spt/switch-to "helper")))
 
   ;; todo
-  (define-key spt/leader-key-map (kbd "P") 'spt/run-test-class-command)
-  (define-key spt/leader-key-map (kbd "d") 'spt/toggle-controller-and-doc)
-  (define-key spt/leader-key-map (kbd "j") 'spt/company-jpa-backend)
-  (define-key spt/leader-key-map (kbd "m") 'spt/jump-to-class-methods)
-  (define-key spt/leader-key-map (kbd "p") 'spt/run-test-method-command)
-  (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class))
-(global-set-key (kbd "M-[") 'spt/leader-key-map)
+  (define-key spt/leader (kbd "P") 'spt/run-test-class-command)
+  (define-key spt/leader (kbd "d") 'spt/toggle-controller-and-doc)
+  (define-key spt/leader (kbd "j") 'spt/company-jpa-backend)
+  (define-key spt/leader (kbd "m") 'spt/jump-to-class-methods)
+  (define-key spt/leader (kbd "p") 'spt/run-test-method-command)
+  (define-key spt/leader (kbd "RET") 'spt/try-import-class))
+(global-set-key (kbd "M-[") 'spt/leader)
 
 (provide 'init-springboot)
