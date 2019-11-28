@@ -129,32 +129,23 @@
 ;; | | | | ____| |   |  _ \| ____|  _ \
 ;; | |_| |  _| | |   | |_) |  _| | |_) |
 ;; |  _  | |___| |___|  __/| |___|  _ <
-;; |_| |_|_____|_____|_|   |_____|_| \_\
+;; |_| |_|_____|_____|_|   |_____|_| \_\ for source files
 ;; -----------------------------------------------------------------------------
 
 (defun spt/source-files ()
   "Return a list of `*.java' files in the source folder."
   (directory-files-recursively (spt/src-root) "^.*\\.java$"))
 
-(defun spt/test-files ()
-  "Return a list of `*.java' files in the test folder."
-  (directory-files-recursively (spt/test-root) "^.*\\.java$"))
-
-(defun spt/doc-files ()
-  "Return a list of `*.md' files in the document folder."
-  (directory-files-recursively (spt/doc-root) "^.*\\.md$"))
-
 (defun spt/filename-to-fileinfo (&optional file)
   "Convert filename to fileinfo."
   (let*
     (
-      ;; preparing
+      ;; preparing data
       (file (or file (buffer-file-name)))
       (tail-folder-list
         (split-string
           (replace-regexp-in-string
             (spt/app-root) "" (jh/parent-dir file)) "/" t))
-      ;;
       ;; class name
       (clzname
         (jh/pascalcase
@@ -220,7 +211,7 @@
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
-(defun spt/get-alternative-filename (bundle)
+(defun spt/exchange-filename (bundle)
   "Get alternative filename with selected BUNDLE."
   (let*
     ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
@@ -236,9 +227,68 @@
 (defun spt/switch-to (&optional bundle)
   "Switch to related file."
   (find-file
-    (spt/get-alternative-filename
+    (spt/exchange-filename
       (or bundle
         (completing-read "Switch to >> " spt/bundle-of-interest)))))
+
+
+;; -----------------------------------------------------------------------------
+;;  _   _ _____ _     ____  _____ ____
+;; | | | | ____| |   |  _ \| ____|  _ \
+;; | |_| |  _| | |   | |_) |  _| | |_) |
+;; |  _  | |___| |___|  __/| |___|  _ <
+;; |_| |_|_____|_____|_|   |_____|_| \_\ for test files
+;; -----------------------------------------------------------------------------
+
+(defun spt/test-files ()
+  "Return a list of `*.java' files in the test folder."
+  (directory-files-recursively (spt/test-root) "^.*\\.java$"))
+
+
+;; -----------------------------------------------------------------------------
+;;  _   _ _____ _     ____  _____ ____
+;; | | | | ____| |   |  _ \| ____|  _ \
+;; | |_| |  _| | |   | |_) |  _| | |_) |
+;; |  _  | |___| |___|  __/| |___|  _ <
+;; |_| |_|_____|_____|_|   |_____|_| \_\ for document files
+;; -----------------------------------------------------------------------------
+
+(defun spt/doc-files ()
+  "Return a list of `*.md' files in the document folder."
+  (directory-files-recursively (spt/doc-root) "^.*\\.md$"))
+
+(defun spt/docfile-to-docinfo (&optional file)
+  "Convert document filename to fileinfo."
+  (let*
+    (
+      ;; preparing data
+      (file (or file (buffer-file-name)))
+      (tail-folder-list
+        (split-string
+          (replace-regexp-in-string
+            (spt/doc-root) "" (jh/parent-dir file)) "/" t))
+      ;; function name
+      (funcname (jh/filename-without-extension file))
+      ;; base name
+      (basename (car (last tail-folder-list)))
+      ;; module name
+      (mdlname (car tail-folder-list)))
+    (list funcname basename mdlname file)))
+
+(defun spt/scan-doc-files ()
+  "Scan document files."
+  (let ((docinfos))
+    (dolist (file (spt/doc-files))
+      (let*
+        ((docinfo (spt/docfile-to-docinfo file))
+          (funcname (nth 0 docinfo))
+          (mdlname (nth 2 docinfo)))
+        (and
+          mdlname
+          (not (string= "readme" funcname))
+          (not (string= "common" mdlname))
+          (add-to-list 'docinfos docinfo t))))
+    docinfos))
 
 
 ;; -----------------------------------------------------------------------------
