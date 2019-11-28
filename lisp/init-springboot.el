@@ -341,6 +341,43 @@
           (setq addr (+ addr 1)))))
     imports))
 
+(defun spt/parse-java-fields (text)
+  "Parse all fields information in class."
+  (let ((regexp
+          (concat
+            "^  \\(public\\|private\\|protected\\)[ \t]*"
+            "\\(static\\|\\)[ \t]*"
+            "\\(final\\|\\)[ \t]*"
+            "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)[ \t]*"
+            "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
+            "\\( = \\|;\\)[ \t]*"))
+         (addr 0)
+         (fields))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          ;; add a new field
+          (let
+            ((field (make-hash-table :test 'equal :size 5))
+              (str1 (match-string 1 text))
+              (str2 (match-string 2 text))
+              (str3 (match-string 3 text))
+              (str4 (match-string 4 text))
+              (str5 (match-string 5 text)))
+            ;; put value
+            (puthash 'visibility str1 field)
+            (and (string= "static" str2) (puthash 'static t field))
+            (and (string= "final" str3) (puthash 'final t field))
+            (puthash 'type str4 field)
+            (puthash 'name str5 field)
+            (puthash 'addr addr field)
+            ;; append field to list
+            (add-to-list 'fields field t))
+          ;; next
+          (setq addr (+ addr 1)))))
+    fields))
+
 (defun spt/parse-java-class-methods (text)
   "Parse java class methods, return a list of signature."
   (let
@@ -423,6 +460,9 @@
 
     ;; parse imports
     (puthash 'imports (spt/parse-java-imports text) metainfo)
+
+    ;; parse fields
+    (puthash 'fields (spt/parse-java-fields text) metainfo)
 
     ;; parse interface methods
     (and
