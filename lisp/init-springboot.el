@@ -485,145 +485,158 @@
 ;; |_| /_/   \_\_| \_\____/|_____|_| \_\  for Spring
 ;; -----------------------------------------------------------------------------
 
-(defun spt/extract-java-impl-override-methods (text)
-  "Extract java method in interface."
-  (let ((regexp
-          (concat
-            "^  @Override[ \t\n]*"
-            "public "
-            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "(\\([^;{]*\\))"
-            "\\( {\\|;\\)$"))
-         (addr 0)
-         (res))
+(defun spt/read-java-override-methods (text)
+  "Read override methods. like `@Override ...' "
+  (let
+    ((regexp
+       (concat
+         "^  @Override[ \t\n]*"
+         "\\(public\\|private\\|protected\\)[ \t]*"
+         "\\(static\\|\\)[ \t]*"
+         "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+         "(\\([^;{]*\\))[ \t]*"
+         "\\(throws\\|\\)[ \t]*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
+         "\\( {\\|;\\)$"))
+      (addr 0)
+      (methods))
     (while addr
       (save-match-data
         (setq addr (string-match regexp text addr))
         (and addr
-          (setq
-            return (match-string 1 text)
-            func (match-string 2 text)
-            args (match-string 3 text))
-          (setq
-            sign (list (jh/strip return) func (jh/strip args) addr)
-            res (cons sign res)
-            addr (+ addr 1))
+          ;; add a new method
+          (let
+            ((method (make-hash-table :test 'equal :size 10))
+              (str1 (match-string 1 text))
+              (str2 (match-string 2 text))
+              (str3 (match-string 3 text))
+              (str4 (match-string 4 text))
+              (str5 (match-string 5 text)))
+            ;; put value
+            (and (string= "static" str2) (puthash 'static t method))
+            (puthash 'visibility str1 method)
+            (puthash 'return (jh/strip str3) method)
+            (puthash 'funcname str4 method)
+            (puthash 'args (jh/strip str5) method)
+            (puthash 'addr addr method)
+            ;; append method to list
+            (add-to-list 'methods method t))
+          ;; next
           (setq addr (+ addr 1)))))
-    (reverse res)))
+    methods))
 
-(defun spt/extract-java-junit-test-methods (text)
-  "Extract java method in interface."
-  (let ((regexp
-          (concat
-            "^  @\\(Test\\|Test([^)]*)\\)[ \t\n]*"
-            "public "
-            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "(\\([^;{]*\\))[ \t]*"
-            "\\(throws\\|\\)[ \t]*"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
-            "\\( {\\|;\\)$"))
-         (addr 0)
-         (res))
+(defun spt/read-junit-test-methods (text)
+  "Read junit test method. like `@Test(...)' "
+  (let
+    ((regexp
+       (concat
+         "^  @\\(Test\\|Test([^)]*)\\)[ \t\n]*"
+         "public [ \t]*"
+         "\\(static\\|\\)[ \t]*"
+         "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+         "(\\([^;{]*\\))[ \t]*"
+         "\\(throws\\|\\)[ \t]*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
+         "\\( {\\|;\\)$"))
+      (addr 0)
+      (methods))
     (while addr
       (save-match-data
         (setq addr (string-match regexp text addr))
         (and addr
-          (setq
-            return (match-string 2 text)
-            func (match-string 3 text)
-            args (match-string 4 text))
-          (setq
-            sign (list (jh/strip return) func (jh/strip args) addr)
-            res (cons sign res)
-            addr (+ addr 1))
+          ;; add a new method
+          (let
+            ((method (make-hash-table :test 'equal :size 10))
+              (str1 (match-string 1 text))
+              (str2 (match-string 2 text))
+              (str3 (match-string 3 text))
+              (str4 (match-string 4 text))
+              (str5 (match-string 5 text)))
+            ;; put value
+            (and (string= "static" str2) (puthash 'static t method))
+            (puthash 'visibility "public" method)
+            (puthash 'return (jh/strip str3) method)
+            (puthash 'funcname str4 method)
+            (puthash 'args (jh/strip str5) method)
+            (puthash 'addr addr method)
+            ;; append method to list
+            (add-to-list 'methods method t))
+          ;; next
           (setq addr (+ addr 1)))))
-    (reverse res)))
+    methods))
 
-(defun spt/extract-java-entity-fields (text)
-  "Extract all fields information in entity."
-  (let ((regexp
-          (concat
-            "^  @\\(JoinColumn\\|Column\\)"
-            "(\\(name = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
-            "private[ \t]+\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
-            "[ \t]+\\([_a-zA-Z0-9]+\\);"))
-         (addr 0)
-         (res))
-    (while addr
-      (save-match-data
-        (setq addr (string-match regexp text addr))
-        (and addr
-          (setq
-            colname (match-string 3 text)
-            type (match-string 4 text)
-            name (match-string 5 text))
-          (setq field (list colname type name addr)
-            res (cons field res))
-          (setq addr (+ addr 1)))))
-    (reverse res)))
-
-(defun spt/extract-java-controller-module (text)
-  "Extract spring boot controller module name."
-  (let ((regexp "^package .*\\.\\([^.]*\\)\\.controller;$")
-         (addr 0)
-         (module))
+(defun spt/read-endpoint-prefix (text)
+  "Read controller endpoint prefix."
+  (let
+    ((regexp "^@RequestMapping\(\"\\([^\"]*\\)\"\)$")
+      (addr 0)
+      (prefix))
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
-        (setq module (match-string 1 text))))
-    module))
+        (setq prefix (match-string 1 text))))
+    prefix))
 
-(defun spt/extract-java-controller-router (text)
-  "Extract spring boot controller base url and more."
-  (let ((regexp "^@RequestMapping\(\"\\([^\"]*\\)\"\)$")
-         (addr 0)
-         (router))
-    (save-match-data
-      (setq addr (string-match regexp text addr))
-      (and addr
-        (setq router (match-string 1 text))))
-    router))
-
-(defun spt/extract-java-controller-apis (text)
-  "Extract all api information in controller."
-  (let ((regexp
-          (concat
-            "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping"
-            "([ \t\n]*\\(value = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
-            "public \\(static\\|\\)[ \t]*"
-            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\)"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "(\\([^;{]*\\)) {$"))
-         (addr 0)
-         (res))
+(defun spt/read-endpoint-suffixes (text)
+  "Read controller endpoint suffixes."
+  (let
+    ((regexp
+       (concat
+         "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping"
+         "([ \t\n]*\\(value = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
+         "public \\(static\\|\\)[ \t]*"
+         "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\)"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+         "(\\([^;{]*\\)) {$"))
+      (addr 0)
+      (suffixes))
     (while addr
       (save-match-data
         (setq addr (string-match regexp text addr))
         (and addr
-          (setq
-            method (match-string 1 text)
-            uri (match-string 3 text)
-            return (match-string 5 text)
-            func (match-string 6 text)
-            args (match-string 7 text))
-          (setq
-            api (list (jh/upcase method) uri (jh/strip return) func (jh/strip args) addr)
-            res (cons api res))
+          ;; add a new method
+          (let
+            ((suffix (make-hash-table :test 'equal :size 10))
+              (str1 (match-string 1 text))
+              (str3 (match-string 3 text))
+              (str5 (match-string 5 text))
+              (str6 (match-string 6 text))
+              (str7 (match-string 7 text)))
+            ;; put value
+            (puthash 'http-method (jh/upcase str1) suffix)
+            (puthash 'http-suffix str3 suffix)
+            (puthash 'return (jh/strip str5) suffix)
+            (puthash 'funcname str6 suffix)
+            (puthash 'args (jh/strip str7) suffix)
+            (puthash 'addr addr suffix)
+            ;; append suffix to list
+            (add-to-list 'suffixes suffix t))
+          ;; next
           (setq addr (+ addr 1)))))
-    (reverse res)))
+    suffixes))
 
-(defun spt/extract-java-entity-table (text)
-  "Extract java package name."
-  (let ((regexp "^@Table(\\(name = \\|\\)\"\\([^\"]*\\)\"[^)]*)[ \t]*$")
-         (addr 0)
-         (table))
+(defun spt/read-endpoints (text)
+  "Read controller endpoints."
+  (let
+    ((prefix (spt/read-endpoint-prefix text))
+      (endpoints (spt/read-endpoint-suffixes text)))
+    (dolist (endpoint endpoints)
+      (puthash 'http-prefix prefix endpoint))
+    endpoints))
+
+(defun spt/read-entity-tabname (text)
+  "Read entity table name. like `@Table(...)' "
+  (let
+    ((regexp "^@Table(\\(name = \\|\\)\"\\([^\"]*\\)\"[^)]*)[ \t]*$")
+      (addr 0)
+      (tabname))
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
-        (setq table (match-string 2 text))))
-    table))
+        (setq tabname (match-string 2 text))))
+    tabname))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
