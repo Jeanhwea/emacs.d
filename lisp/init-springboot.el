@@ -211,7 +211,7 @@
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
-(defun spt/exchange-filename (bundle)
+(defun spt/cons-exchange-source-file (bundle)
   "Get alternative filename with selected BUNDLE."
   (let*
     ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
@@ -226,10 +226,8 @@
 
 (defun spt/switch-to (&optional bundle)
   "Switch to related file."
-  (find-file
-    (spt/exchange-filename
-      (or bundle
-        (completing-read "Switch to >> " spt/bundle-of-interest)))))
+  (let ((bundle (or bundle (completing-read "To >> " spt/bundle-of-interest))))
+    (find-file (spt/cons-exchange-source-file bundle))))
 
 
 ;; -----------------------------------------------------------------------------
