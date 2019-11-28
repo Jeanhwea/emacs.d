@@ -191,10 +191,7 @@
 
 (defun spt/file-cache-key (fileinfo)
   "Construct file cache key via FILEINFO."
-  (let
-    ((entity (spt/coerce-to-entity fileinfo))
-      (bldname (nth 1 fileinfo)))
-    (concat entity "/" bldname)))
+  (concat (spt/coerce-to-entity fileinfo) "/" (nth 1 fileinfo)))
 
 (defun spt/file-cache-init ()
   "Initial file cache if possible."
