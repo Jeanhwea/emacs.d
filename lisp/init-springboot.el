@@ -180,35 +180,38 @@
     fileinfos))
 
 ;; -----------------------------------------------------------------------------
-;;  _____ _ _         ____           _
-;; |  ___(_) | ___   / ___|__ _  ___| |__   ___
-;; | |_  | | |/ _ \ | |   / _` |/ __| '_ \ / _ \
-;; |  _| | | |  __/ | |__| (_| | (__| | | |  __/
-;; |_|   |_|_|\___|  \____\__,_|\___|_| |_|\___|
+;;   ____           _
+;;  / ___|__ _  ___| |__   ___
+;; | |   / _` |/ __| '_ \ / _ \
+;; | |__| (_| | (__| | | |  __/
+;;  \____\__,_|\___|_| |_|\___|
 ;; -----------------------------------------------------------------------------
-(defvar spt/file-cache nil
+(defvar spt/bundle-entity-cache nil
   "File cache that stores all java class file.")
 
-(defun spt/file-cache-key (fileinfo)
+(defun spt/bundle-entity-cache-key (fileinfo &optional bundle)
   "Construct file cache key via FILEINFO."
-  (concat (spt/coerce-to-entity fileinfo) "/" (nth 1 fileinfo)))
+  (let ((bldname (or bundle (nth 1 fileinfo))))
+    (concat bldname "/" (spt/coerce-to-entity fileinfo))))
 
-(defun spt/file-cache-init ()
+(defun spt/bundle-entity-cache-init ()
   "Initial file cache if possible."
-  (or spt/file-cache
-    (setq spt/file-cache (make-hash-table :test 'equal))
-    (dolist (fileinfo (spt/scan-source-files))
-      (puthash (spt/file-cache-key fileinfo) fileinfo spt/file-cache))))
+  (or spt/bundle-entity-cache
+    (and
+      (setq spt/bundle-entity-cache (make-hash-table :test 'equal))
+      (dolist (fileinfo (spt/scan-source-files))
+        (puthash
+          (spt/bundle-entity-cache-key fileinfo) fileinfo spt/bundle-entity-cache)))))
 
-(defun spt/file-cache-put (fileinfo)
+(defun spt/bundle-entity-cache-put (fileinfo)
   "Put a file to file cache."
-  (and (spt/file-cache-init)
-    (puthash (spt/file-cache-key fileinfo) fileinfo spt/file-cache)))
+  (and (spt/bundle-entity-cache-init)
+    (puthash (spt/bundle-entity-cache-key fileinfo) fileinfo spt/bundle-entity-cache)))
 
-(defun spt/file-cache-get (fileinfo bundle)
+(defun spt/bundle-entity-cache-get (fileinfo bundle)
   "Get a file to file cache."
-  (and (spt/file-cache-init)
-    (gethash (spt/file-cache-key fileinfo) spt/file-cache)))
+  (and (spt/bundle-entity-cache-init)
+    (gethash (spt/bundle-entity-cache-key fileinfo bundle) spt/bundle-entity-cache)))
 
 
 ;; -----------------------------------------------------------------------------
@@ -257,12 +260,13 @@
   "Get alternative filename with selected BUNDLE."
   (let*
     ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
-      (lookup (spt/file-cache-get fileinfo bundle)))
+      (lookup (spt/bundle-entity-cache-get fileinfo bundle)))
     (if lookup
       ;; if found, return the first filename
       (car (last lookup))
       ;; otherwise, construct a filename
-      (and (spt/file-cache-put fileinfo)
+      (and
+        (spt/bundle-entity-cache-put fileinfo)
         (spt/coerce-to-filename fileinfo bundle)))))
 
 ;; -----------------------------------------------------------------------------
