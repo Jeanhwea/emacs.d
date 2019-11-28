@@ -274,9 +274,10 @@
 
 (defun spt/parse-java-package (text)
   "Parse java package name in source file."
-  (let ((regexp "^package \\([^;]*\\);$")
-         (addr 0)
-         (package))
+  (let
+    ((regexp "^package \\([^;]*\\);$")
+      (addr 0)
+      (package))
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
@@ -300,226 +301,140 @@
       (setq addr (string-match regexp text addr))
       (and addr
         (and
-          (puthash "visibility" (match-string 1 text) params)
+          (puthash 'visibility (match-string 1 text) params)
           (setq flag1 (match-string 2 text)) ;; class or interface
           (setq flag2 (match-string 4 text)) ;; extends or implements
           (cond
             ((string= flag1 "class")
-              (puthash "clzname" (match-string 3 text) params))
+              (puthash 'clzname (match-string 3 text) params))
             ((string= flag1 "interface")
-              (puthash "ifacename" (match-string 3 text) params)))
+              (puthash 'ifacename (match-string 3 text) params)))
           (cond
             ((string= flag2 "extends")
-              (puthash "parent" (match-string 5 text) params))
+              (puthash 'supername (match-string 5 text) params))
             ((string= flag2 "implements")
-              (puthash "implname" (match-string 5 text) params))))))
+              (puthash 'implname (match-string 5 text) params))))))
     params))
+
+(defun spt/parse-java-imports (text)
+  "Parse java imports, return a list of (static pkgname clzname)."
+  (let
+    ((regexp "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$")
+      (addr 0)
+      (imports))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          (let
+            ((import (make-hash-table :test 'equal :size 3))
+              (str1 (match-string 1 text))
+              (str2 (match-string 2 text))
+              (str3 (match-string 3 text)))
+            ;; put value
+            (and (string= "static" str1) (puthash 'static t import))
+            (puthash 'pkgname str2 import)
+            (puthash 'clzname str3 import)
+            ;; append import
+            (add-to-list 'imports import t))
+          ;; next
+          (setq addr (+ addr 1)))))
+    imports))
+
+(defun spt/parse-java-class-methods (text)
+  "Parse java class methods, return a list of signature."
+  (let
+    ((regexp
+       (concat
+         "^  \\(public\\|private\\|protected\\)[ \t]*"
+         "\\(static\\|\\)[ \t]*"
+         "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+         "(\\([^;{]*\\))[ \t]*"
+         "\\(throws\\|\\)[ \t]*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
+         "\\( {\\|;\\)$"))
+      (addr 0)
+      (methods))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          ;; add a new method
+          (let
+            ((method (make-hash-table :test 'equal :size 10))
+              (str1 (match-string 1 text))
+              (str2 (match-string 2 text))
+              (str3 (match-string 3 text))
+              (str4 (match-string 4 text))
+              (str5 (match-string 5 text)))
+            ;; put value
+            (and (string= "static" str2) (puthash 'static t method))
+            (puthash 'visibility str1 method)
+            (puthash 'return (jh/strip str3) method)
+            (puthash 'funcname str4 method)
+            (puthash 'args (jh/strip str5) method)
+            (puthash 'addr addr method)
+            ;; append method to list
+            (add-to-list 'methods method t))
+          ;; next
+          (setq addr (+ addr 1)))))
+    methods))
+
+(defun spt/parse-java-iface-methods (text)
+  "Extract java interface methods in interface."
+  (let
+    ((regexp
+       (concat
+         "^  \\(public \\|\\)"
+         "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+         "(\\([^;{]*\\));$"))
+      (addr 0)
+      (methods))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          ;; add a new method
+          (let
+            ((method (make-hash-table :test 'equal :size 10))
+              (str2 (match-string 2 text))
+              (str3 (match-string 3 text))
+              (str4 (match-string 4 text)))
+            ;; put value
+            (puthash 'return (jh/strip str2) method)
+            (puthash 'funcname str3 method)
+            (puthash 'args (jh/strip str4) method)
+            (puthash 'addr addr method)
+            ;; append method to list
+            (add-to-list 'methods method t))
+          ;; next
+          (setq addr (+ addr 1)))))
+    methods))
 
 (defun spt/parse-java-meta (text)
   "Parse java class meta info to hashtable."
   (let
     ((metainfo (spt/parse-java-define text)))
-    (puthash "pkgname" (spt/parse-java-package text) metainfo)
+
+    ;; add pacakage name
+    (puthash 'pkgname (spt/parse-java-package text) metainfo)
+
+    ;; parse imports
+    (puthash 'imports (spt/parse-java-imports text) metainfo)
+
+    ;; parse interface methods
+    (and
+      (gethash 'ifacename metainfo)
+      (puthash 'methods (spt/parse-java-iface-methods text) metainfo))
+
+    ;; parse class methods
+    (and
+      (gethash 'clzname metainfo)
+      (puthash 'methods (spt/parse-java-class-methods text) metainfo))
+
     metainfo))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-(defun spt/compilation-start (cmd &optional dir)
-  "Run compilation command."
-  (let ((default-directory (or dir (spt/project-root))))
-    (compilation-start cmd)))
-
-;; -----------------------------------------------------------------------------
-;; Predictors
-;; -----------------------------------------------------------------------------
-(defun spt/source? (file)
-  "Return ture if FILE is a java source file."
-  (string-match-p "\\.java$" file))
-
-(defun spt/entity? (file)
-  "Return ture if FILE is a entity."
-  (string-match-p "^.*/entity/[_A-Za-z0-9]*\\.java$" file))
-
-(defun spt/repository? (file)
-  "Return ture if FILE is a repository."
-  (string-match-p "^.*/repo/[_A-Za-z0-9]*Repository\\.java$" file))
-
-(defun spt/controller? (file)
-  "Return ture if FILE is a controller."
-  (string-match-p "^.*/controller/[_A-Za-z0-9]*Controller\\.java$" file))
-
-(defun spt/service? (file)
-  "Return ture if FILE is a service."
-  (string-match-p "^.*/service/[_A-Za-z0-9]*Service\\.java$" file))
-
-(defun spt/implement? (file)
-  "Return ture if FILE is a implement."
-  (string-match-p "^.*/impl/[_A-Za-z0-9]*Impl\\.java$" file))
-
-(defun spt/testcase? (file)
-  "Return ture if FILE is a entity."
-  (string-match-p "^.*/src/test/java/.*/[_A-Za-z0-9]*Test\\.java$" file))
-
-(defun spt/maven-project? ()
-  "Return ture if current project is a maven project."
-  (file-exists-p
-    (expand-file-name "pom.xml"
-      (jh/git-project-root-dir default-directory))))
-
-;; -----------------------------------------------------------------------------
-;; Modifiers and Picker
-;; -----------------------------------------------------------------------------
-(defun spt/insert-import-package-statement (static package class)
-  "Insert `import com.package.ClassName;'"
-  (save-excursion
-    (progn
-      (goto-char (point-max))
-      (or (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$" nil t)
-        (progn
-          (goto-char (point-min))
-          (next-line)))
-      (end-of-line)
-      (newline)
-      (insert (jh/strip (format "import %s %s.%s;" static package class))))))
-
-(defun spt/pick-method-name ()
-  "Pick the method name in controller."
-  (let ((regexp
-          (concat
-            "^  \\(public\\|private\\|protected\\)[ \t]*"
-            "\\(static\\|\\)[ \t]*"
-            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "(\\([^;{]*\\))[ \t]*"
-            "\\(throws\\|\\)[ \t]*"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
-            "\\( {\\|;\\)$"))
-         (func))
-    (save-excursion
-      (progn
-        (search-backward-regexp regexp nil t)
-        (search-forward-regexp "(" nil t)
-        (backward-word)
-        (setq func (thing-at-point 'symbol))))
-    func))
-
-(defun spt/goto-function-body (file addr)
-  "Goto a function body"
-  (progn
-    (find-file file)
-    (goto-char addr)
-    (search-forward-regexp "{$")))
-
-;; -----------------------------------------------------------------------------
-;; Runner
-;; -----------------------------------------------------------------------------
-;; maven springboot test
-;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
-(defun spt/maven-test-command (class &optional package)
-  "Return maven test command."
-  (let ((subjects (if package (concat class "#" package) class)))
-    (concat "mvn test"
-      " -Dtest=" subjects
-      " -Dfile.encoding=UTF-8"
-      " --quiet --batch-mode")))
-
-(defun spt/run-test-class-command ()
-  "Run a test command."
-  (interactive)
-  (when (spt/testcase? (buffer-file-name))
-    (let ((this-class (jh/java-class-name)))
-      (spt/compilation-start (spt/maven-test-command this-class)))))
-
-(defun spt/run-test-method-command ()
-  "Run a test command."
-  (interactive)
-  (when (spt/testcase? (buffer-file-name))
-    (let* ((test-methods (mapcar #'cadr
-                           (spt/extract-java-junit-test-methods
-                             (jh/current-buffer))))
-            (nearest-method (spt/pick-method-name))
-            (this-class (jh/java-class-name))
-            (this-method (if (member nearest-method test-methods) nearest-method)))
-      (spt/compilation-start (spt/maven-test-command this-class this-method)))))
-
-;; -----------------------------------------------------------------------------
-;; Extractors
-;; -----------------------------------------------------------------------------
-
-(defun spt/extract-java-imported-classes (text)
-  "Extract package name and class name from line."
-  (let ((regexp "^import \\(static\\|\\)[ \t]*\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$")
-         (addr 0)
-         (res))
-    (while addr
-      (save-match-data
-        (setq addr (string-match regexp text addr))
-        (and addr
-          (setq
-            static (match-string 1 text)
-            package (match-string 2 text)
-            class (match-string 3 text))
-          (setq
-            res (cons (list static package class) res))
-          (setq addr (+ addr 1)))))
-    (reverse res)))
-
-(defun spt/extract-java-class-methods (text)
-  "Extract java methods, return a list of signature."
-  (let ((regexp
-          (concat
-            "^  \\(public\\|private\\|protected\\)[ \t]*"
-            "\\(static\\|\\)[ \t]*"
-            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "(\\([^;{]*\\))[ \t]*"
-            "\\(throws\\|\\)[ \t]*"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
-            "\\( {\\|;\\)$"))
-         (addr 0)
-         (res))
-    (while addr
-      (save-match-data
-        (setq addr (string-match regexp text addr))
-        (and addr
-          (setq
-            visb (match-string 1 text)
-            static (match-string 2 text)
-            return (match-string 3 text)
-            func (match-string 4 text)
-            args (match-string 5 text))
-          (setq
-            sign (list (jh/strip visb) static (jh/strip return) func (jh/strip args) addr)
-            res (cons sign res)
-            addr (+ addr 1)))))
-    (reverse res)))
-
-(defun spt/extract-java-inter-methods (text)
-  "Extract java method in interface."
-  (let ((regexp
-          (concat
-            "^  \\(public \\|\\)"
-            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "(\\([^;{]*\\));$"))
-         (addr 0)
-         (res))
-    (while addr
-      (save-match-data
-        (setq addr (string-match regexp text addr))
-        (and addr
-          (setq
-            return (match-string 2 text)
-            func (match-string 3 text)
-            args (match-string 4 text))
-          (setq
-            sign (list (jh/strip return) func (jh/strip args) addr)
-            res (cons sign res)
-            addr (+ addr 1)))))
-    (reverse res)))
 
 (defun spt/extract-java-impl-override-methods (text)
   "Extract java method in interface."
@@ -660,6 +575,133 @@
       (and addr
         (setq table (match-string 2 text))))
     table))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+(defun spt/compilation-start (cmd &optional dir)
+  "Run compilation command."
+  (let ((default-directory (or dir (spt/project-root))))
+    (compilation-start cmd)))
+
+;; -----------------------------------------------------------------------------
+;; Predictors
+;; -----------------------------------------------------------------------------
+(defun spt/source? (file)
+  "Return ture if FILE is a java source file."
+  (string-match-p "\\.java$" file))
+
+(defun spt/entity? (file)
+  "Return ture if FILE is a entity."
+  (string-match-p "^.*/entity/[_A-Za-z0-9]*\\.java$" file))
+
+(defun spt/repository? (file)
+  "Return ture if FILE is a repository."
+  (string-match-p "^.*/repo/[_A-Za-z0-9]*Repository\\.java$" file))
+
+(defun spt/controller? (file)
+  "Return ture if FILE is a controller."
+  (string-match-p "^.*/controller/[_A-Za-z0-9]*Controller\\.java$" file))
+
+(defun spt/service? (file)
+  "Return ture if FILE is a service."
+  (string-match-p "^.*/service/[_A-Za-z0-9]*Service\\.java$" file))
+
+(defun spt/implement? (file)
+  "Return ture if FILE is a implement."
+  (string-match-p "^.*/impl/[_A-Za-z0-9]*Impl\\.java$" file))
+
+(defun spt/testcase? (file)
+  "Return ture if FILE is a entity."
+  (string-match-p "^.*/src/test/java/.*/[_A-Za-z0-9]*Test\\.java$" file))
+
+(defun spt/maven-project? ()
+  "Return ture if current project is a maven project."
+  (file-exists-p
+    (expand-file-name "pom.xml"
+      (jh/git-project-root-dir default-directory))))
+
+;; -----------------------------------------------------------------------------
+;; Modifiers and Picker
+;; -----------------------------------------------------------------------------
+(defun spt/insert-import-package-statement (static package class)
+  "Insert `import com.package.ClassName;'"
+  (save-excursion
+    (progn
+      (goto-char (point-max))
+      (or (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$" nil t)
+        (progn
+          (goto-char (point-min))
+          (next-line)))
+      (end-of-line)
+      (newline)
+      (insert (jh/strip (format "import %s %s.%s;" static package class))))))
+
+(defun spt/pick-method-name ()
+  "Pick the method name in controller."
+  (let ((regexp
+          (concat
+            "^  \\(public\\|private\\|protected\\)[ \t]*"
+            "\\(static\\|\\)[ \t]*"
+            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+            "(\\([^;{]*\\))[ \t]*"
+            "\\(throws\\|\\)[ \t]*"
+            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
+            "\\( {\\|;\\)$"))
+         (func))
+    (save-excursion
+      (progn
+        (search-backward-regexp regexp nil t)
+        (search-forward-regexp "(" nil t)
+        (backward-word)
+        (setq func (thing-at-point 'symbol))))
+    func))
+
+(defun spt/goto-function-body (file addr)
+  "Goto a function body"
+  (progn
+    (find-file file)
+    (goto-char addr)
+    (search-forward-regexp "{$")))
+
+;; -----------------------------------------------------------------------------
+;; Runner
+;; -----------------------------------------------------------------------------
+;; maven springboot test
+;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
+(defun spt/maven-test-command (class &optional package)
+  "Return maven test command."
+  (let ((subjects (if package (concat class "#" package) class)))
+    (concat "mvn test"
+      " -Dtest=" subjects
+      " -Dfile.encoding=UTF-8"
+      " --quiet --batch-mode")))
+
+(defun spt/run-test-class-command ()
+  "Run a test command."
+  (interactive)
+  (when (spt/testcase? (buffer-file-name))
+    (let ((this-class (jh/java-class-name)))
+      (spt/compilation-start (spt/maven-test-command this-class)))))
+
+(defun spt/run-test-method-command ()
+  "Run a test command."
+  (interactive)
+  (when (spt/testcase? (buffer-file-name))
+    (let* ((test-methods (mapcar #'cadr
+                           (spt/extract-java-junit-test-methods
+                             (jh/current-buffer))))
+            (nearest-method (spt/pick-method-name))
+            (this-class (jh/java-class-name))
+            (this-method (if (member nearest-method test-methods) nearest-method)))
+      (spt/compilation-start (spt/maven-test-command this-class this-method)))))
+
+;; -----------------------------------------------------------------------------
+;; Extractors
+;; -----------------------------------------------------------------------------
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
