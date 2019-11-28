@@ -143,7 +143,7 @@
     (
       ;; preparing
       (file (or file (buffer-file-name)))
-      (relative-folder-list
+      (tail-folder-list
         (split-string
           (replace-regexp-in-string
             (spt/app-root) "" (jh/parent-dir file)) "/" t))
@@ -153,11 +153,9 @@
         (jh/pascalcase
           (jh/filename-without-extension file)))
       ;; bundle name
-      (bldname
-        (car (last relative-folder-list)))
+      (bldname (car (last tail-folder-list)))
       ;; module name
-      (mdlname
-        (car relative-folder-list))
+      (mdlname (car tail-folder-list))
       ;; package name
       (pkgname
         (mapconcat 'identity
@@ -180,6 +178,40 @@
           (member bldname spt/bundle-of-interest)
           (add-to-list 'fileinfos fileinfo t))))
     fileinfos))
+
+;; -----------------------------------------------------------------------------
+;;  _____ _ _         ____           _
+;; |  ___(_) | ___   / ___|__ _  ___| |__   ___
+;; | |_  | | |/ _ \ | |   / _` |/ __| '_ \ / _ \
+;; |  _| | | |  __/ | |__| (_| | (__| | | |  __/
+;; |_|   |_|_|\___|  \____\__,_|\___|_| |_|\___|
+;; -----------------------------------------------------------------------------
+(defvar spt/file-cache nil
+  "File cache that stores all java class file.")
+
+(defun spt/file-cache-init ()
+  "Initial file cache if possible."
+  (and spt/file-cache
+    ((setq spt/file-cache (make-hash-table :test 'equal))
+      (dolist (fileinfo (spt/scan-source-files))
+        (let ((entity (spt/coerce-to-entity (nth 0 fileinfo)))
+               (bldname (nth 1 fileinfo)))
+          (puthash (concat entity "/" bldname) fileinfo spt/file-cache))))))
+
+(defun spt/file-cache-put (file)
+  "Put a file to file cache."
+  (and (spt/file-cache-init)
+    (let*
+      ((fileinfo (spt/filename-to-fileinfo file))
+        (entity (spt/coerce-to-entity (nth 0 fileinfo)))
+        (bldname (nth 1 fileinfo)))
+      (puthash (concat entity "/" bldname) fileinfo spt/file-cache))))
+
+(defun spt/file-cache-get (clazz bundle)
+  "Get a file to file cache."
+  (and (spt/file-cache-init)
+    (let ((entity (spt/coerce-to-entity clazz)))
+      (gethash (concat entity "/" bundle) spt/file-cache))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -211,7 +243,7 @@
     ((clzname (nth 0 fileinfo))
       (mdlname (nth 2 fileinfo))
       (ettname (spt/coerce-to-entity fileinfo))
-      (mdldir (expand-file-name (spt/app-root) mdlname))
+      (mdldir (expand-file-name mdlname (spt/app-root)))
       (blddir
         (cond
           ((string= "impl" bundle) "service/impl")
@@ -225,23 +257,13 @@
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
-(defun spt/lookup-fileinfos (bundle entity)
-  "Lookup fileinfos list."
-  (let ((res))
-    (dolist (fileinfo (spt/scan-source-files))
-      (let ((bldname (nth 1 fileinfo)))
-        (and (string= bundle bldname)
-          (string= entity (spt/coerce-to-entity fileinfo))
-          (add-to-list 'res fileinfo))))
-    res))
-
 (defun spt/get-alternative-filename (bundle)
   "Get alternative filename with selected BUNDLE."
   (let*
     ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
+      (clzname (nth 0 fileinfo))
       (lookup
-        (spt/lookup-fileinfos bundle
-          (spt/coerce-to-entity fileinfo))))
+        (spt/file-cache-get clzname bundle)))
     (if lookup
       ;; if found, return the first filename
       (car (last (car lookup)))
