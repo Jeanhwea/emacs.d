@@ -266,6 +266,61 @@
 ;; |_| /_/   \_\_| \_\____/|_____|_| \_\
 ;; -----------------------------------------------------------------------------
 
+(defun spt/t ()
+  (jh/read-file-content (buffer-file-name)))
+
+(defun spt/l ()
+  (jh/read-file-content-as-lines (buffer-file-name)))
+
+(defun spt/parse-java-package (text)
+  "Parse java package name in source file."
+  (let ((regexp "^package \\([^;]*\\);$")
+         (addr 0)
+         (package))
+    (save-match-data
+      (setq addr (string-match regexp text addr))
+      (and addr
+        (setq package (match-string 1 text))))
+    package))
+
+(defun spt/parse-java-define (text)
+  "Parse java define info."
+  (let
+    ((params (make-hash-table :test 'equal))
+      (regexp
+        (concat
+          "^\\(\\|public\\|private\\)[ \t]*"
+          "\\(class\\|interface\\)[ \t]*"
+          "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
+          "\\(extends\\|implements\\|\\)[ \t]*"
+          "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
+          "{$"))
+      (addr 0))
+    (save-match-data
+      (setq addr (string-match regexp text addr))
+      (and addr
+        (and
+          (puthash "visibility" (match-string 1 text) params)
+          (setq flag1 (match-string 2 text)) ;; class or interface
+          (setq flag2 (match-string 4 text)) ;; extends or implements
+          (cond
+            ((string= flag1 "class")
+              (puthash "clzname" (match-string 3 text) params))
+            ((string= flag1 "interface")
+              (puthash "ifacename" (match-string 3 text) params)))
+          (cond
+            ((string= flag2 "extends")
+              (puthash "parent" (match-string 5 text) params))
+            ((string= flag2 "implements")
+              (puthash "implname" (match-string 5 text) params))))))
+    params))
+
+(defun spt/parse-java-meta (text)
+  "Parse java class meta info to hashtable."
+  (let
+    ((metainfo (spt/parse-java-define text)))
+    (puthash "pkgname" (spt/parse-java-package text) metainfo)
+    metainfo))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -393,16 +448,6 @@
 ;; -----------------------------------------------------------------------------
 ;; Extractors
 ;; -----------------------------------------------------------------------------
-(defun spt/extract-java-package (text)
-  "Extract java package name."
-  (let ((regexp "^package \\([^;]*\\);$")
-         (addr 0)
-         (package))
-    (save-match-data
-      (setq addr (string-match regexp text addr))
-      (and addr
-        (setq package (match-string 1 text))))
-    package))
 
 (defun spt/extract-java-imported-classes (text)
   "Extract package name and class name from line."
@@ -421,30 +466,6 @@
             res (cons (list static package class) res))
           (setq addr (+ addr 1)))))
     (reverse res)))
-
-(defun spt/extract-java-clazz (text)
-  "Extract java package name."
-  (let ((regexp
-          (concat
-            "^\\(\\|public\\|private\\)[ \t]*"
-            "\\(class\\|interface\\)[ \t]*"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "\\(extends\\|implements\\|\\)[ \t]*"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
-            "{$"))
-         (addr 0)
-         (clazz))
-    (save-match-data
-      (setq addr (string-match regexp text addr))
-      (and addr
-        (setq
-          visb (match-string 1 text)
-          class-inter (match-string 2 text)
-          name (match-string 3 text)
-          extends-impl (match-string 4 text)
-          parent (match-string 5 text))
-        (setq clazz (list visb class-inter name extends-impl parent))))
-    clazz))
 
 (defun spt/extract-java-class-methods (text)
   "Extract java methods, return a list of signature."
@@ -669,7 +690,7 @@
   (let* ((cache (make-hash-table :test 'equal))
           (text (jh/read-file-content file))
           (class-inter (cadr (spt/extract-java-clazz text))))
-    (puthash 'package (spt/extract-java-package text) cache)
+    (puthash 'package (spt/parse-java-package text) cache)
     (puthash 'class (spt/extract-java-clazz text) cache)
     (puthash 'imports (spt/extract-java-imported-classes text) cache)
     (puthash 'methods
