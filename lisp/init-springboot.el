@@ -911,6 +911,7 @@
   (define-key spt/leader-key-map (kbd "s") #'(lambda () (interactive) (spt/switch-to-file "service")))
   (define-key spt/leader-key-map (kbd "i") #'(lambda () (interactive) (spt/switch-to-file "impl")))
   (define-key spt/leader-key-map (kbd "c") #'(lambda () (interactive) (spt/switch-to-file "controller")))
+  (define-key spt/leader-key-map (kbd "h") #'(lambda () (interactive) (spt/switch-to-file "helper")))
 
   ;; todo
   (define-key spt/leader-key-map (kbd "P") 'spt/run-test-class-command)
