@@ -97,21 +97,6 @@
       (error "Folder `src/test/java' is not exists!"))
     dir))
 
-(defun spt/module-root (file)
-  "Return the root dir of module."
-  (cond
-    ((spt/controller? file)
-      (expand-file-name ".." (jh/parent-dir file)))
-    ((spt/service? file)
-      (expand-file-name ".." (jh/parent-dir file)))
-    ((and (spt/implement? file) (string-match-p ".*/service/.*" file))
-      (expand-file-name "../.." (jh/parent-dir file)))
-    ((spt/entity? file)
-      (expand-file-name "../.." (jh/parent-dir file)))
-    ((spt/repository? file)
-      (expand-file-name "../.." (jh/parent-dir file)))))
-
-
 ;; -----------------------------------------------------------------------------
 ;;  _____ ___ _     _____
 ;; |  ___|_ _| |   | ____|
@@ -186,6 +171,7 @@
 ;; | |__| (_| | (__| | | |  __/
 ;;  \____\__,_|\___|_| |_|\___|
 ;; -----------------------------------------------------------------------------
+
 (defvar spt/bundle-entity-cache nil
   "File cache that stores all java class file.")
 
@@ -269,16 +255,21 @@
         (spt/bundle-entity-cache-put fileinfo)
         (spt/coerce-to-filename fileinfo bundle)))))
 
-;; -----------------------------------------------------------------------------
-;;
-;; Interactive Commands
-;; -----------------------------------------------------------------------------
-(defun spt/switch-to-file ()
+(defun spt/switch-to-file (&optional bundle)
   "Switch to related file."
-  (interactive)
-  (let ((bundle (completing-read "Switch to >> "
-                  spt/bundle-of-interest)))
-    (find-file (spt/get-alternative-filename bundle))))
+  (find-file
+    (spt/get-alternative-filename
+      (or bundle
+        (completing-read "Switch to >> " spt/bundle-of-interest)))))
+
+
+;; -----------------------------------------------------------------------------
+;;  ____   _    ____  ____  _____ ____
+;; |  _ \ / \  |  _ \/ ___|| ____|  _ \
+;; | |_) / _ \ | |_) \___ \|  _| | |_) |
+;; |  __/ ___ \|  _ < ___) | |___|  _ <
+;; |_| /_/   \_\_| \_\____/|_____|_| \_\
+;; -----------------------------------------------------------------------------
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -289,24 +280,11 @@
     (replace-regexp-in-string "/" ""
       (replace-regexp-in-string (jh/parent-dir root) "" root))))
 
-(defun spt/find-file (file)
-  "Open a FILE."
-  (find-file file))
 
 (defun spt/compilation-start (cmd &optional dir)
   "Run compilation command."
   (let ((default-directory (or dir (spt/project-root))))
     (compilation-start cmd)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun spt/file-to-entity (file)
-  "Return the entity name from a file name."
-  (let ((class (jh/java-class-name file))
-         (regexp "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"))
-    (when (spt/component? file)
-      (replace-regexp-in-string regexp "" class))))
 
 ;; -----------------------------------------------------------------------------
 ;; Predictors
@@ -334,14 +312,6 @@
 (defun spt/implement? (file)
   "Return ture if FILE is a implement."
   (string-match-p "^.*/impl/[_A-Za-z0-9]*Impl\\.java$" file))
-
-(defun spt/component? (file)
-  "Return ture if FILE is a component"
-  (or (spt/entity? file)
-    (spt/repository? file)
-    (spt/controller? file)
-    (spt/service? file)
-    (spt/implement? file)))
 
 (defun spt/testcase? (file)
   "Return ture if FILE is a entity."
@@ -393,7 +363,7 @@
 (defun spt/goto-function-body (file addr)
   "Goto a function body"
   (progn
-    (spt/find-file file)
+    (find-file file)
     (goto-char addr)
     (search-forward-regexp "{$")))
 
@@ -840,12 +810,6 @@
         (format "%s/%s/%s.md" module base func)
         (spt/doc-root)))))
 
-(defun spt/trans-module-file (formula file)
-  "Transfer file to absolute path."
-  (let ((entity (spt/file-to-entity file))
-         (module (spt/module-root file)))
-    (expand-file-name (format formula entity) module)))
-
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
 ;; -----------------------------------------------------------------------------
@@ -861,60 +825,6 @@
         (not (string= (cadr importing) (jh/java-package-name)))
         (apply #'spt/insert-import-package-statement importing)))))
 
-(defun spt/switch-to-any-file (pred prompt)
-  "Switch to controller file."
-  (let* ((cache (spt/cache-of-class-in-project-if pred))
-          (key (completing-read prompt (hash-table-keys cache))))
-    (and key (spt/find-file (gethash key cache)))))
-
-(defun spt/switch-to-entity-file ()
-  "Switch to entity file."
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (when (spt/component? file)
-      (spt/find-file (spt/trans-module-file "domain/entity/%s.java" file)))))
-
-(defun spt/switch-to-any-entity-file ()
-  "Switch to any entity file."
-  (interactive)
-  (spt/switch-to-any-file #'spt/entity? "Entity >> "))
-
-(defun spt/switch-to-repository-file ()
-  "Switch to repository file."
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (when (spt/component? file)
-      (spt/find-file (spt/trans-module-file "domain/repo/%sRepository.java" file)))))
-
-(defun spt/switch-to-any-repository-file ()
-  "Switch to any repository file."
-  (interactive)
-  (spt/switch-to-any-file #'spt/repository? "Repository >> "))
-
-(defun spt/switch-to-service-file ()
-  "Switch to service file."
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (when (spt/component? file)
-      (spt/find-file (spt/trans-module-file "service/%sService.java" file)))))
-
-(defun spt/switch-to-any-service-file ()
-  "Switch to any service file."
-  (interactive)
-  (spt/switch-to-any-file #'spt/service? "Service >> "))
-
-(defun spt/switch-to-controller-file ()
-  "Switch to controller file."
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (when (spt/component? file)
-      (spt/find-file (spt/trans-module-file "controller/%sController.java" file)))))
-
-(defun spt/switch-to-any-controller-file ()
-  "Switch to any controller file."
-  (interactive)
-  (spt/switch-to-any-file #'spt/controller? "Controller >> "))
-
 (defun spt/toggle-controller-and-doc ()
   "Switch to controller api document file."
   (interactive)
@@ -925,7 +835,7 @@
                (mapcar #'caddr
                  (hash-table-values (spt/cache-of-controller-api file)))))
         (and func (member func available)
-          (spt/find-file (spt/trans-doc-markdown-file func file))))
+          (find-file (spt/trans-doc-markdown-file func file))))
       (let* ((cache (spt/cache-of-all-controller-api))
               (path (jh/relative-path file (spt/doc-root)))
               (sign (gethash path cache))
@@ -967,8 +877,8 @@
   (interactive)
   (let ((file (buffer-file-name)))
     (if (spt/implement? file)
-      (spt/find-file (spt/trans-test-and-source (spt/trans-impl-and-inter file)))
-      (spt/find-file (spt/trans-test-and-source file)))))
+      (find-file (spt/trans-test-and-source (spt/trans-impl-and-inter file)))
+      (find-file (spt/trans-test-and-source file)))))
 
 (defun spt/toggle-interface-and-implement ()
   "Toggle interface and implement file."
@@ -978,7 +888,7 @@
            (other-file (spt/trans-impl-and-inter (buffer-file-name))))
       (if
         (or (not (file-exists-p other-file)) (spt/implement? file))
-        (spt/find-file other-file)
+        (find-file other-file)
         (let ((lookup (make-hash-table :test 'equal))
                (line (jh/strip (jh/current-line)))
                (methods
@@ -992,7 +902,7 @@
             (setq addr (gethash line lookup))
             (if addr
               (spt/goto-function-body other-file addr)
-              (spt/find-file other-file))))))))
+              (find-file other-file))))))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -1000,20 +910,20 @@
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'spt/leader-key-map)
-  (define-key spt/leader-key-map (kbd "C") 'spt/switch-to-any-controller-file)
-  (define-key spt/leader-key-map (kbd "E") 'spt/switch-to-any-entity-file)
+
+  ;; switcher keybinding
+  (define-key spt/leader-key-map (kbd "e") #'(lambda () (interactive) (spt/switch-to-file "entity")))
+  (define-key spt/leader-key-map (kbd "r") #'(lambda () (interactive) (spt/switch-to-file "repo")))
+  (define-key spt/leader-key-map (kbd "s") #'(lambda () (interactive) (spt/switch-to-file "service")))
+  (define-key spt/leader-key-map (kbd "i") #'(lambda () (interactive) (spt/switch-to-file "impl")))
+  (define-key spt/leader-key-map (kbd "c") #'(lambda () (interactive) (spt/switch-to-file "controller")))
+
+  ;; todo
   (define-key spt/leader-key-map (kbd "P") 'spt/run-test-class-command)
-  (define-key spt/leader-key-map (kbd "R") 'spt/switch-to-any-repository-file)
-  (define-key spt/leader-key-map (kbd "S") 'spt/switch-to-any-service-file)
-  (define-key spt/leader-key-map (kbd "c") 'spt/switch-to-controller-file)
   (define-key spt/leader-key-map (kbd "d") 'spt/toggle-controller-and-doc)
-  (define-key spt/leader-key-map (kbd "e") 'spt/switch-to-entity-file)
-  (define-key spt/leader-key-map (kbd "i") 'spt/toggle-interface-and-implement)
   (define-key spt/leader-key-map (kbd "j") 'spt/company-jpa-backend)
   (define-key spt/leader-key-map (kbd "m") 'spt/jump-to-class-methods)
   (define-key spt/leader-key-map (kbd "p") 'spt/run-test-method-command)
-  (define-key spt/leader-key-map (kbd "r") 'spt/switch-to-repository-file)
-  (define-key spt/leader-key-map (kbd "s") 'spt/switch-to-service-file)
   (define-key spt/leader-key-map (kbd "t") 'spt/toggle-test-and-source)
   (define-key spt/leader-key-map (kbd "RET") 'spt/try-import-class))
 (global-set-key (kbd "M-[") 'spt/leader-key-map)
