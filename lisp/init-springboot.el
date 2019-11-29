@@ -400,13 +400,6 @@
 ;; |_| /_/   \_\_| \_\____/|_____|_| \_\  for JAVA
 ;; -----------------------------------------------------------------------------
 
-(defun spt/t ()
-  (jh/read-file-content (buffer-file-name)))
-
-(defun spt/l ()
-  (jh/read-file-content-as-lines (buffer-file-name)))
-
-
 (defun spt/parse-java-package (text)
   "Parse java package name. like `package com.example;' "
   (let
@@ -1096,6 +1089,8 @@
 ;;               (find-file other-file))))))))
 
 
+
+
 ;; -----------------------------------------------------------------------------
 ;;  _  __            ____  _           _ _
 ;; | |/ /___ _   _  | __ )(_)_ __   __| (_)_ __   __ _ ___
@@ -1124,5 +1119,13 @@
   (define-key spt/leader (kbd "p") 'spt/run-test-method-command)
   (define-key spt/leader (kbd "RET") 'spt/try-import-class))
 (global-set-key (kbd "M-[") 'spt/leader)
+
+
+;; for debugging
+(defun spt/t ()
+  (jh/read-file-content (buffer-file-name)))
+
+(defun spt/l ()
+  (jh/read-file-content-as-lines (buffer-file-name)))
 
 (provide 'init-springboot)
