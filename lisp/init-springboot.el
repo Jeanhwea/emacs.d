@@ -329,6 +329,7 @@
       (if (string-match-p ".*Test$" clzname)
         (spt/coerce-to-srcfile file) (spt/coerce-to-testfile file)))))
 
+
 ;; -----------------------------------------------------------------------------
 ;;  _   _ _____ _     ____  _____ ____
 ;; | | | | ____| |   |  _ \| ____|  _ \
@@ -342,7 +343,7 @@
   (directory-files-recursively (spt/doc-root) "^.*\\.md$"))
 
 (defun spt/docfile-to-docinfo (&optional file)
-  "Convert document filename to docinfo."
+  "Convert doc file to docinfo. basename is the first word of http-prefix."
   (let*
     (
       ;; preparing data
@@ -478,7 +479,7 @@
             "\\(final\\|\\)[ \t]*"
             "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)[ \t]*"
             "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
-            "\\( = \\|;\\)[ \t]*"))
+            "\\( =\\|;\\)[ \t]*"))
          (addr 0)
          (fields))
     (while addr
@@ -603,6 +604,7 @@
       (puthash 'methods (spt/parse-java-class-methods text) metainfo))
 
     metainfo))
+
 
 ;; -----------------------------------------------------------------------------
 ;;  ____   _    ____  ____  _____ ____
