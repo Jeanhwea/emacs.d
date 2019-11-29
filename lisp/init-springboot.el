@@ -387,7 +387,7 @@
       file)))
 
 (defun spt/swap-test-and-source ()
-  "swap between source file and test file."
+  "Swap between source file and test file."
   (interactive)
   (let*
     ((file (buffer-file-name))
@@ -446,16 +446,40 @@
   "Convert http prefix to basename."
   (car (split-string (replace-regexp-in-string "^/" "" prefix) "/")))
 
-(defun spt/coerce-to-markdown (file funcname)
-  "Force FILE to markdown document file path."
+(defun spt/current-endpoint (file)
+  "Find current endpoint, the endpoint under cursor."
   (let*
-    ((fileinfo (spt/filename-to-fileinfo file))
-      (bdlname (nth 1 fileinfo))
-      (mdlname (nth 2 fileinfo))
-      (basename
-        (spt/http-prefix-to-basename
-          (spt/read-endpoint-prefix (jh/read-file-content file)))))
-    (and (string= "controller" bdlname)
+    ((endpoints
+       (sort
+         (spt/read-endpoints (jh/read-file-content file))
+         #'(lambda (a b) (< (gethash 'addr a) (gethash 'addr b)))))
+      (current-point (point))
+      (lookup
+        (remove-if
+          #'(lambda (endpoint) (<= current-point (gethash 'addr endpoint)))
+          endpoints)))
+    (and lookup (car (last lookup)) (and endpoints (car endpoints)))))
+
+(defun spt/find-endpoint (file funcname)
+  "Find endpoint inside current file."
+  (let*
+    ((endpoints (spt/read-endpoints (jh/read-file-content file)))
+      (lookup
+        (remove-if-not
+          #'(lambda (endpoint) (string= funcname (gethash 'funcname endpoint)))
+          endpoints)))
+    (and lookup (car lookup))))
+
+(defun spt/coerce-to-markdown (file)
+  "Force controller FILE to markdown file path list."
+  (let
+    ((mdlname (nth 2 (spt/filename-to-fileinfo file)))
+      (endpoint (spt/current-endpoint file)))
+    (let
+      ((funcname (gethash 'funcname endpoint))
+        (basename
+          (spt/http-prefix-to-basename
+            (gethash 'http-prefix endpoint))))
       (expand-file-name
         (format "%s/%s/%s.md" mdlname basename funcname) (spt/doc-root)))))
 
@@ -466,24 +490,30 @@
       (lookup (spt/base-endpoint-cache-get docinfo)))
     (and lookup (car (last lookup)))))
 
-(defun spt/coerce-to-markdown-list (file)
-  "Force controller FILE to markdown file path list."
+(defun spt/swap-markdown-and-endpoint ()
+  "Swap between markdown and endpoint."
+  (interactive)
   (let
-    ((mdlname (nth 2 (spt/filename-to-fileinfo file)))
-      (markdown-list))
-    (dolist (endpoint (spt/read-endpoints (jh/read-file-content file)))
-      (let
-        ((funcname (gethash 'funcname endpoint))
-          (basename
-            (spt/http-prefix-to-basename
-              (gethash 'http-prefix endpoint))))
-        (add-to-list 'markdown-list
-          (expand-file-name
-            (format "%s/%s/%s.md" mdlname basename funcname) (spt/doc-root)))))
-    markdown-list))
+    ((file (buffer-file-name)))
+    (cond
+      ;; jump from markdown to endpoint
+      ((string-match-p ".*\\.md$" file)
+        (find-file (spt/coerce-to-ctrlfile file)))
+      ;; jump from endpoint to markdown
+      ((string-match-p ".*\\.java$" file)
+        (let*
+          ((bldname (nth 1 (spt/filename-to-fileinfo file)))
+            (endpoint
+              (and (string= "controller" bldname) (spt/current-endpoint))))
+          (find-file
+            (if endpoint))
+          (and (string= "controller" bldname)
+            (find-file (spt/coerce-to-markdown file)))))
+      ;; default
+      (t (error "Ops, not a document file, nor controller!")))))
 
 (defun spt/a ()
-  (spt/coerce-to-markdown-list (buffer-file-name)))
+  (spt/coerce-to-markdown (buffer-file-name)))
 
 ;; -----------------------------------------------------------------------------
 ;;  ____    _  _____  _    ____    _    ____  _____
@@ -1175,32 +1205,6 @@
           (goto-char (point-max))
           (goto-char prev-point))))))
 
-;; (defun spt/toggle-interface-and-implement ()
-;;   "Toggle interface and implement file."
-;;   (interactive)
-;;   (or (spt/testcase? (buffer-file-name))
-;;     (let ((file (buffer-file-name))
-;;            (other-file (spt/trans-impl-and-inter (buffer-file-name))))
-;;       (if
-;;         (or (not (file-exists-p other-file)) (spt/implement? file))
-;;         (find-file other-file)
-;;         (let ((lookup (make-hash-table :test 'equal))
-;;                (line (jh/strip (jh/current-line)))
-;;                (methods
-;;                  (spt/extract-java-impl-override-methods
-;;                    (jh/read-file-content other-file))))
-;;           (progn
-;;             (dolist (method methods)
-;;               (let ((key (jh/strip (apply #'format "%s %s(%s);" method)))
-;;                      (addr (car (last method))))
-;;                 (puthash key addr lookup)))
-;;             (setq addr (gethash line lookup))
-;;             (if addr
-;;               (spt/goto-function-body other-file addr)
-;;               (find-file other-file))))))))
-
-
-
 
 ;; -----------------------------------------------------------------------------
 ;;  _  __            ____  _           _ _
@@ -1221,10 +1225,10 @@
   (define-key spt/leader (kbd "c") #'(lambda () (interactive) (spt/switch-to "controller")))
   (define-key spt/leader (kbd "h") #'(lambda () (interactive) (spt/switch-to "helper")))
   (define-key spt/leader (kbd "t") #'spt/swap-test-and-source)
+  (define-key spt/leader (kbd "d") #'spt/swap-markdown-and-endpoint)
 
   ;; todo
   (define-key spt/leader (kbd "P") 'spt/run-test-class-command)
-  (define-key spt/leader (kbd "d") 'spt/toggle-controller-and-doc)
   (define-key spt/leader (kbd "j") 'spt/company-jpa-backend)
   (define-key spt/leader (kbd "m") 'spt/jump-to-class-methods)
   (define-key spt/leader (kbd "p") 'spt/run-test-method-command)
