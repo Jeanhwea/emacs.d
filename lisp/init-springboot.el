@@ -458,7 +458,7 @@
         (remove-if
           #'(lambda (endpoint) (<= current-point (gethash 'addr endpoint)))
           endpoints)))
-    (and lookup (car (last lookup)) (and endpoints (car endpoints)))))
+    (if lookup (car (last lookup)) (and endpoints (car endpoints)))))
 
 (defun spt/find-endpoint (file funcname)
   "Find endpoint inside current file."
@@ -472,16 +472,13 @@
 
 (defun spt/coerce-to-markdown (file)
   "Force controller FILE to markdown file path list."
-  (let
+  (let*
     ((mdlname (nth 2 (spt/filename-to-fileinfo file)))
-      (endpoint (spt/current-endpoint file)))
-    (let
-      ((funcname (gethash 'funcname endpoint))
-        (basename
-          (spt/http-prefix-to-basename
-            (gethash 'http-prefix endpoint))))
-      (expand-file-name
-        (format "%s/%s/%s.md" mdlname basename funcname) (spt/doc-root)))))
+      (endpoint (spt/current-endpoint file))
+      (funcname (gethash 'funcname endpoint))
+      (basename (spt/http-prefix-to-basename (gethash 'http-prefix endpoint))))
+    (expand-file-name
+      (format "%s/%s/%s.md" mdlname basename funcname) (spt/doc-root))))
 
 (defun spt/coerce-to-ctrlfile (file)
   "Force markdown filename to controller."
@@ -510,7 +507,7 @@
           (and (string= "controller" bldname)
             (find-file (spt/coerce-to-markdown file)))))
       ;; default
-      (t (error "Ops, not a document file, nor controller!")))))
+      (t (error "Ops, neither a markdown file, nor controller file!")))))
 
 (defun spt/a ()
   (spt/coerce-to-markdown (buffer-file-name)))
