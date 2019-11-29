@@ -481,11 +481,18 @@
       (format "%s/%s/%s.md" mdlname basename funcname) (spt/doc-root))))
 
 (defun spt/coerce-to-ctrlfile (file)
-  "Force markdown filename to controller."
+  "Force file to controller file."
   (let*
     ((docinfo (spt/docfile-to-docinfo file))
       (lookup (spt/base-endpoint-cache-get docinfo)))
     (and lookup (car (last lookup)))))
+
+(defun spt/endpoint-addr (file)
+  "Get endpoint address from markdown file."
+  (let*
+    ((docinfo (spt/docfile-to-docinfo file))
+      (lookup (spt/base-endpoint-cache-get docinfo)))
+    (and lookup (nth 2 lookup))))
 
 (defun spt/swap-markdown-and-endpoint ()
   "Swap between markdown and endpoint."
@@ -493,19 +500,20 @@
   (let
     ((file (buffer-file-name)))
     (cond
-      ;; jump from markdown to endpoint
+      ;; Case 1: jump from markdown to endpoint
       ((string-match-p ".*\\.md$" file)
-        (find-file (spt/coerce-to-ctrlfile file)))
-      ;; jump from endpoint to markdown
-      ((string-match-p ".*\\.java$" file)
-        (let*
-          ((bldname (nth 1 (spt/filename-to-fileinfo file)))
-            (endpoint
-              (and (string= "controller" bldname) (spt/current-endpoint))))
-          (find-file
-            (if endpoint))
-          (and (string= "controller" bldname)
-            (find-file (spt/coerce-to-markdown file)))))
+        (let ((addr (spt/endpoint-addr file)))
+          (and addr
+            ;; goto controller file and move cursor to function body
+            (progn
+              (find-file (spt/coerce-to-ctrlfile file))
+              (goto-char addr)
+              (search-forward-regexp "{$")))))
+      ;; Case 2: jump from endpoint to markdown
+      ((and
+         (string-match-p ".*\\.java$" file)
+         (string= "controller" (nth 1 (spt/filename-to-fileinfo file))))
+        (find-file (spt/coerce-to-markdown file)))
       ;; default
       (t (error "Ops, neither a markdown file, nor controller file!")))))
 
