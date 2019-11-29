@@ -107,11 +107,11 @@
 ;;  / ___|__ _  ___| |__   ___
 ;; | |   / _` |/ __| '_ \ / _ \
 ;; | |__| (_| | (__| | | |  __/
-;;  \____\__,_|\___|_| |_|\___|
+;;  \____\__,_|\___|_| |_|\___| for finding alternative files
 ;; -----------------------------------------------------------------------------
 
 (defvar spt/bundle-entity-cache nil
-  "File cache that stores all java class file.")
+  "File cache that stores all alternative java class file.")
 
 (defun spt/bundle-entity-cache-key (fileinfo &optional bundle)
   "Construct file cache key via FILEINFO."
@@ -119,7 +119,7 @@
     (concat bldname "/" (spt/coerce-to-entity fileinfo))))
 
 (defun spt/bundle-entity-cache-init ()
-  "Initial file cache if possible."
+  "Initialize file cache if possible."
   (or spt/bundle-entity-cache
     (and
       (setq spt/bundle-entity-cache (make-hash-table :test 'equal))
@@ -136,6 +136,73 @@
   "Get a file to file cache."
   (and (spt/bundle-entity-cache-init)
     (gethash (spt/bundle-entity-cache-key fileinfo bundle) spt/bundle-entity-cache)))
+
+
+;; -----------------------------------------------------------------------------
+;;   ____           _
+;;  / ___|__ _  ___| |__   ___
+;; | |   / _` |/ __| '_ \ / _ \
+;; | |__| (_| | (__| | | |  __/
+;;  \____\__,_|\___|_| |_|\___| for markdown documentation
+;; -----------------------------------------------------------------------------
+
+(defvar spt/base-endpoint-cache nil
+  "File cache that stores all spring controller.")
+
+(defun spt/base-endpoint-cache-key (base function)
+  "Construct file cache key via base and function."
+  (concat basename "#" function))
+
+(defun spt/base-endpoint-cache-init ()
+  "Initialize caceh if possible."
+  (or spt/base-endpoint-cache
+    (and
+      (setq spt/base-endpoint-cache (make-hash-table :test 'equal))
+      (dolist (fileinfo (spt/scan-source-files))
+        (let
+          ((bldname (nth 1 fileinfo))
+            (file (car (last fileinfo))))
+          ;; iterate all controller
+          (and (string= "controller" bldname)
+            (dolist (endpoint (spt/read-endpoints (jh/read-file-content file)))
+              ;; add endpoints
+              (let*
+                ((prefix (gethash 'http-prefix endpoint))
+                  (suffix (gethash 'http-suffix endpoint))
+                  (method (gethash 'http-method endpoint))
+                  (funcname (gethash 'funcname endpoint))
+                  (addr (gethash 'addr endpoint))
+                  (basename (spt/http-prefix-to-basename prefix))
+                  (http-api (concat method " " prefix suffix)))
+                (puthash
+                  (spt/base-endpoint-cache-key basename funcname)
+                  (list http-api funcname addr file)
+                  spt/base-endpoint-cache)))))))))
+
+(defun spt/base-endpoint-cache-put (endpoint)
+  "Put a endpoint to cache."
+  (and (spt/base-endpoint-cache-init)
+    (let*
+      ((prefix (gethash 'http-prefix endpoint))
+        (suffix (gethash 'http-suffix endpoint))
+        (method (gethash 'http-method endpoint))
+        (funcname (gethash 'funcname endpoint))
+        (addr (gethash 'addr endpoint))
+        (basename (spt/http-prefix-to-basename prefix))
+        (http-api (concat method " " prefix suffix)))
+      (puthash
+        (spt/base-endpoint-cache-key basename funcname)
+        (list http-api funcname addr file)
+        spt/base-endpoint-cache))))
+
+(defun spt/base-endpoint-cache-get (docinfo)
+  "Get a endpoint to cache."
+  (and (spt/base-endpoint-cache-init)
+    (let*
+      ((funcname (nth 0 docinfo))
+        (basename (nth 1 docinfo))
+        (hashkey (spt/base-endpoint-cache-key basename funcname)))
+      (gethash hashkey spt/base-endpoint-cache))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -375,6 +442,48 @@
           (add-to-list 'docinfos docinfo t))))
     docinfos))
 
+(defun spt/http-prefix-to-basename (prefix)
+  "Convert http prefix to basename."
+  (car (split-string (replace-regexp-in-string "^/" "" prefix) "/")))
+
+(defun spt/coerce-to-markdown (file funcname)
+  "Force FILE to markdown document file path."
+  (let*
+    ((fileinfo (spt/filename-to-fileinfo file))
+      (bdlname (nth 1 fileinfo))
+      (mdlname (nth 2 fileinfo))
+      (basename
+        (spt/http-prefix-to-basename
+          (spt/read-endpoint-prefix (jh/read-file-content file)))))
+    (and (string= "controller" bdlname)
+      (expand-file-name
+        (format "%s/%s/%s.md" mdlname basename funcname) (spt/doc-root)))))
+
+(defun spt/coerce-to-ctrlfile (file)
+  "Force markdown filename to controller."
+  (let*
+    ((docinfo (spt/docfile-to-docinfo file))
+      (lookup (spt/base-endpoint-cache-get docinfo)))
+    (and lookup (car (last lookup)))))
+
+(defun spt/coerce-to-markdown-list (file)
+  "Force controller FILE to markdown file path list."
+  (let
+    ((mdlname (nth 2 (spt/filename-to-fileinfo file)))
+      (markdown-list))
+    (dolist (endpoint (spt/read-endpoints (jh/read-file-content file)))
+      (let
+        ((funcname (gethash 'funcname endpoint))
+          (basename
+            (spt/http-prefix-to-basename
+              (gethash 'http-prefix endpoint))))
+        (add-to-list 'markdown-list
+          (expand-file-name
+            (format "%s/%s/%s.md" mdlname basename funcname) (spt/doc-root)))))
+    markdown-list))
+
+(defun spt/a ()
+  (spt/coerce-to-markdown-list (buffer-file-name)))
 
 ;; -----------------------------------------------------------------------------
 ;;  ____    _  _____  _    ____    _    ____  _____
