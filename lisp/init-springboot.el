@@ -120,22 +120,21 @@
 
 (defun spt/bundle-entity-cache-init ()
   "Initialize file cache if possible."
-  (or spt/bundle-entity-cache
-    (and
-      (setq spt/bundle-entity-cache (make-hash-table :test 'equal))
-      (dolist (fileinfo (spt/scan-source-files))
-        (puthash
-          (spt/bundle-entity-cache-key fileinfo) fileinfo spt/bundle-entity-cache)))))
+  (and
+    (setq spt/bundle-entity-cache (make-hash-table :test 'equal))
+    (dolist (fileinfo (spt/scan-source-files))
+      ;; add source files
+      (spt/bundle-entity-cache-put fileinfo))))
 
 (defun spt/bundle-entity-cache-put (fileinfo)
   "Put a file to file cache."
-  (and (spt/bundle-entity-cache-init)
-    (puthash (spt/bundle-entity-cache-key fileinfo) fileinfo spt/bundle-entity-cache)))
+  (puthash
+    (spt/bundle-entity-cache-key fileinfo) fileinfo spt/bundle-entity-cache))
 
 (defun spt/bundle-entity-cache-get (fileinfo bundle)
   "Get a file to file cache."
-  (and (spt/bundle-entity-cache-init)
-    (gethash (spt/bundle-entity-cache-key fileinfo bundle) spt/bundle-entity-cache)))
+  (gethash
+    (spt/bundle-entity-cache-key fileinfo bundle) spt/bundle-entity-cache))
 
 
 ;; -----------------------------------------------------------------------------
@@ -155,54 +154,39 @@
 
 (defun spt/base-endpoint-cache-init ()
   "Initialize cache if possible."
-  (or spt/base-endpoint-cache
-    (and
-      (setq spt/base-endpoint-cache (make-hash-table :test 'equal))
-      (dolist (fileinfo (spt/scan-source-files))
-        (let
-          ((bldname (nth 1 fileinfo))
-            (file (car (last fileinfo))))
-          ;; iterate all controller
-          (and (string= "controller" bldname)
-            (dolist (endpoint (spt/read-endpoints (jh/read-file-content file)))
-              ;; add endpoints
-              (let*
-                ((prefix (gethash 'http-prefix endpoint))
-                  (suffix (gethash 'http-suffix endpoint))
-                  (method (gethash 'http-method endpoint))
-                  (funcname (gethash 'funcname endpoint))
-                  (addr (gethash 'addr endpoint))
-                  (basename (spt/http-prefix-to-basename prefix))
-                  (http-api (concat method " " prefix suffix)))
-                (puthash
-                  (spt/base-endpoint-cache-key basename funcname)
-                  (list http-api funcname addr file)
-                  spt/base-endpoint-cache)))))))))
+  (and
+    (setq spt/base-endpoint-cache (make-hash-table :test 'equal))
+    (dolist (fileinfo (spt/scan-source-files))
+      (let
+        ((bldname (nth 1 fileinfo))
+          (file (car (last fileinfo))))
+        (and (string= "controller" bldname) ;; iterate all controller
+          (dolist (endpoint (spt/read-endpoints (jh/read-file-content file)))
+            ;; add endpoints
+            (spt/base-endpoint-cache-put endpoint)))))))
 
 (defun spt/base-endpoint-cache-put (endpoint)
   "Put a endpoint to cache."
-  (and (spt/base-endpoint-cache-init)
-    (let*
-      ((prefix (gethash 'http-prefix endpoint))
-        (suffix (gethash 'http-suffix endpoint))
-        (method (gethash 'http-method endpoint))
-        (funcname (gethash 'funcname endpoint))
-        (addr (gethash 'addr endpoint))
-        (basename (spt/http-prefix-to-basename prefix))
-        (http-api (concat method " " prefix suffix)))
-      (puthash
-        (spt/base-endpoint-cache-key basename funcname)
-        (list http-api funcname addr file)
-        spt/base-endpoint-cache))))
+  (let*
+    ((prefix (gethash 'http-prefix endpoint))
+      (suffix (gethash 'http-suffix endpoint))
+      (method (gethash 'http-method endpoint))
+      (funcname (gethash 'funcname endpoint))
+      (addr (gethash 'addr endpoint))
+      (basename (spt/http-prefix-to-basename prefix))
+      (http-api (concat method " " prefix suffix)))
+    (puthash
+      (spt/base-endpoint-cache-key basename funcname)
+      (list http-api funcname addr file)
+      spt/base-endpoint-cache)))
 
 (defun spt/base-endpoint-cache-get (docinfo)
   "Get a endpoint to cache."
-  (and (spt/base-endpoint-cache-init)
-    (let*
-      ((funcname (nth 0 docinfo))
-        (basename (nth 1 docinfo))
-        (hashkey (spt/base-endpoint-cache-key basename funcname)))
-      (gethash hashkey spt/base-endpoint-cache))))
+  (let*
+    ((funcname (nth 0 docinfo))
+      (basename (nth 1 docinfo))
+      (hashkey (spt/base-endpoint-cache-key basename funcname)))
+    (gethash hashkey spt/base-endpoint-cache)))
 
 
 ;; -----------------------------------------------------------------------------
