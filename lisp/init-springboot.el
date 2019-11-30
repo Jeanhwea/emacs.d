@@ -154,7 +154,7 @@
   (concat basename "#" function))
 
 (defun spt/base-endpoint-cache-init ()
-  "Initialize caceh if possible."
+  "Initialize cache if possible."
   (or spt/base-endpoint-cache
     (and
       (setq spt/base-endpoint-cache (make-hash-table :test 'equal))
