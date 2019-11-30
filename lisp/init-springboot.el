@@ -517,8 +517,6 @@
       ;; default
       (t (error "Ops, neither a markdown file, nor controller file!")))))
 
-(defun spt/a ()
-  (spt/coerce-to-markdown (buffer-file-name)))
 
 ;; -----------------------------------------------------------------------------
 ;;  ____    _  _____  _    ____    _    ____  _____
@@ -1219,6 +1217,7 @@
 ;; |_|\_\___|\__, | |____/|_|_| |_|\__,_|_|_| |_|\__, |___/
 ;;           |___/                               |___/
 ;; -----------------------------------------------------------------------------
+
 (progn
   (define-prefix-command 'spt/leader)
 
@@ -1244,8 +1243,5 @@
 ;; for debugging
 (defun spt/t ()
   (jh/read-file-content (buffer-file-name)))
-
-(defun spt/l ()
-  (jh/read-file-content-as-lines (buffer-file-name)))
 
 (provide 'init-springboot)
