@@ -710,26 +710,20 @@
   "Parse java class meta info to hashtable."
   (let
     ((metainfo (spt/parse-java-frontinfo text)))
-
     ;; add pacakage name
     (puthash 'pkgname (spt/parse-java-package text) metainfo)
-
     ;; parse imports
     (puthash 'imports (spt/parse-java-imports text) metainfo)
-
     ;; parse fields
     (puthash 'fields (spt/parse-java-fields text) metainfo)
-
     ;; parse interface methods
     (and
       (gethash 'ifacename metainfo)
       (puthash 'methods (spt/parse-java-iface-methods text) metainfo))
-
     ;; parse class methods
     (and
       (gethash 'clzname metainfo)
       (puthash 'methods (spt/parse-java-class-methods text) metainfo))
-
     metainfo))
 
 
@@ -901,8 +895,6 @@
 ;; | |__| |_| | |  | |  __/ ___ \| |\  | | |
 ;;  \____\___/|_|  |_|_| /_/   \_\_| \_| |_|
 ;; -----------------------------------------------------------------------------
-
-
 
 (defun spt/company-jpa-backend (command &optional arg &rest ignored)
   (interactive (list 'interactive))
@@ -1105,9 +1097,10 @@
 ;; -----------------------------------------------------------------------------
 
 (progn
+  ;; Leader Key
   (define-prefix-command 'spt/leader)
 
-  ;; switcher keybinding
+  ;; Switcher Keybinding
   (define-key spt/leader (kbd "e") #'(lambda () (interactive) (spt/switch-to "entity")))
   (define-key spt/leader (kbd "r") #'(lambda () (interactive) (spt/switch-to "repo")))
   (define-key spt/leader (kbd "s") #'(lambda () (interactive) (spt/switch-to "service")))
