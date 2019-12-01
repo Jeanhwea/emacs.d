@@ -278,6 +278,7 @@
 
 (defun spt/find-alternative-source-file (bundle)
   "Find alternative filename with selected BUNDLE."
+  (or spt/bundle-entity-cache (spt/bundle-entity-cache-init))
   (let*
     ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
       (lookup (spt/bundle-entity-cache-get fileinfo bundle)))
@@ -466,6 +467,7 @@
 
 (defun spt/coerce-to-ctrlfile (file)
   "Force file to controller file."
+  (or spt/base-endpoint-cache (spt/base-endpoint-cache-init))
   (let*
     ((docinfo (spt/docfile-to-docinfo file))
       (lookup (spt/base-endpoint-cache-get docinfo)))
@@ -473,6 +475,7 @@
 
 (defun spt/endpoint-addr (file)
   "Get endpoint address from markdown file."
+  (or spt/base-endpoint-cache (spt/base-endpoint-cache-init))
   (let*
     ((docinfo (spt/docfile-to-docinfo file))
       (lookup (spt/base-endpoint-cache-get docinfo)))
