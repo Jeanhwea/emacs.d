@@ -145,9 +145,9 @@
 (defvar spt/base-endpoint-alist nil
   "File cache that stores all spring controller.")
 
-(defun spt/base-endpoint-alist-key (base function)
+(defun spt/base-endpoint-alist-key (basename funcname)
   "Construct file cache key via base and function."
-  (concat basename "#" function))
+  (concat basename "#" funcname))
 
 (defun spt/base-endpoint-alist-init ()
   "Initialize cache if possible."
@@ -182,7 +182,7 @@
 (defun spt/base-endpoint-alist-get (docinfo)
   "Get a endpoint to cache."
   (let
-    ((key (spt/base-endpoint-alist-key (nth 0 docinfo) (nth 1 docinfo))))
+    ((key (spt/base-endpoint-alist-key (nth 1 docinfo) (nth 0 docinfo))))
     (assoc key spt/base-endpoint-alist)))
 
 
@@ -476,7 +476,7 @@
   (let*
     ((docinfo (spt/docfile-to-docinfo file))
       (lookup (spt/base-endpoint-alist-get docinfo)))
-    (and lookup (nth 2 lookup))))
+    (and lookup (car (last lookup 2)))))
 
 (defun spt/swap-markdown-and-endpoint ()
   "Swap between markdown and endpoint."
@@ -487,12 +487,13 @@
       ;; Case 1: jump from markdown to endpoint
       ((string-match-p ".*\\.md$" file)
         (let ((addr (spt/endpoint-addr file)))
-          (and addr
+          (if addr
             ;; goto controller file and move cursor to function body
             (progn
               (find-file (spt/coerce-to-ctrlfile file))
               (goto-char addr)
-              (search-forward-regexp "{$")))))
+              (search-forward-regexp "{$"))
+            (message (concat "Ops, missing controller for: " file)))))
       ;; Case 2: jump from endpoint to markdown
       ((and
          (string-match-p ".*\\.java$" file)
