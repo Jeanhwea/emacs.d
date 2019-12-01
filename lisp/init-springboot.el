@@ -992,10 +992,10 @@
     (and lookup (gethash 'funcname (car (last lookup))))))
 
 ;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
-(defun spt/maven-test-command (clzname &optional pkgname)
+(defun spt/maven-test-command (clzname &optional method)
   "Return maven test command."
   (let
-    ((subjects (if pkgname (concat clzname "#" pkgname) clzname))
+    ((subjects (if method (concat clzname "#" method) clzname))
       (args '("-Dfile.encoding=UTF-8" "--quiet" "--batch-mode")))
     (format "mvn test -Dtest=%s %s" subjects (mapconcat 'identity args " "))))
 
@@ -1011,14 +1011,15 @@
 (defun spt/run-test-method-command ()
   "Run a test command."
   (interactive)
-  (when (spt/testcase? (buffer-file-name))
-    (let* ((test-methods (mapcar #'cadr
-                           (spt/extract-java-junit-test-methods
-                             (jh/current-buffer))))
-            (nearest-method (spt/pick-method-name))
-            (this-class (jh/java-class-name))
-            (this-method (if (member nearest-method test-methods) nearest-method)))
-      (spt/compilation-start (spt/maven-test-command this-class this-method)))))
+  (let*
+    ((text (jh/read-file-content (buffer-file-name)))
+      (clzname (gethash 'clzname (spt/parse-java-meta text)))
+      (method (spt/current-test-method-name)))
+    (and clzname (string-match-p "Test$" clzname)
+      (if method
+        (spt/compilation-start (spt/maven-test-command clzname method))
+        (spt/compilation-start (spt/maven-test-command clzname))))))
+
 
 ;; -----------------------------------------------------------------------------
 ;; Cache builders
@@ -1218,11 +1219,13 @@
   (define-key spt/leader (kbd "t") #'spt/swap-test-and-source)
   (define-key spt/leader (kbd "d") #'spt/swap-markdown-and-endpoint)
 
+  ;; Unit test
+  (define-key spt/leader (kbd "u") 'spt/run-test-method-command)
+  (define-key spt/leader (kbd "U") 'spt/run-test-class-command)
+
   ;; todo
   (define-key spt/leader (kbd "j") 'spt/company-jpa-backend)
   (define-key spt/leader (kbd "m") 'spt/jump-to-class-methods)
-  (define-key spt/leader (kbd "p") 'spt/run-test-method-command)
-  (define-key spt/leader (kbd "P") 'spt/run-test-class-command)
   (define-key spt/leader (kbd "RET") 'spt/try-import-class))
 (global-set-key (kbd "M-[") 'spt/leader)
 
