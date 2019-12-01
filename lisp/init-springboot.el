@@ -1000,7 +1000,7 @@
 ;;               |_|
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/imports-alist nil
+(defvar spt/imports-cache nil
   "Imports cache that stores all classes imported in this project.")
 
 (defun spt/fileinfo-to-import (fileinfo)
@@ -1011,7 +1011,7 @@
     (puthash 'clzname (nth 0 fileinfo) import)
     import))
 
-(defun spt/imports-alist-init ()
+(defun spt/imports-cache-init ()
   "Initialize cache if possible."
   (let*
     ((fileinfos (spt/scan-source-files))
@@ -1022,28 +1022,28 @@
         ((file (car (last fileinfo)))
           (text (jh/read-file-content file))
           (imports (spt/parse-java-imports text)))
-        (spt/imports-alist-put (spt/fileinfo-to-import fileinfo))
+        (spt/imports-cache-put (spt/fileinfo-to-import fileinfo))
         ;; imports in java file
-        (dolist (import imports) (spt/imports-alist-put import))))
+        (dolist (import imports) (spt/imports-cache-put import))))
     ;; import test files
     (dolist (testinfo testinfos)
       (let*
         ((file (car (last testinfo)))
           (text (jh/read-file-content file))
           (imports (spt/parse-java-imports text)))
-        (spt/imports-alist-put (spt/fileinfo-to-import testinfo))
+        (spt/imports-cache-put (spt/fileinfo-to-import testinfo))
         ;; imports in java file
-        (dolist (import imports) (spt/imports-alist-put import))))))
+        (dolist (import imports) (spt/imports-cache-put import))))))
 
-(defun spt/imports-alist-put (import)
+(defun spt/imports-cache-put (import)
   "Put a import to cache."
   (let ((clzname (gethash 'clzname import)))
-    (or (assoc clzname spt/imports-alist)
-      (add-to-list 'spt/imports-alist (cons clzname import)))))
+    (or (assoc clzname spt/imports-cache)
+      (add-to-list 'spt/imports-cache (cons clzname import)))))
 
-(defun spt/imports-alist-get (clzname)
+(defun spt/imports-cache-get (clzname)
   "Get a import from cache."
-  (assoc clzname spt/imports-alist))
+  (assoc clzname spt/imports-cache))
 
 
 ;; -----------------------------------------------------------------------------
