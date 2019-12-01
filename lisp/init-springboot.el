@@ -1017,7 +1017,7 @@
     (cond
       ((null lookup)
         (message (concat "Cannot find class: " word)))
-      ((spt/imported-p word (buffer-string))
+      ((spt/imported-p word (jh/current-buffer))
         (message (concat "Aready imported class: " word)))
       (t
         (save-excursion
@@ -1039,19 +1039,12 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; keybind interactive function
+;;  __  __ ___ ____   ____
+;; |  \/  |_ _/ ___| / ___|
+;; | |\/| || |\___ \| |
+;; | |  | || | ___) | |___
+;; |_|  |_|___|____/ \____|
 ;; -----------------------------------------------------------------------------
-(defun spt/try-import-class ()
-  "Try to import CLASS."
-  (interactive)
-  (progn
-    (save-buffer)
-    (let* ((word (thing-at-point 'word t))
-            (importing (gethash word (spt/cache-of-all-imports)))
-            (imported (gethash word (spt/cache-of-imports (buffer-file-name)))))
-      (and importing (not imported)
-        (not (string= (cadr importing) (jh/java-package-name)))
-        (apply #'spt/insert-import-package-statement importing)))))
 
 (defun spt/jump-to-class-methods ()
   "Jump to class methods"

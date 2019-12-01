@@ -182,7 +182,7 @@
 
 (defun jh/current-buffer ()
   "Read content of current buffer."
-  (jh/read-file-content (buffer-file-name)))
+  (buffer-string))
 
 (defun jh/current-buffer-lines ()
   "Read content of current buffer as line."
