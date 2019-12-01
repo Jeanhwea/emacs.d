@@ -187,6 +187,33 @@
 
 
 ;; -----------------------------------------------------------------------------
+;;   ____           _
+;;  / ___|__ _  ___| |__   ___
+;; | |   / _` |/ __| '_ \ / _ \
+;; | |__| (_| | (__| | | |  __/
+;;  \____\__,_|\___|_| |_|\___| for importing class
+;; -----------------------------------------------------------------------------
+
+(defvar spt/imports-alist nil
+  "Imports cache that stores all classes imported in this project.")
+
+(defun spt/imports-alist-key (clzname)
+  "Construct key"
+  clzname)
+
+(defun spt/imports-alist-init ()
+  "Initialize cache if possible."
+  (let*
+    ((fileinfos (spt/scan-source-files)))
+    (dolist (fileinfo fileinfos)
+      (let*
+        ((file (car (last fileinfo)))
+          (text (jh/read-file-content file))
+          (imports (spt/parse-java-imports text)))
+        ;; todo
+        ))))
+
+;; -----------------------------------------------------------------------------
 ;;  _   _ _____ _     ____  _____ ____
 ;; | | | | ____| |   |  _ \| ____|  _ \
 ;; | |_| |  _| | |   | |_) |  _| | |_) |
