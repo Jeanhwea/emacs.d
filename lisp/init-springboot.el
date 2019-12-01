@@ -197,21 +197,48 @@
 (defvar spt/imports-alist nil
   "Imports cache that stores all classes imported in this project.")
 
-(defun spt/imports-alist-key (clzname)
-  "Construct key"
-  clzname)
+(defun spt/fileinfo-to-import (fileinfo)
+  "Convert fileinfo to import."
+  (let
+    ((import (make-hash-table :test 'equal :size 3)))
+    (puthash 'pkgname (nth 3 fileinfo) import)
+    (puthash 'clzname (nth 0 fileinfo) import)
+    import))
 
 (defun spt/imports-alist-init ()
   "Initialize cache if possible."
   (let*
-    ((fileinfos (spt/scan-source-files)))
+    ((fileinfos (spt/scan-source-files))
+      (testinfos (spt/scan-test-files)))
+    ;; import source files
     (dolist (fileinfo fileinfos)
       (let*
         ((file (car (last fileinfo)))
           (text (jh/read-file-content file))
           (imports (spt/parse-java-imports text)))
-        ;; todo
-        ))))
+        (spt/imports-alist-put (spt/fileinfo-to-import fileinfo))
+        ;; imports in java file
+        (dolist (import imports) (spt/imports-alist-put import))))
+    ;; import test files
+    (dolist (testinfo testinfos)
+      (let*
+        ((file (car (last testinfo)))
+          (text (jh/read-file-content file))
+          (imports (spt/parse-java-imports text)))
+        (spt/imports-alist-put (spt/fileinfo-to-import testinfo))
+        ;; imports in java file
+        (dolist (import imports) (spt/imports-alist-put import))))))
+
+(defun spt/imports-alist-put (import)
+  "Put a import to cache."
+  (let ((clzname (gethash 'clzname import)))
+    (or (assoc clzname spt/imports-alist)
+      (add-to-list 'spt/imports-alist (cons clzname import)))))
+
+(defun spt/imports-alist-get (clzname)
+  "Get a import from cache."
+  (assoc clzname spt/imports-alist))
+
 
 ;; -----------------------------------------------------------------------------
 ;;  _   _ _____ _     ____  _____ ____
@@ -337,6 +364,7 @@
     (
       ;; preparing data
       (file (or file (buffer-file-name)))
+      (re (format "^\\(%s\\|%s\\)" (spt/src-root) (spt/test-root)))
       (tail-folder-list
         (split-string
           (replace-regexp-in-string
@@ -353,9 +381,7 @@
       (pkgname
         (mapconcat 'identity
           (split-string
-            (replace-regexp-in-string (spt/src-root) ""
-              (jh/parent-dir file))
-            "/" t) ".")))
+            (replace-regexp-in-string re "" (jh/parent-dir file)) "/" t) ".")))
     (list clzname bldname mdlname pkgname file)))
 
 (defun spt/scan-test-files ()
