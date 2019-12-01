@@ -116,29 +116,29 @@
   (let ((abs (expand-file-name file)))
     (if (file-directory-p abs) (file-name-as-directory abs) abs)))
 
-;; (defun jh/relative-path (file dir)
-;;   "Return a relative path of FILE to DIR."
-;;   (let ((absfile (jh/absolute-path file)) (absdir (jh/absolute-path dir)))
-;;     (or (file-directory-p dir) (error "DIR should be a directory"))
-;;     (file-relative-name absfile absdir)))
-
 (defun jh/relative-path (file dir)
   "Return a relative path of FILE to DIR."
-  (let ((abs-file (jh/absolute-path file))
-         (abs-dir (jh/absolute-path dir))
-         res)
+  (let ((absfile (jh/absolute-path file)) (absdir (jh/absolute-path dir)))
     (or (file-directory-p dir) (error "DIR should be a directory"))
-    (dolist (parent (jh/directory-sequence abs-dir))
-      (and (file-in-directory-p abs-file parent) (null res)
-        (let ((com-file (replace-regexp-in-string parent "" abs-file))
-               (com-dir (replace-regexp-in-string parent "" abs-dir)))
-          (setq res
-            (if (string-empty-p com-dir) com-file
-              (concat
-                (mapconcat (lambda (_x) "..")
-                  (remove-if 'string-empty-p (split-string com-dir "/")) "/")
-                "/" com-file))))))
-    res))
+    (file-relative-name absfile absdir)))
+
+;; (defun jh/relative-path (file dir)
+;;   "Return a relative path of FILE to DIR."
+;;   (let ((abs-file (jh/absolute-path file))
+;;          (abs-dir (jh/absolute-path dir))
+;;          res)
+;;     (or (file-directory-p dir) (error "DIR should be a directory"))
+;;     (dolist (parent (jh/directory-sequence abs-dir))
+;;       (and (file-in-directory-p abs-file parent) (null res)
+;;         (let ((com-file (replace-regexp-in-string parent "" abs-file))
+;;                (com-dir (replace-regexp-in-string parent "" abs-dir)))
+;;           (setq res
+;;             (if (string-empty-p com-dir) com-file
+;;               (concat
+;;                 (mapconcat (lambda (_x) "..")
+;;                   (remove-if 'string-empty-p (split-string com-dir "/")) "/")
+;;                 "/" com-file))))))
+;;     res))
 
 (defun jh/parent-dir (file)
   "Return the parent directory of FILE."
