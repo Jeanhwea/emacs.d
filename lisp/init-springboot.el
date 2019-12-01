@@ -110,31 +110,28 @@
 ;;  \____\__,_|\___|_| |_|\___| for finding alternative files
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/bundle-entity-cache nil
+(defvar spt/bundle-entity-alist nil
   "File cache that stores all alternative java class file.")
 
-(defun spt/bundle-entity-cache-key (fileinfo &optional bundle)
+(defun spt/bundle-entity-alist-key (fileinfo &optional bundle)
   "Construct file cache key via FILEINFO."
   (let ((bldname (or bundle (nth 1 fileinfo))))
-    (concat bldname "/" (spt/coerce-to-entity fileinfo))))
+    (concat bldname "#" (spt/coerce-to-entity fileinfo))))
 
-(defun spt/bundle-entity-cache-init ()
+(defun spt/bundle-entity-alist-init ()
   "Initialize file cache if possible."
-  (and
-    (setq spt/bundle-entity-cache (make-hash-table :test 'equal))
-    (dolist (fileinfo (spt/scan-source-files))
-      ;; add source files
-      (spt/bundle-entity-cache-put fileinfo))))
+  (let ((fileinfos (spt/scan-source-files)))
+    (dolist (fileinfo fileinfos)
+      (spt/bundle-entity-alist-put fileinfo))))
 
-(defun spt/bundle-entity-cache-put (fileinfo)
-  "Put a file to file cache."
-  (puthash
-    (spt/bundle-entity-cache-key fileinfo) fileinfo spt/bundle-entity-cache))
+(defun spt/bundle-entity-alist-put (fileinfo)
+  "Put value to cache."
+  (let ((key (spt/bundle-entity-alist-key fileinfo)))
+    (add-to-list 'spt/bundle-entity-alist (cons key fileinfo))))
 
-(defun spt/bundle-entity-cache-get (fileinfo bundle)
-  "Get a file to file cache."
-  (gethash
-    (spt/bundle-entity-cache-key fileinfo bundle) spt/bundle-entity-cache))
+(defun spt/bundle-entity-alist-get (fileinfo bundle)
+  "Get value from cache."
+  (assoc (spt/bundle-entity-alist-key fileinfo bundle) spt/bundle-entity-alist))
 
 
 ;; -----------------------------------------------------------------------------
@@ -145,27 +142,30 @@
 ;;  \____\__,_|\___|_| |_|\___| for markdown documentation
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/base-endpoint-cache nil
+(defvar spt/base-endpoint-alist nil
   "File cache that stores all spring controller.")
 
-(defun spt/base-endpoint-cache-key (base function)
+(defun spt/base-endpoint-alist-key (base function)
   "Construct file cache key via base and function."
   (concat basename "#" function))
 
-(defun spt/base-endpoint-cache-init ()
+(defun spt/base-endpoint-alist-init ()
   "Initialize cache if possible."
-  (and
-    (setq spt/base-endpoint-cache (make-hash-table :test 'equal))
-    (dolist (fileinfo (spt/scan-source-files))
-      (let
-        ((bldname (nth 1 fileinfo))
-          (file (car (last fileinfo))))
-        (and (string= "controller" bldname) ;; iterate all controller
-          (dolist (endpoint (spt/read-endpoints (jh/read-file-content file)))
-            ;; add endpoints
-            (spt/base-endpoint-cache-put endpoint)))))))
+  (let*
+    ((fileinfos (spt/scan-source-files))
+      (ctrlinfos
+        (remove-if-not
+          #'(lambda (e) (string= "controller" (nth 1 e))) fileinfos)))
+    (dolist (fileinfo ctrlinfos) ;; iterate all controller
+      (let*
+        ((file (car (last fileinfo)))
+          (text (jh/read-file-content file))
+          (endpoints (spt/read-endpoints text)))
+        (dolist (endpoint endpoints)
+          ;; add endpoints
+          (spt/base-endpoint-alist-put endpoint))))))
 
-(defun spt/base-endpoint-cache-put (endpoint)
+(defun spt/base-endpoint-alist-put (endpoint)
   "Put a endpoint to cache."
   (let*
     ((prefix (gethash 'http-prefix endpoint))
@@ -174,19 +174,16 @@
       (funcname (gethash 'funcname endpoint))
       (addr (gethash 'addr endpoint))
       (basename (spt/http-prefix-to-basename prefix))
-      (http-api (concat method " " prefix suffix)))
-    (puthash
-      (spt/base-endpoint-cache-key basename funcname)
-      (list http-api funcname addr file)
-      spt/base-endpoint-cache)))
+      (http-api (concat method " " prefix suffix))
+      (key (spt/base-endpoint-alist-key basename funcname))
+      (val (list http-api funcname addr file)))
+    (add-to-list 'spt/base-endpoint-alist (cons key val))))
 
-(defun spt/base-endpoint-cache-get (docinfo)
+(defun spt/base-endpoint-alist-get (docinfo)
   "Get a endpoint to cache."
-  (let*
-    ((funcname (nth 0 docinfo))
-      (basename (nth 1 docinfo))
-      (hashkey (spt/base-endpoint-cache-key basename funcname)))
-    (gethash hashkey spt/base-endpoint-cache)))
+  (let
+    ((key (spt/base-endpoint-alist-key (nth 0 docinfo) (nth 1 docinfo))))
+    (assoc key spt/base-endpoint-alist)))
 
 
 ;; -----------------------------------------------------------------------------
@@ -278,16 +275,16 @@
 
 (defun spt/find-alternative-source-file (bundle)
   "Find alternative filename with selected BUNDLE."
-  (or spt/bundle-entity-cache (spt/bundle-entity-cache-init))
+  (or spt/bundle-entity-alist (spt/bundle-entity-alist-init))
   (let*
     ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
-      (lookup (spt/bundle-entity-cache-get fileinfo bundle)))
+      (lookup (spt/bundle-entity-alist-get fileinfo bundle)))
     (if lookup
       ;; if found, return the first filename
       (car (last lookup))
       ;; otherwise, construct a filename
       (and
-        (spt/bundle-entity-cache-put fileinfo)
+        (spt/bundle-entity-alist-put fileinfo)
         (spt/coerce-to-filename fileinfo bundle)))))
 
 (defun spt/switch-to (&optional bundle)
@@ -467,18 +464,18 @@
 
 (defun spt/coerce-to-ctrlfile (file)
   "Force file to controller file."
-  (or spt/base-endpoint-cache (spt/base-endpoint-cache-init))
+  (or spt/base-endpoint-alist (spt/base-endpoint-alist-init))
   (let*
     ((docinfo (spt/docfile-to-docinfo file))
-      (lookup (spt/base-endpoint-cache-get docinfo)))
+      (lookup (spt/base-endpoint-alist-get docinfo)))
     (and lookup (car (last lookup)))))
 
 (defun spt/endpoint-addr (file)
   "Get endpoint address from markdown file."
-  (or spt/base-endpoint-cache (spt/base-endpoint-cache-init))
+  (or spt/base-endpoint-alist (spt/base-endpoint-alist-init))
   (let*
     ((docinfo (spt/docfile-to-docinfo file))
-      (lookup (spt/base-endpoint-cache-get docinfo)))
+      (lookup (spt/base-endpoint-alist-get docinfo)))
     (and lookup (nth 2 lookup))))
 
 (defun spt/swap-markdown-and-endpoint ()
