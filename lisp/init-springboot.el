@@ -902,10 +902,7 @@
 ;;  \____\___/|_|  |_|_| /_/   \_\_| \_| |_|
 ;; -----------------------------------------------------------------------------
 
-(defun spt/compilation-start (cmd &optional dir)
-  "Run compilation command."
-  (let ((default-directory (or dir (spt/project-root))))
-    (compilation-start cmd)))
+
 
 (defun spt/company-jpa-backend (command &optional arg &rest ignored)
   (interactive (list 'interactive))
@@ -973,23 +970,43 @@
 ;; |  _ <| |_| | |\  | |\  | |___|  _ <
 ;; |_| \_\\___/|_| \_|_| \_|_____|_| \_\ for Maven Springboot Test
 ;; -----------------------------------------------------------------------------
-;;
-;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
 
-(defun spt/maven-test-command (class &optional package)
+(defun spt/compilation-start (command &optional dir)
+  "Run compilation command."
+  (let ((default-directory (or dir (spt/project-root))))
+    (compilation-start command)))
+
+(defun spt/current-test-method-name ()
+  "Find current test method, the method name near cursor."
+  (let*
+    ((file (buffer-file-name))
+      (methods
+        (sort
+          (spt/read-junit-test-methods (jh/read-file-content file))
+          #'(lambda (a b) (< (gethash 'addr a) (gethash 'addr b)))))
+      (current-point (point))
+      (lookup
+        (remove-if
+          #'(lambda (method) (<= current-point (gethash 'addr method)))
+          methods)))
+    (and lookup (gethash 'funcname (car (last lookup))))))
+
+;; http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
+(defun spt/maven-test-command (clzname &optional pkgname)
   "Return maven test command."
-  (let ((subjects (if package (concat class "#" package) class)))
-    (concat "mvn test"
-      " -Dtest=" subjects
-      " -Dfile.encoding=UTF-8"
-      " --quiet --batch-mode")))
+  (let
+    ((subjects (if pkgname (concat clzname "#" pkgname) clzname))
+      (args '("-Dfile.encoding=UTF-8" "--quiet" "--batch-mode")))
+    (format "mvn test -Dtest=%s %s" subjects (mapconcat 'identity args " "))))
 
 (defun spt/run-test-class-command ()
   "Run a test command."
   (interactive)
-  (when (spt/testcase? (buffer-file-name))
-    (let ((this-class (jh/java-class-name)))
-      (spt/compilation-start (spt/maven-test-command this-class)))))
+  (let*
+    ((text (jh/read-file-content (buffer-file-name)))
+      (clzname (gethash 'clzname (spt/parse-java-meta text))))
+    (and clzname (string-match-p "Test$" clzname)
+      (spt/compilation-start (spt/maven-test-command clzname)))))
 
 (defun spt/run-test-method-command ()
   "Run a test command."
@@ -1202,10 +1219,10 @@
   (define-key spt/leader (kbd "d") #'spt/swap-markdown-and-endpoint)
 
   ;; todo
-  (define-key spt/leader (kbd "P") 'spt/run-test-class-command)
   (define-key spt/leader (kbd "j") 'spt/company-jpa-backend)
   (define-key spt/leader (kbd "m") 'spt/jump-to-class-methods)
   (define-key spt/leader (kbd "p") 'spt/run-test-method-command)
+  (define-key spt/leader (kbd "P") 'spt/run-test-class-command)
   (define-key spt/leader (kbd "RET") 'spt/try-import-class))
 (global-set-key (kbd "M-[") 'spt/leader)
 
