@@ -31,12 +31,6 @@
 ;;
 ;; -----------------------------------------------------------------------------
 
-;; variables
-(defvar spt/bundle-of-interest
-  '("entity" "repo" "service" "controller" "impl" "helper")
-  "springboot bundle of interest names.")
-
-
 ;; -----------------------------------------------------------------------------
 ;;  __  __      _        ___        __
 ;; |  \/  | ___| |_ __ _|_ _|_ __  / _| ___
@@ -103,150 +97,39 @@
 
 
 ;; -----------------------------------------------------------------------------
-;;   ____           _
-;;  / ___|__ _  ___| |__   ___
-;; | |   / _` |/ __| '_ \ / _ \
-;; | |__| (_| | (__| | | |  __/
-;;  \____\__,_|\___|_| |_|\___| for finding alternative files
+;;  ____                             _____ _ _
+;; / ___|  ___  _   _ _ __ ___ ___  |  ___(_) | ___  ___
+;; \___ \ / _ \| | | | '__/ __/ _ \ | |_  | | |/ _ \/ __|
+;;  ___) | (_) | |_| | | | (_|  __/ |  _| | | |  __/\__ \
+;; |____/ \___/ \__,_|_|  \___\___| |_|   |_|_|\___||___/
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/bundle-entity-alist nil
+(defvar spt/bundle-of-interest
+  '("entity" "repo" "service" "controller" "impl" "helper")
+  "springboot bundle of interest names.")
+
+(defvar spt/sources-cache nil
   "File cache that stores all alternative java class file.")
 
-(defun spt/bundle-entity-alist-key (fileinfo &optional bundle)
+(defun spt/sources-cache-key (fileinfo &optional bundle)
   "Construct file cache key via FILEINFO."
   (let ((bldname (or bundle (nth 1 fileinfo))))
     (concat bldname "#" (spt/coerce-to-entity fileinfo))))
 
-(defun spt/bundle-entity-alist-init ()
+(defun spt/sources-cache-init ()
   "Initialize file cache if possible."
   (let ((fileinfos (spt/scan-source-files)))
     (dolist (fileinfo fileinfos)
-      (spt/bundle-entity-alist-put fileinfo))))
+      (spt/sources-cache-put fileinfo))))
 
-(defun spt/bundle-entity-alist-put (fileinfo)
+(defun spt/sources-cache-put (fileinfo)
   "Put value to cache."
-  (let ((key (spt/bundle-entity-alist-key fileinfo)))
-    (add-to-list 'spt/bundle-entity-alist (cons key fileinfo))))
+  (let ((key (spt/sources-cache-key fileinfo)))
+    (add-to-list 'spt/sources-cache (cons key fileinfo))))
 
-(defun spt/bundle-entity-alist-get (fileinfo bundle)
+(defun spt/sources-cache-get (fileinfo bundle)
   "Get value from cache."
-  (assoc (spt/bundle-entity-alist-key fileinfo bundle) spt/bundle-entity-alist))
-
-
-;; -----------------------------------------------------------------------------
-;;   ____           _
-;;  / ___|__ _  ___| |__   ___
-;; | |   / _` |/ __| '_ \ / _ \
-;; | |__| (_| | (__| | | |  __/
-;;  \____\__,_|\___|_| |_|\___| for markdown documentation
-;; -----------------------------------------------------------------------------
-
-(defvar spt/base-endpoint-alist nil
-  "File cache that stores all spring controller.")
-
-(defun spt/base-endpoint-alist-key (basename funcname)
-  "Construct file cache key via base and function."
-  (concat basename "#" funcname))
-
-(defun spt/base-endpoint-alist-init ()
-  "Initialize cache if possible."
-  (let*
-    ((fileinfos (spt/scan-source-files))
-      (ctrlinfos
-        (remove-if-not
-          #'(lambda (e) (string= "controller" (nth 1 e))) fileinfos)))
-    (dolist (fileinfo ctrlinfos) ;; iterate all controller
-      (let*
-        ((file (car (last fileinfo)))
-          (text (jh/read-file-content file))
-          (endpoints (spt/read-endpoints text)))
-        (dolist (endpoint endpoints)
-          ;; add endpoints
-          (spt/base-endpoint-alist-put endpoint))))))
-
-(defun spt/base-endpoint-alist-put (endpoint)
-  "Put a endpoint to cache."
-  (let*
-    ((prefix (gethash 'http-prefix endpoint))
-      (suffix (gethash 'http-suffix endpoint))
-      (method (gethash 'http-method endpoint))
-      (funcname (gethash 'funcname endpoint))
-      (addr (gethash 'addr endpoint))
-      (basename (spt/http-prefix-to-basename prefix))
-      (http-api (concat method " " prefix suffix))
-      (key (spt/base-endpoint-alist-key basename funcname))
-      (val (list http-api funcname addr file)))
-    (add-to-list 'spt/base-endpoint-alist (cons key val))))
-
-(defun spt/base-endpoint-alist-get (docinfo)
-  "Get a endpoint to cache."
-  (let
-    ((key (spt/base-endpoint-alist-key (nth 1 docinfo) (nth 0 docinfo))))
-    (assoc key spt/base-endpoint-alist)))
-
-
-;; -----------------------------------------------------------------------------
-;;   ____           _
-;;  / ___|__ _  ___| |__   ___
-;; | |   / _` |/ __| '_ \ / _ \
-;; | |__| (_| | (__| | | |  __/
-;;  \____\__,_|\___|_| |_|\___| for importing class
-;; -----------------------------------------------------------------------------
-
-(defvar spt/imports-alist nil
-  "Imports cache that stores all classes imported in this project.")
-
-(defun spt/fileinfo-to-import (fileinfo)
-  "Convert fileinfo to import."
-  (let
-    ((import (make-hash-table :test 'equal :size 3)))
-    (puthash 'pkgname (nth 3 fileinfo) import)
-    (puthash 'clzname (nth 0 fileinfo) import)
-    import))
-
-(defun spt/imports-alist-init ()
-  "Initialize cache if possible."
-  (let*
-    ((fileinfos (spt/scan-source-files))
-      (testinfos (spt/scan-test-files)))
-    ;; import source files
-    (dolist (fileinfo fileinfos)
-      (let*
-        ((file (car (last fileinfo)))
-          (text (jh/read-file-content file))
-          (imports (spt/parse-java-imports text)))
-        (spt/imports-alist-put (spt/fileinfo-to-import fileinfo))
-        ;; imports in java file
-        (dolist (import imports) (spt/imports-alist-put import))))
-    ;; import test files
-    (dolist (testinfo testinfos)
-      (let*
-        ((file (car (last testinfo)))
-          (text (jh/read-file-content file))
-          (imports (spt/parse-java-imports text)))
-        (spt/imports-alist-put (spt/fileinfo-to-import testinfo))
-        ;; imports in java file
-        (dolist (import imports) (spt/imports-alist-put import))))))
-
-(defun spt/imports-alist-put (import)
-  "Put a import to cache."
-  (let ((clzname (gethash 'clzname import)))
-    (or (assoc clzname spt/imports-alist)
-      (add-to-list 'spt/imports-alist (cons clzname import)))))
-
-(defun spt/imports-alist-get (clzname)
-  "Get a import from cache."
-  (assoc clzname spt/imports-alist))
-
-
-;; -----------------------------------------------------------------------------
-;;  _   _ _____ _     ____  _____ ____
-;; | | | | ____| |   |  _ \| ____|  _ \
-;; | |_| |  _| | |   | |_) |  _| | |_) |
-;; |  _  | |___| |___|  __/| |___|  _ <
-;; |_| |_|_____|_____|_|   |_____|_| \_\ for source files
-;; -----------------------------------------------------------------------------
+  (assoc (spt/sources-cache-key fileinfo bundle) spt/sources-cache))
 
 (defun spt/source-files ()
   "Return a list of `*.java' files in the source folder."
@@ -328,16 +211,16 @@
 
 (defun spt/find-alternative-source-file (bundle)
   "Find alternative filename with selected BUNDLE."
-  (or spt/bundle-entity-alist (spt/bundle-entity-alist-init))
+  (or spt/sources-cache (spt/sources-cache-init))
   (let*
     ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
-      (lookup (spt/bundle-entity-alist-get fileinfo bundle)))
+      (lookup (spt/sources-cache-get fileinfo bundle)))
     (if lookup
       ;; if found, return the first filename
       (car (last lookup))
       ;; otherwise, construct a filename
       (and
-        (spt/bundle-entity-alist-put fileinfo)
+        (spt/sources-cache-put fileinfo)
         (spt/coerce-to-filename fileinfo bundle)))))
 
 (defun spt/switch-to (&optional bundle)
@@ -347,11 +230,11 @@
 
 
 ;; -----------------------------------------------------------------------------
-;;  _   _ _____ _     ____  _____ ____
-;; | | | | ____| |   |  _ \| ____|  _ \
-;; | |_| |  _| | |   | |_) |  _| | |_) |
-;; |  _  | |___| |___|  __/| |___|  _ <
-;; |_| |_|_____|_____|_|   |_____|_| \_\ for test files
+;;  _____         _     _____ _ _
+;; |_   _|__  ___| |_  |  ___(_) | ___  ___
+;;   | |/ _ \/ __| __| | |_  | | |/ _ \/ __|
+;;   | |  __/\__ \ |_  |  _| | | |  __/\__ \
+;;   |_|\___||___/\__| |_|   |_|_|\___||___/
 ;; -----------------------------------------------------------------------------
 
 (defun spt/test-files ()
@@ -432,12 +315,55 @@
 
 
 ;; -----------------------------------------------------------------------------
-;;  _   _ _____ _     ____  _____ ____
-;; | | | | ____| |   |  _ \| ____|  _ \
-;; | |_| |  _| | |   | |_) |  _| | |_) |
-;; |  _  | |___| |___|  __/| |___|  _ <
-;; |_| |_|_____|_____|_|   |_____|_| \_\ for document files
+;;  ____                                        _
+;; |  _ \  ___   ___ _   _ _ __ ___   ___ _ __ | |_
+;; | | | |/ _ \ / __| | | | '_ ` _ \ / _ \ '_ \| __|
+;; | |_| | (_) | (__| |_| | | | | | |  __/ | | | |_
+;; |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__|
 ;; -----------------------------------------------------------------------------
+
+(defvar spt/document-cache nil
+  "File cache that stores all spring controller.")
+
+(defun spt/document-cache-key (basename funcname)
+  "Construct file cache key via base and function."
+  (concat basename "#" funcname))
+
+(defun spt/document-cache-init ()
+  "Initialize cache if possible."
+  (let*
+    ((fileinfos (spt/scan-source-files))
+      (ctrlinfos
+        (remove-if-not
+          #'(lambda (e) (string= "controller" (nth 1 e))) fileinfos)))
+    (dolist (fileinfo ctrlinfos) ;; iterate all controller
+      (let*
+        ((file (car (last fileinfo)))
+          (text (jh/read-file-content file))
+          (endpoints (spt/read-endpoints text)))
+        (dolist (endpoint endpoints)
+          ;; add endpoints
+          (spt/document-cache-put endpoint))))))
+
+(defun spt/document-cache-put (endpoint)
+  "Put a endpoint to cache."
+  (let*
+    ((prefix (gethash 'http-prefix endpoint))
+      (suffix (gethash 'http-suffix endpoint))
+      (method (gethash 'http-method endpoint))
+      (funcname (gethash 'funcname endpoint))
+      (addr (gethash 'addr endpoint))
+      (basename (spt/http-prefix-to-basename prefix))
+      (http-api (concat method " " prefix suffix))
+      (key (spt/document-cache-key basename funcname))
+      (val (list http-api funcname addr file)))
+    (add-to-list 'spt/document-cache (cons key val))))
+
+(defun spt/document-cache-get (docinfo)
+  "Get a endpoint to cache."
+  (let
+    ((key (spt/document-cache-key (nth 1 docinfo) (nth 0 docinfo))))
+    (assoc key spt/document-cache)))
 
 (defun spt/doc-files ()
   "Return a list of `*.md' files in the document folder."
@@ -516,18 +442,18 @@
 
 (defun spt/coerce-to-ctrlfile (file)
   "Force file to controller file."
-  (or spt/base-endpoint-alist (spt/base-endpoint-alist-init))
+  (or spt/document-cache (spt/document-cache-init))
   (let*
     ((docinfo (spt/docfile-to-docinfo file))
-      (lookup (spt/base-endpoint-alist-get docinfo)))
+      (lookup (spt/document-cache-get docinfo)))
     (and lookup (car (last lookup)))))
 
 (defun spt/endpoint-addr (file)
   "Get endpoint address from markdown file."
-  (or spt/base-endpoint-alist (spt/base-endpoint-alist-init))
+  (or spt/document-cache (spt/document-cache-init))
   (let*
     ((docinfo (spt/docfile-to-docinfo file))
-      (lookup (spt/base-endpoint-alist-get docinfo)))
+      (lookup (spt/document-cache-get docinfo)))
     (and lookup (car (last lookup 2)))))
 
 (defun spt/swap-markdown-and-endpoint ()
@@ -1074,6 +1000,50 @@
 ;;               |_|
 ;; -----------------------------------------------------------------------------
 
+(defvar spt/imports-alist nil
+  "Imports cache that stores all classes imported in this project.")
+
+(defun spt/fileinfo-to-import (fileinfo)
+  "Convert fileinfo to import."
+  (let
+    ((import (make-hash-table :test 'equal :size 3)))
+    (puthash 'pkgname (nth 3 fileinfo) import)
+    (puthash 'clzname (nth 0 fileinfo) import)
+    import))
+
+(defun spt/imports-alist-init ()
+  "Initialize cache if possible."
+  (let*
+    ((fileinfos (spt/scan-source-files))
+      (testinfos (spt/scan-test-files)))
+    ;; import source files
+    (dolist (fileinfo fileinfos)
+      (let*
+        ((file (car (last fileinfo)))
+          (text (jh/read-file-content file))
+          (imports (spt/parse-java-imports text)))
+        (spt/imports-alist-put (spt/fileinfo-to-import fileinfo))
+        ;; imports in java file
+        (dolist (import imports) (spt/imports-alist-put import))))
+    ;; import test files
+    (dolist (testinfo testinfos)
+      (let*
+        ((file (car (last testinfo)))
+          (text (jh/read-file-content file))
+          (imports (spt/parse-java-imports text)))
+        (spt/imports-alist-put (spt/fileinfo-to-import testinfo))
+        ;; imports in java file
+        (dolist (import imports) (spt/imports-alist-put import))))))
+
+(defun spt/imports-alist-put (import)
+  "Put a import to cache."
+  (let ((clzname (gethash 'clzname import)))
+    (or (assoc clzname spt/imports-alist)
+      (add-to-list 'spt/imports-alist (cons clzname import)))))
+
+(defun spt/imports-alist-get (clzname)
+  "Get a import from cache."
+  (assoc clzname spt/imports-alist))
 
 
 ;; -----------------------------------------------------------------------------
