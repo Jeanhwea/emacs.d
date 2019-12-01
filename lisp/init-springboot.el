@@ -890,29 +890,6 @@
 ;; (add-to-list 'company-backends 'spt/company-jpa-backend)
 
 ;; -----------------------------------------------------------------------------
-;; Modifiers and Picker
-;; -----------------------------------------------------------------------------
-(defun spt/insert-import-package-statement (static package class)
-  "Insert `import com.package.ClassName;'"
-  (save-excursion
-    (progn
-      (goto-char (point-max))
-      (or (search-backward-regexp "^import \\(static \\|\\)\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$" nil t)
-        (progn
-          (goto-char (point-min))
-          (next-line)))
-      (end-of-line)
-      (newline)
-      (insert (jh/strip (format "import %s %s.%s;" static package class))))))
-
-(defun spt/goto-function-body (file addr)
-  "Goto a function body"
-  (progn
-    (find-file file)
-    (goto-char addr)
-    (search-forward-regexp "{$")))
-
-;; -----------------------------------------------------------------------------
 ;;  ____  _   _ _   _ _   _ _____ ____
 ;; |  _ \| | | | \ | | \ | | ____|  _ \
 ;; | |_) | | | |  \| |  \| |  _| | |_) |
@@ -1024,6 +1001,42 @@
   "Get a import from cache."
   (assoc clzname spt/imports-cache))
 
+(defun spt/imported-p (clazz text)
+  "Return t if CLAZZ is already imported in FILE"
+  (seq-reduce
+    #'(lambda (a e) (or a (string= clazz (gethash 'clzname e))))
+    (spt/parse-java-imports text) nil))
+
+(defun spt/import-unknown-class ()
+  "Import class."
+  (interactive)
+  (or spt/imports-cache (spt/imports-cache-init))
+  (let*
+    ((word (thing-at-point 'word t))
+      (lookup (spt/imports-cache-get word)))
+    (cond
+      ((null lookup)
+        (message (concat "Cannot find class: " word)))
+      ((spt/imported-p word (buffer-string))
+        (message (concat "Aready imported class: " word)))
+      (t
+        (save-excursion
+          (let*
+            ((re "^import \\(static \\|\\)\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$")
+              (import (cdr lookup))
+              (clzname (gethash 'clzname import))
+              (pkgname (gethash 'pkgname import))
+              (impstmt
+                (if (gethash 'static import)
+                  (format "import static %s.%s;" pkgname clzname)
+                  (format "import %s.%s;" pkgname clzname))))
+            (progn
+              (goto-char (point-max))
+              (or (re-search-backward re nil t) (goto-char (point-min)))
+              (end-of-line)
+              (newline)
+              (insert impstmt))))))))
+
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
@@ -1097,10 +1110,12 @@
   (define-key spt/leader (kbd "u") 'spt/run-test-method-command)
   (define-key spt/leader (kbd "U") 'spt/run-test-class-command)
 
+  ;; workflow
+  (define-key spt/leader (kbd "RET") 'spt/import-unknown-class)
+
   ;; todo
   (define-key spt/leader (kbd "j") 'spt/company-jpa-backend)
-  (define-key spt/leader (kbd "m") 'spt/jump-to-class-methods)
-  (define-key spt/leader (kbd "RET") 'spt/try-import-class))
+  (define-key spt/leader (kbd "m") 'spt/jump-to-class-methods))
 (global-set-key (kbd "M-[") 'spt/leader)
 
 
