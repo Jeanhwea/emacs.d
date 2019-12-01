@@ -231,6 +231,7 @@
     (
       ;; preparing data
       (file (or file (buffer-file-name)))
+      (re (format "^\\(%s\\|%s\\)" (spt/src-root) (spt/test-root)))
       (tail-folder-list
         (split-string
           (replace-regexp-in-string
@@ -247,9 +248,7 @@
       (pkgname
         (mapconcat 'identity
           (split-string
-            (replace-regexp-in-string (spt/src-root) ""
-              (jh/parent-dir file))
-            "/" t) ".")))
+            (replace-regexp-in-string re "" (jh/parent-dir file)) "/" t) ".")))
     (list clzname bldname mdlname pkgname file)))
 
 (defun spt/scan-source-files ()
