@@ -1004,7 +1004,7 @@
   (interactive)
   (let*
     ((text (jh/read-file-content (buffer-file-name)))
-      (clzname (gethash 'clzname (spt/parse-java-meta text))))
+      (clzname (gethash 'clzname (spt/parse-java-frontinfo text))))
     (and clzname (string-match-p "Test$" clzname)
       (spt/compilation-start (spt/maven-test-command clzname)))))
 
@@ -1013,7 +1013,7 @@
   (interactive)
   (let*
     ((text (jh/read-file-content (buffer-file-name)))
-      (clzname (gethash 'clzname (spt/parse-java-meta text)))
+      (clzname (gethash 'clzname (spt/parse-java-frontinfo text)))
       (method (spt/current-test-method-name)))
     (and clzname (string-match-p "Test$" clzname)
       (if method
