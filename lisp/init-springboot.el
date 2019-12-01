@@ -1022,117 +1022,15 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; Cache builders
+;;  ___                            _
+;; |_ _|_ __ ___  _ __   ___  _ __| |_ ___
+;;  | || '_ ` _ \| '_ \ / _ \| '__| __/ __|
+;;  | || | | | | | |_) | (_) | |  | |_\__ \
+;; |___|_| |_| |_| .__/ \___/|_|   \__|___/
+;;               |_|
 ;; -----------------------------------------------------------------------------
-(defun spt/cache-of-imports (file)
-  "Read imported class in the FILE, then put them into a cache."
-  (let ((cache (make-hash-table :test 'equal))
-         (imports (spt/extract-java-imported-classes (jh/read-file-content file))))
-    (dolist (import imports)
-      (and import
-        (puthash (caddr import) import cache)))
-    cache))
 
-(defun spt/cache-of-all-imports ()
-  "Read imported class in the whole project, then put them into a cache."
-  (let ((cache (make-hash-table :test 'equal)))
-    (dolist (file (spt/source-files))
-      (let ((class (jh/java-class-name file))
-             (package (jh/java-package-name file)))
-        (puthash class (list "" package class) cache))
-      (maphash
-        (lambda (k v) (puthash k v cache))
-        (spt/cache-of-imports file)))
-    cache))
 
-(defun spt/cache-of-file-meta (file)
-  "Extract java class file meta information, such as class/interface, parent"
-  (let* ((cache (make-hash-table :test 'equal))
-          (text (jh/read-file-content file))
-          (class-inter (cadr (spt/extract-java-clazz text))))
-    (puthash 'package (spt/parse-java-package text) cache)
-    (puthash 'class (spt/extract-java-clazz text) cache)
-    (puthash 'imports (spt/extract-java-imported-classes text) cache)
-    (puthash 'methods
-      (if (string= "interface" class-inter)
-        (spt/extract-java-inter-methods text)
-        (spt/extract-java-class-methods text))
-      cache)
-    cache))
-
-(defun spt/cache-of-class-in-project-if (pred)
-  "Return a list that contains all component in the project."
-  (let ((cache (make-hash-table :test 'equal))
-         (files (remove-if-not pred (spt/source-files))))
-    (dolist (file files)
-      (puthash (jh/java-class-name file) file cache))
-    cache))
-
-(defun spt/cache-of-inter-method (file)
-  "Read all cache of all method in a interface."
-  (let ((cache (make-hash-table :test 'equal))
-         (signs (spt/extract-java-inter-methods (jh/read-file-content file))))
-    (dolist (sign signs) (puthash (apply #'format "%s$%s$%s" sign) sign cache))
-    cache))
-
-(defun spt/cache-of-impl-override-method (file)
-  "Read all cache of all override method in a implement."
-  (let ((cache (make-hash-table :test 'equal))
-         (signs (spt/extract-java-impl-override-methods (jh/read-file-content file))))
-    (dolist (sign signs) (puthash (apply #'format "%s$%s$%s" sign) sign cache))
-    cache))
-
-(defun spt/cache-of-controller-api (file)
-  "Read api information in the controller FILE."
-  (and (spt/controller? file)
-    (let* ((cache (make-hash-table :test 'equal))
-            (text (jh/read-file-content file))
-            (module (spt/extract-java-controller-module text))
-            (router (or (spt/extract-java-controller-router text) ""))
-            (base (or (cadr (split-string (or router "/") "/")) ""))
-            (apis (spt/extract-java-controller-apis text)))
-      (dolist (api apis)
-        (setq
-          method (nth 0 api)
-          uri (nth 1 api)
-          return (nth 2 api)
-          func (nth 3 api)
-          args (nth 4 api)
-          addr (nth 5 api))
-        (puthash
-          (format "%s/%s/%s.md" module base func)
-          (list (format "%s %s%s" method router uri) return func args file addr)
-          cache))
-      cache)))
-
-(defun spt/cache-of-all-controller-api ()
-  "Read all api information in the whole project."
-  (let ((cache (make-hash-table :test 'equal)))
-    (dolist (file (spt/source-files))
-      (and (spt/controller? file)
-        (maphash
-          (lambda (k v) (puthash k v cache))
-          (spt/cache-of-controller-api file))))
-    cache))
-
-(defun spt/cache-of-entity-fields (file)
-  "Read fields information in the entity FILE."
-  (and (spt/entity? file)
-    (let* ((cache (make-hash-table :test 'equal))
-            (text (jh/read-file-content file))
-            (fields (spt/extract-java-entity-fields text)))
-      (dolist (field fields)
-        (puthash (caddr field) field cache))
-      cache)))
-
-(defun spt/cache-of-table-columns (tabname)
-  "Read all table columns, then put them into a cache."
-  (let ((cache (make-hash-table :test 'equal))
-         (columns (spt/query-table-columns tabname)))
-    (dolist (col columns)
-      (let ((colname (car col)))
-        (and colname (puthash colname col cache))))
-    cache))
 
 ;; -----------------------------------------------------------------------------
 ;; keybind interactive function
