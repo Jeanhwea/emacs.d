@@ -8,8 +8,13 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; java helper function for yasnippets
+;;      _
+;;     | | __ ___   ____ _
+;;  _  | |/ _` \ \ / / _` |
+;; | |_| | (_| |\ V / (_| |
+;;  \___/ \__,_| \_/ \__,_|
 ;; -----------------------------------------------------------------------------
+
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
   (let ((dir (jh/parent-dir (or file (buffer-file-name)))))

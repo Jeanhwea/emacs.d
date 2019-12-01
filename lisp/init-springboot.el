@@ -1117,21 +1117,6 @@
     cache))
 
 ;; -----------------------------------------------------------------------------
-;; Transfer file to others
-;; -----------------------------------------------------------------------------
-
-(defun spt/trans-doc-markdown-file (func file)
-  "Transfer file to document file."
-  (if (spt/controller? file)
-    (let* ((text (jh/read-file-content file))
-            (module (spt/extract-java-controller-module text))
-            (router (or (spt/extract-java-controller-router text) ""))
-            (base (or (cadr (split-string (or router "/") "/")) "")))
-      (expand-file-name
-        (format "%s/%s/%s.md" module base func)
-        (spt/doc-root)))))
-
-;; -----------------------------------------------------------------------------
 ;; keybind interactive function
 ;; -----------------------------------------------------------------------------
 (defun spt/try-import-class ()
