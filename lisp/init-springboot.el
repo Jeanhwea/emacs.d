@@ -905,27 +905,6 @@
       (newline)
       (insert (jh/strip (format "import %s %s.%s;" static package class))))))
 
-(defun spt/pick-method-name ()
-  "Pick the method name in controller."
-  (let ((regexp
-          (concat
-            "^  \\(public\\|private\\|protected\\)[ \t]*"
-            "\\(static\\|\\)[ \t]*"
-            "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\)[ \t]*"
-            "(\\([^;{]*\\))[ \t]*"
-            "\\(throws\\|\\)[ \t]*"
-            "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)[ \t]*"
-            "\\( {\\|;\\)$"))
-         (func))
-    (save-excursion
-      (progn
-        (search-backward-regexp regexp nil t)
-        (search-forward-regexp "(" nil t)
-        (backward-word)
-        (setq func (thing-at-point 'symbol))))
-    func))
-
 (defun spt/goto-function-body (file addr)
   "Goto a function body"
   (progn
@@ -1060,24 +1039,6 @@
       (and importing (not imported)
         (not (string= (cadr importing) (jh/java-package-name)))
         (apply #'spt/insert-import-package-statement importing)))))
-
-(defun spt/toggle-controller-and-doc ()
-  "Switch to controller api document file."
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (if (spt/controller? file)
-      (let ((func (spt/pick-method-name))
-             (available
-               (mapcar #'caddr
-                 (hash-table-values (spt/cache-of-controller-api file)))))
-        (and func (member func available)
-          (find-file (spt/trans-doc-markdown-file func file))))
-      (let* ((cache (spt/cache-of-all-controller-api))
-              (path (jh/relative-path file (spt/doc-root)))
-              (sign (gethash path cache))
-              (addr (car (last sign)))
-              (file (cadr (reverse sign))))
-        (and sign (spt/goto-function-body file addr))))))
 
 (defun spt/jump-to-class-methods ()
   "Jump to class methods"
