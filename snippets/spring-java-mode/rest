@@ -34,7 +34,7 @@ $>$>this.$4 = $4;
 $>}
 
 $>@GetMapping("")
-$>public List<${2:${1:$(jh/java-whatever-to-entity-name yas-text)}}> get${5:${2:$(jh/java-pluralize-entity yas-text)}}List() {
+$>public List<${2:${1:$(jh/java-coerce-to-entity yas-text)}}> get${5:${2:$(jh/java-pluralize-entity yas-text)}}List() {
 $>$>return this.$4.findAll$5();
 $>}
 

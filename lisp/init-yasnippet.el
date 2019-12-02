@@ -46,7 +46,7 @@
         (subjects (mapcar mapfn (remove-if-not fltfn methods))))
       subjects)))
 
-(defun jh/java-whatever-to-entity-name (whatever)
+(defun jh/java-coerce-to-entity (whatever)
   "Convert `*RepositoryImpl', `*Service' ... to `*'."
   (let
     ((re "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"))
@@ -55,7 +55,7 @@
 (defun jh/java-ctrl-http-prefix (ctrl)
   "Return a url mapping from name."
   (let*
-    ((entity (jh/java-whatever-to-entity-name ctrl))
+    ((entity (jh/java-coerce-to-entity ctrl))
       (words (split-string (jh/kebabcase entity) "-")))
     (concat "/" (mapconcat 'identity (mapcar #'jh/pluralize words) "/"))))
 
@@ -69,17 +69,9 @@
         (add-to-list 'head (jh/pluralize tail) t)))
     (jh/pascalcase (mapconcat 'identity words2 "-"))))
 
-(defun jh/java-implement-name-to-interface-name (name)
+(defun jh/java-impl-to-iface (name)
   "Convert `*Impl' to `*'"
-  (jh/pascalcase
-    (replace-regexp-in-string "Impl$" "" name)))
-
-(defun jh/java-interface-name-to-implement-name (name)
-  "Convert `*' to `*Impl'."
-  (interactive)
-  (jh/pascalcase
-    (if (string-match-p "^.*Impl$" name) name
-      (concat name "Impl"))))
+  (jh/pascalcase (replace-regexp-in-string "Impl$" "" name)))
 
 (defun jh/java-repository-name-list ()
   "Get all repository names in the project."

@@ -9,6 +9,6 @@ import com.avic.mti.`(spt/project-name)`.common.meta.repo.MesRepository;
 
 
 @Repository
-public interface ${1:`(jh/java-class-name)`} extends MesRepository<${1:$(jh/java-whatever-to-entity-name yas-text)}> {
+public interface ${1:`(jh/java-class-name)`} extends MesRepository<${1:$(jh/java-coerce-to-entity yas-text)}> {
 $>$0
 }

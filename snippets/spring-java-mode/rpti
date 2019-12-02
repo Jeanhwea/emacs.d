@@ -5,6 +5,6 @@
 package `(jh/java-package-name)`;
 
 
-public class ${1:`(jh/java-class-name)`} implements ${1:$(jh/java-implement-name-to-interface-name yas-text)} {
+public class ${1:`(jh/java-class-name)`} implements ${1:$(jh/java-impl-to-iface yas-text)} {
 $>$0
 }

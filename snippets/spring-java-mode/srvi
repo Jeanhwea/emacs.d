@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ${1:`(jh/java-class-name)`} implements ${1:$(jh/java-implement-name-to-interface-name yas-text)} {
+public class ${1:`(jh/java-class-name)`} implements ${1:$(jh/java-impl-to-iface yas-text)} {
 
 $>public static final Logger logger = LoggerFactory.getLogger($1.class);
 
-$>// private final ${2:${1:$(concat (jh/java-whatever-to-entity-name yas-text) "Repository")}} ${3:${2:$(jh/camelcase yas-text)}};
+$>// private final ${2:${1:$(concat (jh/java-coerce-to-entity yas-text) "Repository")}} ${3:${2:$(jh/camelcase yas-text)}};
 
 $>@Autowired
 $>public `(jh/java-class-name)`($2 $3) {

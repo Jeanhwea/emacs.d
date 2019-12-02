@@ -9,6 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 
 
 @Repository
-public interface ${1:`(jh/java-class-name)`} extends CrudRepository<${1:$(jh/java-whatever-to-entity-name yas-text)}, Long> {
+public interface ${1:`(jh/java-class-name)`} extends CrudRepository<${1:$(jh/java-coerce-to-entity yas-text)}, Long> {
 $>$0
 }

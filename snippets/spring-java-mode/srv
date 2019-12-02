@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ${1:`(jh/java-class-name)`} {
-$>List<${2:${1:$(jh/java-whatever-to-entity-name yas-text)}}> findAll${3:${2:$(jh/java-pluralize-entity yas-text)}}();
+$>List<${2:${1:$(jh/java-coerce-to-entity yas-text)}}> findAll${3:${2:$(jh/java-pluralize-entity yas-text)}}();
 
 $>$2 findById(long ${4:${2:$(concat (jh/camelcase yas-text) "Id")}});
 
