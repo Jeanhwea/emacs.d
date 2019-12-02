@@ -34,8 +34,9 @@
   (and (string-match-p "Test$" (jh/java-class-name file))
     (let*
       ((srcfile (spt/coerce-to-srcfile file))
-        (text (jh/read-file-content srcfile))
-        (methods (spt/parse-java-class-methods text))
+        (methods
+          (spt/parse-java-class-methods
+            (jh/read-file-content srcfile)))
         (mapfn
           #'(lambda (method)
               (concat
@@ -99,9 +100,18 @@
       (todo (remove-if #'(lambda (x) (member x implsigns)) ifacesigns)))
     (if todo todo '("String toString()"))))
 
+
+;; -----------------------------------------------------------------------------
+;;  ____    _  _____  _    ____    _    ____  _____
+;; |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____|
+;; | | | |/ _ \ | | / _ \ |  _ \ / _ \ \___ \|  _|
+;; | |_| / ___ \| |/ ___ \| |_) / ___ \ ___) | |___
+;; |____/_/   \_\_/_/   \_\____/_/   \_\____/|_____|
+;; -----------------------------------------------------------------------------
+
 (defun jh/java-tabnames ()
   "Return all table name."
-  (mapcar #'car (spt/query-all-tables)))
+  (jh/oracle-list-tables))
 
 (defun jh/java-tabcols ()
   "Get table columns for current buffer."
@@ -110,23 +120,32 @@
       ((tabname
          (or (spt/read-entity-tabname (jh/current-buffer))
            (completing-read "Load Table >> " (jh/java-tabnames)))))
-      (set (make-local-variable 'tabcols) (spt/query-table-columns tabname))))
+      (set (make-local-variable 'tabcols) (jh/oracle-list-columns tabname))))
   tabcols)
+
+(defvar jh/java-ignored-sql-column '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")
+  "Java entity ignored columns.")
 
 (defun jh/java-column-names ()
   "Return all column name."
   (let*
-    ((fields (spt/parse-java-fields (jh/current-buffer)))
-      ()))
-  (let* ((file (buffer-file-name))
-          (tabcols (jh/java-tabcols))
-          (origin (hash-table-keys tabcols))
-          (common-filter '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID"))
-          (file-filter (and (spt/entity? file)
-                         (mapcar #'car
-                           (hash-table-values (spt/cache-of-entity-fields file)))))
-          (filter (append common-filter file-filter)))
-    (and filter (remove-if (lambda (x) (member x filter)) origin))))
+    ((text (jh/current-buffer))
+      (cfmap
+        (mapcar
+          #'(lambda (e)
+              (cons (gethash 'colname e) (gethash 'fldname e)))
+          (spt/read-column-field-mapping text)))
+      (fields
+        (mapcar
+          #'(lambda (f)
+              (cdr (assoc (gethash 'name f) cfmap)))
+          (spt/parse-java-fields text)))
+      (colnames
+        (mapcar #'car (jh/java-tabcols))))
+    (remove-if
+      #'(lambda (x)
+          (or (member x fields) (member jh/java-ignored-sql-column)))
+      colnames)))
 
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
