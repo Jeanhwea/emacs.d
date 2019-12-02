@@ -73,29 +73,31 @@
   "Convert `*Impl' to `*'"
   (jh/pascalcase (replace-regexp-in-string "Impl$" "" name)))
 
-
 (defun jh/java-endpoint-uri ()
   "Return a full url, to put it as the header of the doc, like `GET /api/'."
   (spt/endpoint-uri (buffer-file-name)))
 
-(defun jh/java-inter-method-signature ()
+(defun jh/java-iface-method-sign ()
   "Complete the signature of interface's method."
   (save-some-buffers t)
-  (if (spt/implement? (buffer-file-name))
-    (let* ((file (buffer-file-name))
-            (cache-impl (spt/cache-of-impl-override-method file))
-            (cache-inter (spt/cache-of-inter-method (spt/trans-impl-and-inter file)))
-            (todo))
-      (maphash
-        (lambda (k v)
-          (let ((value (gethash k cache-impl)))
-            (if (null value)
-              (setq todo (cons v todo)))))
-        cache-inter)
-      (if todo
-        (mapcar (lambda (sign) (apply 'format "%s %s(%s)" sign)) todo)
-        '("String toString()")))
-    '("String toString()")))
+  (let*
+    ((file (buffer-file-name))
+      (ifacefile (spt/find-iface-file file))
+      (implmtds
+        (spt/parse-java-class-methods (jh/read-file-content file)))
+      (ifacemtds
+        (spt/parse-java-iface-methods (jh/read-file-content ifacefile)))
+      (mapfn
+        #'(lambda (method)
+            (format
+              "%s %s(%s)"
+              (gethash 'return method)
+              (gethash 'funcname method)
+              (gethash 'args method))))
+      (implsigns (mapcar mapfn implmtds))
+      (ifacesigns (mapcar mapfn ifacemtds))
+      (todo (remove-if #'(lambda (x) (member x implsigns)) ifacesigns)))
+    (if todo todo '("String toString()"))))
 
 (defun jh/java-get-local-tabinfo ()
   "Get tabinfo in current buffer."

@@ -209,7 +209,7 @@
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
-(defun spt/find-alternative-source-file (bundle)
+(defun spt/find-alternative-source-file (bundle &optional file)
   "Find alternative filename with selected BUNDLE."
   (or spt/sources-cache (spt/sources-cache-init))
   (let*
@@ -229,9 +229,14 @@
         (spt/sources-cache-put fileinfo)
         (spt/coerce-to-filename fileinfo bundle)))))
 
+(defun spt/find-iface-file (file)
+  "Find the interface name of given implement NAME."
+  (spt/find-alternative-source-file "service" file))
+
 (defun spt/switch-to (&optional bundle)
   "Switch to related file."
-  (let ((bundle (or bundle (completing-read "To >> " spt/bundle-of-interest))))
+  (let
+    ((bundle (or bundle (completing-read "To >> " spt/bundle-of-interest))))
     (find-file (spt/find-alternative-source-file bundle))))
 
 
