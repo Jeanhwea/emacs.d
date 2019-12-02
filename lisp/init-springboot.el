@@ -213,8 +213,14 @@
   "Find alternative filename with selected BUNDLE."
   (or spt/sources-cache (spt/sources-cache-init))
   (let*
-    ((fileinfo (spt/filename-to-fileinfo (buffer-file-name)))
+    ((file (buffer-file-name))
+      (fileinfo (spt/filename-to-fileinfo file))
+      (clzname (car fileinfo))
       (lookup (spt/sources-cache-get fileinfo bundle)))
+    ;; pre-check
+    (and (string-match-p "Test$" clzname)
+      (error "Cannot switch to file, when inside TESTCASE file."))
+    ;; lookup and switch to FILE
     (if lookup
       ;; if found, return the first filename
       (car (last lookup))
