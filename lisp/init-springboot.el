@@ -959,11 +959,10 @@
 (defun spt/current-test-method-name ()
   "Find current test method, the method name near cursor."
   (let*
-    ((file (buffer-file-name))
-      (methods
-        (sort
-          (spt/read-junit-test-methods (jh/read-file-content file))
-          #'(lambda (a b) (< (gethash 'addr a) (gethash 'addr b)))))
+    ((methods
+       (sort
+         (spt/read-junit-test-methods (jh/current-buffer))
+         #'(lambda (a b) (< (gethash 'addr a) (gethash 'addr b)))))
       (current-point (point))
       (lookup
         (remove-if
@@ -982,18 +981,20 @@
 (defun spt/run-test-class-command ()
   "Run a test command."
   (interactive)
-  (let*
-    ((text (jh/read-file-content (buffer-file-name)))
-      (clzname (gethash 'clzname (spt/parse-java-frontinfo text))))
+  (let
+    ((clzname
+       (gethash 'clzname
+         (spt/parse-java-frontinfo (jh/current-buffer)))))
     (and clzname (string-match-p "Test$" clzname)
       (spt/compilation-start (spt/maven-test-command clzname)))))
 
 (defun spt/run-test-method-command ()
   "Run a test command."
   (interactive)
-  (let*
-    ((text (jh/read-file-content (buffer-file-name)))
-      (clzname (gethash 'clzname (spt/parse-java-frontinfo text)))
+  (let
+    ((clzname
+       (gethash 'clzname
+         (spt/parse-java-frontinfo (jh/current-buffer))))
       (method (spt/current-test-method-name)))
     (and clzname (string-match-p "Test$" clzname)
       (if method
@@ -1105,8 +1106,7 @@
   (interactive)
   (let*
     ((methods
-       (spt/parse-java-class-methods
-         (jh/read-file-content (buffer-file-name))))
+       (spt/parse-java-class-methods (jh/current-buffer)))
       (mtdtable
         (mapcar
           #'(lambda (method)
@@ -1175,7 +1175,6 @@
 
 
 ;; for debugging
-(defun spt/t ()
-  (jh/read-file-content (buffer-file-name)))
+(defun spt/t () (jh/current-buffer))
 
 (provide 'init-springboot)
