@@ -52,21 +52,22 @@
     ((re "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"))
     (jh/pascalcase (replace-regexp-in-string re "" whatever))))
 
-(defun jh/java-controller-router (ctrl)
+(defun jh/java-ctrl-http-prefix (ctrl)
   "Return a url mapping from name."
-  (let ((entity (jh/java-whatever-to-entity-name ctrl)))
-    (concat "/"
-      (mapconcat 'identity
-        (mapcar #'jh/pluralize
-          (split-string (jh/kebabcase entity) "-")) "/"))))
+  (let*
+    ((entity (jh/java-whatever-to-entity-name ctrl))
+      (words (split-string (jh/kebabcase entity) "-")))
+    (concat "/" (mapconcat 'identity (mapcar #'jh/pluralize words) "/"))))
 
 (defun jh/java-pluralize-entity (entity)
   "Convert the entity name to plural form."
-  (let* ((rev-subnames (reverse (split-string (jh/kebabcase entity) "-")))
-         (end (jh/pluralize (car rev-subnames)))
-         (front (cdr rev-subnames))
-         (subnames (reverse (cons end front))))
-    (jh/pascalcase (mapconcat 'identity subnames "-"))))
+  (let*
+    ((words (split-string (jh/kebabcase entity) "-"))
+      (head (butlast words))
+      (tail (car (last words)))
+      (words2
+        (add-to-list 'head (jh/pluralize tail) t)))
+    (jh/pascalcase (mapconcat 'identity words2 "-"))))
 
 (defun jh/java-implement-name-to-interface-name (name)
   "Convert `*Impl' to `*'"
