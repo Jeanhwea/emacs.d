@@ -135,7 +135,7 @@
   "Return a list of `*.java' files in the source folder."
   (directory-files-recursively (spt/src-root) "^.*\\.java$"))
 
-(defun spt/filename-to-fileinfo (&optional file)
+(defun spt/filename-to-fileinfo (file)
   "Convert filename to fileinfo."
   (let*
     (
@@ -1062,18 +1062,20 @@
           addr (gethash read lookup))
         (and read addr (spt/goto-function-body (buffer-file-name) addr))))))
 
-(defun spt/format-java-source-code ()
+(defun spt/meghanada-format-code ()
   "Format java source file code."
   (interactive)
-  (let ((file (buffer-file-name))
-         (prev-point (point)))
-    (and (spt/source? file)
+  (let*
+    ((saved-point (point))
+      (file (buffer-file-name))
+      (fileinfo (spt/filename-to-fileinfo file)))
+    (and (string-match-p "\\.java$" file)
       (progn
         (meghanada-code-beautify)
         (save-buffer)
-        (if (> prev-point (point-max))
+        (if (> saved-point (point-max))
           (goto-char (point-max))
-          (goto-char prev-point))))))
+          (goto-char saved-point))))))
 
 
 ;; -----------------------------------------------------------------------------
