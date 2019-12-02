@@ -3,6 +3,6 @@
 # key: jt
 # --
 @Test
-public void ${1:$$(yas-choose-value (jh/java-test-case-func-names))}() throws Exception {
+public void ${1:$$(yas-choose-value (jh/java-test-subjects))}() throws Exception {
 $>$0
 }

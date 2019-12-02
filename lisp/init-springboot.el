@@ -292,7 +292,7 @@
   (let
     ((dir (jh/parent-dir file))
       (clzname (jh/filename-without-extension file)))
-    (if (string-match-p ".*Test$" clzname) file
+    (if (string-match-p "Test$" clzname) file
       (expand-file-name
         (format "%sTest.java" clzname)
         (replace-regexp-in-string "src/main/java" "src/test/java" dir)))))
@@ -303,7 +303,7 @@
     ((dir (jh/parent-dir file))
       (clzname (jh/filename-without-extension file)))
     (if
-      (string-match-p ".*Test$" clzname)
+      (string-match-p "Test$" clzname)
       (expand-file-name
         (format "%s.java" (replace-regexp-in-string "Test$" "" clzname))
         (replace-regexp-in-string "src/test/java" "src/main/java" dir))

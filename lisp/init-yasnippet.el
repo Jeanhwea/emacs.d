@@ -17,47 +17,40 @@
 
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
-  (let ((dir (jh/parent-dir (or file (buffer-file-name)))))
+  (let
+    ((dir (jh/parent-dir (or file (buffer-file-name))))
+      (re ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?"))
     (mapconcat 'identity
       (split-string
-        (replace-regexp-in-string
-          ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?"
-          "" dir) "/" t) ".")))
+        (replace-regexp-in-string re "" dir) "/" t) ".")))
 
 (defun jh/java-class-name (&optional file)
   "Return the class name for java."
-  (let ((class (jh/filename-without-extension (or file (buffer-file-name)))))
-    (jh/pascalcase class)))
+  (let ((file (or file (buffer-file-name))))
+    (jh/pascalcase (jh/filename-without-extension file))))
 
-(defun jh/java-test-subject-names (file)
+(defun jh/java-test-subjects (file)
   "Genearate test subject names."
-  (when (spt/testcase? file)
-    (let* ((source-file (spt/trans-test-and-source file))
-            (text (jh/read-file-content source-file))
-            (class-inter (cadr (spt/extract-java-clazz text))))
-      (remove-duplicates
-        (if (string= "interface" class-inter)
-          (mapcar #'cadr (spt/extract-java-inter-methods text))
-          (mapcar #'cadddr (spt/extract-java-class-methods text)))
-        :test 'equal))))
-
-(defun jh/java-test-case-func-names ()
-  "Generate test case name list."
-  (let ((subjects (jh/java-test-subject-names (buffer-file-name))))
-    (mapcar
-      (lambda (name)
-        (concat
-          "test"
-          (jh/pascalcase name)
-          (format-time-string "%H%M%S")))
+  (and (string-match-p "Test$" (jh/java-class-name file))
+    (let*
+      ((srcfile (spt/coerce-to-srcfile file))
+        (text (jh/read-file-content srcfile))
+        (methods (spt/parse-java-class-methods text))
+        (mapfn
+          #'(lambda (method)
+              (concat
+                "test"
+                (jh/pascalcase (gethash 'funcname method))
+                (format-time-string "%H%M%S"))))
+        (fltfn #'(lambda (method) (string= "public" (gethash 'visibility method))))
+        (subjects (mapcar mapfn (remove-if-not fltfn methods))))
       subjects)))
 
 (defun jh/java-whatever-to-entity-name (whatever)
   "Convert `*RepositoryImpl', `*Service' ... to `*'."
-  (jh/pascalcase
-    (replace-regexp-in-string
-      "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"
-      "" whatever)))
+  (let
+    ((re "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"))
+    (jh/pascalcase (replace-regexp-in-string re "" whatever))))
 
 (defun jh/java-controller-router (ctrl)
   "Return a url mapping from name."
