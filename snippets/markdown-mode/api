@@ -2,7 +2,7 @@
 # name: API Document Template
 # key: api
 # --
-## `(jh/java-controller-doc-url)`
+## `(jh/java-endpoint-uri)`
 
 ### 说明
 $0

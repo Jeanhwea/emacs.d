@@ -462,6 +462,14 @@
       (lookup (spt/document-cache-get docinfo)))
     (and lookup (car (last lookup 2)))))
 
+(defun spt/endpoint-uri (file)
+  "Get endpoint address from markdown file."
+  (or spt/document-cache (spt/document-cache-init))
+  (let*
+    ((docinfo (spt/docfile-to-docinfo file))
+      (lookup (spt/document-cache-get docinfo)))
+    (and lookup (car (last lookup 4)))))
+
 (defun spt/swap-markdown-and-endpoint ()
   "Swap between markdown and endpoint."
   (interactive)

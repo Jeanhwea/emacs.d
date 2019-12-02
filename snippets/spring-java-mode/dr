@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: Define a repository
-# key: dr
-# --
-${1:`(yas-choose-value (jh/java-repository-name-list))`} ${1:$(jh/camelcase yas-text)}$0

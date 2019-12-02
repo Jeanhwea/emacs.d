@@ -73,23 +73,10 @@
   "Convert `*Impl' to `*'"
   (jh/pascalcase (replace-regexp-in-string "Impl$" "" name)))
 
-(defun jh/java-repository-name-list ()
-  "Get all repository names in the project."
-  (when (spt/maven-project?)
-    (hash-table-keys (spt/cache-of-class-in-project-if 'spt/repository?))))
 
-(defun jh/java-service-name-list ()
-  "Get all service names in the project."
-  (when (spt/maven-project?)
-    (hash-table-keys (spt/cache-of-class-in-project-if 'spt/service?))))
-
-(defun jh/java-controller-doc-url ()
+(defun jh/java-endpoint-uri ()
   "Return a full url, to put it as the header of the doc, like `GET /api/'."
-  (when (spt/maven-project?)
-    (let* ((cache (spt/cache-of-all-controller-api))
-            (path (jh/relative-path (buffer-file-name) (spt/doc-root)))
-            (signature (gethash path cache)))
-      (if (null signature) "" (car signature)))))
+  (spt/endpoint-uri (buffer-file-name)))
 
 (defun jh/java-inter-method-signature ()
   "Complete the signature of interface's method."
