@@ -1055,18 +1055,24 @@
 (defun spt/jump-to-class-methods ()
   "Jump to class methods"
   (interactive)
-  (and (spt/source? (buffer-file-name))
-    (let* ((signs (spt/extract-java-class-methods (jh/current-buffer)))
-            (lookup (make-hash-table :test 'equal)))
-      (progn
-        (dolist (sign signs)
-          (let
-            ((key (jh/strip (apply #'format "%s %s %s %s(%s)" sign)))
-              (addr (car (last sign))))
-            (puthash key addr lookup)))
-        (setq read (completing-read "Goto method >> " (hash-table-keys lookup))
-          addr (gethash read lookup))
-        (and read addr (spt/goto-function-body (buffer-file-name) addr))))))
+  (let*
+    ((methods
+       (spt/parse-java-class-methods
+         (jh/read-file-content (buffer-file-name))))
+      (mtdtable
+        (mapcar
+          #'(lambda (method)
+              (cons
+                (format
+                  "%s(%s)"
+                  (gethash 'funcname method)
+                  (gethash 'args method))
+                (gethash 'addr method)))
+          methods)))
+    (and mtdtable
+      (setq mtdkey (completing-read "Goto >> " (mapcar 'car mtdtable)))
+      (goto-char (cdr (assoc mtdkey mtdtable)))
+      (search-forward-regexp "{$"))))
 
 (defun spt/meghanada-format-code ()
   "Format java source file code."
