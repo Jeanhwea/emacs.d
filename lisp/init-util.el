@@ -182,7 +182,7 @@
 
 (defun jh/current-buffer ()
   "Read content of current buffer."
-  (buffer-string))
+  (buffer-substring-no-properties (point-min) (point-max)))
 
 (defun jh/current-buffer-lines ()
   "Read content of current buffer as line."
@@ -191,6 +191,10 @@
 (defun jh/current-line ()
   "Read content of current line."
   (string-trim (thing-at-point 'line t)))
+
+(defun jh/current-selection ()
+  "Read current selected text."
+  (buffer-substring-no-properties (region-beginning) (region-end)))
 
 (defun jh/save-variable (var filename)
   "Save variable to a FILE."

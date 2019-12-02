@@ -133,7 +133,7 @@
       (cfmap
         (mapcar
           #'(lambda (e)
-              (cons (gethash 'colname e) (gethash 'fldname e)))
+              (cons (gethash 'colname e) (gethash 'name e)))
           (spt/read-column-field-mapping text)))
       (fields
         (mapcar

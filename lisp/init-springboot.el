@@ -892,10 +892,12 @@
           (let
             ((cfmap (make-hash-table :test 'equal :size 5))
               (str3 (match-string 3 text))
+              (str7 (match-string 7 text))
               (str8 (match-string 8 text)))
             ;; put value
             (puthash 'colname str3 cfmap)
-            (puthash 'fldname str8 cfmap)
+            (puthash 'type str7 cfmap)
+            (puthash 'name str8 cfmap)
             (puthash 'addr addr cfmap)
             ;; append cfmap to list
             (add-to-list 'cfmaps cfmap t))
