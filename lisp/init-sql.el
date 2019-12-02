@@ -255,7 +255,7 @@
 
 (defun jh/oracle-guess-tabname ()
   "Guess table name."
-  (let ((tabnames (jh/java-table-names))
+  (let ((tabnames (jh/java-tabnames))
          (anno (and (buffer-file-name)
                  (spt/extract-java-entity-table (jh/current-buffer))))
          (name (file-name-sans-extension (buffer-name)))

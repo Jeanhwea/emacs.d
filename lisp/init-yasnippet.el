@@ -99,26 +99,27 @@
       (todo (remove-if #'(lambda (x) (member x implsigns)) ifacesigns)))
     (if todo todo '("String toString()"))))
 
-(defun jh/java-get-local-tabinfo ()
-  "Get tabinfo in current buffer."
-  (interactive)
-  (if (local-variable-p 'tabinfo) tabinfo
-    (let* ((table (spt/extract-java-entity-table (jh/current-buffer)))
-            (tabname (if table table
-                       (completing-read "Load Table >> " (jh/java-table-names))))
-            (columns (spt/cache-of-table-columns tabname)))
-      (set (make-local-variable 'tabinfo) columns)
-      tabinfo)))
-
-(defun jh/java-table-names ()
+(defun jh/java-tabnames ()
   "Return all table name."
   (mapcar #'car (spt/query-all-tables)))
+
+(defun jh/java-tabcols ()
+  "Get table columns for current buffer."
+  (or (local-variable-p 'tabcols)
+    (let
+      ((tabname
+         (or (spt/read-entity-tabname (jh/current-buffer))
+           (completing-read "Load Table >> " (jh/java-tabnames)))))
+      (set (make-local-variable 'tabcols) (spt/query-table-columns tabname))))
+  tabcols)
+
+
 
 (defun jh/java-column-names ()
   "Return all column name."
   (let* ((file (buffer-file-name))
-          (tabinfo (jh/java-get-local-tabinfo))
-          (origin (hash-table-keys tabinfo))
+          (tabcols (jh/java-tabcols))
+          (origin (hash-table-keys tabcols))
           (common-filter '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID"))
           (file-filter (and (spt/entity? file)
                          (mapcar #'car
@@ -128,8 +129,8 @@
 
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
-  (let* ((tabinfo (jh/java-get-local-tabinfo))
-          (col (gethash colname tabinfo))
+  (let* ((tabcols (jh/java-tabcols))
+          (col (gethash colname tabcols))
           (colname (nth 0 col))
           (dbtype (nth 1 col))
           (dblen (nth 2 col))
@@ -153,8 +154,8 @@
 
 (defun jh/java-column-header (colname)
   "Build additional header, like @Lob, @Basic(...) blabla."
-  (let* ((tabinfo (jh/java-get-local-tabinfo))
-          (col (gethash colname tabinfo))
+  (let* ((tabcols (jh/java-tabcols))
+          (col (gethash colname tabcols))
           (colname (nth 0 col))
           (dbtype (nth 1 col)))
     (cond
@@ -164,8 +165,8 @@
 
 (defun jh/java-column-type (colname)
   "Get field type."
-  (let* ((tabinfo (jh/java-get-local-tabinfo))
-          (col (gethash colname tabinfo)))
+  (let* ((tabcols (jh/java-tabcols))
+          (col (gethash colname tabcols)))
     (and col
       (let ((dbtype (nth 1 col)))
         (cond
@@ -177,8 +178,8 @@
 
 (defun jh/java-column-comments (colname)
   "Get field comments."
-  (let* ((tabinfo (jh/java-get-local-tabinfo))
-          (col (gethash colname tabinfo)))
+  (let* ((tabcols (jh/java-tabcols))
+          (col (gethash colname tabcols)))
     (and col
       (let ((comments (nth 5 col)))
         (if (string= comments "") ""
