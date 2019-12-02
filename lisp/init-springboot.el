@@ -596,16 +596,17 @@
 
 (defun spt/parse-java-fields (text)
   "Parse all fields information in class."
-  (let ((regexp
-          (concat
-            "^  \\(public\\|private\\|protected\\)[ \t]*"
-            "\\(static\\|\\)[ \t]*"
-            "\\(final\\|\\)[ \t]*"
-            "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)[ \t]*"
-            "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
-            "\\( =\\|;\\)[ \t]*"))
-         (addr 0)
-         (fields))
+  (let
+    ((regexp
+       (concat
+         "^  \\(public\\|private\\|protected\\)[ \t]*"
+         "\\(static\\|\\)[ \t]*"
+         "\\(final\\|\\)[ \t]*"
+         "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)[ \t]*"
+         "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
+         "\\( =\\|;\\)[ \t]*"))
+      (addr 0)
+      (fields))
     (while addr
       (save-match-data
         (setq addr (string-match regexp text addr))
@@ -884,6 +885,40 @@
       (and addr
         (setq tabname (match-string 2 text))))
     tabname))
+
+(defun spt/read-column-field-mapping (text)
+  "Read entity column name, like `@Column(...)'. "
+  (let
+    ((regexp
+       (concat
+         "^  @\\(JoinColumn\\|Column\\)"
+         "(\\(name = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
+         "\\(public\\|private\\|protected\\)[ \t]*"
+         "\\(static\\|\\)[ \t]*"
+         "\\(final\\|\\)[ \t]*"
+         "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)[ \t]*"
+         "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
+         "\\( =\\|;\\)[ \t]*"))
+      (addr 0)
+      (cfmaps))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          ;; add a new cfmap
+          (let
+            ((cfmap (make-hash-table :test 'equal :size 5))
+              (str3 (match-string 3 text))
+              (str8 (match-string 8 text)))
+            ;; put value
+            (puthash 'colname str3 cfmap)
+            (puthash 'fldname str8 cfmap)
+            (puthash 'addr addr cfmap)
+            ;; append cfmap to list
+            (add-to-list 'cfmaps cfmap t))
+          ;; next
+          (setq addr (+ addr 1)))))
+    cfmaps))
 
 ;; -----------------------------------------------------------------------------
 ;;   ____ ___  __  __ ____   _    _   ___   __

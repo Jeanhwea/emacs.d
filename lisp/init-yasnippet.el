@@ -113,10 +113,11 @@
       (set (make-local-variable 'tabcols) (spt/query-table-columns tabname))))
   tabcols)
 
-
-
 (defun jh/java-column-names ()
   "Return all column name."
+  (let*
+    ((fields (spt/parse-java-fields (jh/current-buffer)))
+      ()))
   (let* ((file (buffer-file-name))
           (tabcols (jh/java-tabcols))
           (origin (hash-table-keys tabcols))
