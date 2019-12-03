@@ -130,15 +130,15 @@
   "Return all column name."
   (let*
     ((text (jh/current-buffer))
-      (cfmap
+      (fcmap
         (mapcar
           #'(lambda (e)
               (cons (gethash 'name e) (gethash 'colname e)))
-          (spt/read-column-field-mapping text)))
+          (spt/read-column-infos text)))
       (fields
         (mapcar
           #'(lambda (f)
-              (cdr (assoc (gethash 'name f) cfmap)))
+              (cdr (assoc (gethash 'name f) fcmap)))
           (spt/parse-java-fields text)))
       (colnames
         (mapcar #'car (jh/java-tabcols))))
@@ -149,27 +149,28 @@
 
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
-  (let* ((tabcols (jh/java-tabcols))
-          (col (gethash colname tabcols))
-          (colname (nth 0 col))
-          (dbtype (nth 1 col))
-          (dblen (nth 2 col))
-          (nullable (nth 3 col))
-          (unique (nth 4 col))
-          (nullable-arg
-            (if (string= "N" nullable) ", nullable = false"  ""))
-          (unique-arg
-            (if (string= "U" unique) ", unique = true" ""))
-          (length-arg
-            (cond
-              ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
-                (concat ", length = " dblen))
-              (t "")))
-          (addition-arg
-            (cond
-              ((string= "BLOB" dbtype) ", columnDefinition = \"BLOB\"")
-              ((string= "CLOB" dbtype) ", columnDefinition = \"CLOB\"")
-              (t ""))))
+  (let*
+    ((tabcols (jh/java-tabcols))
+      (col (gethash colname tabcols))
+      (colname (nth 0 col))
+      (dbtype (nth 1 col))
+      (dblen (nth 2 col))
+      (nullable (nth 3 col))
+      (unique (nth 4 col))
+      (nullable-arg
+        (if (string= "N" nullable) ", nullable = false"  ""))
+      (unique-arg
+        (if (string= "U" unique) ", unique = true" ""))
+      (length-arg
+        (cond
+          ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
+            (concat ", length = " dblen))
+          (t "")))
+      (addition-arg
+        (cond
+          ((string= "BLOB" dbtype) ", columnDefinition = \"BLOB\"")
+          ((string= "CLOB" dbtype) ", columnDefinition = \"CLOB\"")
+          (t ""))))
     (concat nullable-arg unique-arg length-arg addition-arg)))
 
 (defun jh/java-column-header (colname)

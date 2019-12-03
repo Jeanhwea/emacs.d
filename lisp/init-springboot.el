@@ -869,7 +869,7 @@
         (setq tabname (match-string 2 text))))
     tabname))
 
-(defun spt/read-column-field-mapping (text)
+(defun spt/read-column-infos (text)
   "Read entity column name, like `@Column(...)'. "
   (let
     ((regexp
@@ -883,27 +883,27 @@
          "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
          "\\( =\\|;\\)[ \t]*"))
       (addr 0)
-      (cfmaps))
+      (colinfos))
     (while addr
       (save-match-data
         (setq addr (string-match regexp text addr))
         (and addr
-          ;; add a new cfmap
+          ;; add a new colinfo
           (let
-            ((cfmap (make-hash-table :test 'equal :size 5))
+            ((colinfo (make-hash-table :test 'equal :size 5))
               (str3 (match-string 3 text))
               (str7 (match-string 7 text))
               (str8 (match-string 8 text)))
             ;; put value
-            (puthash 'colname str3 cfmap)
-            (puthash 'type str7 cfmap)
-            (puthash 'name str8 cfmap)
-            (puthash 'addr addr cfmap)
-            ;; append cfmap to list
-            (add-to-list 'cfmaps cfmap t))
+            (puthash 'colname str3 colinfo)
+            (puthash 'type str7 colinfo)
+            (puthash 'name str8 colinfo)
+            (puthash 'addr addr colinfo)
+            ;; append colinfo to list
+            (add-to-list 'colinfos colinfo t))
           ;; next
           (setq addr (+ addr 1)))))
-    cfmaps))
+    colinfos))
 
 ;; -----------------------------------------------------------------------------
 ;;   ____ ___  __  __ ____   _    _   ___   __
