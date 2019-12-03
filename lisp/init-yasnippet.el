@@ -184,27 +184,33 @@
         "@Lob\n  @Basic(fetch = FetchType.LAZY)\n")
       (t ""))))
 
+(defvar jh/dbtype-fields-type-alist
+  '(("BLOB" . "byte[]")
+     ("CHAR" . "String")
+     ("CLOB" . "String")
+     ("NVARCHAR2" . "String")
+     ("VARCHAR" . "String")
+     ("VARCHAR2" . "String")
+     ("DATE" . "Timestamp")
+     ("NUMBER" . "double"))
+  "Map dbtype to entity field type.")
+
 (defun jh/java-column-type (colname)
   "Get field type."
-  (let* ((tabcols (jh/java-tabcols))
-          (col (gethash colname tabcols)))
-    (and col
-      (let ((dbtype (nth 1 col)))
-        (cond
-          ((member dbtype '("BLOB")) "byte[]")
-          ((member dbtype '("CHAR" "CLOB" "NVARCHAR2" "VARCHAR" "VARCHAR2")) "String")
-          ((member dbtype '("DATE")) "Timestamp")
-          ((member dbtype '("NUMBER")) "double")
-          (t "void"))))))
+  (let*
+    ((column (assoc colname (jh/java-tabcols)))
+      (lookup
+        (and column
+          (assoc (cadr column) jh/dbtype-fields-type-alist))))
+    (if lookup (cdr lookup) "void")))
 
 (defun jh/java-column-comments (colname)
   "Get field comments."
-  (let* ((tabcols (jh/java-tabcols))
-          (col (gethash colname tabcols)))
-    (and col
-      (let ((comments (nth 5 col)))
-        (if (string= comments "") ""
-          (concat " // " comments))))))
+  (let
+    ((column (assoc colname (jh/java-tabcols))))
+    (if column
+      (concat " // "(car (last column)))
+      " // TODO: Add Comment")))
 
 (defun jh/java-column-field (colname)
   "Get field name."
