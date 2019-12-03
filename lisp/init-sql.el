@@ -427,6 +427,7 @@
   (let ((tables (jh/oracle-list-tables)))
     (progn
       (switch-to-buffer "tables.txt")
+      (kill-region (point-min) (point-max))
       (dolist (table tables)
         (let ((colname (nth 0 table))
                (comments (jh/strip (nth 1 table))))
