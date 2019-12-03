@@ -76,6 +76,21 @@
 (put 'downcase-region 'disabled nil)      ; C-x C-u
 (put 'upcase-region 'disabled nil)        ; C-x C-l
 
+;; -----------------------------------------------------------------------------
+;; rainbow-delimiters
+;; -----------------------------------------------------------------------------
+(custom-set-faces
+  '(rainbow-delimiters-depth-1-face ((t (:foreground "#8d5649"))))
+  '(rainbow-delimiters-depth-2-face ((t (:foreground "#d8241f"))))
+  '(rainbow-delimiters-depth-3-face ((t (:foreground "#9564bf"))))
+  '(rainbow-delimiters-depth-4-face ((t (:foreground "#24a222"))))
+  '(rainbow-delimiters-depth-5-face ((t (:foreground "#ff7f00"))))
+  '(rainbow-delimiters-depth-6-face ((t (:foreground "#1776b6"))))
+  '(rainbow-delimiters-depth-7-face ((t (:foreground "#00bed1"))))
+  '(rainbow-delimiters-depth-8-face ((t (:foreground "#bcbf00"))))
+  '(rainbow-delimiters-depth-9-face ((t (:foreground "#e574c3"))))
+  '(rainbow-delimiters-unmatched-face ((t (:background "#d8241f"))))
+  '(rainbow-delimiters-mismatched-face ((t (:background "#ffff99")))))
 
 ;; -----------------------------------------------------------------------------
 ;; some improvement on Windows PC
