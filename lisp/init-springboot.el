@@ -209,7 +209,7 @@
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
-(defun spt/find-alternative-source-file (bundle &optional file)
+(defun spt/find-alternative-file (bundle &optional file)
   "Find alternative filename with selected BUNDLE."
   (or spt/sources-cache (spt/sources-cache-init))
   (let*
@@ -231,13 +231,13 @@
 
 (defun spt/find-iface-file (file)
   "Find the interface name of given implement NAME."
-  (spt/find-alternative-source-file "service" file))
+  (spt/find-alternative-file "service" file))
 
 (defun spt/switch-to (&optional bundle)
   "Switch to related file."
   (let
     ((bundle (or bundle (completing-read "To >> " spt/bundle-of-interest))))
-    (find-file (spt/find-alternative-source-file bundle))))
+    (find-file (spt/find-alternative-file bundle))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -1157,10 +1157,5 @@
   (define-key spt/leader (kbd "j") 'spt/company-jpa-backend)
   (define-key spt/leader (kbd "m") 'spt/jump-to-class-methods))
 (global-set-key (kbd "M-[") 'spt/leader)
-
-
-;; for debugging
-(defun spt/t () (jh/current-buffer))
-(defun spt/f () (buffer-file-name))
 
 (provide 'init-springboot)
