@@ -111,7 +111,7 @@
 
 (defun jh/java-tabnames ()
   "Return all table name."
-  (jh/oracle-list-tables))
+  (mapcar 'car (jh/oracle-list-tables)))
 
 (defun jh/java-tabcols ()
   "Get table columns for current buffer."
@@ -147,43 +147,6 @@
           (or (member x fields) (member x jh/java-ignored-colnames)))
       colnames)))
 
-(defun jh/java-column-args (colname)
-  "Build the arguments in @Column(...)"
-  (let*
-    ((tabcols (jh/java-tabcols))
-      (col (gethash colname tabcols))
-      (colname (nth 0 col))
-      (dbtype (nth 1 col))
-      (dblen (nth 2 col))
-      (nullable (nth 3 col))
-      (unique (nth 4 col))
-      (nullable-arg
-        (if (string= "N" nullable) ", nullable = false"  ""))
-      (unique-arg
-        (if (string= "U" unique) ", unique = true" ""))
-      (length-arg
-        (cond
-          ((member dbtype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2"))
-            (concat ", length = " dblen))
-          (t "")))
-      (addition-arg
-        (cond
-          ((string= "BLOB" dbtype) ", columnDefinition = \"BLOB\"")
-          ((string= "CLOB" dbtype) ", columnDefinition = \"CLOB\"")
-          (t ""))))
-    (concat nullable-arg unique-arg length-arg addition-arg)))
-
-(defun jh/java-column-header (colname)
-  "Build additional header, like @Lob, @Basic(...) blabla."
-  (let* ((tabcols (jh/java-tabcols))
-          (col (gethash colname tabcols))
-          (colname (nth 0 col))
-          (dbtype (nth 1 col)))
-    (cond
-      ((member dbtype '("CLOB" "BLOB"))
-        "@Lob\n  @Basic(fetch = FetchType.LAZY)\n")
-      (t ""))))
-
 (defvar jh/dbtype-fields-type-alist
   '(("BLOB" . "byte[]")
      ("CHAR" . "String")
@@ -194,6 +157,37 @@
      ("DATE" . "Timestamp")
      ("NUMBER" . "double"))
   "Map dbtype to entity field type.")
+
+(defun jh/java-column-args (colname)
+  "Build the arguments in @Column(...)"
+  (let*
+    ((column (assoc colname (jh/java-tabcols)))
+      (lookup (assoc (cadr column) jh/dbtype-fields-type-alist))
+      (args))
+    (and (string= "N" (nth 3 column))
+      (add-to-list 'args "nullable = false"))
+    (and (string= "U" (nth 4 column))
+      (add-to-list 'args "unique = true"))
+    (and lookup (string= "String" (cdr lookup))
+      (add-to-list 'args (format "length = %d" (nth 2 column))))
+    (and (string= "CLOB" (nth 1 column))
+      (add-to-list 'args "columnDefinition = \"CLOB\""))
+    (and (string= "BLOB" (nth 1 column))
+      (add-to-list 'args "columnDefinition = \"BLOB\""))
+    ;; return args
+    (and args (concat ", " (mapconcat #'identity args ", ")))))
+
+(defun jh/java-column-header (colname)
+  "Build additional header, like @Lob, @Basic(...) blabla."
+  (let*
+    ((column (assoc colname (jh/java-tabcols)))
+      (colname (nth 0 column))
+      (dbtype (nth 1 column)))
+    (cond
+      ((member dbtype '("CLOB" "BLOB"))
+        "@Lob\n  @Basic(fetch = FetchType.LAZY)\n")
+      (t ""))))
+
 
 (defun jh/java-column-type (colname)
   "Get field type."

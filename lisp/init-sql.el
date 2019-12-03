@@ -189,34 +189,36 @@
 
 (defun jh/oracle-parse-table-info (line)
   "Convert oracle line string to (tabname, tabcmt), otherwise return nil."
-  (let ((regexp
-          (concat
-            "[ \t]*\\([_A-Za-z0-9]+\\),"
-            "[ \t]*\\(.*\\)$"))
-         (tabinfo))
-    (and (save-match-data (string-match regexp line)
-          (setq
-            tabname (match-string 1 line)
-            tabcmt (match-string 2 line))
-          (and tabname
-            (setq tabinfo (list tabname tabcmt)))))
+  (let
+    ((regexp
+       (concat
+         "^\\([_A-Za-z0-9]+\\),"
+         "\\(.*\\)$"))
+      (tabinfo))
+    (save-match-data
+      (and (string-match regexp line)
+        (setq
+          tabname (match-string 1 line)
+          tabcmt (match-string 2 line))
+        (setq tabinfo (list tabname tabcmt))))
     tabinfo))
 
 (defun jh/oracle-parse-columns-info (line)
   "Convert oracle line string to (colname dbtype dblen nullable unique colcmt)."
-  (let ((regexp
-          (concat
-            "[ \t]*\\([_A-Za-z0-9]+\\),"
-            "[ \t]*\\([_A-Za-z0-9]+\\),"
-            "[ \t]*\\([_A-Za-z0-9]*\\),"
-            "[ \t]*\\([_A-Za-z0-9]*\\),"
-            "[ \t]*\\([_A-Za-z0-9]*\\),"
-            "[ \t]*\\([_A-Za-z0-9]*\\),"
-            "[ \t]*\\([_A-Za-z0-9]*\\),"
-            "[ \t]*\\(.*\\)$"))
-         (colinfo))
-    (and
-      (save-match-data (string-match regexp line)
+  (let
+    ((regexp
+       (concat
+         "^[ \t]*\\([_A-Za-z0-9]+\\),"
+         "[ \t]*\\([_A-Za-z0-9]+\\),"
+         "[ \t]*\\([_A-Za-z0-9]*\\),"
+         "[ \t]*\\([_A-Za-z0-9]*\\),"
+         "[ \t]*\\([_A-Za-z0-9]*\\),"
+         "[ \t]*\\([_A-Za-z0-9]*\\),"
+         "[ \t]*\\([_A-Za-z0-9]*\\),"
+         "[ \t]*\\(.*\\)$"))
+      (colinfo))
+    (save-match-data
+      (and (string-match regexp line)
         (setq
           colname (match-string 1 line)
           dbtype (match-string 2 line)
@@ -226,9 +228,10 @@
           pk (match-string 6 line)
           precision (match-string 7 line)
           colcmt (match-string 8 line))
-        (and colname
-          (setq colinfo
-            (list colname dbtype dblen nullable unique pk precision colcmt)))))
+        (setq colinfo
+          (list
+            colname dbtype (string-to-number dblen)
+            nullable unique pk precision colcmt))))
     colinfo))
 
 ;; -----------------------------------------------------------------------------
@@ -255,11 +258,11 @@
 
 (defun jh/oracle-guess-tabname ()
   "Guess table name."
-  (let ((tabnames (jh/java-tabnames))
-         (anno (and (buffer-file-name)
-                 (spt/extract-java-entity-table (jh/current-buffer))))
-         (name (file-name-sans-extension (buffer-name)))
-         (symb (symbol-name (symbol-at-point))))
+  (let
+    ((tabnames (jh/java-tabnames))
+      (anno (spt/read-entity-tabname (jh/current-buffer)))
+      (name (file-name-sans-extension (buffer-name)))
+      (symb (thing-at-point 'symbol t)))
     (cond
       ((member anno tabnames) anno)
       ((member name tabnames) name)
