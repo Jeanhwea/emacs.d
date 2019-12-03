@@ -5,191 +5,161 @@
 #+TAGS: emacs configuration elisp
 
 ** Screenshot
+   [[file:screenshot.png]]
 
-[[file:screenshot.png]]
+** Packages
+*** Built-in
+    - eshell: unix style shell
+    - ielm: elisp REPL
+    - org-mode: Note, literature programming
 
-** Built-in package
+*** Popular
+    - [[https://github.com/joaotavora/yasnippet][yasnippet]]: Aha, meet the snippet system.
+    - [[https://github.com/bbatsov/projectile][projectile]]: a project interaction library for Emacs.
+    - [[https://magit.vc/][magit]]: powerful git manager
+    - [[https://github.com/abo-abo/swiper][swiper]]: flexible, simple tools for minibuffer completion in Emacs
+    - [[https://github.com/ananthakumaran/tide][tide]]: TypeScript Interactive Development Environment for Emacs.
+    - [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]: Multiple cursors for Emacs.
+    - [[https://github.com/skeeto/elfeed][elfeed]]: an extensible web feed reader for Emacs, supporting both Atom and RSS.
+    - [[https://github.com/smihica/emmet-mode][emmet-mode]]: a minor mode providing support for Zen Coding by producing
+      HTML from CSS-like selectors.
+    - browses-at-remote: open github url on browser
+    - company: auto complete words according context
+    - evil: vim-style text editing
+    - exec-path-from-shell: load PATH from system
+    - expand-region: expand region increases the selected region by semantic
+      units. Just keep pressing the key until it selects what you want. [[http://emacsrocks.com/e09.html][video]]
+    - js-comint: let run interactive nodejs console with "M-x run-js"
+    - nyan-mode: change your progress display in status bar into a cute animal
+    - undo-tree: visualize the editing history by a tree view
 
-- eshell: unix style shell
-- ielm: elisp REPL
-- org-mode
+** Local settings
+   Feel free to add private setting at *~/.emacs.local.el*, the following is an
+   example.
 
-** Reasonable Plugins
+   #+BEGIN_SRC elisp
+     ;; -----------------------------------------------------------------------------
+     ;; startup initial frame
+     ;; -----------------------------------------------------------------------------
+     (setq initial-frame-alist
+       '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
+     (setq default-frame-alist
+       '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
 
-- [[https://github.com/joaotavora/yasnippet][yasnippet]]: Aha, meet the snippet system.
-- [[https://github.com/bbatsov/projectile][projectile]]: a project interaction library for Emacs.
-- [[https://magit.vc/][magit]]: powerful git manager
-- [[https://github.com/abo-abo/swiper][swiper]]: flexible, simple tools for minibuffer completion in Emacs
-- [[https://github.com/ananthakumaran/tide][tide]]: TypeScript Interactive Development Environment for Emacs.
-- [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]: Multiple cursors for Emacs.
-- [[https://github.com/skeeto/elfeed][elfeed]]: an extensible web feed reader for Emacs, supporting both Atom and RSS.
-- [[https://github.com/smihica/emmet-mode][emmet-mode]]: a minor mode providing support for Zen Coding by producing HTML from CSS-like selectors.
-- browses-at-remote: open github url on browser
-- company: auto complete words according context
-- evil: vim-style text editing
-- exec-path-from-shell: load PATH from system
-- expand-region: expand region increases the selected region by semantic units. Just keep pressing the key until it selects what you want. [[http://emacsrocks.com/e09.html][video]]
-- js-comint: let run interactive nodejs console with "M-x run-js"
-- nyan-mode: change your progress display in status bar into a cute animal
-- undo-tree: visualize the editing history by a tree view
+     ;; -----------------------------------------------------------------------------
+     ;; bar-browse, settup a local git repository
+     ;; -----------------------------------------------------------------------------
+     (add-to-list 'browse-at-remote-remote-type-domains '("192.168.0.202" . "avic"))
 
-** Cheatsheet
+     (defun browse-at-remote--format-region-url-as-avic (repo-url location filename &optional linestart lineend)
+       "URL formatted for avic."
+       (let
+         ((avic-repo-url (replace-regexp-in-string "https://" "http://" repo-url)))
+         (cond
+           ((and linestart lineend)
+             (format "%s/blob/%s/%s#L%d-%d" avic-repo-url location filename linestart lineend))
+           (linestart (format "%s/blob/%s/%s#L%d" avic-repo-url location filename linestart))
+           (t (format "%s/tree/%s/%s" avic-repo-url location filename)))))
 
-
-*** smerge-mode
-#+BEGIN_SRC elisp
-  (setq smerge-command-prefix (kbd "M-0"))
-#+END_SRC
-| key                           | binding             |
-|-------------------------------+---------------------|
-| ~smerge-command-prefix~ n     | smerge-next         |
-| ~smerge-command-prefix~ p     | smerge-previous     |
-| ~smerge-command-prefix~ <ret> | smerge-keep-current |
-| ~smerge-command-prefix~ m     | smerge-keep-mine    |
-| ~smerge-command-prefix~ o     | smerge-keep-other   |
-| ~smerge-command-prefix~ a     | smerge-keep-all     |
-| ~smerge-command-prefix~ E     | smerge-ediff        |
-
-*** Local settings
-
-Feel free to add private setting at *~/.emacs.local.el*, the following is an
-example.
-
-#+BEGIN_SRC elisp
-;; -----------------------------------------------------------------------------
-;; startup initial frame
-;; -----------------------------------------------------------------------------
-(setq initial-frame-alist
-  '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
-(setq default-frame-alist
-  '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
-
-;; -----------------------------------------------------------------------------
-;; setup database
-;; -----------------------------------------------------------------------------
-(setq-default
-  sql-product "oracle"
-  sql-user "username"
-  sql-password "xxxxxxxx"
-  sql-database "host/sid")
-
-;; -----------------------------------------------------------------------------
-;; bar-browse, settup a local git repository
-;; -----------------------------------------------------------------------------
-(add-to-list 'browse-at-remote-remote-type-domains '("192.168.0.202" . "avic"))
-
-(defun browse-at-remote--format-region-url-as-avic (repo-url location filename &optional linestart lineend)
-  "URL formatted for avic."
-  (let ((avic-repo-url (replace-regexp-in-string "https://" "http://" repo-url)))
-    (cond
-      ((and linestart lineend)
-        (format "%s/blob/%s/%s#L%d-%d" avic-repo-url location filename linestart lineend))
-      (linestart (format "%s/blob/%s/%s#L%d" avic-repo-url location filename linestart))
-      (t (format "%s/tree/%s/%s" avic-repo-url location filename)))))
-
-(defun browse-at-remote--format-commit-url-as-avic (repo-url commithash)
-  "Commit URL formatted for avic. Currently the same as for github."
-  (format "%s/commit/%s" repo-url commithash))
-#+END_SRC
+     (defun browse-at-remote--format-commit-url-as-avic (repo-url commithash)
+       "Commit URL formatted for avic. Currently the same as for github."
+       (format "%s/commit/%s" repo-url commithash))
+   #+END_SRC
 
 ** Symbol
 
 *** Chinese Tones
-
-#+BEGIN_SRC text
-  ā ē ī ō ū á é í ó ú ě à è ì ò ù
-#+END_SRC
+    #+BEGIN_SRC text
+      ā ē ī ō ū á é í ó ú ě à è ì ò ù
+    #+END_SRC
 
 *** Greek Alphabet
 
-#+BEGIN_SRC text
-  Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
-  α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-#+END_SRC
+    #+BEGIN_SRC text
+      Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
+      α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+    #+END_SRC
 
 *** Hebrew Alphabet
 
-read from right to left
-#+BEGIN_SRC text
-  א בּ ב ג ד ה ו ז ח ט י כּ כ ךּ ך ל מ ם נ ן ס ע פּ פ ף צ ץ ק ר שׁ שׂ תּ ת
-#+END_SRC
+    read from right to left
+    #+BEGIN_SRC text
+      א בּ ב ג ד ה ו ז ח ט י כּ כ ךּ ך ל מ ם נ ן ס ע פּ פ ף צ ץ ק ר שׁ שׂ תּ ת
+    #+END_SRC
 
 *** Russian Alphabet
 
-#+BEGIN_SRC text
-  А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я
-  а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я
-#+END_SRC
+    #+BEGIN_SRC text
+      А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я
+      а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я
+    #+END_SRC
 
 *** Turkey Alphabet
-
-#+BEGIN_SRC text
-  A B C Ç D E F G Ğ H I İ J K L M N O Ö P R S Ş T U Ü V Y Z
-  a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z
-#+END_SRC
+    #+BEGIN_SRC text
+      A B C Ç D E F G Ğ H I İ J K L M N O Ö P R S Ş T U Ü V Y Z
+      a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z
+    #+END_SRC
 
 *** Korean Alphabet
-
-#+BEGIN_SRC text
-  ㅏ ㅑ ㅓ ㅕ ㅗ ㅛ ㅜ ㅠ ㅡ ㅣ ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
-  ㅐ ㅒ ㅔ ㅖ ㅘ ㅙ ㅚ ㅝ ㅞ ㅟ ㅢ ㄲ ㄸ ㅃ ㅆ ㅉ
-#+END_SRC
+    #+BEGIN_SRC text
+      ㅏ ㅑ ㅓ ㅕ ㅗ ㅛ ㅜ ㅠ ㅡ ㅣ ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
+      ㅐ ㅒ ㅔ ㅖ ㅘ ㅙ ㅚ ㅝ ㅞ ㅟ ㅢ ㄲ ㄸ ㅃ ㅆ ㅉ
+    #+END_SRC
 
 *** Math Basic
-
-#+BEGIN_SRC text
-  ∀ ∁ ∂ ∃ ∄ ∅ ∆ ∇ ∈ ∉ ∊ ∋ ∌ ∍ ∎ ∏ ∐ ∑ − ∓ ∔ ∕ ∖ ∗ ∘ ∙ √ ∛ ∜ ∝ ∞ ∟ ∠ ∡ ∢ ∣ ∤ ∥ ∦ ∧
-  ∨ ∩ ∪ ∫ ∬ ∭ ∮ ∯ ∰ ∱ ∲ ∳ ∴ ∵ ∶ ∷ ∸ ∹ ∺ ∻ ∼ ∽ ∾ ∿ ≀ ≁ ≂ ≃ ≄ ≅ ≆ ≇ ≈ ≉ ≊ ≋ ≌ ≍ ≎ ≏
-  ≐ ≑ ≒ ≓ ≔ ≕ ≖ ≗ ≘ ≙ ≚ ≛ ≜ ≝ ≞ ≟ ≠ ≡ ≢ ≣ ≤ ≥ ≦ ≧ ≨ ≩ ≪ ≫ ≬ ≭ ≮ ≯ ≰ ≱ ≲ ≳ ≴ ≵ ≶ ≷
-  ≸ ≹ ≺ ≻ ≼ ≽ ≾ ≿ ⊀ ⊁ ⊂ ⊃ ⊄ ⊅ ⊆ ⊇ ⊈ ⊉ ⊊ ⊋ ⊌ ⊍ ⊎ ⊏ ⊐ ⊑ ⊒ ⊓ ⊔ ⊕ ⊖ ⊗ ⊘ ⊙ ⊚ ⊛ ⊜ ⊝ ⊞ ⊟
-  ⊠ ⊡ ⊢ ⊣ ⊤ ⊥ ⊦ ⊧ ⊨ ⊩ ⊪ ⊫ ⊬ ⊭ ⊮ ⊯ ⊰ ⊱ ⊲ ⊳ ⊴ ⊵ ⊶ ⊷ ⊸ ⊹ ⊺ ⊻ ⊼ ⊽ ⊾ ⊿ ⋀ ⋁ ⋂ ⋃ ⋄ ⋅ ⋆ ⋇
-  ⋈ ⋉ ⋊ ⋋ ⋌ ⋍ ⋎ ⋏ ⋐ ⋑ ⋒ ⋓ ⋔ ⋕ ⋖ ⋗ ⋘ ⋙ ⋚ ⋛ ⋜ ⋝ ⋞ ⋟ ⋠ ⋡ ⋢ ⋣ ⋤ ⋥ ⋦ ⋧ ⋨ ⋩ ⋪ ⋫ ⋬ ⋭ ⋮ ⋯
-  ⋰ ⋱ ⋲ ⋳ ⋴ ⋵ ⋶ ⋷ ⋸ ⋹ ⋺ ⋻ ⋼ ⋽ ⋾ ⋿ ⨀ ⨁ ⨂ ⨃ ⨄ ⨅ ⨆ ⨇ ⨈ ⨉ ⨊ ⨋ ⨌ ⨍ ⨎ ⨏ ⨐ ⨑ ⨒ ⨓ ⨔ ⨕ ⨖ ⨗
-  ⨘ ⨙ ⨚ ⨛ ⨜ ⨝ ⨞ ⨟ ⨠ ⨡ ⨢ ⨣ ⨤ ⨥ ⨦ ⨧ ⨨ ⨩ ⨪ ⨫ ⨬ ⨭ ⨮ ⨯ ⨰ ⨱ ⨲ ⨳ ⨴ ⨵ ⨶ ⨷ ⨸ ⨹ ⨺ ⨻ ⨼ ⨽ ⨾ ⨿
-  ⩀ ⩁ ⩂ ⩃ ⩄ ⩅ ⩆ ⩇ ⩈ ⩉ ⩊ ⩋ ⩌ ⩍ ⩎ ⩏ ⩐ ⩑ ⩒ ⩓ ⩔ ⩕ ⩖ ⩗ ⩘ ⩙ ⩚ ⩛ ⩜ ⩝ ⩞ ⩟ ⩠ ⩡ ⩢ ⩣ ⩤ ⩥ ⩦ ⩧
-  ⩨ ⩩ ⩪ ⩫ ⩬ ⩭ ⩮ ⩯ ⩰ ⩱ ⩲ ⩳ ⩴ ⩵ ⩶ ⩷ ⩸ ⩹ ⩺ ⩻ ⩼ ⩽ ⩾ ⩿ ⪀ ⪁ ⪂ ⪃ ⪄ ⪅ ⪆ ⪇ ⪈ ⪉ ⪊ ⪋ ⪌ ⪍ ⪎ ⪏
-  ⪐ ⪑ ⪒ ⪓ ⪔ ⪕ ⪖ ⪗ ⪘ ⪙ ⪚ ⪛ ⪜ ⪝ ⪞ ⪟ ⪠ ⪡ ⪢ ⪣ ⪤ ⪥ ⪦ ⪧ ⪨ ⪩ ⪪ ⪫ ⪬ ⪭ ⪮ ⪯ ⪰ ⪱ ⪲ ⪳ ⪴ ⪵ ⪶ ⪷
-  ⪸ ⪹ ⪺ ⪻ ⪼ ⪽ ⪾ ⪿ ⫀ ⫁ ⫂ ⫃ ⫄ ⫅ ⫆ ⫇ ⫈ ⫉ ⫊ ⫋ ⫌ ⫍ ⫎ ⫏ ⫐ ⫑ ⫒ ⫓ ⫔ ⫕ ⫖ ⫗ ⫘ ⫙ ⫚ ⫛ ⫝̸ ⫝ ⫞ ⫟
-  ⫠ ⫡ ⫢ ⫣ ⫤ ⫥ ⫦ ⫧ ⫨ ⫩ ⫪ ⫫ ⫬ ⫭ ⫮ ⫯ ⫰ ⫱ ⫲ ⫳ ⫴ ⫵ ⫶ ⫷ ⫸ ⫹ ⫺ ⫻ ⫼ ⫽ ⫾ ⫿
-#+END_SRC
+    #+BEGIN_SRC text
+      ∀ ∁ ∂ ∃ ∄ ∅ ∆ ∇ ∈ ∉ ∊ ∋ ∌ ∍ ∎ ∏ ∐ ∑ − ∓ ∔ ∕ ∖ ∗ ∘ ∙ √ ∛ ∜ ∝ ∞ ∟ ∠ ∡ ∢ ∣ ∤ ∥ ∦ ∧
+      ∨ ∩ ∪ ∫ ∬ ∭ ∮ ∯ ∰ ∱ ∲ ∳ ∴ ∵ ∶ ∷ ∸ ∹ ∺ ∻ ∼ ∽ ∾ ∿ ≀ ≁ ≂ ≃ ≄ ≅ ≆ ≇ ≈ ≉ ≊ ≋ ≌ ≍ ≎ ≏
+      ≐ ≑ ≒ ≓ ≔ ≕ ≖ ≗ ≘ ≙ ≚ ≛ ≜ ≝ ≞ ≟ ≠ ≡ ≢ ≣ ≤ ≥ ≦ ≧ ≨ ≩ ≪ ≫ ≬ ≭ ≮ ≯ ≰ ≱ ≲ ≳ ≴ ≵ ≶ ≷
+      ≸ ≹ ≺ ≻ ≼ ≽ ≾ ≿ ⊀ ⊁ ⊂ ⊃ ⊄ ⊅ ⊆ ⊇ ⊈ ⊉ ⊊ ⊋ ⊌ ⊍ ⊎ ⊏ ⊐ ⊑ ⊒ ⊓ ⊔ ⊕ ⊖ ⊗ ⊘ ⊙ ⊚ ⊛ ⊜ ⊝ ⊞ ⊟
+      ⊠ ⊡ ⊢ ⊣ ⊤ ⊥ ⊦ ⊧ ⊨ ⊩ ⊪ ⊫ ⊬ ⊭ ⊮ ⊯ ⊰ ⊱ ⊲ ⊳ ⊴ ⊵ ⊶ ⊷ ⊸ ⊹ ⊺ ⊻ ⊼ ⊽ ⊾ ⊿ ⋀ ⋁ ⋂ ⋃ ⋄ ⋅ ⋆ ⋇
+      ⋈ ⋉ ⋊ ⋋ ⋌ ⋍ ⋎ ⋏ ⋐ ⋑ ⋒ ⋓ ⋔ ⋕ ⋖ ⋗ ⋘ ⋙ ⋚ ⋛ ⋜ ⋝ ⋞ ⋟ ⋠ ⋡ ⋢ ⋣ ⋤ ⋥ ⋦ ⋧ ⋨ ⋩ ⋪ ⋫ ⋬ ⋭ ⋮ ⋯
+      ⋰ ⋱ ⋲ ⋳ ⋴ ⋵ ⋶ ⋷ ⋸ ⋹ ⋺ ⋻ ⋼ ⋽ ⋾ ⋿ ⨀ ⨁ ⨂ ⨃ ⨄ ⨅ ⨆ ⨇ ⨈ ⨉ ⨊ ⨋ ⨌ ⨍ ⨎ ⨏ ⨐ ⨑ ⨒ ⨓ ⨔ ⨕ ⨖ ⨗
+      ⨘ ⨙ ⨚ ⨛ ⨜ ⨝ ⨞ ⨟ ⨠ ⨡ ⨢ ⨣ ⨤ ⨥ ⨦ ⨧ ⨨ ⨩ ⨪ ⨫ ⨬ ⨭ ⨮ ⨯ ⨰ ⨱ ⨲ ⨳ ⨴ ⨵ ⨶ ⨷ ⨸ ⨹ ⨺ ⨻ ⨼ ⨽ ⨾ ⨿
+      ⩀ ⩁ ⩂ ⩃ ⩄ ⩅ ⩆ ⩇ ⩈ ⩉ ⩊ ⩋ ⩌ ⩍ ⩎ ⩏ ⩐ ⩑ ⩒ ⩓ ⩔ ⩕ ⩖ ⩗ ⩘ ⩙ ⩚ ⩛ ⩜ ⩝ ⩞ ⩟ ⩠ ⩡ ⩢ ⩣ ⩤ ⩥ ⩦ ⩧
+      ⩨ ⩩ ⩪ ⩫ ⩬ ⩭ ⩮ ⩯ ⩰ ⩱ ⩲ ⩳ ⩴ ⩵ ⩶ ⩷ ⩸ ⩹ ⩺ ⩻ ⩼ ⩽ ⩾ ⩿ ⪀ ⪁ ⪂ ⪃ ⪄ ⪅ ⪆ ⪇ ⪈ ⪉ ⪊ ⪋ ⪌ ⪍ ⪎ ⪏
+      ⪐ ⪑ ⪒ ⪓ ⪔ ⪕ ⪖ ⪗ ⪘ ⪙ ⪚ ⪛ ⪜ ⪝ ⪞ ⪟ ⪠ ⪡ ⪢ ⪣ ⪤ ⪥ ⪦ ⪧ ⪨ ⪩ ⪪ ⪫ ⪬ ⪭ ⪮ ⪯ ⪰ ⪱ ⪲ ⪳ ⪴ ⪵ ⪶ ⪷
+      ⪸ ⪹ ⪺ ⪻ ⪼ ⪽ ⪾ ⪿ ⫀ ⫁ ⫂ ⫃ ⫄ ⫅ ⫆ ⫇ ⫈ ⫉ ⫊ ⫋ ⫌ ⫍ ⫎ ⫏ ⫐ ⫑ ⫒ ⫓ ⫔ ⫕ ⫖ ⫗ ⫘ ⫙ ⫚ ⫛ ⫝̸ ⫝ ⫞ ⫟
+      ⫠ ⫡ ⫢ ⫣ ⫤ ⫥ ⫦ ⫧ ⫨ ⫩ ⫪ ⫫ ⫬ ⫭ ⫮ ⫯ ⫰ ⫱ ⫲ ⫳ ⫴ ⫵ ⫶ ⫷ ⫸ ⫹ ⫺ ⫻ ⫼ ⫽ ⫾ ⫿
+    #+END_SRC
 
 *** Letter-like Symbol
 
-#+BEGIN_SRC text
-  ℀ ℁ ℂ ℃ ℄ ℅ ℆ ℇ ℈ ℉ ℊ ℋ ℌ ℍ ℎ ℏ ℐ ℑ ℒ ℓ ℔ ℕ № ℗ ℘ ℙ ℚ ℛ ℜ ℝ ℞ ℟ ℠ ℡ ™ ℣ ℤ ℥ ω ℧
-  ℨ ℩ k å ℬ ℭ ℮ ℯ ℰ ℱ ⅎ ℳ ℴ ℵ ℶ ℷ ℸ ℹ ℺ ℻ ℼ ℽ ℾ ℿ ⅀ ⅁ ⅂ ⅃ ⅄ ⅅ ⅆ ⅇ ⅈ ⅉ ⅊ ⅋ ⅌ ⅍ ⅎ
-#+END_SRC
+    #+BEGIN_SRC text
+      ℀ ℁ ℂ ℃ ℄ ℅ ℆ ℇ ℈ ℉ ℊ ℋ ℌ ℍ ℎ ℏ ℐ ℑ ℒ ℓ ℔ ℕ № ℗ ℘ ℙ ℚ ℛ ℜ ℝ ℞ ℟ ℠ ℡ ™ ℣ ℤ ℥ ω ℧
+      ℨ ℩ k å ℬ ℭ ℮ ℯ ℰ ℱ ⅎ ℳ ℴ ℵ ℶ ℷ ℸ ℹ ℺ ℻ ℼ ℽ ℾ ℿ ⅀ ⅁ ⅂ ⅃ ⅄ ⅅ ⅆ ⅇ ⅈ ⅉ ⅊ ⅋ ⅌ ⅍ ⅎ
+    #+END_SRC
 
 *** Musical Symbol
 
-#+BEGIN_SRC text
-♪ ♩ ♫ ♬ ¶ ‖ ♭ ♯ § ∮
-#+END_SRC
+    #+BEGIN_SRC text
+      ♪ ♩ ♫ ♬ ¶ ‖ ♭ ♯ § ∮
+    #+END_SRC
 
 ** Colors
 
 *** Natural Colors
 
-#+BEGIN_SRC css
-  #320001 #333301 #333333 #670001
-  #653332 #346667 #cccccc #656600
-  #999999 #67999a #986665 #000000
-#+END_SRC
+    #+BEGIN_SRC css
+      #320001 #333301 #333333 #670001
+      #653332 #346667 #cccccc #656600
+      #999999 #67999a #986665 #000000
+    #+END_SRC
 
 *** D3 Categorial
 
 ****  d3.schemeCategory10
 
-#+BEGIN_SRC css
-  #1776b6 #ff7f00 #24a222 #d8241f #9564bf #8d5649 #e574c3 #7f7f7f #bcbf00 #00bed1
-#+END_SRC
+     #+BEGIN_SRC css
+       #1776b6 #ff7f00 #24a222 #d8241f #9564bf #8d5649 #e574c3 #7f7f7f #bcbf00 #00bed1
+     #+END_SRC
 
 **** d3.schemeAccent
 
-#+BEGIN_SRC css
-  #7fc97f #beaed4 #fdc086 #ffff99 #386cb0 #f0027f #bf5b17 #666666
-#+END_SRC
+     #+BEGIN_SRC css
+       #7fc97f #beaed4 #fdc086 #ffff99 #386cb0 #f0027f #bf5b17 #666666
+     #+END_SRC
 
 ** Link
-1. [[http://mirrors.ustc.edu.cn/gnu/emacs/windows/][emacs-windows-download]]
-2. [[http://mirror.hust.edu.cn/gnu/emacs/windows/][emacs-windows-download2]]
+   1. [[http://mirrors.ustc.edu.cn/gnu/emacs/windows/][emacs-windows-download]]
+   2. [[http://mirror.hust.edu.cn/gnu/emacs/windows/][emacs-windows-download2]]

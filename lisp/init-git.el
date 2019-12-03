@@ -1,6 +1,3 @@
-;; smerge-mode
-(setq smerge-command-prefix (kbd "M-0"))
-
 (when (require 'magit)
 
   ;; repositories for magit-list-repositories

@@ -61,4 +61,32 @@
   (define-key km/leader-key-map (kbd "x") 'km/M-x))
 (global-set-key (kbd "M-]") 'km/leader-key-map)
 
+
+
+;; -----------------------------------------------------------------------------
+;; F1: Window, Frame, Narrow & widen
+;; -----------------------------------------------------------------------------
+(progn
+  ;; Leader Key
+  (define-prefix-command 'leader/f1)
+  ;; Window
+  (define-key leader/f1 (kbd "0") #'delete-window)
+  (define-key leader/f1 (kbd "1") #'delete-other-windows)
+  (define-key leader/f1 (kbd "2") #'split-window-below)
+  (define-key leader/f1 (kbd "3") #'split-window-right)
+  (define-key leader/f1 (kbd "4") #'toggle-frame-fullscreen)
+  ;; Frame
+  (define-key leader/f1 (kbd "5") #'make-frame-command)
+  (define-key leader/f1 (kbd "6") #'delete-frame)
+  ;; Narrow and Widen
+  (define-key leader/f1 (kbd "n") #'narrow-to-region)
+  (define-key leader/f1 (kbd "w") #'widen))
+(global-set-key (kbd "<f1>") 'leader/f1)
+(global-set-key (kbd "M-o") 'other-window)
+
+;; -----------------------------------------------------------------------------
+;; F2: smerge-mode
+;; -----------------------------------------------------------------------------
+(setq smerge-command-prefix (kbd "<f2>"))
+
 (provide 'init-keymate)
