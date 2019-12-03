@@ -123,7 +123,7 @@
       (set (make-local-variable 'tabcols) (jh/oracle-list-columns tabname))))
   tabcols)
 
-(defvar jh/java-ignored-sql-column '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")
+(defvar jh/java-ignored-colnames '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")
   "Java entity ignored columns.")
 
 (defun jh/java-column-names ()
@@ -133,7 +133,7 @@
       (cfmap
         (mapcar
           #'(lambda (e)
-              (cons (gethash 'colname e) (gethash 'name e)))
+              (cons (gethash 'name e) (gethash 'colname e)))
           (spt/read-column-field-mapping text)))
       (fields
         (mapcar
@@ -144,7 +144,7 @@
         (mapcar #'car (jh/java-tabcols))))
     (remove-if
       #'(lambda (x)
-          (or (member x fields) (member jh/java-ignored-sql-column)))
+          (or (member x fields) (member x jh/java-ignored-colnames)))
       colnames)))
 
 (defun jh/java-column-args (colname)
