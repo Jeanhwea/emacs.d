@@ -116,6 +116,7 @@
 (progn
   (define-prefix-command 'leader/f2)
   ;; git
+  (define-key leader/f2 (kbd "v") #'magit)
   (define-key leader/f2 (kbd "s") #'magit-status)
   (define-key leader/f2 (kbd "b") #'magit-blame)
   (define-key leader/f2 (kbd "c") #'magit-commit)
