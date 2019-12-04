@@ -6,22 +6,27 @@
 (defun km/drop-file (&optional startdir)
   "Drop the file content to current point according to action."
   (interactive)
-  (let ((action
-          (completing-read "Drop Action >> "
-            '("Content" "Filename" "Relative Path" "Relative to Project Root")))
+  (let ((options
+          '("Content" "Filename" "Relative Path" "Relative to Project Root"))
+         (action (completing-read "Drop Action >> " options))
          (filename
            (expand-file-name
              (read-file-name "Drop file >> " (or startdir default-directory)))))
     (cond
       ((string= action "Content")
-        (and (file-regular-p filename) (file-readable-p filename) (insert (jh/read-file-content filename))))
+        (and (file-regular-p filename)
+          (file-readable-p filename)
+          (insert (jh/read-file-content filename))))
       ((string= action "Filename")
         (and (file-exists-p filename) (insert filename)))
       ((string= action "Relative Path")
-        (and (file-exists-p filename) (insert (jh/relative-path filename default-directory))))
+        (and (file-exists-p filename)
+          (insert (jh/relative-path filename default-directory))))
       ((string= action "Relative to Project Root")
         (and (file-exists-p filename)
-          (insert (jh/relative-path filename (jh/git-project-root-dir default-directory)))))
+          (insert
+            (jh/relative-path filename
+              (jh/git-project-root-dir default-directory)))))
       (t (error "Never happend in km/drop-file!")))))
 
 (defun km/format-source-codes ()
