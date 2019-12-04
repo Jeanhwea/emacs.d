@@ -13,26 +13,22 @@
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
-  (add-to-list 'browse-at-remote-remote-type-domains '("192.168.0.202" . "avic"))
-
-  (defun browse-at-remote--format-region-url-as-avic (repo-url location filename &optional linestart lineend)
-    "url formatted for avic."
-    (let
-      ((avic-repo-url
-         (replace-regexp-in-string "^https://" "http://" repo-url)))
-      (cond
-        ((and linestart lineend)
-          (format "%s/blob/%s/%s#L%d-%d" avic-repo-url location filename linestart lineend))
-        (linestart (format "%s/blob/%s/%s#L%d" avic-repo-url location filename linestart))
-        (t (format "%s/tree/%s/%s" avic-repo-url location filename)))))
+  (add-to-list
+    'browse-at-remote-remote-type-domains '("192.168.0.202" . "avic"))
 
   (defun browse-at-remote--format-commit-url-as-avic (repo-url commithash)
     "commit url formatted for avic."
-    (message (format "%s/commit/%s" repo-url commithash))
     (let
-      ((avic-repo-url
-         (replace-regexp-in-string "^https://" "http://" repo-url)))
-      (format "%s/commit/%s" avic-repo-url commithash))))
+      ((repo-url (replace-regexp-in-string "^https://" "http://" repo-url)))
+      (browse-at-remote--format-commit-url-as-gitlab repo-url commithash)))
+
+  (defun browse-at-remote--format-region-url-as-avic
+    (repo-url location filename &optional linestart lineend)
+    "url formatted for avic."
+    (let
+      ((repo-url (replace-regexp-in-string "^https://" "http://" repo-url)))
+      (browse-at-remote--format-region-url-as-gitlab
+        repo-url location filename linestart lineend))))
 
 ;; -----------------------------------------------------------------------------
 ;; some helper function with git repository

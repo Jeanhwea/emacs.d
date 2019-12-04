@@ -45,25 +45,6 @@
        '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
      (setq default-frame-alist
        '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
-
-     ;; -----------------------------------------------------------------------------
-     ;; bar-browse, settup a local git repository
-     ;; -----------------------------------------------------------------------------
-     (add-to-list 'browse-at-remote-remote-type-domains '("192.168.0.202" . "avic"))
-
-     (defun browse-at-remote--format-region-url-as-avic (repo-url location filename &optional linestart lineend)
-       "URL formatted for avic."
-       (let
-         ((avic-repo-url (replace-regexp-in-string "https://" "http://" repo-url)))
-         (cond
-           ((and linestart lineend)
-             (format "%s/blob/%s/%s#L%d-%d" avic-repo-url location filename linestart lineend))
-           (linestart (format "%s/blob/%s/%s#L%d" avic-repo-url location filename linestart))
-           (t (format "%s/tree/%s/%s" avic-repo-url location filename)))))
-
-     (defun browse-at-remote--format-commit-url-as-avic (repo-url commithash)
-       "Commit URL formatted for avic. Currently the same as for github."
-       (format "%s/commit/%s" repo-url commithash))
    #+END_SRC
 
 ** Symbol
