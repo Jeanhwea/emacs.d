@@ -238,8 +238,6 @@
           (load-theme 'sanityinc-tomorrow-eighties t))
         ;; default -> sanityinc-solarized-dark
         (t (load-theme 'sanityinc-solarized-dark t)))))
-  ;; keybinding
-  (global-set-key (kbd "<f12>") 'jh/cycle-color-theme)
   ;; default use solarized light theme
   (load-theme 'sanityinc-solarized-light t))
 
@@ -258,6 +256,5 @@
                  ((numberp (cadr alpha)) (cadr alpha)))
             100)
         '(85 . 50) '(100 . 100)))))
-(global-set-key (kbd "<f10>") 'jh/toggle-transparency)
 
 (provide 'init-desktop)

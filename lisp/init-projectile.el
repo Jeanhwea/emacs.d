@@ -4,11 +4,31 @@
 (when (require 'projectile)
   (projectile-mode 1)
   (setq-default
-    projectile-globally-ignored-directories '("node_modules" ".git")
+    projectile-globally-ignored-directories
+    '(".idea"
+       ".ensime_cache"
+       ".eunit"
+       ".git"
+       ".bzr"
+       ".fslckout"
+       ".hg"
+       ".meghanada"
+       ".mvn"
+       ".settings"
+       ".stack-work"
+       ".svn"
+       ".tox"
+       ".vscode"
+       "_FOSSIL_"
+       "_darcs"
+       "tmp"
+       "elpa"
+       "dist"
+       "target"
+       "node_modules")
     projectile-mode-line-prefix " Proj"
     projectile-completion-system 'ivy
     projectile-create-missing-test-files t)
-  (define-key projectile-mode-map (kbd "M-9") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
   ;; personal project structure
