@@ -52,14 +52,15 @@
   (counsel-M-x "jh/"))
 
 (progn
-  (define-prefix-command 'km/leader-key-map)
-  (define-key km/leader-key-map (kbd "c") 'km/expand-codetta-command)
-  (define-key km/leader-key-map (kbd "d") 'km/drop-file)
-  (define-key km/leader-key-map (kbd "f") 'km/format-source-codes)
-  (define-key km/leader-key-map (kbd "r") 'km/reveal-in-file-manager)
-  (define-key km/leader-key-map (kbd "s") 'km/shell-send-region)
-  (define-key km/leader-key-map (kbd "x") 'km/M-x))
-(global-set-key (kbd "M-]") 'km/leader-key-map)
+  (define-prefix-command 'leader/f12)
+  (define-key leader/f12 (kbd "c") 'km/expand-codetta-command)
+  (define-key leader/f12 (kbd "d") 'km/drop-file)
+  (define-key leader/f12 (kbd "f") 'km/format-source-codes)
+  (define-key leader/f12 (kbd "r") 'km/reveal-in-file-manager)
+  (define-key leader/f12 (kbd "s") 'km/shell-send-region)
+  (define-key leader/f12 (kbd "x") 'km/M-x))
+(global-set-key (kbd "M-]") 'leader/f12)
+
 
 ;; -----------------------------------------------------------------------------
 ;;  _____        _  __
@@ -87,6 +88,9 @@
   ;; Narrow and Widen
   (define-key leader/f1 (kbd "n") #'narrow-to-region)
   (define-key leader/f1 (kbd "w") #'widen)
+  ;; color and theme
+  (define-key leader/f1 (kbd "c") #'jh/cycle-color-theme)
+  (define-key leader/f1 (kbd "t") #'jh/toggle-transparency)
   ;; Multiple line
   (define-key leader/f1 (kbd "|") #'mc/edit-lines)
   (define-key leader/f1 (kbd "=") #'mc/mark-all-like-this)
@@ -97,30 +101,40 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; F2: smerge-mode
+;; F2: git and version control
 ;; -----------------------------------------------------------------------------
-(setq smerge-command-prefix (kbd "<f2>"))
-
+(progn
+  (define-prefix-command 'leader/f2)
+  ;; git
+  (define-key leader/f2 (kbd "s") #'magit-status)
+  (define-key leader/f2 (kbd "b") #'magit-blame)
+  (define-key leader/f2 (kbd "c") #'magit-commit)
+  (define-key leader/f2 (kbd "l") #'magit-log)
+  (define-key leader/f2 (kbd "L") #'magit-log-all)
+  (define-key leader/f2 (kbd "p") #'magit-push)
+  (define-key leader/f2 (kbd "f") #'magit-fetch)
+  ;; smerge
+  (define-key leader/f2 (kbd "<left>") #'smerge-prev)
+  (define-key leader/f2 (kbd "<right>") #'smerge-next)
+  (define-key leader/f2 (kbd "<ret>") #'smerge-keep-current)
+  (define-key leader/f2 (kbd "1") #'smerge-keep-mine)
+  (define-key leader/f2 (kbd "2") #'smerge-keep-other)
+  (define-key leader/f2 (kbd "3") #'smerge-keep-all)
+  ;; open remote url
+  (define-key leader/f2 (kbd "o") #'browse-at-remote))
+(global-set-key (kbd "<f2>") 'leader/f2)
 
 ;; -----------------------------------------------------------------------------
-;; F8: ivy, counsel & swiper & version control
+;; F8: jump commands
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f8)
   ;; counsel command
-  (define-key leader/f8 (kbd "b") #'counsel-bookmark)
-  (define-key leader/f8 (kbd "k") #'counsel-ag)
-  (define-key leader/f8 (kbd "f") #'counsel-git)
+  (define-key leader/f8 (kbd "a") #'counsel-ag)
   (define-key leader/f8 (kbd "g") #'counsel-git-grep)
-  (define-key leader/f8 (kbd "r") #'counsel-recentf)
-  ;; git
-  (define-key leader/f8 (kbd "v") #'magit-status)
-  (define-key leader/f8 (kbd "a") #'magit-blame)
-  (define-key leader/f8 (kbd "c") #'magit-commit)
-  (define-key leader/f8 (kbd "l") #'magit-log-all)
-  (define-key leader/f8 (kbd "p") #'magit-push)
-  ;; open remote url
-  (define-key leader/f8 (kbd "o") #'browse-at-remote))
+  (define-key leader/f8 (kbd "f") #'counsel-git)
+  (define-key leader/f8 (kbd "b") #'counsel-bookmark)
+  (define-key leader/f8 (kbd "r") #'counsel-recentf))
 (global-set-key (kbd "<f8>") 'leader/f8)
 
 
@@ -131,13 +145,16 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; F12: Colors & Theme
+;; F12: Misc
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f12)
-  ;; command
-  (define-key leader/f12 (kbd "c") #'jh/cycle-color-theme)
-  (define-key leader/f12 (kbd "t") #'jh/toggle-transparency))
+  (define-key leader/f12 (kbd "c") 'km/expand-codetta-command)
+  (define-key leader/f12 (kbd "d") 'km/drop-file)
+  (define-key leader/f12 (kbd "f") 'km/format-source-codes)
+  (define-key leader/f12 (kbd "r") 'km/reveal-in-file-manager)
+  (define-key leader/f12 (kbd "s") 'km/shell-send-region)
+  (define-key leader/f12 (kbd "x") 'km/M-x))
 (global-set-key (kbd "<f12>") 'leader/f12)
 
 (provide 'init-keymate)
