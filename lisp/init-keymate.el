@@ -97,7 +97,9 @@
   (define-key leader/f1 (kbd "|") #'mc/edit-lines)
   (define-key leader/f1 (kbd "=") #'mc/mark-all-like-this)
   (define-key leader/f1 (kbd "<left>") #'mc/mark-previous-like-this)
-  (define-key leader/f1 (kbd "<right>") #'mc/mark-next-like-this))
+  (define-key leader/f1 (kbd "<right>") #'mc/mark-next-like-this)
+  ;; evil mode
+  (define-key leader/f1 (kbd "v") #'evil-mode))
 (global-set-key (kbd "<f1>") 'leader/f1)
 (global-set-key (kbd "M-o") 'other-window)
 
