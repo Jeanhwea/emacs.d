@@ -103,12 +103,14 @@
 (progn
   (define-prefix-command 'leader/f8)
   ;; counsel command
-  (define-key leader/f8 (kbd "a") #'counsel-ag)
   (define-key leader/f8 (kbd "b") #'counsel-bookmark)
+  (define-key leader/f8 (kbd "k") #'counsel-ag)
   (define-key leader/f8 (kbd "f") #'counsel-git)
   (define-key leader/f8 (kbd "g") #'counsel-git-grep)
   (define-key leader/f8 (kbd "r") #'counsel-recentf)
-  (define-key leader/f8 (kbd "v") #'magit-status))
+  (define-key leader/f8 (kbd "v") #'magit-status)
+  (define-key leader/f8 (kbd "a") #'magit-blame)
+  (define-key leader/f8 (kbd "o") #'bar-browse))
 (global-set-key (kbd "<f8>") 'leader/f8)
 
 
