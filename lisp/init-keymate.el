@@ -88,6 +88,8 @@
   ;; Narrow and Widen
   (define-key leader/f1 (kbd "n") #'narrow-to-region)
   (define-key leader/f1 (kbd "w") #'widen)
+  ;; undotree
+  (define-key leader/f1 (kbd "u") #'undo-tree-visualize)
   ;; color and theme
   (define-key leader/f1 (kbd "c") #'jh/cycle-color-theme)
   (define-key leader/f1 (kbd "t") #'jh/toggle-transparency)
@@ -125,7 +127,7 @@
 (global-set-key (kbd "<f2>") 'leader/f2)
 
 ;; -----------------------------------------------------------------------------
-;; F8: jump commands
+;; F8: counsel & projectitle
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f8)
@@ -134,14 +136,13 @@
   (define-key leader/f8 (kbd "g") #'counsel-git-grep)
   (define-key leader/f8 (kbd "f") #'counsel-git)
   (define-key leader/f8 (kbd "b") #'counsel-bookmark)
-  (define-key leader/f8 (kbd "r") #'counsel-recentf))
+  (define-key leader/f8 (kbd "r") #'counsel-recentf)
+  ;; projectile
+  (define-key leader/f8 (kbd "p") #'projectile-switch-project)
+  (define-key leader/f8 (kbd "=") #'projectile-replace)
+  (define-key leader/f8 (kbd "c") #'projectile-compile-project)
+  (define-key leader/f8 (kbd "u") #'projectile-run-project))
 (global-set-key (kbd "<f8>") 'leader/f8)
-
-
-;; -----------------------------------------------------------------------------
-;; F9: Projectile
-;; -----------------------------------------------------------------------------
-(define-key projectile-mode-map (kbd "<f9>") 'projectile-command-map)
 
 
 ;; -----------------------------------------------------------------------------
