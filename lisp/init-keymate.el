@@ -98,7 +98,7 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; F8: ivy, counsel & swiper
+;; F8: ivy, counsel & swiper & version control
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f8)
@@ -107,7 +107,8 @@
   (define-key leader/f8 (kbd "b") #'counsel-bookmark)
   (define-key leader/f8 (kbd "f") #'counsel-git)
   (define-key leader/f8 (kbd "g") #'counsel-git-grep)
-  (define-key leader/f8 (kbd "r") #'counsel-recentf))
+  (define-key leader/f8 (kbd "r") #'counsel-recentf)
+  (define-key leader/f8 (kbd "v") #'magit-status))
 (global-set-key (kbd "<f8>") 'leader/f8)
 
 
