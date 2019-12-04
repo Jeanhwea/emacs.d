@@ -108,9 +108,14 @@
   (define-key leader/f8 (kbd "f") #'counsel-git)
   (define-key leader/f8 (kbd "g") #'counsel-git-grep)
   (define-key leader/f8 (kbd "r") #'counsel-recentf)
+  ;; git
   (define-key leader/f8 (kbd "v") #'magit-status)
   (define-key leader/f8 (kbd "a") #'magit-blame)
-  (define-key leader/f8 (kbd "o") #'bar-browse))
+  (define-key leader/f8 (kbd "c") #'magit-commit)
+  (define-key leader/f8 (kbd "l") #'magit-log-all)
+  (define-key leader/f8 (kbd "p") #'magit-push)
+  ;; open remote url
+  (define-key leader/f8 (kbd "o") #'browse-at-remote))
 (global-set-key (kbd "<f8>") 'leader/f8)
 
 
