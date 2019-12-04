@@ -81,7 +81,7 @@
   (define-key leader/f1 (kbd "1") #'delete-other-windows)
   (define-key leader/f1 (kbd "2") #'split-window-below)
   (define-key leader/f1 (kbd "3") #'split-window-right)
-  (define-key leader/f1 (kbd "4") #'toggle-frame-fullscreen)
+  (define-key leader/f1 (kbd "f") #'toggle-frame-fullscreen)
   ;; Frame
   (define-key leader/f1 (kbd "5") #'make-frame-command)
   (define-key leader/f1 (kbd "6") #'delete-frame)
