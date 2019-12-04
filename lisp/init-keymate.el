@@ -36,6 +36,7 @@
     ((eq major-mode 'java-mode) (spt/meghanada-format-code))
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
+    ((eq major-mode 'mhtml-mode) (jh/html-format-code))
     (t (message "Ops, no format backend!"))))
 
 (defun km/reveal-in-file-manager ()

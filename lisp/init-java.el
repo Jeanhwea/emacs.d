@@ -58,7 +58,8 @@
 
     (if (jh/windows?)
       (setq
-        meghanada-java-path (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
+        meghanada-java-path
+        (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
         meghanada-maven-path "mvn.cmd")
       ;; unix-like system
       (setq
