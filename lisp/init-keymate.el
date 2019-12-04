@@ -86,7 +86,12 @@
   (define-key leader/f1 (kbd "6") #'delete-frame)
   ;; Narrow and Widen
   (define-key leader/f1 (kbd "n") #'narrow-to-region)
-  (define-key leader/f1 (kbd "w") #'widen))
+  (define-key leader/f1 (kbd "w") #'widen)
+  ;; Multiple line
+  (define-key leader/f1 (kbd "|") #'mc/edit-lines)
+  (define-key leader/f1 (kbd "=") #'mc/mark-all-like-this)
+  (define-key leader/f1 (kbd "<left>") #'mc/mark-previous-like-this)
+  (define-key leader/f1 (kbd "<right>") #'mc/mark-next-like-this))
 (global-set-key (kbd "<f1>") 'leader/f1)
 (global-set-key (kbd "M-o") 'other-window)
 
