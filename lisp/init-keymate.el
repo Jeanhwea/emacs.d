@@ -24,7 +24,7 @@
   (define-key leader/f1 (kbd "6") #'delete-frame)
   ;; File create & access
   (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
-  (define-key leader/f1 (kbd "f") #'counsel-git)
+  (define-key leader/f1 (kbd "g") #'counsel-git)
   (define-key leader/f1 (kbd "d") #'counsel-find-file)
   (define-key leader/f1 (kbd "p") #'projectile-find-file)
   (define-key leader/f1 (kbd "b") #'counsel-bookmark)
