@@ -104,6 +104,24 @@
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
 
+(defun workflow-highlight-symbol ()
+  "Toggle highlight state of symbol at point."
+  (interactive)
+  (let*
+    ((sym (thing-at-point 'symbol))
+      (sym-re (concat "\\_<" sym "\\_>"))
+      (lookup
+        (member sym-re
+          (mapcar #'car hi-lock-interactive-patterns))))
+    (if lookup
+      (unhighlight-regexp sym-re) (highlight-symbol-at-point))))
+
+(defun workflow-unhighlight-all ()
+  "Unhighlight all symbols"
+  (interactive)
+  (dolist (sym-re (mapcar #'car hi-lock-interactive-patterns))
+    (unhighlight-regexp sym-re)))
+
 (defun workflow-bookmark-current-file ()
   "Add/Remove current file to bookmark"
   (interactive)

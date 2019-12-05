@@ -138,6 +138,10 @@
   ;; Open sources
   (define-key leader/meta-lb (kbd "p") #'workflow-open-class)
 
+  ;; highlight symbol
+  (define-key leader/meta-lb (kbd "1") #'workflow-highlight-symbol)
+  (define-key leader/meta-lb (kbd "0") #'workflow-unhighlight-all)
+
   ;; Unit test
   (define-key leader/meta-lb (kbd "u") 'spt/run-test-method-command)
   (define-key leader/meta-lb (kbd "U") 'spt/run-test-class-command)
