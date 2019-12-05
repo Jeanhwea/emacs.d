@@ -29,6 +29,7 @@
   (define-key leader/f1 (kbd "p") #'projectile-find-file)
   (define-key leader/f1 (kbd "b") #'counsel-bookmark)
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
+  (define-key leader/f1 (kbd "m") #'workflow-bookmark-current-file)
   ;; Project management
   (define-key leader/f1 (kbd "o") #'projectile-switch-project)
   (define-key leader/f1 (kbd "c") #'projectile-compile-project)

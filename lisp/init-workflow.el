@@ -71,4 +71,18 @@
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
 
+(defun workflow-bookmark-current-file ()
+  "Add/Remove current file to bookmark"
+  (interactive)
+  (let*
+    ((name (buffer-name))
+      (lookup (member name (bookmark-all-names))))
+    (if lookup
+      (progn
+        (bookmark-delete name)
+        (message (concat "Removed bookmark: " name)))
+      (progn
+        (bookmark-set name)
+        (message (concat "Added bookmark: " name))))))
+
 (provide 'init-workflow)
