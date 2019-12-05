@@ -85,7 +85,7 @@
   ;; File create & access
   (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
   (define-key leader/f1 (kbd "f") #'counsel-git)
-  (define-key leader/f1 (kbd "F") #'counsel-find-file)
+  (define-key leader/f1 (kbd "d") #'counsel-find-file)
   (define-key leader/f1 (kbd "p") #'projectile-find-file)
   (define-key leader/f1 (kbd "b") #'counsel-bookmark)
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
@@ -102,18 +102,17 @@
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f2)
-
   ;; Narrow & Widen
   (define-key leader/f2 (kbd "n") #'narrow-to-region)
   (define-key leader/f2 (kbd "w") #'widen)
   ;; Undotree
   (define-key leader/f2 (kbd "u") #'undo-tree-visualize)
-  ;; Global search
+  ;; Search global
   (define-key leader/f2 (kbd "a") #'counsel-ag)
   (define-key leader/f2 (kbd "A") #'ag)
   (define-key leader/f2 (kbd "g") #'counsel-git-grep)
   ;; Replace, regular eXpression replace
-  (define-key leader/f2 (kbd "r") #'query-replace)
+  (define-key leader/f2 (kbd "r") #'workflow-replace)
   (define-key leader/f2 (kbd "R") #'projectile-replace)
   (define-key leader/f2 (kbd "x") #'query-replace-regexp)
   (define-key leader/f2 (kbd "X") #'projectile-replace-regexp)
