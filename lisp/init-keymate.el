@@ -86,7 +86,7 @@
   (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
   (define-key leader/f1 (kbd "f") #'counsel-git)
   (define-key leader/f1 (kbd "F") #'counsel-find-file)
-  (define-key leader/f1 (kbd "p") #'project-find-file)
+  (define-key leader/f1 (kbd "p") #'projectile-find-file)
   (define-key leader/f1 (kbd "b") #'counsel-bookmark)
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
   ;; Project management
