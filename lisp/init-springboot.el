@@ -92,8 +92,8 @@
 (defun spt/project-name ()
   "Return project name."
   (let ((root (spt/project-root)))
-    (replace-regexp-in-string "/" ""
-      (replace-regexp-in-string (jh/parent-dir root) "" root))))
+    (jh/re-replace "/" ""
+      (jh/re-replace (jh/parent-dir root) "" root))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -145,7 +145,7 @@
       (re (format "^\\(%s\\|%s\\)" (spt/src-root) (spt/test-root)))
       (tail-folder-list
         (split-string
-          (replace-regexp-in-string
+          (jh/re-replace
             (spt/app-root) "" (jh/parent-dir file)) "/" t))
       ;; class name
       (clzname
@@ -159,7 +159,7 @@
       (pkgname
         (mapconcat 'identity
           (split-string
-            (replace-regexp-in-string re "" (jh/parent-dir file)) "/" t) ".")))
+            (jh/re-replace re "" (jh/parent-dir file)) "/" t) ".")))
     (list clzname bldname mdlname pkgname file)))
 
 (defun spt/scan-source-files ()
@@ -184,11 +184,11 @@
       (bundle (intern bldname)))
     (cond
       ((equal 'repo bundle)
-        (replace-regexp-in-string "Repository$" "" clzname))
+        (jh/re-replace "Repository$" "" clzname))
       ((equal 'impl bundle)
-        (replace-regexp-in-string
+        (jh/re-replace
           "\\(Service\\|Repository\\)Impl$" "" clzname))
-      (t (replace-regexp-in-string
+      (t (jh/re-replace
            (concat (jh/pascalcase bldname) "$") "" clzname)))))
 
 (defun spt/coerce-to-filename (fileinfo bundle)
@@ -265,7 +265,7 @@
       (re (format "^\\(%s\\|%s\\)" (spt/src-root) (spt/test-root)))
       (tail-folder-list
         (split-string
-          (replace-regexp-in-string
+          (jh/re-replace
             (spt/app-test-root) "" (jh/parent-dir file)) "/" t))
       ;; class name
       (clzname
@@ -279,7 +279,7 @@
       (pkgname
         (mapconcat 'identity
           (split-string
-            (replace-regexp-in-string re "" (jh/parent-dir file)) "/" t) ".")))
+            (jh/re-replace re "" (jh/parent-dir file)) "/" t) ".")))
     (list clzname bldname mdlname pkgname file)))
 
 (defun spt/scan-test-files ()
@@ -304,7 +304,7 @@
     (if (string-match-p "Test$" clzname) file
       (expand-file-name
         (format "%sTest.java" clzname)
-        (replace-regexp-in-string "src/main/java" "src/test/java" dir)))))
+        (jh/re-replace "src/main/java" "src/test/java" dir)))))
 
 (defun spt/coerce-to-srcfile (file)
   "Force file to source file path."
@@ -314,8 +314,8 @@
     (if
       (string-match-p "Test$" clzname)
       (expand-file-name
-        (format "%s.java" (replace-regexp-in-string "Test$" "" clzname))
-        (replace-regexp-in-string "src/test/java" "src/main/java" dir))
+        (format "%s.java" (jh/re-replace "Test$" "" clzname))
+        (jh/re-replace "src/test/java" "src/main/java" dir))
       file)))
 
 (defun spt/swap-test-and-source ()
@@ -392,7 +392,7 @@
       (file (or file (buffer-file-name)))
       (tail-folder-list
         (split-string
-          (replace-regexp-in-string
+          (jh/re-replace
             (spt/doc-root) "" (jh/parent-dir file)) "/" t))
       ;; function name
       (funcname (jh/file-base-name file))
@@ -419,7 +419,7 @@
 
 (defun spt/http-prefix-to-basename (prefix)
   "Convert http prefix to basename."
-  (car (split-string (replace-regexp-in-string "^/" "" prefix) "/")))
+  (car (split-string (jh/re-replace "^/" "" prefix) "/")))
 
 (defun spt/current-endpoint (file)
   "Find current endpoint, the endpoint under cursor."

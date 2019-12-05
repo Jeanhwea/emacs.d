@@ -53,7 +53,7 @@
   "Force to convert to prefix."
   (let
     ((re "\\(\\.html\\|\\.less\\|\\.spec\\.ts\\|\\.ts\\)$"))
-    (replace-regexp-in-string re "" file)))
+    (jh/re-replace re "" file)))
 
 (defvar ng/filetype-suffix-alist
   '((model . ".ts")

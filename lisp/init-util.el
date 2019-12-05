@@ -35,6 +35,8 @@
   "convert string to `Foo_Bar' format"
   (string-inflection-capital-underscore-function str))
 
+(defalias 'jh/re-replace 'replace-regexp-in-string)
+
 ;; -----------------------------------------------------------------------------
 ;; String, dictionary related
 ;; -----------------------------------------------------------------------------
@@ -93,7 +95,7 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/strip (str)
   "Remove all trailing spaces and tabs inside STR."
-  (and str (string-trim (replace-regexp-in-string "[ \t\n]+" " " str))))
+  (and str (string-trim (jh/re-replace "[ \t\n]+" " " str))))
 
 (defun jh/trim (str)
   "Remove trailing spaces and tabs at the begining and end of STR."
@@ -101,7 +103,7 @@
 
 (defun jh/unblank (str)
   "Remove spaces and tabs in STR."
-  (and str (replace-regexp-in-string "[ \t]*" "" str)))
+  (and str (jh/re-replace "[ \t]*" "" str)))
 
 (defun jh/concat-lines (&rest lines)
   "Concatenate lines to a single string."
@@ -130,8 +132,8 @@
 ;;     (or (file-directory-p dir) (error "DIR should be a directory"))
 ;;     (dolist (parent (jh/directory-sequence abs-dir))
 ;;       (and (file-in-directory-p abs-file parent) (null res)
-;;         (let ((com-file (replace-regexp-in-string parent "" abs-file))
-;;                (com-dir (replace-regexp-in-string parent "" abs-dir)))
+;;         (let ((com-file (jh/re-replace parent "" abs-file))
+;;                (com-dir (jh/re-replace parent "" abs-dir)))
 ;;           (setq res
 ;;             (if (string-empty-p com-dir) com-file
 ;;               (concat

@@ -19,14 +19,14 @@
   (defun browse-at-remote--format-commit-url-as-avic (repo-url commithash)
     "commit url formatted for avic."
     (let
-      ((repo-url (replace-regexp-in-string "^https://" "http://" repo-url)))
+      ((repo-url (jh/re-replace "^https://" "http://" repo-url)))
       (browse-at-remote--format-commit-url-as-gitlab repo-url commithash)))
 
   (defun browse-at-remote--format-region-url-as-avic
     (repo-url location filename &optional linestart lineend)
     "url formatted for avic."
     (let
-      ((repo-url (replace-regexp-in-string "^https://" "http://" repo-url)))
+      ((repo-url (jh/re-replace "^https://" "http://" repo-url)))
       (browse-at-remote--format-region-url-as-gitlab
         repo-url location filename linestart lineend))))
 

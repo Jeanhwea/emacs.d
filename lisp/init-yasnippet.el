@@ -22,7 +22,7 @@
       (re ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?"))
     (mapconcat 'identity
       (split-string
-        (replace-regexp-in-string re "" dir) "/" t) ".")))
+        (jh/re-replace re "" dir) "/" t) ".")))
 
 (defun jh/java-class-name (&optional file)
   "Return the class name for java."
@@ -51,7 +51,7 @@
   "Convert `*RepositoryImpl', `*Service' ... to `*'."
   (let
     ((re "\\(RepositoryImpl\\|ServiceImpl\\|Repository\\|Service\\|Controller\\)$"))
-    (jh/pascalcase (replace-regexp-in-string re "" whatever))))
+    (jh/pascalcase (jh/re-replace re "" whatever))))
 
 (defun jh/java-ctrl-http-prefix (ctrl)
   "Return a url mapping from name."
@@ -72,7 +72,7 @@
 
 (defun jh/java-impl-to-iface (name)
   "Convert `*Impl' to `*'"
-  (jh/pascalcase (replace-regexp-in-string "Impl$" "" name)))
+  (jh/pascalcase (jh/re-replace "Impl$" "" name)))
 
 (defun jh/java-endpoint-uri ()
   "Return a full url, to put it as the header of the doc, like `GET /api/'."

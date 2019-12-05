@@ -46,8 +46,8 @@
 
 (defun jh/sql-escape-string (str)
   "Escape string in sql text."
-  (let* ((str (replace-regexp-in-string "\\\\" "\\\\" str nil t))
-          (str (replace-regexp-in-string "\"" "\\\"" str nil t)))
+  (let* ((str (jh/re-replace "\\\\" "\\\\" str nil t))
+          (str (jh/re-replace "\"" "\\\"" str nil t)))
     str))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -393,7 +393,7 @@
     (mapcar
       #'(lambda (line)
           (split-string
-            (replace-regexp-in-string
+            (jh/re-replace
               (concat "^" jh/oracle-lpre) "" line)
             jh/oracle-fsep))
       (remove-if-not
@@ -406,7 +406,7 @@
 (defun jh/oracle-fetch-result-count (tabname)
   "Fetch total count."
   (string-to-number
-    (replace-regexp-in-string
+    (jh/re-replace
       (concat "^" jh/oracle-lpre) ""
       (car
         (remove-if-not

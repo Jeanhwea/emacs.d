@@ -190,7 +190,7 @@
   (let* ((project-root (jh/git-project-root-dir default-directory))
           (root (and project-root (directory-file-name project-root))))
     (and root
-      (replace-regexp-in-string
+      (jh/re-replace
         (regexp-quote (jh/parent-dir root)) "" root nil 'literal))))
 
 (defun jh/shrimp-shell-name ()

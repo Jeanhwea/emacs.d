@@ -99,9 +99,9 @@
 (when (jh/mac?)
   (defun jh/iterm2-maybe-escape-string (line)
     "escape double quote."
-    (let* ((line (replace-regexp-in-string "\\\\" "\\\\" line nil t))
-            (line (replace-regexp-in-string "\"" "\\\"" line nil t))
-            (line (replace-regexp-in-string "\'" "'\"'\"'" line nil t)))
+    (let* ((line (jh/re-replace "\\\\" "\\\\" line nil t))
+            (line (jh/re-replace "\"" "\\\"" line nil t))
+            (line (jh/re-replace "\'" "'\"'\"'" line nil t)))
       line))
 
   (defun jh/iterm2-maybe-remove-blank-lines (lines)
