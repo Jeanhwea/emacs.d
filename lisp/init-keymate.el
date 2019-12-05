@@ -79,7 +79,6 @@
   ;;
   (define-key leader/f11 (kbd "c") 'ct/expand-command)
   (define-key leader/f11 (kbd "d") 'workflow-drop-file)
-  (define-key leader/f11 (kbd "f") 'workflow-format-code)
   (define-key leader/f11 (kbd "r") 'workflow-reveal-in-file-manager)
   (define-key leader/f11 (kbd "s") 'workflow-send-to-shell))
 (global-set-key (kbd "<f11>") 'leader/f11)
@@ -123,7 +122,7 @@
   ;; Leader Key
   (define-prefix-command 'leader/meta-lb)
 
-  ;; Switcher Keybinding
+  ;; Switcher Keybinding for Springboot
   (define-key leader/meta-lb (kbd "e") #'(lambda () (interactive) (spt/switch-to 'entity)))
   (define-key leader/meta-lb (kbd "r") #'(lambda () (interactive) (spt/switch-to 'repo)))
   (define-key leader/meta-lb (kbd "s") #'(lambda () (interactive) (spt/switch-to 'service)))
@@ -133,11 +132,15 @@
   (define-key leader/meta-lb (kbd "t") #'spt/swap-test-and-source)
   (define-key leader/meta-lb (kbd "d") #'spt/swap-markdown-and-endpoint)
 
+  ;; Swither for Angular
+  (define-key leader/meta-lb (kbd "a") #'ng/cycle-source-files)
+
   ;; Unit test
   (define-key leader/meta-lb (kbd "u") 'spt/run-test-method-command)
   (define-key leader/meta-lb (kbd "U") 'spt/run-test-class-command)
 
   ;; workflow
+  (define-key leader/meta-lb (kbd "RET") 'workflow-format-code)
   (define-key leader/meta-lb (kbd "RET") 'spt/import-unknown-class))
 (global-set-key (kbd "M-[") 'leader/meta-lb)
 

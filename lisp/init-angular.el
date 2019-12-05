@@ -62,8 +62,18 @@
      ('test . ".spec.ts"))
   "File type suffix in angular project.")
 
-(defvar ng/boi-list (list 'model 'view 'style)
+(defvar ng/boi-list '('model 'view 'style)
   "Bundle of interest in angular project.")
+
+(defun ng/current-filetype (file)
+  "Return current filetype"
+  (let
+    ((lookup
+        (remove-if-not
+          #'(lambda (e)
+              (string-match-p (concat (cdr e) "$") file))
+          ng/filetype-suffix-alist)))
+    (and lookup (caar lookup))))
 
 (defun ng/find-alternative-file (filetype)
   "Find alternative filename with specific FILETYPE."
@@ -78,28 +88,19 @@
     ((alterfile (ng/find-alternative-file filetype)))
     (and (file-exists-p alterfile) (find-file alterfile))))
 
-
-;; -----------------------------------------------------------------------------
-;;  _  __            ____  _           _ _
-;; | |/ /___ _   _  | __ )(_)_ __   __| (_)_ __   __ _ ___
-;; | ' // _ \ | | | |  _ \| | '_ \ / _` | | '_ \ / _` / __|
-;; | . \  __/ |_| | | |_) | | | | | (_| | | | | | (_| \__ \
-;; |_|\_\___|\__, | |____/|_|_| |_|\__,_|_|_| |_|\__, |___/
-;;           |___/                               |___/
-;; -----------------------------------------------------------------------------
-
-
-
-(progn
-  ;; Leader Key
-  (define-prefix-command 'ng/leader)
-
-  ;; Switcher Keybinding
-  (define-key ng/leader (kbd "t") #'(lambda () (interactive) (ng/switch-to 'model)))
-  (define-key ng/leader (kbd "h") #'(lambda () (interactive) (ng/switch-to 'view)))
-  (define-key ng/leader (kbd "l") #'(lambda () (interactive) (ng/switch-to 'style)))
-  (define-key ng/leader (kbd "T") #'(lambda () (interactive) (ng/switch-to 'test))))
-(global-set-key (kbd "M-n") 'ng/leader)
-
+(defun ng/cycle-source-files ()
+  "Cycling source files in file list."
+  (interactive)
+  (let*
+    ((file (buffer-file-name))
+      (current-filetype
+        (ng/current-filetype file))
+      (next-filetype
+        (cadr (member current-filetype ng/boi-list))))
+    (if current-filetype
+      (if next-filetype
+        (ng/switch-to next-filetype)
+        (ng/switch-to (car ng/boi-list)))
+      (error "Not a angular project type file: %s" file))))
 
 (provide 'init-angular)
