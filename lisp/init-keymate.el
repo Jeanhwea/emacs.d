@@ -141,6 +141,7 @@
 
   ;; workflow
   (define-key leader/meta-lb (kbd "f") 'workflow-format-code)
+  (define-key leader/meta-lb (kbd "j") 'workflow-join-line)
   (define-key leader/meta-lb (kbd "RET") 'spt/import-unknown-class))
 (global-set-key (kbd "M-[") 'leader/meta-lb)
 
