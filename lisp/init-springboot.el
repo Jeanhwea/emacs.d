@@ -104,8 +104,8 @@
 ;; |____/ \___/ \__,_|_|  \___\___| |_|   |_|_|\___||___/
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/bundle-of-interest
-  '("entity" "repo" "service" "controller" "impl" "helper")
+(defvar spt/boi-list
+  '('entity 'repo 'service 'controller 'impl 'helper)
   "springboot bundle of interest names.")
 
 (defvar spt/sources-cache nil
@@ -171,7 +171,7 @@
           (mdlname (nth 2 fileinfo)))
         (and mdlname
           (not (string= "common" mdlname))
-          (member bldname spt/bundle-of-interest)
+          (member bldname spt/boi-list)
           (add-to-list 'fileinfos fileinfo t))))
     fileinfos))
 
@@ -180,9 +180,9 @@
   (let
     ((clzname (nth 0 fileinfo)) (bldname (nth 1 fileinfo)))
     (cond
-      ((string= "repo" bldname)
+      ((equal 'repo bldname)
         (replace-regexp-in-string "Repository$" "" clzname))
-      ((string= "impl" bldname)
+      ((equal 'impl bldname)
         (replace-regexp-in-string
           "\\(Service\\|Repository\\)Impl$" "" clzname))
       (t (replace-regexp-in-string
@@ -190,7 +190,7 @@
 
 (defun spt/coerce-to-filename (fileinfo bundle)
   "Force fileinfo to bundle filename."
-  (or (member bundle spt/bundle-of-interest)
+  (or (member bundle spt/boi-list)
     (error (concat "Unknown bundle type: " bundle)))
   (let*
     ((mdlname (nth 2 fileinfo))
@@ -198,14 +198,14 @@
       (mdldir (expand-file-name mdlname (spt/app-root)))
       (blddir
         (cond
-          ((string= "impl" bundle) "service/impl")
-          ((member bundle '("entity" "repo")) (format "domain/%s" bundle))
+          ((equal 'impl bundle) "service/impl")
+          ((member bundle '('entity 'repo)) (format "domain/%s" bundle))
           (t bundle)))
       (filename
         (cond
-          ((string= "impl" bundle) (format "%sServiceImpl.java" ettname))
-          ((string= "repo" bundle) (format "%sRepository.java" ettname))
-          ((string= "entity" bundle) (format "%s.java" ettname))
+          ((equal 'impl bundle) (format "%sServiceImpl.java" ettname))
+          ((equal 'repo bundle) (format "%sRepository.java" ettname))
+          ((equal 'entity bundle) (format "%s.java" ettname))
           (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
@@ -231,12 +231,12 @@
 
 (defun spt/find-iface-file (file)
   "Find the interface name of given implement NAME."
-  (spt/find-alternative-file "service" file))
+  (spt/find-alternative-file 'service file))
 
 (defun spt/switch-to (&optional bundle)
   "Switch to related file."
   (let
-    ((bundle (or bundle (completing-read "To >> " spt/bundle-of-interest))))
+    ((bundle (or bundle (completing-read "To >> " spt/boi-list))))
     (find-file (spt/find-alternative-file bundle))))
 
 
@@ -288,7 +288,7 @@
           (mdlname (nth 2 testinfo)))
         (and mdlname
           (not (string= "common" mdlname))
-          (member bldname spt/bundle-of-interest)
+          (member bldname spt/boi-list)
           (add-to-list 'testinfos testinfo t))))
     testinfos))
 
@@ -346,7 +346,7 @@
     ((fileinfos (spt/scan-source-files))
       (ctrlinfos
         (remove-if-not
-          #'(lambda (e) (string= "controller" (nth 1 e))) fileinfos)))
+          #'(lambda (e) (equal 'controller (nth 1 e))) fileinfos)))
     (dolist (fileinfo ctrlinfos) ;; iterate all controller
       (let*
         ((file (car (last fileinfo)))
@@ -494,7 +494,7 @@
       ;; Case 2: jump from endpoint to markdown
       ((and
          (string-match-p ".*\\.java$" file)
-         (string= "controller" (nth 1 (spt/filename-to-fileinfo file))))
+         (equal 'controller (nth 1 (spt/filename-to-fileinfo file))))
         (find-file (spt/coerce-to-markdown file)))
       ;; default
       (t (error "Ops, neither a markdown file, nor controller file!")))))
@@ -1137,12 +1137,12 @@
   (define-prefix-command 'spt/leader)
 
   ;; Switcher Keybinding
-  (define-key spt/leader (kbd "e") #'(lambda () (interactive) (spt/switch-to "entity")))
-  (define-key spt/leader (kbd "r") #'(lambda () (interactive) (spt/switch-to "repo")))
-  (define-key spt/leader (kbd "s") #'(lambda () (interactive) (spt/switch-to "service")))
-  (define-key spt/leader (kbd "i") #'(lambda () (interactive) (spt/switch-to "impl")))
-  (define-key spt/leader (kbd "c") #'(lambda () (interactive) (spt/switch-to "controller")))
-  (define-key spt/leader (kbd "h") #'(lambda () (interactive) (spt/switch-to "helper")))
+  (define-key spt/leader (kbd "e") #'(lambda () (interactive) (spt/switch-to 'entity)))
+  (define-key spt/leader (kbd "r") #'(lambda () (interactive) (spt/switch-to 'repo)))
+  (define-key spt/leader (kbd "s") #'(lambda () (interactive) (spt/switch-to 'service)))
+  (define-key spt/leader (kbd "i") #'(lambda () (interactive) (spt/switch-to 'impl)))
+  (define-key spt/leader (kbd "c") #'(lambda () (interactive) (spt/switch-to 'controller)))
+  (define-key spt/leader (kbd "h") #'(lambda () (interactive) (spt/switch-to 'helper)))
   (define-key spt/leader (kbd "t") #'spt/swap-test-and-source)
   (define-key spt/leader (kbd "d") #'spt/swap-markdown-and-endpoint)
 
