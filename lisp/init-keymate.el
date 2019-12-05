@@ -135,6 +135,9 @@
   ;; Swither for Angular
   (define-key leader/meta-lb (kbd "a") #'ng/cycle-source-files)
 
+  ;; Open sources
+  (define-key leader/meta-lb (kbd "p") #'workflow-open-class)
+
   ;; Unit test
   (define-key leader/meta-lb (kbd "u") 'spt/run-test-method-command)
   (define-key leader/meta-lb (kbd "U") 'spt/run-test-class-command)

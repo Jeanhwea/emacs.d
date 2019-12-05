@@ -27,6 +27,27 @@
   '(("pom.xml" . maven) ("package.json" . angular))
   "Project file to project type.")
 
+(defun wf/project-type ()
+  "Get current project type."
+  (let*
+    ((root (jh/git-project-root-dir default-directory))
+      (lookup
+        (remove-if-not
+          #'(lambda (f)
+              (file-exists-p (expand-file-name f root)))
+          (mapcar #'car wf/project-type-alist))))
+    (cdr (assoc (car lookup) wf/project-type-alist))))
+
+(defun workflow-open-class ()
+  "Open a class source file."
+  (interactive)
+  (let
+    ((project-type (wf/project-type)))
+    (cond
+      ((equal project-type 'maven) (spt/jump-to-class))
+      ((equal project-type 'angular) (ng/find-source-file))
+      (t (message "Ops, unknown project type!")))))
+
 (defvar wf/known-indent-mode
   (list 'mhtml-mode 'less-css-mode 'emacs-lisp-mode)
   "Known indent major mode.")

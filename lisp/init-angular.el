@@ -119,10 +119,13 @@
           #'(lambda (f)
               (cons (jh/file-base-name f) f))
           files))
-      (file
+      (lookup
         (completing-read
           "Goto source >> "
-          (mapcar #'car files-alist))))
-    (find-file (cdr (assoc file files-alist)))))
+          (mapcar #'car files-alist)))
+      (file (cdr (assoc lookup files-alist))))
+    (progn
+      (find-file file)
+      (message (concat "Opened " file)))))
 
 (provide 'init-angular)

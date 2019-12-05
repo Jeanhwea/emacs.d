@@ -92,8 +92,7 @@
 (defun spt/project-name ()
   "Return project name."
   (let ((root (spt/project-root)))
-    (jh/re-replace "/" ""
-      (jh/re-replace (jh/parent-dir root) "" root))))
+    (jh/re-replace "/" "" (jh/re-replace (jh/parent-dir root) "" root))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -104,7 +103,7 @@
 ;; |____/ \___/ \__,_|_|  \___\___| |_|   |_|_|\___||___/
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/boi-list '(entity repo service controller impl helper)
+(defvar spt/boi-list '(entity repo service impl controller helper)
   "springboot bundle of interest names.")
 
 (defvar spt/sources-cache nil
@@ -139,9 +138,7 @@
 (defun spt/filename-to-fileinfo (file)
   "Convert filename to fileinfo."
   (let*
-    (
-      ;; preparing data
-      (file (or file (buffer-file-name)))
+    ((file (or file (buffer-file-name)))
       (re (format "^\\(%s\\|%s\\)" (spt/src-root) (spt/test-root)))
       (tail-folder-list
         (split-string
@@ -156,8 +153,7 @@
       ;; package name
       (pkgname
         (mapconcat 'identity
-          (split-string
-            (jh/re-replace re "" (jh/parent-dir file)) "/" t) ".")))
+          (split-string (jh/re-replace re "" (jh/parent-dir file)) "/" t) ".")))
     (list clzname bldname mdlname pkgname file)))
 
 (defun spt/scan-source-files ()
@@ -176,18 +172,14 @@
 
 (defun spt/coerce-to-prefix (fileinfo)
   "Force to convert to entity name."
-  (let*
-    ((clzname (nth 0 fileinfo))
-      (bldname (nth 1 fileinfo))
-      (bundle (intern bldname)))
+  (let
+    ((clzname (nth 0 fileinfo)) (bldname (nth 1 fileinfo)))
     (cond
-      ((equal 'repo bundle)
+      ((string= "repo" bldname)
         (jh/re-replace "Repository$" "" clzname))
-      ((equal 'impl bundle)
-        (jh/re-replace
-          "\\(Service\\|Repository\\)Impl$" "" clzname))
-      (t (jh/re-replace
-           (concat (jh/pascalcase bldname) "$") "" clzname)))))
+      ((string= "impl" bldname)
+        (jh/re-replace "\\(Service\\|Repository\\)Impl$" "" clzname))
+      (t (jh/re-replace (concat (jh/pascalcase bldname) "$") "" clzname)))))
 
 (defun spt/coerce-to-filename (fileinfo bundle)
   "Force fileinfo to bundle filename."
@@ -199,14 +191,14 @@
       (mdldir (expand-file-name mdlname (spt/app-root)))
       (blddir
         (cond
-          ((equal 'impl bundle) "service/impl")
+          ((equal bundle 'impl) "service/impl")
           ((member bundle '(entity repo)) (format "domain/%s" bldname))
           (t bldname)))
       (filename
         (cond
-          ((equal 'impl bundle) (format "%sServiceImpl.java" ettname))
-          ((equal 'repo bundle) (format "%sRepository.java" ettname))
-          ((equal 'entity bundle) (format "%s.java" ettname))
+          ((equal bundle 'impl) (format "%sServiceImpl.java" ettname))
+          ((equal bundle 'repo) (format "%sRepository.java" ettname))
+          ((equal bundle 'entity) (format "%s.java" ettname))
           (t (format "%s%s.java" ettname (jh/pascalcase bldname))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
@@ -234,11 +226,9 @@
   "Find the interface name of given implement NAME."
   (spt/find-alternative-file 'service file))
 
-(defun spt/switch-to (&optional bundle)
+(defun spt/switch-to (bundle)
   "Switch to related file."
-  (let*
-    ((bundle (or bundle (intern (completing-read "To >> " spt/boi-list))))
-      (file (spt/find-alternative-file bundle)))
+  (let ((file (spt/find-alternative-file bundle)))
     (message (concat "Switched to " file)) (find-file file)))
 
 
@@ -257,18 +247,14 @@
 (defun spt/testfile-to-testinfo (&optional file)
   "Convert test filename to testinfo."
   (let*
-    (
-      ;; preparing data
-      (file (or file (buffer-file-name)))
+    ((file (or file (buffer-file-name)))
       (re (format "^\\(%s\\|%s\\)" (spt/src-root) (spt/test-root)))
       (tail-folder-list
         (split-string
           (jh/re-replace
             (spt/app-test-root) "" (jh/parent-dir file)) "/" t))
       ;; class name
-      (clzname
-        (jh/pascalcase
-          (jh/file-base-name file)))
+      (clzname (jh/pascalcase (jh/file-base-name file)))
       ;; bundle name
       (bldname (car (last tail-folder-list)))
       ;; module name
@@ -276,8 +262,7 @@
       ;; package name
       (pkgname
         (mapconcat 'identity
-          (split-string
-            (jh/re-replace re "" (jh/parent-dir file)) "/" t) ".")))
+          (split-string (jh/re-replace re "" (jh/parent-dir file)) "/" t) ".")))
     (list clzname bldname mdlname pkgname file)))
 
 (defun spt/scan-test-files ()
@@ -322,9 +307,13 @@
   (let*
     ((file (buffer-file-name))
       (clzname (jh/file-base-name file)))
-    (find-file
-      (if (string-match-p ".*Test$" clzname)
-        (spt/coerce-to-srcfile file) (spt/coerce-to-testfile file)))))
+    (if (string-match-p ".*Test$" clzname)
+      (progn
+        (message "Switch to Test Subject.")
+        (find-file (spt/coerce-to-srcfile file)))
+      (progn
+        (message "Switch to Test Case.")
+        (find-file (spt/coerce-to-testfile file))))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -385,9 +374,7 @@
 (defun spt/docfile-to-docinfo (&optional file)
   "Convert doc file to docinfo. basename is the first word of http-prefix."
   (let*
-    (
-      ;; preparing data
-      (file (or file (buffer-file-name)))
+    ((file (or file (buffer-file-name)))
       (tail-folder-list
         (split-string
           (jh/re-replace
@@ -491,13 +478,16 @@
             (progn
               (find-file (spt/coerce-to-ctrlfile file))
               (goto-char addr)
-              (search-forward-regexp "{$"))
+              (search-forward-regexp "{$")
+              (message (concat "Goto endpoint: " (spt/endpoint-uri file))))
             (message (concat "Ops, missing controller for: " file)))))
       ;; Case 2: jump from endpoint to markdown
       ((and
          (string-match-p ".*\\.java$" file)
          (equal 'controller (nth 1 (spt/filename-to-fileinfo file))))
-        (find-file (spt/coerce-to-markdown file)))
+        (progn
+          (find-file (spt/coerce-to-markdown file))
+          (message (concat "Goto " (spt/coerce-to-markdown file)))))
       ;; default
       (t (error "Ops, neither a markdown file, nor controller file!")))))
 
@@ -1044,7 +1034,7 @@
   (assoc clzname spt/imports-cache))
 
 (defun spt/imported-p (clazz text)
-  "Return t if CLAZZ is already imported in FILE"
+  "Return t if CLAZZ is already imported in TEXT, which TEXT is content of a file."
   (seq-reduce
     #'(lambda (a e) (or a (string= clazz (gethash 'clzname e))))
     (spt/parse-java-imports text) nil))
@@ -1077,7 +1067,8 @@
               (or (re-search-backward re nil t) (goto-char (point-min)))
               (end-of-line)
               (newline)
-              (insert impstmt))))))))
+              (insert impstmt)
+              (message impstmt))))))))
 
 
 ;; -----------------------------------------------------------------------------
@@ -1088,8 +1079,27 @@
 ;; |_|  |_|___|____/ \____|
 ;; -----------------------------------------------------------------------------
 
-(defun spt/jump-to-class-methods ()
-  "Jump to class methods"
+(defun spt/jump-to-class ()
+  "Jump to class file in project."
+  (interactive)
+  (let*
+    ((files (spt/source-files))
+      (files-alist
+        (mapcar
+          #'(lambda (f)
+              (cons (jh/file-base-name f) f))
+          files))
+      (lookup
+        (completing-read
+          "Goto source >> "
+          (mapcar #'car files-alist)))
+      (file (cdr (assoc lookup files-alist))))
+    (progn
+      (find-file file)
+      (message (concat "Opened " file)))))
+
+(defun spt/jump-to-method ()
+  "Jump to method in a class."
   (interactive)
   (let*
     ((methods
