@@ -103,4 +103,26 @@
         (ng/switch-to (car ng/boi-list)))
       (error "Not a angular project type file: %s" file))))
 
+(defun ng/source-files ()
+  "List all typescript source files."
+  (remove-if
+    #'(lambda (f) (string-match-p "^.*\\.spec\\.ts$" f))
+    (directory-files-recursively (ng/app-root) "^.*\\.ts$")))
+
+(defun ng/find-source-file ()
+  "Open source file."
+  (interactive)
+  (let*
+    ((files (ng/source-files))
+      (files-alist
+        (mapcar
+          #'(lambda (f)
+              (cons (jh/filename-without-extension f) f))
+          files))
+      (file
+        (completing-read
+          "Goto source >> "
+          (mapcar #'car files-alist))))
+    (find-file (cdr (assoc file files-alist)))))
+
 (provide 'init-angular)
