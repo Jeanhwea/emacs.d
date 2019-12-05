@@ -149,7 +149,7 @@
       ;; class name
       (clzname
         (jh/pascalcase
-          (jh/filename-without-extension file)))
+          (jh/file-base-name file)))
       ;; bundle name
       (bldname (car (last tail-folder-list)))
       ;; module name
@@ -266,7 +266,7 @@
       ;; class name
       (clzname
         (jh/pascalcase
-          (jh/filename-without-extension file)))
+          (jh/file-base-name file)))
       ;; bundle name
       (bldname (car (last tail-folder-list)))
       ;; module name
@@ -296,7 +296,7 @@
   "Force file to test file path."
   (let
     ((dir (jh/parent-dir file))
-      (clzname (jh/filename-without-extension file)))
+      (clzname (jh/file-base-name file)))
     (if (string-match-p "Test$" clzname) file
       (expand-file-name
         (format "%sTest.java" clzname)
@@ -306,7 +306,7 @@
   "Force file to source file path."
   (let
     ((dir (jh/parent-dir file))
-      (clzname (jh/filename-without-extension file)))
+      (clzname (jh/file-base-name file)))
     (if
       (string-match-p "Test$" clzname)
       (expand-file-name
@@ -319,7 +319,7 @@
   (interactive)
   (let*
     ((file (buffer-file-name))
-      (clzname (jh/filename-without-extension file)))
+      (clzname (jh/file-base-name file)))
     (find-file
       (if (string-match-p ".*Test$" clzname)
         (spt/coerce-to-srcfile file) (spt/coerce-to-testfile file)))))
@@ -391,7 +391,7 @@
           (replace-regexp-in-string
             (spt/doc-root) "" (jh/parent-dir file)) "/" t))
       ;; function name
-      (funcname (jh/filename-without-extension file))
+      (funcname (jh/file-base-name file))
       ;; base name
       (basename (car (last tail-folder-list)))
       ;; module name

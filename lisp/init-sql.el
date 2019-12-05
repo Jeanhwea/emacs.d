@@ -261,7 +261,7 @@
   (let
     ((tabnames (jh/java-tabnames))
       (anno (spt/read-entity-tabname (jh/current-buffer)))
-      (name (file-name-sans-extension (buffer-name)))
+      (name (jh/file-base-name (buffer-name)))
       (symb (thing-at-point 'symbol t)))
     (cond
       ((member anno tabnames) anno)

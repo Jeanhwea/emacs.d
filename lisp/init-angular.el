@@ -117,7 +117,7 @@
       (files-alist
         (mapcar
           #'(lambda (f)
-              (cons (jh/filename-without-extension f) f))
+              (cons (jh/file-base-name f) f))
           files))
       (file
         (completing-read

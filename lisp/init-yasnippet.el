@@ -27,7 +27,7 @@
 (defun jh/java-class-name (&optional file)
   "Return the class name for java."
   (let ((file (or file (buffer-file-name))))
-    (jh/pascalcase (jh/filename-without-extension file))))
+    (jh/pascalcase (jh/file-base-name file))))
 
 (defun jh/java-test-subjects (file)
   "Genearate test subject names."
@@ -214,8 +214,9 @@
 ;; python helper function for yasnippets
 ;; -----------------------------------------------------------------------------
 (defun jh/python-class-name (&optional file)
-  "Return the class name for java."
-  (let ((class (jh/filename-without-extension (or file (buffer-file-name)))))
-    (jh/pascalcase class)))
+  "Return the class name for python."
+  (let
+    ((file (or file (buffer-file-name))))
+    (jh/pascalcase (jh/file-base-name file))))
 
 (provide 'init-yasnippet)

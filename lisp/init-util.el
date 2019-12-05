@@ -163,7 +163,7 @@
     (jh/directory-sequence-recursively
       (list (jh/absolute-path dir)))))
 
-(defun jh/filename-without-extension (file)
+(defun jh/file-base-name (file)
   "Return the file name without extension."
   (file-name-nondirectory (file-name-sans-extension file)))
 
