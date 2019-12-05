@@ -24,6 +24,7 @@
   (define-key leader/f1 (kbd "6") #'delete-frame)
   ;; File create & access
   (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
+  (define-key leader/f1 (kbd "R") #'toggle-read-only)
   (define-key leader/f1 (kbd "g") #'counsel-git)
   (define-key leader/f1 (kbd "d") #'counsel-find-file)
   (define-key leader/f1 (kbd "p") #'projectile-find-file)
@@ -109,5 +110,35 @@
   (define-key leader/f12 (kbd "o") #'browse-at-remote))
 (global-set-key (kbd "<f12>") 'leader/f12)
 
+
+;; -----------------------------------------------------------------------------
+;;  __  __      _              __
+;; |  \/  | ___| |_ __ _      | _|
+;; | |\/| |/ _ \ __/ _` |_____| |
+;; | |  | |  __/ || (_| |_____| |
+;; |_|  |_|\___|\__\__,_|     | |
+;;                            |__|
+;; -----------------------------------------------------------------------------
+(progn
+  ;; Leader Key
+  (define-prefix-command 'leader/meta-lb)
+
+  ;; Switcher Keybinding
+  (define-key leader/meta-lb (kbd "e") #'(lambda () (interactive) (spt/switch-to 'entity)))
+  (define-key leader/meta-lb (kbd "r") #'(lambda () (interactive) (spt/switch-to 'repo)))
+  (define-key leader/meta-lb (kbd "s") #'(lambda () (interactive) (spt/switch-to 'service)))
+  (define-key leader/meta-lb (kbd "i") #'(lambda () (interactive) (spt/switch-to 'impl)))
+  (define-key leader/meta-lb (kbd "c") #'(lambda () (interactive) (spt/switch-to 'controller)))
+  (define-key leader/meta-lb (kbd "h") #'(lambda () (interactive) (spt/switch-to 'helper)))
+  (define-key leader/meta-lb (kbd "t") #'spt/swap-test-and-source)
+  (define-key leader/meta-lb (kbd "d") #'spt/swap-markdown-and-endpoint)
+
+  ;; Unit test
+  (define-key leader/meta-lb (kbd "u") 'spt/run-test-method-command)
+  (define-key leader/meta-lb (kbd "U") 'spt/run-test-class-command)
+
+  ;; workflow
+  (define-key leader/meta-lb (kbd "RET") 'spt/import-unknown-class))
+(global-set-key (kbd "M-[") 'leader/meta-lb)
 
 (provide 'init-keymate)

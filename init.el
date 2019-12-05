@@ -42,6 +42,7 @@
 (require 'init-springboot)
 (require 'init-angular)
 (require 'init-yasnippet)
+(require 'init-workflow)
 (require 'init-keymate)
 
 ;; -----------------------------------------------------------------------------

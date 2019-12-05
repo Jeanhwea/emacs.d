@@ -62,6 +62,9 @@
      ('test . ".spec.ts"))
   "File type suffix in angular project.")
 
+(defvar ng/boi-list (list 'model 'view 'style)
+  "Bundle of interest in angular project.")
+
 (defun ng/find-alternative-file (filetype)
   "Find alternative filename with specific FILETYPE."
   (let
@@ -84,6 +87,8 @@
 ;; |_|\_\___|\__, | |____/|_|_| |_|\__,_|_|_| |_|\__, |___/
 ;;           |___/                               |___/
 ;; -----------------------------------------------------------------------------
+
+
 
 (progn
   ;; Leader Key

@@ -1122,40 +1122,4 @@
           (goto-char (point-max))
           (goto-char saved-point))))))
 
-
-;; -----------------------------------------------------------------------------
-;;  _  __            ____  _           _ _
-;; | |/ /___ _   _  | __ )(_)_ __   __| (_)_ __   __ _ ___
-;; | ' // _ \ | | | |  _ \| | '_ \ / _` | | '_ \ / _` / __|
-;; | . \  __/ |_| | | |_) | | | | | (_| | | | | | (_| \__ \
-;; |_|\_\___|\__, | |____/|_|_| |_|\__,_|_|_| |_|\__, |___/
-;;           |___/                               |___/
-;; -----------------------------------------------------------------------------
-
-(progn
-  ;; Leader Key
-  (define-prefix-command 'spt/leader)
-
-  ;; Switcher Keybinding
-  (define-key spt/leader (kbd "e") #'(lambda () (interactive) (spt/switch-to 'entity)))
-  (define-key spt/leader (kbd "r") #'(lambda () (interactive) (spt/switch-to 'repo)))
-  (define-key spt/leader (kbd "s") #'(lambda () (interactive) (spt/switch-to 'service)))
-  (define-key spt/leader (kbd "i") #'(lambda () (interactive) (spt/switch-to 'impl)))
-  (define-key spt/leader (kbd "c") #'(lambda () (interactive) (spt/switch-to 'controller)))
-  (define-key spt/leader (kbd "h") #'(lambda () (interactive) (spt/switch-to 'helper)))
-  (define-key spt/leader (kbd "t") #'spt/swap-test-and-source)
-  (define-key spt/leader (kbd "d") #'spt/swap-markdown-and-endpoint)
-
-  ;; Unit test
-  (define-key spt/leader (kbd "u") 'spt/run-test-method-command)
-  (define-key spt/leader (kbd "U") 'spt/run-test-class-command)
-
-  ;; workflow
-  (define-key spt/leader (kbd "RET") 'spt/import-unknown-class)
-
-  ;; todo
-  (define-key spt/leader (kbd "j") 'spt/company-jpa-backend)
-  (define-key spt/leader (kbd "m") 'spt/jump-to-class-methods))
-(global-set-key (kbd "M-[") 'spt/leader)
-
 (provide 'init-springboot)
