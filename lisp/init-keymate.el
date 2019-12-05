@@ -36,6 +36,7 @@
   (define-key leader/f1 (kbd "c") #'projectile-compile-project)
   (define-key leader/f1 (kbd "u") #'projectile-run-project))
 (global-set-key (kbd "<f1>") 'leader/f1)
+(global-set-key (kbd "M-1") 'leader/f1)
 (global-set-key (kbd "M-o") 'other-window)
 
 
@@ -66,48 +67,51 @@
   ;; evil mode
   (define-key leader/f2 (kbd "v") #'evil-mode))
 (global-set-key (kbd "<f2>") 'leader/f2)
+(global-set-key (kbd "M-2") 'leader/f2)
 
 
 ;; -----------------------------------------------------------------------------
-;; F11: Misc
+;; F9: Misc
 ;; -----------------------------------------------------------------------------
 (progn
-  (define-prefix-command 'leader/f11)
+  (define-prefix-command 'leader/f9)
   ;; Color theme
-  (define-key leader/f11 (kbd "t") #'jh/cycle-color-theme)
-  (define-key leader/f11 (kbd "T") #'jh/toggle-transparency)
+  (define-key leader/f9 (kbd "t") #'jh/cycle-color-theme)
+  (define-key leader/f9 (kbd "T") #'jh/toggle-transparency)
   ;;
-  (define-key leader/f11 (kbd "c") 'ct/expand-command)
-  (define-key leader/f11 (kbd "d") 'workflow-drop-file)
-  (define-key leader/f11 (kbd "r") 'workflow-reveal-in-file-manager)
-  (define-key leader/f11 (kbd "s") 'workflow-send-to-shell))
-(global-set-key (kbd "<f11>") 'leader/f11)
+  (define-key leader/f9 (kbd "c") 'ct/expand-command)
+  (define-key leader/f9 (kbd "d") 'workflow-drop-file)
+  (define-key leader/f9 (kbd "r") 'workflow-reveal-in-file-manager)
+  (define-key leader/f9 (kbd "s") 'workflow-send-to-shell))
+(global-set-key (kbd "<f9>") 'leader/f9)
+(global-set-key (kbd "<f9>") 'leader/f9)
 
 
 ;; -----------------------------------------------------------------------------
-;; F12: Version control & Git
+;; F0: Version control & Git
 ;; -----------------------------------------------------------------------------
 (progn
-  (define-prefix-command 'leader/f12)
+  (define-prefix-command 'leader/f0)
   ;; git
-  (define-key leader/f12 (kbd "v") #'magit)
-  (define-key leader/f12 (kbd "s") #'magit-status)
-  (define-key leader/f12 (kbd "b") #'magit-blame)
-  (define-key leader/f12 (kbd "c") #'magit-commit)
-  (define-key leader/f12 (kbd "l") #'magit-log)
-  (define-key leader/f12 (kbd "L") #'magit-log-all)
-  (define-key leader/f12 (kbd "p") #'magit-push)
-  (define-key leader/f12 (kbd "f") #'magit-fetch)
+  (define-key leader/f0 (kbd "v") #'magit)
+  (define-key leader/f0 (kbd "s") #'magit-status)
+  (define-key leader/f0 (kbd "b") #'magit-blame)
+  (define-key leader/f0 (kbd "c") #'magit-commit)
+  (define-key leader/f0 (kbd "l") #'magit-log)
+  (define-key leader/f0 (kbd "L") #'magit-log-all)
+  (define-key leader/f0 (kbd "p") #'magit-push)
+  (define-key leader/f0 (kbd "f") #'magit-fetch)
   ;; smerge
-  (define-key leader/f12 (kbd "<left>") #'smerge-prev)
-  (define-key leader/f12 (kbd "<right>") #'smerge-next)
-  (define-key leader/f12 (kbd "<ret>") #'smerge-keep-current)
-  (define-key leader/f12 (kbd "1") #'smerge-keep-mine)
-  (define-key leader/f12 (kbd "2") #'smerge-keep-other)
-  (define-key leader/f12 (kbd "3") #'smerge-keep-all)
+  (define-key leader/f0 (kbd "<left>") #'smerge-prev)
+  (define-key leader/f0 (kbd "<right>") #'smerge-next)
+  (define-key leader/f0 (kbd "<ret>") #'smerge-keep-current)
+  (define-key leader/f0 (kbd "1") #'smerge-keep-mine)
+  (define-key leader/f0 (kbd "2") #'smerge-keep-other)
+  (define-key leader/f0 (kbd "3") #'smerge-keep-all)
   ;; open remote url
-  (define-key leader/f12 (kbd "o") #'browse-at-remote))
-(global-set-key (kbd "<f12>") 'leader/f12)
+  (define-key leader/f0 (kbd "o") #'browse-at-remote))
+(global-set-key (kbd "<f10>") 'leader/f0)
+(global-set-key (kbd "M-0") 'leader/f0)
 
 
 ;; -----------------------------------------------------------------------------
@@ -120,36 +124,37 @@
 ;; -----------------------------------------------------------------------------
 (progn
   ;; Leader Key
-  (define-prefix-command 'leader/meta-lb)
+  (define-prefix-command 'leader/f11)
 
   ;; Switcher Keybinding for Springboot
-  (define-key leader/meta-lb (kbd "e") #'(lambda () (interactive) (spt/switch-to 'entity)))
-  (define-key leader/meta-lb (kbd "r") #'(lambda () (interactive) (spt/switch-to 'repo)))
-  (define-key leader/meta-lb (kbd "s") #'(lambda () (interactive) (spt/switch-to 'service)))
-  (define-key leader/meta-lb (kbd "i") #'(lambda () (interactive) (spt/switch-to 'impl)))
-  (define-key leader/meta-lb (kbd "c") #'(lambda () (interactive) (spt/switch-to 'controller)))
-  (define-key leader/meta-lb (kbd "h") #'(lambda () (interactive) (spt/switch-to 'helper)))
-  (define-key leader/meta-lb (kbd "t") #'spt/swap-test-and-source)
-  (define-key leader/meta-lb (kbd "d") #'spt/swap-markdown-and-endpoint)
+  (define-key leader/f11 (kbd "e") #'(lambda () (interactive) (spt/switch-to 'entity)))
+  (define-key leader/f11 (kbd "r") #'(lambda () (interactive) (spt/switch-to 'repo)))
+  (define-key leader/f11 (kbd "s") #'(lambda () (interactive) (spt/switch-to 'service)))
+  (define-key leader/f11 (kbd "i") #'(lambda () (interactive) (spt/switch-to 'impl)))
+  (define-key leader/f11 (kbd "c") #'(lambda () (interactive) (spt/switch-to 'controller)))
+  (define-key leader/f11 (kbd "h") #'(lambda () (interactive) (spt/switch-to 'helper)))
+  (define-key leader/f11 (kbd "t") #'spt/swap-test-and-source)
+  (define-key leader/f11 (kbd "d") #'spt/swap-markdown-and-endpoint)
 
   ;; Swither for Angular
-  (define-key leader/meta-lb (kbd "a") #'ng/cycle-source-files)
+  (define-key leader/f11 (kbd "a") #'ng/cycle-source-files)
 
   ;; Open sources
-  (define-key leader/meta-lb (kbd "p") #'workflow-open-class)
+  (define-key leader/f11 (kbd "p") #'workflow-open-class)
 
   ;; highlight symbol
-  (define-key leader/meta-lb (kbd "1") #'workflow-highlight-symbol)
-  (define-key leader/meta-lb (kbd "0") #'workflow-unhighlight-all)
+  (define-key leader/f11 (kbd "1") #'workflow-highlight-symbol)
+  (define-key leader/f11 (kbd "0") #'workflow-unhighlight-all)
 
   ;; Unit test
-  (define-key leader/meta-lb (kbd "u") 'spt/run-test-method-command)
-  (define-key leader/meta-lb (kbd "U") 'spt/run-test-class-command)
+  (define-key leader/f11 (kbd "u") 'spt/run-test-method-command)
+  (define-key leader/f11 (kbd "U") 'spt/run-test-class-command)
 
   ;; workflow
-  (define-key leader/meta-lb (kbd "f") 'workflow-format-code)
-  (define-key leader/meta-lb (kbd "j") 'workflow-join-line)
-  (define-key leader/meta-lb (kbd "RET") 'spt/import-unknown-class))
-(global-set-key (kbd "M-[") 'leader/meta-lb)
+  (define-key leader/f11 (kbd "f") 'workflow-format-code)
+  (define-key leader/f11 (kbd "j") 'workflow-join-line)
+  (define-key leader/f11 (kbd "RET") 'spt/import-unknown-class))
+(global-set-key (kbd "<f11>") 'leader/f11)
+(global-set-key (kbd "M-[") 'leader/f11)
 
 (provide 'init-keymate)
