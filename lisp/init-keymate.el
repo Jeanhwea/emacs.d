@@ -117,9 +117,6 @@
   (define-key leader/f2 (kbd "R") #'projectile-replace)
   (define-key leader/f2 (kbd "x") #'query-replace-regexp)
   (define-key leader/f2 (kbd "X") #'projectile-replace-regexp)
-  ;; Color theme
-  (define-key leader/f2 (kbd "c") #'jh/cycle-color-theme)
-  (define-key leader/f2 (kbd "t") #'jh/toggle-transparency)
   ;; Multiple line
   (define-key leader/f2 (kbd "|") #'mc/edit-lines)
   (define-key leader/f2 (kbd "=") #'mc/mark-all-like-this)
@@ -131,20 +128,14 @@
 
 
 ;; -----------------------------------------------------------------------------
-;; F8: counsel & projectitle
-;; -----------------------------------------------------------------------------
-(progn
-  (define-prefix-command 'leader/f8)
-
-)
-(global-set-key (kbd "<f8>") 'leader/f8)
-
-
-;; -----------------------------------------------------------------------------
 ;; F11: Misc
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f11)
+  ;; Color theme
+  (define-key leader/f11 (kbd "t") #'jh/cycle-color-theme)
+  (define-key leader/f11 (kbd "T") #'jh/toggle-transparency)
+  ;;
   (define-key leader/f11 (kbd "c") 'km/expand-codetta-command)
   (define-key leader/f11 (kbd "d") 'km/drop-file)
   (define-key leader/f11 (kbd "f") 'km/format-source-codes)
