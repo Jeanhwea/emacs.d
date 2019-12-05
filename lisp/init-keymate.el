@@ -31,6 +31,9 @@
   (define-key leader/f1 (kbd "b") #'counsel-bookmark)
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
   (define-key leader/f1 (kbd "m") #'workflow-bookmark-current-file)
+  ;; highlight symbol
+  (define-key leader/f1 (kbd "h") #'workflow-highlight-symbol)
+  (define-key leader/f1 (kbd "H") #'workflow-unhighlight-all)
   ;; Project management
   (define-key leader/f1 (kbd "o") #'projectile-switch-project)
   (define-key leader/f1 (kbd "c") #'projectile-compile-project)
@@ -59,6 +62,10 @@
   (define-key leader/f2 (kbd "R") #'projectile-replace)
   (define-key leader/f2 (kbd "x") #'query-replace-regexp)
   (define-key leader/f2 (kbd "X") #'projectile-replace-regexp)
+  ;; Line-wise Editting
+  (define-key leader/f2 (kbd "j") #'jh/joinline)
+  (define-key leader/f2 (kbd "n") #'jh/shiftdown-line)
+  (define-key leader/f2 (kbd "p") #'jh/shiftup-line)
   ;; Multiple line
   (define-key leader/f2 (kbd "|") #'mc/edit-lines)
   (define-key leader/f2 (kbd "=") #'mc/mark-all-like-this)
@@ -137,17 +144,13 @@
   ;; Open sources
   (define-key leader/f11 (kbd "p") #'workflow-open-class)
 
-  ;; highlight symbol
-  (define-key leader/f11 (kbd "1") #'workflow-highlight-symbol)
-  (define-key leader/f11 (kbd "0") #'workflow-unhighlight-all)
-
   ;; Unit test
   (define-key leader/f11 (kbd "u") 'spt/run-test-method-command)
   (define-key leader/f11 (kbd "U") 'spt/run-test-class-command)
 
   ;; workflow
   (define-key leader/f11 (kbd "f") 'workflow-format-code)
-  (define-key leader/f11 (kbd "j") 'workflow-join-line)
+  (define-key leader/f11 (kbd "j") 'jh/joinline)
   (define-key leader/f11 (kbd "RET") 'spt/import-unknown-class))
 (global-set-key (kbd "<f11>") 'leader/f11)
 (global-set-key (kbd "M-[") 'leader/f11)

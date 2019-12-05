@@ -1,37 +1,3 @@
-;; -----------------------------------------------------------------------------
-;; editing lines: open lines, insert newline
-;; -----------------------------------------------------------------------------
-(defun jh/open-next-line (N)
-  "Open N lines next the cursor."
-  (interactive "P")
-  (save-excursion
-    (move-end-of-line 1)
-    (if (integerp N)
-      (open-line N)
-      (open-line 1))))
-
-(defun jh/open-previous-line (N)
-  "Open N lines before the cursor."
-  (interactive "P")
-  (save-excursion
-    (move-beginning-of-line 1)
-    (if (integerp N)
-      (newline N)
-      (newline 1))))
-
-(defun jh/newline-at-the-end-of-previous-line ()
-  "Move to the end of previous line, enter a newline and indent."
-  (interactive)
-  (previous-line 1)
-  (move-end-of-line 1)
-  (newline-and-indent))
-
-(defun jh/newline-at-the-end-of-line ()
-  "Move to the end of the line, enter a newline and indent."
-  (interactive)
-  (move-end-of-line 1)
-  (newline-and-indent))
-
 ;; https://www.emacswiki.org/emacs/MoveLine
 (defmacro save-column (&rest BODY)
   `(let ((column (current-column)))
@@ -40,14 +6,17 @@
        (move-to-column column))))
 (put 'save-column 'lisp-indent-function 0)
 
-(defun jh/shift-up-line ()
+;; -----------------------------------------------------------------------------
+;; editing lines: open lines, insert newline
+;; -----------------------------------------------------------------------------
+(defun jh/shiftup-line ()
   "Shift the line up."
   (interactive)
   (save-column
     (transpose-lines 1)
     (forward-line -2)))
 
-(defun jh/shift-down-line ()
+(defun jh/shiftdown-line ()
   "Shift the line down."
   (interactive)
   (save-column
@@ -55,13 +24,19 @@
     (transpose-lines 1)
     (forward-line -1)))
 
-;; (global-set-key (kbd "C-o") 'jh/open-next-line)
-;; (global-set-key (kbd "C-S-o") 'jh/open-previous-line)
-;; (global-set-key (kbd "C-<return>") 'jh/newline-at-the-end-of-line)
-;; (global-set-key (kbd "S-<return>") 'jh/newline-at-the-end-of-previous-line)
-;; (global-set-key (kbd "M-p") 'jh/shift-up-line)
-;; (global-set-key (kbd "M-n") 'jh/shift-down-line)
-;; (global-set-key (kbd "C-c j") 'join-line)
+(defun jh/joinline ()
+  "Join line."
+  (interactive)
+  (if (use-region-p)
+    (let*
+      ((beg (region-beginning)) (end (region-end))
+        (count (- (line-number-at-pos end) (line-number-at-pos beg))))
+      (save-excursion
+        (progn
+          (deactivate-mark)
+          (goto-char end)
+          (dotimes (i count) (join-line)))))
+    (join-line)))
 
 ;; -----------------------------------------------------------------------------
 ;; editing words: upcase, capitalized

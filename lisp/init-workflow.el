@@ -136,18 +136,4 @@
         (bookmark-set name)
         (message (concat "Added bookmark: " name))))))
 
-(defun workflow-join-line ()
-  "Join line."
-  (interactive)
-  (if (use-region-p)
-    (let*
-      ((beg (region-beginning)) (end (region-end))
-        (count (- (line-number-at-pos end) (line-number-at-pos beg))))
-      (save-excursion
-        (progn
-          (deactivate-mark)
-          (goto-char end)
-          (dotimes (i count) (join-line)))))
-    (join-line)))
-
 (provide 'init-workflow)
