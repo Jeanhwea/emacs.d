@@ -215,8 +215,7 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/python-class-name (&optional file)
   "Return the class name for python."
-  (let
-    ((file (or file (buffer-file-name))))
+  (let ((file (or file (buffer-file-name))))
     (jh/pascalcase (jh/file-base-name file))))
 
 (provide 'init-yasnippet)

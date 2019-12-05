@@ -56,13 +56,13 @@
     (replace-regexp-in-string re "" file)))
 
 (defvar ng/filetype-suffix-alist
-  '(('model . ".ts")
-     ('view . ".html")
-     ('style . ".less")
-     ('test . ".spec.ts"))
+  '((model . ".ts")
+     (view . ".html")
+     (style . ".less")
+     (test . ".spec.ts"))
   "File type suffix in angular project.")
 
-(defvar ng/boi-list '('model 'view 'style)
+(defvar ng/boi-list '(model view style)
   "Bundle of interest in angular project.")
 
 (defun ng/current-filetype (file)

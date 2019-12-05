@@ -23,6 +23,10 @@
           old-text)))
     (query-replace old-text new-text)))
 
+(defvar wf/project-type-alist
+  '(("pom.xml" . maven) ("package.json" . angular))
+  "Project file to project type.")
+
 (defvar wf/known-indent-mode
   (list 'mhtml-mode 'less-css-mode 'emacs-lisp-mode)
   "Known indent major mode.")

@@ -104,8 +104,7 @@
 ;; |____/ \___/ \__,_|_|  \___\___| |_|   |_|_|\___||___/
 ;; -----------------------------------------------------------------------------
 
-(defvar spt/boi-list
-  (list 'entity 'repo 'service 'controller 'impl 'helper)
+(defvar spt/boi-list '(entity repo service controller impl helper)
   "springboot bundle of interest names.")
 
 (defvar spt/sources-cache nil
@@ -113,7 +112,9 @@
 
 (defun spt/sources-cache-key (fileinfo &optional bundle)
   "Construct file cache key via FILEINFO."
-  (let ((bldname (or bundle (nth 1 fileinfo))))
+  (let
+    ((bldname
+       (if bundle (symbol-name bundle) (nth 1 fileinfo))))
     (concat bldname "#" (spt/coerce-to-prefix fileinfo))))
 
 (defun spt/sources-cache-init ()
@@ -169,20 +170,22 @@
         ((fileinfo (spt/filename-to-fileinfo file))
           (bldname (nth 1 fileinfo))
           (mdlname (nth 2 fileinfo)))
-        (and mdlname
+        (and bldname mdlname
           (not (string= "common" mdlname))
-          (member bldname spt/boi-list)
+          (member (intern bldname) spt/boi-list)
           (add-to-list 'fileinfos fileinfo t))))
     fileinfos))
 
 (defun spt/coerce-to-prefix (fileinfo)
   "Force to convert to entity name."
-  (let
-    ((clzname (nth 0 fileinfo)) (bldname (nth 1 fileinfo)))
+  (let*
+    ((clzname (nth 0 fileinfo))
+      (bldname (nth 1 fileinfo))
+      (bundle (intern bldname)))
     (cond
-      ((equal 'repo bldname)
+      ((equal 'repo bundle)
         (replace-regexp-in-string "Repository$" "" clzname))
-      ((equal 'impl bldname)
+      ((equal 'impl bundle)
         (replace-regexp-in-string
           "\\(Service\\|Repository\\)Impl$" "" clzname))
       (t (replace-regexp-in-string
@@ -190,23 +193,23 @@
 
 (defun spt/coerce-to-filename (fileinfo bundle)
   "Force fileinfo to bundle filename."
-  (or (member bundle spt/boi-list)
-    (error (concat "Unknown bundle type: " bundle)))
+  (or (member bundle spt/boi-list) (error "Unknown bundle type!"))
   (let*
     ((mdlname (nth 2 fileinfo))
+      (bldname (symbol-name bundle))
       (ettname (spt/coerce-to-prefix fileinfo))
       (mdldir (expand-file-name mdlname (spt/app-root)))
       (blddir
         (cond
           ((equal 'impl bundle) "service/impl")
-          ((member bundle '('entity 'repo)) (format "domain/%s" bundle))
-          (t bundle)))
+          ((member bundle '(entity repo)) (format "domain/%s" bldname))
+          (t bldname)))
       (filename
         (cond
           ((equal 'impl bundle) (format "%sServiceImpl.java" ettname))
           ((equal 'repo bundle) (format "%sRepository.java" ettname))
           ((equal 'entity bundle) (format "%s.java" ettname))
-          (t (format "%s%s.java" ettname (jh/pascalcase bundle))))))
+          (t (format "%s%s.java" ettname (jh/pascalcase bldname))))))
     (expand-file-name filename (expand-file-name blddir mdldir))))
 
 (defun spt/find-alternative-file (bundle &optional file)
@@ -235,9 +238,10 @@
 
 (defun spt/switch-to (&optional bundle)
   "Switch to related file."
-  (let
-    ((bundle (or bundle (completing-read "To >> " spt/boi-list))))
-    (find-file (spt/find-alternative-file bundle))))
+  (let*
+    ((bundle (or bundle (intern (completing-read "To >> " spt/boi-list))))
+      (file (spt/find-alternative-file bundle)))
+    (message (concat "Switched to " file)) (find-file file)))
 
 
 ;; -----------------------------------------------------------------------------
@@ -288,7 +292,7 @@
           (mdlname (nth 2 testinfo)))
         (and mdlname
           (not (string= "common" mdlname))
-          (member bldname spt/boi-list)
+          (member (intern bldname) spt/boi-list)
           (add-to-list 'testinfos testinfo t))))
     testinfos))
 
