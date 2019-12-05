@@ -1,63 +1,3 @@
-(defun km/expand-codetta-command ()
-  "Expand codetta command."
-  (interactive)
-  (ct/expand-command))
-
-(defun km/drop-file (&optional startdir)
-  "Drop the file content to current point according to action."
-  (interactive)
-  (let ((options
-          '("Content" "Filename" "Relative Path" "Relative to Project Root"))
-         (action (completing-read "Drop Action >> " options))
-         (filename
-           (expand-file-name
-             (read-file-name "Drop file >> " (or startdir default-directory)))))
-    (cond
-      ((string= action "Content")
-        (and (file-regular-p filename)
-          (file-readable-p filename)
-          (insert (jh/read-file-content filename))))
-      ((string= action "Filename")
-        (and (file-exists-p filename) (insert filename)))
-      ((string= action "Relative Path")
-        (and (file-exists-p filename)
-          (insert (jh/relative-path filename default-directory))))
-      ((string= action "Relative to Project Root")
-        (and (file-exists-p filename)
-          (insert
-            (jh/relative-path filename
-              (jh/git-project-root-dir default-directory)))))
-      (t (error "Never happend in km/drop-file!")))))
-
-(defun km/format-source-codes ()
-  "Format codes."
-  (interactive)
-  (cond
-    ((eq major-mode 'java-mode) (spt/meghanada-format-code))
-    ((eq major-mode 'python-mode) (elpy-format-code))
-    ((eq major-mode 'typescript-mode) (tide-format))
-    ((eq major-mode 'mhtml-mode) (jh/html-format-code))
-    (t (message "Ops, no format backend!"))))
-
-(defun km/reveal-in-file-manager ()
-  "Open the folder containing this buffer file"
-  (interactive)
-  (browse-url default-directory))
-
-(defun km/shell-send-region ()
-  "Send selected text to shell."
-  (interactive)
-  (when (jh/mac?)
-    (if (use-region-p)
-      (jh/iterm2-send-region)
-      (jh/iterm2-send-string (thing-at-point 'line)))))
-
-(defun km/M-x ()
-  "Start a command M-x with prefix `^jh/'"
-  (interactive)
-  (counsel-M-x "jh/"))
-
-
 ;; -----------------------------------------------------------------------------
 ;;  _____        _  __
 ;; |  ___| __   | |/ /___ _   _
@@ -135,12 +75,11 @@
   (define-key leader/f11 (kbd "t") #'jh/cycle-color-theme)
   (define-key leader/f11 (kbd "T") #'jh/toggle-transparency)
   ;;
-  (define-key leader/f11 (kbd "c") 'km/expand-codetta-command)
-  (define-key leader/f11 (kbd "d") 'km/drop-file)
-  (define-key leader/f11 (kbd "f") 'km/format-source-codes)
-  (define-key leader/f11 (kbd "r") 'km/reveal-in-file-manager)
-  (define-key leader/f11 (kbd "s") 'km/shell-send-region)
-  (define-key leader/f11 (kbd "x") 'km/M-x))
+  (define-key leader/f11 (kbd "c") 'ct/expand-command)
+  (define-key leader/f11 (kbd "d") 'workflow-drop-file)
+  (define-key leader/f11 (kbd "f") 'workflow-format-code)
+  (define-key leader/f11 (kbd "r") 'workflow-reveal-in-file-manager)
+  (define-key leader/f11 (kbd "s") 'workflow-send-to-shell))
 (global-set-key (kbd "<f11>") 'leader/f11)
 
 

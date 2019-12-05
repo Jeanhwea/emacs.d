@@ -19,4 +19,56 @@
           old-text)))
     (query-replace old-text new-text)))
 
+(defun workflow-format-code ()
+  "Format codes."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (spt/meghanada-format-code))
+    ((eq major-mode 'python-mode) (elpy-format-code))
+    ((eq major-mode 'typescript-mode) (tide-format))
+    ((eq major-mode 'mhtml-mode) (jh/html-format-code))
+    (t (message "Ops, no format backend!"))))
+
+(defun workflow-reveal-in-file-manager ()
+  "Open the folder containing this buffer file"
+  (interactive)
+  (browse-url default-directory))
+
+(defun workflow-drop-file (&optional startdir)
+  "Drop the file content to current point according to action."
+  (interactive)
+  (let
+    ((options
+       '("Content" "Filename" "Relative Path" "Relative to Project Root"))
+      (action (completing-read "Drop Action >> " options))
+      (filename
+        (expand-file-name
+          (read-file-name "Drop file >> "
+            (or startdir default-directory)))))
+    (cond
+      ((string= action "Content")
+        (and (file-regular-p filename)
+          (file-readable-p filename)
+          (insert (jh/read-file-content filename))))
+      ((string= action "Filename")
+        (and (file-exists-p filename) (insert filename)))
+      ((string= action "Relative Path")
+        (and (file-exists-p filename)
+          (insert (jh/relative-path filename default-directory))))
+      ((string= action "Relative to Project Root")
+        (and (file-exists-p filename)
+          (insert
+            (jh/relative-path filename
+              (jh/git-project-root-dir default-directory)))))
+      (t (error "Never happend in workflow-drop-file!")))))
+
+(defun workflow-send-to-shell ()
+  "Send selected text to shell."
+  (interactive)
+  (or (jh/mac?)
+    (error "Send region only support on macOS!"))
+  (if (use-region-p)
+    (jh/iterm2-send-region)
+    (jh/iterm2-send-string (thing-at-point 'line))))
+
 (provide 'init-workflow)
