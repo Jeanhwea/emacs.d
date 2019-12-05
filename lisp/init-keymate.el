@@ -90,7 +90,7 @@
   (define-key leader/f9 (kbd "r") 'workflow-reveal-in-file-manager)
   (define-key leader/f9 (kbd "s") 'workflow-send-to-shell))
 (global-set-key (kbd "<f9>") 'leader/f9)
-(global-set-key (kbd "<f9>") 'leader/f9)
+(global-set-key (kbd "M-9") 'leader/f9)
 
 
 ;; -----------------------------------------------------------------------------
