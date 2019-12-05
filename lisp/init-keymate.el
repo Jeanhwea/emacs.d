@@ -57,16 +57,6 @@
   (interactive)
   (counsel-M-x "jh/"))
 
-(progn
-  (define-prefix-command 'leader/f12)
-  (define-key leader/f12 (kbd "c") 'km/expand-codetta-command)
-  (define-key leader/f12 (kbd "d") 'km/drop-file)
-  (define-key leader/f12 (kbd "f") 'km/format-source-codes)
-  (define-key leader/f12 (kbd "r") 'km/reveal-in-file-manager)
-  (define-key leader/f12 (kbd "s") 'km/shell-send-region)
-  (define-key leader/f12 (kbd "x") 'km/M-x))
-(global-set-key (kbd "M-]") 'leader/f12)
-
 
 ;; -----------------------------------------------------------------------------
 ;;  _____        _  __
@@ -78,7 +68,7 @@
 ;; -----------------------------------------------------------------------------
 
 ;; -----------------------------------------------------------------------------
-;; F1: Window, Frame, Narrow & widen
+;; F1: File, Window, Frame
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f1)
@@ -92,58 +82,53 @@
   ;; Frame
   (define-key leader/f1 (kbd "5") #'make-frame-command)
   (define-key leader/f1 (kbd "6") #'delete-frame)
-  ;; Narrow and Widen
-  (define-key leader/f1 (kbd "n") #'narrow-to-region)
-  (define-key leader/f1 (kbd "w") #'widen)
-  ;; Undotree
-  (define-key leader/f1 (kbd "u") #'undo-tree-visualize)
-  ;; Global search
-  (define-key leader/f1 (kbd "a") #'counsel-ag)
-  (define-key leader/f1 (kbd "A") #'ag)
-  (define-key leader/f1 (kbd "g") #'counsel-git-grep)
-  ;; Replace, regular eXpression replace
-  (define-key leader/f1 (kbd "r") #'query-replace)
-  (define-key leader/f1 (kbd "R") #'projectile-replace)
-  (define-key leader/f1 (kbd "x") #'query-replace-regexp)
-  (define-key leader/f1 (kbd "X") #'projectile-replace-regexp)
-  ;; color and theme
-  (define-key leader/f1 (kbd "c") #'jh/cycle-color-theme)
-  (define-key leader/f1 (kbd "t") #'jh/toggle-transparency)
-  ;; Multiple line
-  (define-key leader/f1 (kbd "|") #'mc/edit-lines)
-  (define-key leader/f1 (kbd "=") #'mc/mark-all-like-this)
-  (define-key leader/f1 (kbd "<left>") #'mc/mark-previous-like-this)
-  (define-key leader/f1 (kbd "<right>") #'mc/mark-next-like-this)
-  ;; evil mode
-  (define-key leader/f1 (kbd "v") #'evil-mode))
+  ;; File create & access
+  (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
+  (define-key leader/f1 (kbd "f") #'counsel-git)
+  (define-key leader/f1 (kbd "F") #'counsel-find-file)
+  (define-key leader/f1 (kbd "p") #'project-find-file)
+  (define-key leader/f1 (kbd "b") #'counsel-bookmark)
+  (define-key leader/f1 (kbd "r") #'counsel-recentf)
+  ;; Project management
+  (define-key leader/f1 (kbd "o") #'projectile-switch-project)
+  (define-key leader/f1 (kbd "c") #'projectile-compile-project)
+  (define-key leader/f1 (kbd "u") #'projectile-run-project))
 (global-set-key (kbd "<f1>") 'leader/f1)
 (global-set-key (kbd "M-o") 'other-window)
 
 
 ;; -----------------------------------------------------------------------------
-;; F2: git and version control
+;; F2: Edit
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f2)
-  ;; git
-  (define-key leader/f2 (kbd "v") #'magit)
-  (define-key leader/f2 (kbd "s") #'magit-status)
-  (define-key leader/f2 (kbd "b") #'magit-blame)
-  (define-key leader/f2 (kbd "c") #'magit-commit)
-  (define-key leader/f2 (kbd "l") #'magit-log)
-  (define-key leader/f2 (kbd "L") #'magit-log-all)
-  (define-key leader/f2 (kbd "p") #'magit-push)
-  (define-key leader/f2 (kbd "f") #'magit-fetch)
-  ;; smerge
-  (define-key leader/f2 (kbd "<left>") #'smerge-prev)
-  (define-key leader/f2 (kbd "<right>") #'smerge-next)
-  (define-key leader/f2 (kbd "<ret>") #'smerge-keep-current)
-  (define-key leader/f2 (kbd "1") #'smerge-keep-mine)
-  (define-key leader/f2 (kbd "2") #'smerge-keep-other)
-  (define-key leader/f2 (kbd "3") #'smerge-keep-all)
-  ;; open remote url
-  (define-key leader/f2 (kbd "o") #'browse-at-remote))
+
+  ;; Narrow & Widen
+  (define-key leader/f2 (kbd "n") #'narrow-to-region)
+  (define-key leader/f2 (kbd "w") #'widen)
+  ;; Undotree
+  (define-key leader/f2 (kbd "u") #'undo-tree-visualize)
+  ;; Global search
+  (define-key leader/f2 (kbd "a") #'counsel-ag)
+  (define-key leader/f2 (kbd "A") #'ag)
+  (define-key leader/f2 (kbd "g") #'counsel-git-grep)
+  ;; Replace, regular eXpression replace
+  (define-key leader/f2 (kbd "r") #'query-replace)
+  (define-key leader/f2 (kbd "R") #'projectile-replace)
+  (define-key leader/f2 (kbd "x") #'query-replace-regexp)
+  (define-key leader/f2 (kbd "X") #'projectile-replace-regexp)
+  ;; Color theme
+  (define-key leader/f2 (kbd "c") #'jh/cycle-color-theme)
+  (define-key leader/f2 (kbd "t") #'jh/toggle-transparency)
+  ;; Multiple line
+  (define-key leader/f2 (kbd "|") #'mc/edit-lines)
+  (define-key leader/f2 (kbd "=") #'mc/mark-all-like-this)
+  (define-key leader/f2 (kbd "<left>") #'mc/mark-previous-like-this)
+  (define-key leader/f2 (kbd "<right>") #'mc/mark-next-like-this)
+  ;; evil mode
+  (define-key leader/f2 (kbd "v") #'evil-mode))
 (global-set-key (kbd "<f2>") 'leader/f2)
+
 
 ;; -----------------------------------------------------------------------------
 ;; F8: counsel & projectitle
@@ -151,30 +136,48 @@
 (progn
   (define-prefix-command 'leader/f8)
 
-  ;; file access
-  (define-key leader/f8 (kbd "f") #'counsel-git)
-  (define-key leader/f8 (kbd "F") #'counsel-find-file)
-  (define-key leader/f8 (kbd "p") #'project-find-file)
-  (define-key leader/f8 (kbd "b") #'counsel-bookmark)
-  (define-key leader/f8 (kbd "r") #'counsel-recentf)
-  ;; projectile
-  (define-key leader/f8 (kbd "p") #'projectile-switch-project)
-  (define-key leader/f8 (kbd "c") #'projectile-compile-project)
-  (define-key leader/f8 (kbd "u") #'projectile-run-project))
+)
 (global-set-key (kbd "<f8>") 'leader/f8)
 
 
 ;; -----------------------------------------------------------------------------
-;; F12: Misc
+;; F11: Misc
+;; -----------------------------------------------------------------------------
+(progn
+  (define-prefix-command 'leader/f11)
+  (define-key leader/f11 (kbd "c") 'km/expand-codetta-command)
+  (define-key leader/f11 (kbd "d") 'km/drop-file)
+  (define-key leader/f11 (kbd "f") 'km/format-source-codes)
+  (define-key leader/f11 (kbd "r") 'km/reveal-in-file-manager)
+  (define-key leader/f11 (kbd "s") 'km/shell-send-region)
+  (define-key leader/f11 (kbd "x") 'km/M-x))
+(global-set-key (kbd "<f11>") 'leader/f11)
+
+
+;; -----------------------------------------------------------------------------
+;; F12: Version control & Git
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f12)
-  (define-key leader/f12 (kbd "c") 'km/expand-codetta-command)
-  (define-key leader/f12 (kbd "d") 'km/drop-file)
-  (define-key leader/f12 (kbd "f") 'km/format-source-codes)
-  (define-key leader/f12 (kbd "r") 'km/reveal-in-file-manager)
-  (define-key leader/f12 (kbd "s") 'km/shell-send-region)
-  (define-key leader/f12 (kbd "x") 'km/M-x))
+  ;; git
+  (define-key leader/f12 (kbd "v") #'magit)
+  (define-key leader/f12 (kbd "s") #'magit-status)
+  (define-key leader/f12 (kbd "b") #'magit-blame)
+  (define-key leader/f12 (kbd "c") #'magit-commit)
+  (define-key leader/f12 (kbd "l") #'magit-log)
+  (define-key leader/f12 (kbd "L") #'magit-log-all)
+  (define-key leader/f12 (kbd "p") #'magit-push)
+  (define-key leader/f12 (kbd "f") #'magit-fetch)
+  ;; smerge
+  (define-key leader/f12 (kbd "<left>") #'smerge-prev)
+  (define-key leader/f12 (kbd "<right>") #'smerge-next)
+  (define-key leader/f12 (kbd "<ret>") #'smerge-keep-current)
+  (define-key leader/f12 (kbd "1") #'smerge-keep-mine)
+  (define-key leader/f12 (kbd "2") #'smerge-keep-other)
+  (define-key leader/f12 (kbd "3") #'smerge-keep-all)
+  ;; open remote url
+  (define-key leader/f12 (kbd "o") #'browse-at-remote))
 (global-set-key (kbd "<f12>") 'leader/f12)
+
 
 (provide 'init-keymate)
