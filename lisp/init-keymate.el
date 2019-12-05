@@ -88,14 +88,24 @@
   (define-key leader/f1 (kbd "2") #'split-window-below)
   (define-key leader/f1 (kbd "3") #'split-window-right)
   (define-key leader/f1 (kbd "f") #'toggle-frame-fullscreen)
+  (define-key leader/f1 (kbd "F") #'toggle-frame-maximized)
   ;; Frame
   (define-key leader/f1 (kbd "5") #'make-frame-command)
   (define-key leader/f1 (kbd "6") #'delete-frame)
   ;; Narrow and Widen
   (define-key leader/f1 (kbd "n") #'narrow-to-region)
   (define-key leader/f1 (kbd "w") #'widen)
-  ;; undotree
+  ;; Undotree
   (define-key leader/f1 (kbd "u") #'undo-tree-visualize)
+  ;; Global search
+  (define-key leader/f1 (kbd "a") #'counsel-ag)
+  (define-key leader/f1 (kbd "A") #'ag)
+  (define-key leader/f1 (kbd "g") #'counsel-git-grep)
+  ;; Replace, regular eXpression replace
+  (define-key leader/f1 (kbd "r") #'query-replace)
+  (define-key leader/f1 (kbd "R") #'projectile-replace)
+  (define-key leader/f1 (kbd "x") #'query-replace-regexp)
+  (define-key leader/f1 (kbd "X") #'projectile-replace-regexp)
   ;; color and theme
   (define-key leader/f1 (kbd "c") #'jh/cycle-color-theme)
   (define-key leader/f1 (kbd "t") #'jh/toggle-transparency)
@@ -140,15 +150,15 @@
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f8)
-  ;; counsel command
-  (define-key leader/f8 (kbd "a") #'counsel-ag)
-  (define-key leader/f8 (kbd "g") #'counsel-git-grep)
+
+  ;; file access
   (define-key leader/f8 (kbd "f") #'counsel-git)
+  (define-key leader/f8 (kbd "F") #'counsel-find-file)
+  (define-key leader/f8 (kbd "p") #'project-find-file)
   (define-key leader/f8 (kbd "b") #'counsel-bookmark)
   (define-key leader/f8 (kbd "r") #'counsel-recentf)
   ;; projectile
   (define-key leader/f8 (kbd "p") #'projectile-switch-project)
-  (define-key leader/f8 (kbd "=") #'projectile-replace)
   (define-key leader/f8 (kbd "c") #'projectile-compile-project)
   (define-key leader/f8 (kbd "u") #'projectile-run-project))
 (global-set-key (kbd "<f8>") 'leader/f8)

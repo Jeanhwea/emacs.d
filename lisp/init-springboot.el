@@ -105,7 +105,7 @@
 ;; -----------------------------------------------------------------------------
 
 (defvar spt/boi-list
-  '('entity 'repo 'service 'controller 'impl 'helper)
+  (list 'entity 'repo 'service 'controller 'impl 'helper)
   "springboot bundle of interest names.")
 
 (defvar spt/sources-cache nil
