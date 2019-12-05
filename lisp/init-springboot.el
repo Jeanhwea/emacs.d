@@ -145,12 +145,10 @@
       (re (format "^\\(%s\\|%s\\)" (spt/src-root) (spt/test-root)))
       (tail-folder-list
         (split-string
-          (jh/re-replace
-            (spt/app-root) "" (jh/parent-dir file)) "/" t))
+          (jh/re-replace (spt/app-root) "" (jh/parent-dir file)) "/" t))
       ;; class name
       (clzname
-        (jh/pascalcase
-          (jh/file-base-name file)))
+        (jh/pascalcase (jh/file-base-name file)))
       ;; bundle name
       (bldname (car (last tail-folder-list)))
       ;; module name
