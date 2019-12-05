@@ -114,7 +114,7 @@
 (defun spt/sources-cache-key (fileinfo &optional bundle)
   "Construct file cache key via FILEINFO."
   (let ((bldname (or bundle (nth 1 fileinfo))))
-    (concat bldname "#" (spt/coerce-to-entity fileinfo))))
+    (concat bldname "#" (spt/coerce-to-prefix fileinfo))))
 
 (defun spt/sources-cache-init ()
   "Initialize file cache if possible."
@@ -175,7 +175,7 @@
           (add-to-list 'fileinfos fileinfo t))))
     fileinfos))
 
-(defun spt/coerce-to-entity (fileinfo)
+(defun spt/coerce-to-prefix (fileinfo)
   "Force to convert to entity name."
   (let
     ((clzname (nth 0 fileinfo)) (bldname (nth 1 fileinfo)))
@@ -194,7 +194,7 @@
     (error (concat "Unknown bundle type: " bundle)))
   (let*
     ((mdlname (nth 2 fileinfo))
-      (ettname (spt/coerce-to-entity fileinfo))
+      (ettname (spt/coerce-to-prefix fileinfo))
       (mdldir (expand-file-name mdlname (spt/app-root)))
       (blddir
         (cond

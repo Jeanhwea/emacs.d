@@ -56,10 +56,10 @@
     (replace-regexp-in-string re "" file)))
 
 (defvar ng/filetype-suffix-alist
-  '(("model" . ".ts")
-     ("view" . ".html")
-     ("style" . ".less")
-     ("test" . ".spec.ts"))
+  '(('model . ".ts")
+     ('view . ".html")
+     ('style . ".less")
+     ('test . ".spec.ts"))
   "File type suffix in angular project.")
 
 (defun ng/find-alternative-file (filetype)
@@ -90,10 +90,10 @@
   (define-prefix-command 'ng/leader)
 
   ;; Switcher Keybinding
-  (define-key ng/leader (kbd "t") #'(lambda () (interactive) (ng/switch-to "model")))
-  (define-key ng/leader (kbd "h") #'(lambda () (interactive) (ng/switch-to "view")))
-  (define-key ng/leader (kbd "l") #'(lambda () (interactive) (ng/switch-to "style")))
-  (define-key ng/leader (kbd "T") #'(lambda () (interactive) (ng/switch-to "test"))))
+  (define-key ng/leader (kbd "t") #'(lambda () (interactive) (ng/switch-to 'model)))
+  (define-key ng/leader (kbd "h") #'(lambda () (interactive) (ng/switch-to 'view)))
+  (define-key ng/leader (kbd "l") #'(lambda () (interactive) (ng/switch-to 'style)))
+  (define-key ng/leader (kbd "T") #'(lambda () (interactive) (ng/switch-to 'test))))
 (global-set-key (kbd "M-n") 'ng/leader)
 
 
