@@ -17,8 +17,7 @@
   (define-key leader/f1 (kbd "1") #'delete-other-windows)
   (define-key leader/f1 (kbd "2") #'split-window-below)
   (define-key leader/f1 (kbd "3") #'split-window-right)
-  (define-key leader/f1 (kbd "f") #'toggle-frame-fullscreen)
-  (define-key leader/f1 (kbd "F") #'toggle-frame-maximized)
+  (define-key leader/f1 (kbd "F") #'toggle-frame-fullscreen)
   ;; Frame
   (define-key leader/f1 (kbd "5") #'make-frame-command)
   (define-key leader/f1 (kbd "6") #'delete-frame)
@@ -26,7 +25,7 @@
   (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
   (define-key leader/f1 (kbd "R") #'toggle-read-only)
   (define-key leader/f1 (kbd "g") #'counsel-git)
-  (define-key leader/f1 (kbd "d") #'counsel-find-file)
+  (define-key leader/f1 (kbd "f") #'counsel-find-file)
   (define-key leader/f1 (kbd "p") #'projectile-find-file)
   (define-key leader/f1 (kbd "b") #'counsel-bookmark)
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
