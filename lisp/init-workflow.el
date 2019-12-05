@@ -27,6 +27,7 @@
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'mhtml-mode) (jh/html-format-code))
+    ((eq major-mode 'less-css-mode) (jh/css-format-code))
     (t (message "Ops, no format backend!"))))
 
 (defun workflow-reveal-in-file-manager ()
@@ -90,13 +91,13 @@
   (interactive)
   (if (use-region-p)
     (let*
-      ((beg (region-beginning))
-        (end (region-end))
+      ((beg (region-beginning)) (end (region-end))
         (count (- (line-number-at-pos end) (line-number-at-pos beg))))
-      (progn
-        (deactivate-mark)
-        (goto-char end)
-        (dotimes (i count) (join-line))))
+      (save-excursion
+        (progn
+          (deactivate-mark)
+          (goto-char end)
+          (dotimes (i count) (join-line)))))
     (join-line)))
 
 (provide 'init-workflow)
