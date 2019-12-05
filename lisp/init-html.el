@@ -22,12 +22,6 @@
     (hs-minor-mode 1)
     (local-set-key (kbd "C-c h") 'hs-toggle-hiding)))
 
-(defun jh/html-format-code ()
-  "Format html file."
-  (interactive)
-  (save-excursion
-    (indent-region (point-min) (point-max))))
-
 
 ;; -------------------------------------------------------------------------
 ;; emmet-mode

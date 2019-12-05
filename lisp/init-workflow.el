@@ -7,6 +7,10 @@
       (buffer-substring-no-properties beg end))
     (symbol-name (symbol-at-point))))
 
+(defun wf/indent-buffer ()
+  "Indent current buffer."
+  (save-excursion (indent-region (point-min) (point-max))))
+
 (defun workflow-replace ()
   "Better workflow for query-replace."
   (interactive)
@@ -19,6 +23,10 @@
           old-text)))
     (query-replace old-text new-text)))
 
+(defvar wf/known-indent-mode
+  (list 'mhtml-mode 'less-css-mode 'emacs-lisp-mode)
+  "Known indent major mode.")
+
 (defun workflow-format-code ()
   "Format codes."
   (interactive)
@@ -26,8 +34,7 @@
     ((eq major-mode 'java-mode) (spt/meghanada-format-code))
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
-    ((eq major-mode 'mhtml-mode) (jh/html-format-code))
-    ((eq major-mode 'less-css-mode) (jh/css-format-code))
+    ((member major-mode wf/known-indent-mode) (wf/indent-buffer))
     (t (message "Ops, no format backend!"))))
 
 (defun workflow-reveal-in-file-manager ()
