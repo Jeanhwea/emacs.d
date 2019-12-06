@@ -189,7 +189,9 @@
   "Return the project name."
   (let*
     ((dir default-directory)
-      (root (or (jh/git-root dir) dir))
+      (root
+        (directory-file-name
+          (or (jh/git-root dir) dir)))
       (parent (regexp-quote (jh/parent-dir root))))
     (jh/re-replace parent "" root nil 'literal)))
 

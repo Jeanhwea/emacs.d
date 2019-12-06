@@ -91,8 +91,10 @@
 
 (defun spt/project-name ()
   "Return project name."
-  (let ((root (spt/project-root)))
-    (jh/re-replace "/" "" (jh/re-replace (jh/parent-dir root) "" root))))
+  (let
+    ((root (directory-file-name (spt/project-root)))
+      (parent (regexp-quote (jh/parent-dir root))))
+    (jh/re-replace "/" "" (jh/re-replace parent "" root))))
 
 
 ;; -----------------------------------------------------------------------------
