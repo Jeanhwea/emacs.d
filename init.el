@@ -43,7 +43,6 @@
 (require 'init-angular)
 (require 'init-yasnippet)
 (require 'init-workflow)
-(require 'init-keymate)
 
 ;; -----------------------------------------------------------------------------
 ;; programming language
@@ -68,6 +67,7 @@
 ;; -----------------------------------------------------------------------------
 (require 'init-ffmpeg)
 (require 'init-experimental)
+(require 'init-keymate)
 
 ;; -----------------------------------------------------------------------------
 ;; local settings
