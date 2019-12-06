@@ -3,7 +3,7 @@ alias d dired $1
 alias f find-file $1
 alias ff find-file $1
 alias fo find-file-other-window $1
-alias cg cd (jh/git-project-root-dir default-directory)
+alias cg cd (jh/git-root default-directory)
 alias gs magit-status
 alias l ls -al
 alias ll ls -alh

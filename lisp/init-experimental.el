@@ -56,7 +56,7 @@
 (defun grip ()
   "start a grip daemon."
   (interactive)
-  (let ((dir (jh/git-project-root-dir default-directory))
+  (let ((dir (jh/git-root default-directory))
          (file (jh/git-relative-filename (buffer-file-name))))
     (unless file
       (error "file is nil"))

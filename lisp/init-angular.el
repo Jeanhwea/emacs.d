@@ -17,7 +17,7 @@
 
 (defun ng/project-root ()
   "Return current project root dir."
-  (or (jh/git-project-root-dir default-directory)
+  (or (jh/git-root default-directory)
     (error "This file is not inside a GIT repository")))
 
 (defun ng/src-root ()

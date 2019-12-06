@@ -32,7 +32,7 @@
 (defun wf/project-type ()
   "Get current project type."
   (let*
-    ((root (jh/git-project-root-dir default-directory))
+    ((root (jh/git-root default-directory))
       (lookup
         (remove-if-not
           #'(lambda (f)
@@ -100,7 +100,7 @@
         (and (file-exists-p filename)
           (insert
             (jh/relative-path filename
-              (jh/git-project-root-dir default-directory)))))
+              (jh/git-root default-directory)))))
       (t (error "Never happend in workflow-drop-file!")))))
 
 (defun workflow-send-to-shell ()
@@ -190,11 +190,9 @@
 (defun wf/shrimp-project-name ()
   "Return the project name."
   (let*
-    ((project-root (jh/git-project-root-dir default-directory))
-      (root (and project-root (directory-file-name project-root))))
-    (and root
-      (jh/re-replace
-        (regexp-quote (jh/parent-dir root)) "" root nil 'literal))))
+    ((dir default-directory)
+      (root (and (jh/git-root dir) dir)))
+    (jh/re-replace (regexp-quote (jh/parent-dir root)) "" root nil 'literal)))
 
 (defun wf/shrimp-shell-name ()
   "Return the shell name."
