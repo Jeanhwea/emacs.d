@@ -143,30 +143,6 @@
 ;;       (font-spec :family "WenQuanYi Micro Hei Mono" :size 22))))
 
 ;; -----------------------------------------------------------------------------
-;; shrimp shell
-;; -----------------------------------------------------------------------------
-(defun jh/shrimp-project-name ()
-  "Return the project name."
-  (let* ((project-root (jh/git-project-root-dir default-directory))
-          (root (and project-root (directory-file-name project-root))))
-    (and root
-      (jh/re-replace
-        (regexp-quote (jh/parent-dir root)) "" root nil 'literal))))
-
-(defun jh/shrimp-shell-name ()
-  "Return the shell name."
-  (let ((name (jh/shrimp-project-name)))
-    (if name (format "*shrimp[%s]*" name) "*shrimp*")))
-
-(defun jh/shrimp-open ()
-  "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
-  (interactive)
-  (let ((name (jh/shrimp-shell-name)))
-    (if (get-buffer name)
-      (switch-to-buffer name)
-      (let ((eshell-buffer-name name)) (eshell)))))
-
-;; -----------------------------------------------------------------------------
 ;; theme
 ;; -----------------------------------------------------------------------------
 (when

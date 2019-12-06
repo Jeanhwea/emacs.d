@@ -170,7 +170,6 @@
       (set-visited-file-name name)
       (rename-buffer name))))
 
-
 (defun workflow-bookmark-current-file ()
   "Add/Remove current file to bookmark"
   (interactive)
@@ -184,5 +183,31 @@
       (progn
         (bookmark-set name)
         (message (concat "Added bookmark: " name))))))
+
+;; -----------------------------------------------------------------------------
+;; shrimp shell
+;; -----------------------------------------------------------------------------
+(defun wf/shrimp-project-name ()
+  "Return the project name."
+  (let*
+    ((project-root (jh/git-project-root-dir default-directory))
+      (root (and project-root (directory-file-name project-root))))
+    (and root
+      (jh/re-replace
+        (regexp-quote (jh/parent-dir root)) "" root nil 'literal))))
+
+(defun wf/shrimp-shell-name ()
+  "Return the shell name."
+  (let ((name (wf/shrimp-project-name)))
+    (if name (format "*shrimp[%s]*" name) "*shrimp*")))
+
+(defun workflow-shrimp-open ()
+  "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
+  (interactive)
+  (let ((name (wf/shrimp-shell-name)))
+    (if (get-buffer name)
+      (switch-to-buffer name)
+      (let ((eshell-buffer-name name)) (eshell)))))
+
 
 (provide 'init-workflow)

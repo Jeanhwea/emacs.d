@@ -168,7 +168,7 @@
   ;; Project starter
   (define-key leader/f12 (kbd "c") #'projectile-compile-project)
   (define-key leader/f12 (kbd "r") #'projectile-run-project)
-  (define-key leader/f12 (kbd "s") #'jh/shrimp-open)
+  (define-key leader/f12 (kbd "s") #'workflow-shrimp-open)
   ;; Prettify source code
   (define-key leader/f12 (kbd "f") 'workflow-format-code)
   (define-key leader/f12 (kbd "i") 'spt/import-unknown-class))
