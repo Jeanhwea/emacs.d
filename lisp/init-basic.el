@@ -50,18 +50,20 @@
 ;; -----------------------------------------------------------------------------
 ;; hideshow mode
 ;; -----------------------------------------------------------------------------
-(add-hook 'c-mode-common-hook 'hs-minor-mode)
-(add-hook 'sh-mode-hook 'hs-minor-mode)
-(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-(add-hook 'lisp-mode-hook 'hs-minor-mode)
-
-(add-hook 'java-mode-hook 'hs-minor-mode)
-(add-hook 'python-mode-hook 'hs-minor-mode)
-
-(add-hook 'js2-mode-hook 'hs-minor-mode)
-(add-hook 'typescript-mode-hook 'hs-minor-mode)
-(add-hook 'css-mode-hook 'hs-minor-mode)
-(add-hook 'mhtml-mode-hook 'hs-minor-mode)
+(when (require 'hi-lock)
+  ;; common
+  (add-hook 'c-mode-common-hook 'hs-minor-mode)
+  (add-hook 'sh-mode-hook 'hs-minor-mode)
+  (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+  (add-hook 'lisp-mode-hook 'hs-minor-mode)
+  ;; working
+  (add-hook 'java-mode-hook 'hs-minor-mode)
+  (add-hook 'python-mode-hook 'hs-minor-mode)
+  ;; frontend
+  (add-hook 'js2-mode-hook 'hs-minor-mode)
+  (add-hook 'typescript-mode-hook 'hs-minor-mode)
+  (add-hook 'css-mode-hook 'hs-minor-mode)
+  (add-hook 'mhtml-mode-hook 'hs-minor-mode))
 
 
 ;; -----------------------------------------------------------------------------

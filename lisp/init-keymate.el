@@ -190,6 +190,7 @@
 (global-set-key (kbd "C-x k") nil)
 (global-set-key (kbd "C-x C-f") nil)
 (global-set-key (kbd "C-x C-s") nil)
+(global-set-key (kbd "C-x C-c") nil)
 (global-set-key (kbd "C-x b") nil)
 (global-set-key (kbd "C-x g") nil)
 

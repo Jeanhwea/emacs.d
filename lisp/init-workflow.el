@@ -112,8 +112,6 @@
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
 
-(require 'hi-lock)
-
 (defun workflow-highlight-symbol ()
   "Toggle highlight state of symbol at point."
   (interactive)
