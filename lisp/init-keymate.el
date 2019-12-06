@@ -29,6 +29,7 @@
   (define-key leader/f1 (kbd "p") #'projectile-find-file)
   (define-key leader/f1 (kbd "b") #'counsel-bookmark)
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
+  (define-key leader/f1 (kbd "t") #'counsel-switch-buffer)
   (define-key leader/f1 (kbd "m") #'workflow-bookmark-current-file)
   ;; highlight symbol
   (define-key leader/f1 (kbd "h") #'workflow-highlight-symbol)
@@ -154,5 +155,16 @@
   (define-key leader/f11 (kbd "RET") 'spt/import-unknown-class))
 (global-set-key (kbd "<f11>") 'leader/f11)
 (global-set-key (kbd "M-[") 'leader/f11)
+
+;; -----------------------------------------------------------------------------
+;;  _   _               _   __  __           _
+;; | | | | __ _ _ __ __| | |  \/  | ___   __| | ___
+;; | |_| |/ _` | '__/ _` | | |\/| |/ _ \ / _` |/ _ \
+;; |  _  | (_| | | | (_| | | |  | | (_) | (_| |  __/
+;; |_| |_|\__,_|_|  \__,_| |_|  |_|\___/ \__,_|\___|
+;; -----------------------------------------------------------------------------
+(global-set-key (kbd "C-x C-f") nil)
+(global-set-key (kbd "C-x b") nil)
+(global-set-key (kbd "C-x g") nil)
 
 (provide 'init-keymate)
