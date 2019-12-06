@@ -151,36 +151,6 @@
 ;; -----------------------------------------------------------------------------
 ;; file operation
 ;; -----------------------------------------------------------------------------
-(defun jh/new-scratch-buffer ()
-  "Create a temporary buffer."
-  (interactive)
-  (let ((current-datetime-string (format-time-string "%Y%m%d%H%M%S")))
-    (switch-to-buffer
-      (concatenate 'string "scratch+" current-datetime-string))))
-
-(defun jh/delete-this-file ()
-  "Delete the current file, and kill the buffer."
-  (interactive)
-  (unless (buffer-file-name)
-    (error "No file is binding to this buffer!"))
-  (when (yes-or-no-p
-          (format "Delete %s: "
-            (file-name-nondirectory buffer-file-name)))
-    (delete-file (buffer-file-name))
-    (kill-this-buffer)))
-
-(defun jh/rename-this-buffer-and-file (name)
-  "Rename both current buffer and file it's visiting to name."
-  (interactive "sNew name: ")
-  (let ((buffername (buffer-name))
-         (filename (buffer-file-name)))
-    (unless filename
-      (error "Buffer '%s' is not visiting a file!" buffername))
-    (progn
-      (when (file-exists-p filename)
-        (rename-file filename name 1))
-      (set-visited-file-name name)
-      (rename-buffer name))))
 
 ;; -----------------------------------------------------------------------------
 ;; shrimp shell

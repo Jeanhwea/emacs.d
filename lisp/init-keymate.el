@@ -24,7 +24,7 @@
   (define-key leader/f1 (kbd "5") #'make-frame-command)
   (define-key leader/f1 (kbd "6") #'delete-frame)
   ;; File create & save
-  (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
+  (define-key leader/f1 (kbd "n") #'workflow-new-buffer)
   (define-key leader/f1 (kbd "R") #'toggle-read-only)
   (define-key leader/f1 (kbd "s") #'workflow-save-buffers)
   (define-key leader/f1 (kbd "k") #'kill-buffer)

@@ -135,7 +135,41 @@
 (defun workflow-save-buffers ()
   "Save buffers."
   (interactive)
-  (save-some-buffers t))
+  (save-some-buffers t t))
+
+(defun workflow-new-buffer ()
+  "Create a temporary buffer."
+  (interactive)
+  (let
+    ((tailstr (format-time-string "%Y%m%d%H%M%S")))
+    (switch-to-buffer (concat "scratch+" tailstr))))
+
+(defun workflow-delete-file ()
+  "Delete the current file, and kill the buffer."
+  (interactive)
+  (unless (buffer-file-name)
+    (error "No file is binding to this buffer!"))
+  (when
+    (yes-or-no-p
+      (format "Delete %s: "
+        (file-name-nondirectory buffer-file-name)))
+    (delete-file (buffer-file-name))
+    (kill-this-buffer)))
+
+(defun workflow-rename-file (name)
+  "Rename both current buffer and file it's visiting to name."
+  (interactive "sNew name: ")
+  (let
+    ((buffername (buffer-name))
+      (filename (buffer-file-name)))
+    (unless filename
+      (error "Buffer '%s' is not visiting a file!" buffername))
+    (progn
+      (when (file-exists-p filename)
+        (rename-file filename name 1))
+      (set-visited-file-name name)
+      (rename-buffer name))))
+
 
 (defun workflow-bookmark-current-file ()
   "Add/Remove current file to bookmark"
