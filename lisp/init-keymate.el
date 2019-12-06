@@ -174,6 +174,10 @@
 ;; |_| |_|\__,_|_|  \__,_| |_|  |_|\___/ \__,_|\___|
 ;; -----------------------------------------------------------------------------
 ;; disable keys
+(global-set-key (kbd "C-x 1") nil)
+(global-set-key (kbd "C-x 2") nil)
+(global-set-key (kbd "C-x 3") nil)
+(global-set-key (kbd "C-x 0") nil)
 (global-set-key (kbd "C-x C-f") nil)
 (global-set-key (kbd "C-x C-s") nil)
 (global-set-key (kbd "C-x b") nil)
