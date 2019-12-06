@@ -29,7 +29,7 @@
   (define-key leader/f1 (kbd "p") #'projectile-find-file)
   (define-key leader/f1 (kbd "b") #'counsel-bookmark)
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
-  (define-key leader/f1 (kbd "t") #'counsel-switch-buffer)
+  (define-key leader/f1 (kbd "t") #'ivy-switch-buffer)
   (define-key leader/f1 (kbd "m") #'workflow-bookmark-current-file)
   ;; highlight symbol
   (define-key leader/f1 (kbd "h") #'workflow-highlight-symbol)
