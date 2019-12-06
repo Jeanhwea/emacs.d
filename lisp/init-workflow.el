@@ -189,8 +189,9 @@
   "Return the project name."
   (let*
     ((dir default-directory)
-      (root (and (jh/git-root dir) dir)))
-    (jh/re-replace (regexp-quote (jh/parent-dir root)) "" root nil 'literal)))
+      (root (or (jh/git-root dir) dir))
+      (parent (regexp-quote (jh/parent-dir root))))
+    (jh/re-replace parent "" root nil 'literal)))
 
 (defun wf/shrimp-shell-name ()
   "Return the shell name."
