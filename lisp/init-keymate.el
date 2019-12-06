@@ -57,8 +57,9 @@
   (define-key leader/f2 (kbd "w") #'widen)
   ;; hide and show
   (define-key leader/f2 (kbd "h") #'hs-toggle-hiding)
-  (define-key leader/f2 (kbd "1") #'hs-hide-all)
-  (define-key leader/f2 (kbd "0") #'hs-show-all)
+  (define-key leader/f2 (kbd "l") #'workflow-cycle-hide-level)
+  (define-key leader/f2 (kbd "0") #'hs-hide-all)
+  (define-key leader/f2 (kbd "9") #'hs-show-all)
   ;; Undotree
   (define-key leader/f2 (kbd "u") #'undo-tree-visualize)
   ;; Search global

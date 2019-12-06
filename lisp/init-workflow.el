@@ -182,6 +182,17 @@
         (bookmark-set name)
         (message (concat "Added bookmark: " name))))))
 
+(defun workflow-cycle-hide-level ()
+  "Cycling hide level."
+  (interactive)
+  (if (local-variable-p 'hs-cycle-level)
+    (progn
+      (setq hs-cycle-level (% (+ hs-cycle-level 1) 5))
+      (hs-hide-level (+ hs-cycle-level 1)))
+    (progn
+      (set (make-local-variable 'hs-cycle-level) 0)
+      (hs-hide-level (+ hs-cycle-level 1)))))
+
 ;; -----------------------------------------------------------------------------
 ;; shrimp shell
 ;; -----------------------------------------------------------------------------
