@@ -75,13 +75,11 @@
 (when (require 'string-inflection)
   (global-set-key (kbd "M-i") 'string-inflection-all-cycle))
 
-
 ;; -----------------------------------------------------------------------------
 ;; hungry-delete
 ;; -----------------------------------------------------------------------------
 ;; (when (require 'hungry-delete)
 ;;   (global-hungry-delete-mode 1))
-
 
 ;; -----------------------------------------------------------------------------
 ;; multiple-cursors
@@ -89,12 +87,10 @@
 (when (require 'multiple-cursors)
   (global-set-key (kbd "C-c C-l") 'mc/edit-lines))
 
-
 ;; -----------------------------------------------------------------------------
 ;; expand-region
 ;; -----------------------------------------------------------------------------
 (when (require 'expand-region)
   (global-set-key (kbd "C-=") 'er/expand-region))
-
 
 (provide 'init-edit)

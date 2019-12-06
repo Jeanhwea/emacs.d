@@ -26,7 +26,6 @@
 ;; auto delete trailing whitespace before saving
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-
 ;; -----------------------------------------------------------------------------
 ;; navigation helper
 ;; -----------------------------------------------------------------------------
@@ -53,7 +52,6 @@
 
 (when (require 'ace-jump-mode)
   (autoload 'ace-jump-mode "ace-jump-mode" "Emacs quick move minor mode" t))
-
 
 ;; -----------------------------------------------------------------------------
 ;; exec-path-from-shell, read the $PATH
@@ -118,7 +116,6 @@
           (delete-file undofile)))))
   (jh/delete-unused-undofiles)
   (global-undo-tree-mode))
-
 
 ;; -----------------------------------------------------------------------------
 ;; manually install howdoi

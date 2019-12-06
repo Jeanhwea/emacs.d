@@ -5,7 +5,9 @@
       ((beg (region-beginning)) (end (region-end)))
       (deactivate-mark)
       (buffer-substring-no-properties beg end))
-    (symbol-name (symbol-at-point))))
+    (let
+      ((sym (symbol-at-point)))
+      (and sym (symbol-name sym)))))
 
 (defun wf/indent-buffer ()
   "Indent current buffer."
@@ -218,6 +220,5 @@
     (if (get-buffer name)
       (switch-to-buffer name)
       (let ((eshell-buffer-name name)) (eshell)))))
-
 
 (provide 'init-workflow)

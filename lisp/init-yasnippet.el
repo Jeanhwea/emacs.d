@@ -6,7 +6,6 @@
 
   (yas-global-mode 1))
 
-
 ;; -----------------------------------------------------------------------------
 ;;      _
 ;;     | | __ ___   ____ _
@@ -100,7 +99,6 @@
       (todo (remove-if #'(lambda (x) (member x implsigns)) ifacesigns)))
     (if todo todo '("String toString()"))))
 
-
 ;; -----------------------------------------------------------------------------
 ;;  ____    _  _____  _    ____    _    ____  _____
 ;; |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____|
@@ -187,7 +185,6 @@
       ((member dbtype '("CLOB" "BLOB"))
         "@Lob\n  @Basic(fetch = FetchType.LAZY)\n")
       (t ""))))
-
 
 (defun jh/java-column-type (colname)
   "Get field type."

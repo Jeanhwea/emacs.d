@@ -60,7 +60,6 @@
   (define-key elfeed-search-mode-map (kbd "j")
     'jh/elfeed-search-tag-all-junk)
 
-
   ;; highlight some feed tags
   (dolist
     (face (list '(emacs (:foreground "#c065db"))
@@ -73,6 +72,5 @@
   ;; remove junk, show unread only
   (setq-default elfeed-search-filter elfeed-search-default-filter)
   (global-set-key (kbd "C-c e") 'elfeed))
-
 
 (provide 'init-elfeed)

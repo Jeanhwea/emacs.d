@@ -69,10 +69,8 @@
     ;; string-inflection
     (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)))
 
-
 (when (require 'js-comint)
   (setq js-comint-program-command "node"))
-
 
 (when (require 'tide)
   ;; add hook for tide-mode

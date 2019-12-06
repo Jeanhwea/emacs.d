@@ -53,5 +53,4 @@
     (and sp op ep
       (save-excursion (ct/insert-output (ct/execute-command))))))
 
-
 (provide 'init-codetta)

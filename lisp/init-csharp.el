@@ -41,5 +41,4 @@
     (hl-line-mode 1)
     (rainbow-delimiters-mode 1)))
 
-
 (provide 'init-csharp)

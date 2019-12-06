@@ -96,7 +96,6 @@
       (parent (regexp-quote (jh/parent-dir root))))
     (jh/re-replace "/" "" (jh/re-replace parent "" root))))
 
-
 ;; -----------------------------------------------------------------------------
 ;;  ____                             _____ _ _
 ;; / ___|  ___  _   _ _ __ ___ ___  |  ___(_) | ___  ___
@@ -233,7 +232,6 @@
   (let ((file (spt/find-alternative-file bundle)))
     (message (concat "Switched to " file)) (find-file file)))
 
-
 ;; -----------------------------------------------------------------------------
 ;;  _____         _     _____ _ _
 ;; |_   _|__  ___| |_  |  ___(_) | ___  ___
@@ -316,7 +314,6 @@
       (progn
         (message "Switch to Test Case.")
         (find-file (spt/coerce-to-testfile file))))))
-
 
 ;; -----------------------------------------------------------------------------
 ;;  ____                                        _
@@ -492,7 +489,6 @@
           (message (concat "Goto " (spt/coerce-to-markdown file)))))
       ;; default
       (t (error "Ops, neither a markdown file, nor controller file!")))))
-
 
 ;; -----------------------------------------------------------------------------
 ;;  ____   _    ____  ____  _____ ____
@@ -700,7 +696,6 @@
       (gethash 'clzname metainfo)
       (puthash 'methods (spt/parse-java-class-methods text) metainfo))
     metainfo))
-
 
 ;; -----------------------------------------------------------------------------
 ;;  ____   _    ____  ____  _____ ____
@@ -980,7 +975,6 @@
         (spt/compilation-start (spt/maven-test-command clzname method))
         (spt/compilation-start (spt/maven-test-command clzname))))))
 
-
 ;; -----------------------------------------------------------------------------
 ;;  ___                            _
 ;; |_ _|_ __ ___  _ __   ___  _ __| |_ ___
@@ -1071,7 +1065,6 @@
               (newline)
               (insert impstmt)
               (message impstmt))))))))
-
 
 ;; -----------------------------------------------------------------------------
 ;;  __  __ ___ ____   ____

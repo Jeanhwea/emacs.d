@@ -8,7 +8,6 @@
   default-buffer-file-coding-system 'utf-8
   system-time-locale "C")
 
-
 ;; -----------------------------------------------------------------------------
 ;; setup system keyboard
 ;; -----------------------------------------------------------------------------
@@ -20,14 +19,12 @@
   w32-pass-rwindow-to-system nil
   w32-rwindow-modifier 'super)
 
-
 ;; -----------------------------------------------------------------------------
 ;; mark
 ;; -----------------------------------------------------------------------------
 (global-set-key (kbd "C-,") 'set-mark-command)
 (global-set-key (kbd "C-.") 'set-mark-command)
 (global-set-key (kbd "C-;") 'pop-global-mark)
-
 
 ;; -----------------------------------------------------------------------------
 ;; many default mode that I prefer
@@ -64,7 +61,6 @@
   (add-hook 'typescript-mode-hook 'hs-minor-mode)
   (add-hook 'css-mode-hook 'hs-minor-mode)
   (add-hook 'mhtml-mode-hook 'hs-minor-mode))
-
 
 ;; -----------------------------------------------------------------------------
 ;; misc option

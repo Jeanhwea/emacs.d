@@ -20,7 +20,6 @@
   (setq-default company-dabbrev-other-buffers 'all
     company-tooltip-align-annotations t))
 
-
 ;; -----------------------------------------------------------------------------
 ;; ivy, counsel & swiper
 ;; -----------------------------------------------------------------------------
@@ -35,6 +34,5 @@
   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   (global-set-key (kbd "C-c r") 'counsel-recentf)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
-
 
 (provide 'init-completion)
