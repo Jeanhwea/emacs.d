@@ -19,13 +19,15 @@
   (define-key leader/f1 (kbd "2") #'split-window-below)
   (define-key leader/f1 (kbd "3") #'split-window-right)
   (define-key leader/f1 (kbd "F") #'toggle-frame-fullscreen)
+  (define-key leader/f1 (kbd "q") #'save-buffers-kill-terminal)
   ;; Frame
   (define-key leader/f1 (kbd "5") #'make-frame-command)
   (define-key leader/f1 (kbd "6") #'delete-frame)
   ;; File create & save
   (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
   (define-key leader/f1 (kbd "R") #'toggle-read-only)
-  (define-key leader/f1 (kbd "s") #'save-buffer)
+  (define-key leader/f1 (kbd "s") #'workflow-save-buffers)
+  (define-key leader/f1 (kbd "k") #'kill-buffer)
   ;; File access
   (define-key leader/f1 (kbd "g") #'counsel-git)
   (define-key leader/f1 (kbd "f") #'counsel-find-file)
@@ -182,6 +184,7 @@
 (global-set-key (kbd "C-x 2") nil)
 (global-set-key (kbd "C-x 3") nil)
 (global-set-key (kbd "C-x 0") nil)
+(global-set-key (kbd "C-x k") nil)
 (global-set-key (kbd "C-x C-f") nil)
 (global-set-key (kbd "C-x C-s") nil)
 (global-set-key (kbd "C-x b") nil)

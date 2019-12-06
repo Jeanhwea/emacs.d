@@ -132,6 +132,11 @@
   (dolist (sym-re (mapcar #'car hi-lock-interactive-patterns))
     (unhighlight-regexp sym-re)))
 
+(defun workflow-save-buffers ()
+  "Save buffers."
+  (interactive)
+  (save-some-buffers t))
+
 (defun workflow-bookmark-current-file ()
   "Add/Remove current file to bookmark"
   (interactive)
