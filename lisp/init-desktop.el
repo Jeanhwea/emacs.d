@@ -52,13 +52,7 @@
   (global-set-key (kbd "C-c d") 'jh/switch-to-dashboard))
 
 (when (require 'ace-jump-mode)
-  (autoload
-    'ace-jump-mode
-    "ace-jump-mode"
-    "Emacs quick move minor mode"
-    t)
-  ;; you can select the key you prefer to
-  (define-key global-map (kbd "C-'") 'ace-jump-mode))
+  (autoload 'ace-jump-mode "ace-jump-mode" "Emacs quick move minor mode" t))
 
 
 ;; -----------------------------------------------------------------------------
@@ -149,10 +143,6 @@
 ;;       (font-spec :family "WenQuanYi Micro Hei Mono" :size 22))))
 
 ;; -----------------------------------------------------------------------------
-;; file operation
-;; -----------------------------------------------------------------------------
-
-;; -----------------------------------------------------------------------------
 ;; shrimp shell
 ;; -----------------------------------------------------------------------------
 (defun jh/shrimp-project-name ()
@@ -175,7 +165,6 @@
     (if (get-buffer name)
       (switch-to-buffer name)
       (let ((eshell-buffer-name name)) (eshell)))))
-(global-set-key (kbd "C-c s") 'jh/shrimp-open)
 
 ;; -----------------------------------------------------------------------------
 ;; theme

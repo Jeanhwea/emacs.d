@@ -148,6 +148,8 @@
   (define-key leader/f11 (kbd "d") #'spt/swap-markdown-and-endpoint)
   ;; Swither for Angular
   (define-key leader/f11 (kbd "a") #'ng/cycle-source-files)
+  ;; jump arround
+  (define-key leader/f11 (kbd "j") #'ace-jump-mode)
   ;; Open sources
   (define-key leader/f11 (kbd "o") #'workflow-open-class))
 (global-set-key (kbd "<f11>") 'leader/f11)
@@ -166,6 +168,7 @@
   ;; Project starter
   (define-key leader/f12 (kbd "c") #'projectile-compile-project)
   (define-key leader/f12 (kbd "r") #'projectile-run-project)
+  (define-key leader/f12 (kbd "s") #'jh/shrimp-open)
   ;; Prettify source code
   (define-key leader/f12 (kbd "f") 'workflow-format-code)
   (define-key leader/f12 (kbd "i") 'spt/import-unknown-class))
