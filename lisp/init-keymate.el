@@ -22,9 +22,11 @@
   ;; Frame
   (define-key leader/f1 (kbd "5") #'make-frame-command)
   (define-key leader/f1 (kbd "6") #'delete-frame)
-  ;; File create & access
+  ;; File create & save
   (define-key leader/f1 (kbd "n") #'jh/new-scratch-buffer)
   (define-key leader/f1 (kbd "R") #'toggle-read-only)
+  (define-key leader/f1 (kbd "s") #'save-buffer)
+  ;; File access
   (define-key leader/f1 (kbd "g") #'counsel-git)
   (define-key leader/f1 (kbd "f") #'counsel-find-file)
   (define-key leader/f1 (kbd "p") #'projectile-find-file)
@@ -32,13 +34,12 @@
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
   (define-key leader/f1 (kbd "t") #'ivy-switch-buffer)
   (define-key leader/f1 (kbd "m") #'workflow-bookmark-current-file)
+  (define-key leader/f1 (kbd "a") #'workflow-swap-alternative-buffer)
   ;; highlight symbol
   (define-key leader/f1 (kbd "h") #'workflow-highlight-symbol)
   (define-key leader/f1 (kbd "H") #'workflow-unhighlight-all)
   ;; Project management
-  (define-key leader/f1 (kbd "o") #'projectile-switch-project)
-  (define-key leader/f1 (kbd "c") #'projectile-compile-project)
-  (define-key leader/f1 (kbd "u") #'projectile-run-project))
+  (define-key leader/f1 (kbd "o") #'projectile-switch-project))
 (global-set-key (kbd "<f1>") 'leader/f1)
 (global-set-key (kbd "M-1") 'leader/f1)
 (global-set-key (kbd "M-o") 'other-window)
@@ -130,7 +131,6 @@
 (progn
   ;; Leader Key
   (define-prefix-command 'leader/f11)
-
   ;; Switcher Keybinding for Springboot
   (define-key leader/f11 (kbd "e") #'(lambda () (interactive) (spt/switch-to 'entity)))
   (define-key leader/f11 (kbd "r") #'(lambda () (interactive) (spt/switch-to 'repo)))
@@ -140,23 +140,31 @@
   (define-key leader/f11 (kbd "h") #'(lambda () (interactive) (spt/switch-to 'helper)))
   (define-key leader/f11 (kbd "t") #'spt/swap-test-and-source)
   (define-key leader/f11 (kbd "d") #'spt/swap-markdown-and-endpoint)
-
   ;; Swither for Angular
   (define-key leader/f11 (kbd "a") #'ng/cycle-source-files)
-
   ;; Open sources
-  (define-key leader/f11 (kbd "p") #'workflow-open-class)
-
-  ;; Unit test
-  (define-key leader/f11 (kbd "u") 'spt/run-test-method-command)
-  (define-key leader/f11 (kbd "U") 'spt/run-test-class-command)
-
-  ;; workflow
-  (define-key leader/f11 (kbd "f") 'workflow-format-code)
-  (define-key leader/f11 (kbd "j") 'jh/joinline)
-  (define-key leader/f11 (kbd "RET") 'spt/import-unknown-class))
+  (define-key leader/f11 (kbd "o") #'workflow-open-class))
 (global-set-key (kbd "<f11>") 'leader/f11)
 (global-set-key (kbd "M-[") 'leader/f11)
+
+
+;; -----------------------------------------------------------------------------
+;; F12: Project Management
+;; -----------------------------------------------------------------------------
+(progn
+  ;; Leader Key
+  (define-prefix-command 'leader/f12)
+  ;; Unit test
+  (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
+  (define-key leader/f12 (kbd "U") 'spt/run-test-class-command)
+  ;; Project starter
+  (define-key leader/f12 (kbd "c") #'projectile-compile-project)
+  (define-key leader/f12 (kbd "r") #'projectile-run-project)
+  ;; Prettify source code
+  (define-key leader/f12 (kbd "f") 'workflow-format-code)
+  (define-key leader/f12 (kbd "i") 'spt/import-unknown-class))
+(global-set-key (kbd "<f12>") 'leader/f12)
+(global-set-key (kbd "M-]") 'leader/f12)
 
 ;; -----------------------------------------------------------------------------
 ;;  _   _               _   __  __           _
@@ -165,7 +173,9 @@
 ;; |  _  | (_| | | | (_| | | |  | | (_) | (_| |  __/
 ;; |_| |_|\__,_|_|  \__,_| |_|  |_|\___/ \__,_|\___|
 ;; -----------------------------------------------------------------------------
+;; disable keys
 (global-set-key (kbd "C-x C-f") nil)
+(global-set-key (kbd "C-x C-s") nil)
 (global-set-key (kbd "C-x b") nil)
 (global-set-key (kbd "C-x g") nil)
 

@@ -21,7 +21,9 @@
       (new-text
         (read-string (format "Replace %s with: " old-text)
           old-text)))
-    (query-replace old-text new-text)))
+    (progn
+      (backward-word)
+      (query-replace old-text new-text))))
 
 (defvar wf/project-type-alist
   '(("pom.xml" . maven) ("package.json" . angular))
@@ -61,6 +63,12 @@
     ((eq major-mode 'typescript-mode) (tide-format))
     ((member major-mode wf/known-indent-mode) (wf/indent-buffer))
     (t (message "Ops, no format backend!"))))
+
+(defun workflow-swap-alternative-buffer ()
+  "Swap between recently buffer."
+  (interactive)
+  (progn
+    (switch-to-buffer nil)))
 
 (defun workflow-reveal-in-file-manager ()
   "Open the folder containing this buffer file"
@@ -110,7 +118,7 @@
   "Toggle highlight state of symbol at point."
   (interactive)
   (let*
-    ((sym (thing-at-point 'symbol))
+    ((sym (wf/symbol-or-selection-at-point))
       (sym-re (concat "\\_<" sym "\\_>"))
       (lookup
         (member sym-re
