@@ -66,7 +66,8 @@
 (setq-default
   recentf-max-saved-items 1000
   recentf-exclude
-  '("/.emacs.d/elfeed/*"
+  '(
+     "/.emacs.d/elfeed/*"
      "/.emacs.d/elpa/*"
      "/.emacs.d/ido.last"
      "/.emacs.d/bookmarks"
@@ -85,7 +86,8 @@
   (setq
     undo-tree-enable-undo-in-region nil
     undo-tree-auto-save-history t
-    undo-tree-history-directory-alist `(("." . ,(expand-file-name "undo" user-emacs-directory))))
+    undo-tree-history-directory-alist
+    `(("." . ,(expand-file-name "undo" user-emacs-directory))))
   ;; Compressing undo history
   (defadvice undo-tree-make-history-save-file-name
     (after undo-tree activate)
