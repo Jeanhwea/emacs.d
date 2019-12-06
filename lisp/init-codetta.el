@@ -26,11 +26,15 @@
 
 (defun ct/execute-command ()
   "Execute shell command and capture outputs."
-  (let* ((default-directory (or (jh/git-root (buffer-file-name)) default-directory))
-          (rawcmds (mapconcat
-                     (lambda (line) (jh/re-replace "^\\s*\\(#\\|//\\|;;\\|--\\|rem\\)\\s*" "" line))
-                     (ct/command-lines) "\n"))
-          (commands (if (jh/windows?) (jh/trim rawcmds) rawcmds)))
+  (let*
+    ((default-directory
+       (or (jh/git-root (buffer-file-name)) default-directory))
+      (fn
+        #'(lambda (line) (jh/re-replace "^\s*\\(#\\|//\\|;;\\|--\\|rem\\)\s*" "" line)))
+      (rawcmds
+        (mapconcat fn (ct/command-lines) "\n"))
+      (commands
+        (if (jh/windows?) (jh/trim rawcmds) rawcmds)))
     (shell-command-to-string commands)))
 
 (defun ct/insert-output (str)

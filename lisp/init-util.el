@@ -108,7 +108,7 @@
 
 (defun jh/unblank (str)
   "Remove spaces and tabs in STR."
-  (and str (jh/re-replace "\\s*" "" str)))
+  (and str (jh/re-replace "\s*" "" str)))
 
 (defun jh/concat-lines (&rest lines)
   "Concatenate lines to a single string."

@@ -59,10 +59,10 @@
   "Return current filetype"
   (let
     ((lookup
-        (remove-if-not
-          #'(lambda (e)
-              (string-match-p (concat (cdr e) "$") file))
-          ng/filetype-suffix-alist)))
+       (remove-if-not
+         #'(lambda (e)
+             (string-match-p (concat (cdr e) "$") file))
+         ng/filetype-suffix-alist)))
     (and lookup (caar lookup))))
 
 (defun ng/find-alternative-file (filetype)
@@ -126,35 +126,110 @@
 ;; |_| /_/   \_\_| \_\____/|_____|_| \_\  for Typescript
 ;; -----------------------------------------------------------------------------
 
-(defun ng/parse-typescript-frontinfo (text)
+(defun ng/parse-ts-frontinfo (text)
   "Parse javascript front info. like `export class ClassName ...' "
   (let
     ((params (make-hash-table :test 'equal))
       (regexp
         (concat
-          "^export\\s+class\\s+"
-          "\\([_A-Za-z][_A-Za-z0-9]*\\)\\s*"
-          "\\(implements\\|\\)\\s*"
-          "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\\s*"
+          "^export\s+class\s+"
+          "\\([_A-Za-z][_A-Za-z0-9]*\\)\s+"
+          "\\(implements\\|\\)\s*"
+          "\\([_A-Za-z][_A-Za-z0-9, ]*\\|\\)\s*"
           "{"))
       (addr 0))
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
         (and
-          (puthash 'visibility (match-string 1 text) params)
-          (setq flag1 (match-string 2 text)) ;; class or interface
-          (setq flag2 (match-string 4 text)) ;; extends or implements
-          (cond
-            ((string= flag1 "class")
-              (puthash 'clzname (match-string 3 text) params))
-            ((string= flag1 "interface")
-              (puthash 'ifacename (match-string 3 text) params)))
-          (cond
-            ((string= flag2 "extends")
-              (puthash 'supername (match-string 5 text) params))
-            ((string= flag2 "implements")
-              (puthash 'implname (match-string 5 text) params))))))
+          (let
+            ((str1 (match-string 1 text))
+              (str2 (match-string 2 text))
+              (str3 (match-string 3 text)))
+            (puthash 'clzname str1 params)
+            (and (string= str2 "implements")
+              (puthash 'implname
+                (mapcar 'jh/trim (split-string str3 ",")) params))))))
     params))
+
+(defun ng/parse-ts-class-methods (text)
+  "Parse typescript class methods. like `public funcName(...) : rettype {' "
+  (let
+    ((regexp
+       (concat
+         "^  \\(public\\|private\\)\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)\s*"
+         "(\\([^;{]*\\))\s*"
+         "\\(:[^{]+\\|\\)"
+         "{$"))
+      (regexp2
+        (concat
+          "^  \\(ng[_A-Za-z]+\\|constructor\\)\s*"
+          "(\\([^;{]*\\))\s*"
+          "{"))
+      (addr 0)
+      (methods))
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp text addr))
+        (and addr
+          ;; add a new method
+          (let
+            ((method (make-hash-table :test 'equal :size 10))
+              (str1 (match-string 1 text))
+              (str2 (match-string 2 text))
+              (str3 (match-string 3 text))
+              (str4 (match-string 4 text)))
+            ;; put value
+            (puthash 'visibility str1 method)
+            (puthash 'funcname str2 method)
+            (puthash 'args (jh/strip str3) method)
+            (puthash 'return (jh/strip (jh/re-replace "^:" "" str4)) method)
+            (puthash 'addr addr method)
+            ;; append method to list
+            (add-to-list 'methods method t))
+          ;; next
+          (setq addr (+ addr 1)))))
+    (setq addr 0)
+    (while addr
+      (save-match-data
+        (setq addr (string-match regexp2 text addr))
+        (and addr
+          ;; add a new method
+          (let
+            ((method (make-hash-table :test 'equal :size 10))
+              (str1 (match-string 1 text))
+              (str2 (match-string 2 text)))
+            ;; put value
+            (puthash 'funcname str1 method)
+            (puthash 'args (jh/strip str2) method)
+            (puthash 'addr addr method)
+            ;; append method to list
+            (add-to-list 'methods method t))
+          ;; next
+          (setq addr (+ addr 1)))))
+    methods))
+
+(defun ng/parse-ts-meta (text)
+  "Parse typescript class meta info to hashtable."
+  (let
+    ((metainfo (ng/parse-ts-frontinfo text)))
+    ;; parse class methods
+    (puthash 'methods (ng/parse-ts-class-methods text) metainfo)
+    metainfo))
+
+(defun ng/current-method-name ()
+  "Find current class method, the method name near cursor."
+  (let*
+    ((methods
+       (sort
+         (ng/parse-ts-class-methods (jh/current-buffer))
+         #'(lambda (a b) (< (gethash 'addr a) (gethash 'addr b)))))
+      (current-point (point))
+      (lookup
+        (remove-if
+          #'(lambda (method) (<= current-point (gethash 'addr method)))
+          methods)))
+    (and lookup (gethash 'funcname (car (last lookup))))))
 
 (provide 'init-angular)

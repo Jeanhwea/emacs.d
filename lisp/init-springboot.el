@@ -516,11 +516,11 @@
     ((params (make-hash-table :test 'equal))
       (regexp
         (concat
-          "^\\(\\|public\\|private\\)\\s*"
-          "\\(class\\|interface\\)\\s*"
-          "\\([_A-Za-z][_A-Za-z0-9]*\\)\\s*"
-          "\\(extends\\|implements\\|\\)\\s*"
-          "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\\s*"
+          "^\\(\\|public\\|private\\)\s*"
+          "\\(class\\|interface\\)\s*"
+          "\\([_A-Za-z][_A-Za-z0-9]*\\)\s*"
+          "\\(extends\\|implements\\|\\)\s*"
+          "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\s*"
           "{$"))
       (addr 0))
     (save-match-data
@@ -545,7 +545,7 @@
 (defun spt/parse-java-imports (text)
   "Parse java imports, like `import com.example.ClassName;' "
   (let
-    ((regexp "^import \\(static\\|\\)\\s*\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$")
+    ((regexp "^import \\(static\\|\\)\s*\\([^;]*\\)\\.\\([_A-Za-z0-9]*\\);$")
       (addr 0)
       (imports))
     (while addr
@@ -572,12 +572,12 @@
   (let
     ((regexp
        (concat
-         "^  \\(public\\|private\\|protected\\)\\s*"
-         "\\(static\\|\\)\\s*"
-         "\\(final\\|\\)\\s*"
-         "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)\\s*"
+         "^  \\(public\\|private\\|protected\\)\s*"
+         "\\(static\\|\\)\s*"
+         "\\(final\\|\\)\s*"
+         "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)\s*"
          "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
-         "\\( =\\|;\\)\\s*"))
+         "\\( =\\|;\\)\s*"))
       (addr 0)
       (fields))
     (while addr
@@ -610,13 +610,13 @@
   (let
     ((regexp
        (concat
-         "^  \\(public\\|private\\|protected\\)\\s*"
-         "\\(static\\|\\)\\s*"
+         "^  \\(public\\|private\\|protected\\)\s*"
+         "\\(static\\|\\)\s*"
          "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-         "\\([_A-Za-z][_A-Za-z0-9]*\\)\\s*"
-         "(\\([^;{]*\\))\\s*"
-         "\\(throws\\|\\)\\s*"
-         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)\s*"
+         "(\\([^;{]*\\))\s*"
+         "\\(throws\\|\\)\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\s*"
          "\\( {\\|;\\)$"))
       (addr 0)
       (methods))
@@ -652,7 +652,7 @@
        (concat
          "^  \\(public \\|\\)"
          "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-         "\\([_A-Za-z][_A-Za-z0-9]*\\)\\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)\s*"
          "(\\([^;{]*\\));$"))
       (addr 0)
       (methods))
@@ -711,13 +711,13 @@
     ((regexp
        (concat
          "^  @Override[ \t\n]*"
-         "\\(public\\|private\\|protected\\)\\s*"
-         "\\(static\\|\\)\\s*"
+         "\\(public\\|private\\|protected\\)\s*"
+         "\\(static\\|\\)\s*"
          "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-         "\\([_A-Za-z][_A-Za-z0-9]*\\)\\s*"
-         "(\\([^;{]*\\))\\s*"
-         "\\(throws\\|\\)\\s*"
-         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)\s*"
+         "(\\([^;{]*\\))\s*"
+         "\\(throws\\|\\)\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\s*"
          "\\( {\\|;\\)$"))
       (addr 0)
       (methods))
@@ -752,13 +752,13 @@
     ((regexp
        (concat
          "^  @\\(Test\\|Test([^)]*)\\)[ \t\n]*"
-         "public \\s*"
-         "\\(static\\|\\)\\s*"
+         "public \s*"
+         "\\(static\\|\\)\s*"
          "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\|\\)"
-         "\\([_A-Za-z][_A-Za-z0-9]*\\)\\s*"
-         "(\\([^;{]*\\))\\s*"
-         "\\(throws\\|\\)\\s*"
-         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)\s*"
+         "(\\([^;{]*\\))\s*"
+         "\\(throws\\|\\)\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\s*"
          "\\( {\\|;\\)$"))
       (addr 0)
       (methods))
@@ -806,9 +806,9 @@
        (concat
          "^  @\\(Get\\|Post\\|Put\\|Delete\\)Mapping"
          "([ \t\n]*\\(value = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
-         "public \\(static\\|\\)\\s*"
+         "public \\(static\\|\\)\s*"
          "\\([_A-Za-z][ ,<>_A-Za-z0-9]* \\|[_A-Za-z][_A-Za-z0-9 ]*\\[\\] \\)"
-         "\\([_A-Za-z][_A-Za-z0-9]*\\)\\s*"
+         "\\([_A-Za-z][_A-Za-z0-9]*\\)\s*"
          "(\\([^;{]*\\)) {$"))
       (addr 0)
       (suffixes))
@@ -849,7 +849,7 @@
 (defun spt/read-entity-tabname (text)
   "Read entity table name. like `@Table(...)' "
   (let
-    ((regexp "^@Table(\\(name = \\|\\)\"\\([^\"]*\\)\"[^)]*)\\s*$")
+    ((regexp "^@Table(\\(name = \\|\\)\"\\([^\"]*\\)\"[^)]*)\s*$")
       (addr 0)
       (tabname))
     (save-match-data
@@ -865,12 +865,12 @@
        (concat
          "^  @\\(JoinColumn\\|Column\\)"
          "(\\(name = \\|\\)\"\\([^\"]*\\)[^)]*)[ \t\n]*"
-         "\\(public\\|private\\|protected\\)\\s*"
-         "\\(static\\|\\)\\s*"
-         "\\(final\\|\\)\\s*"
-         "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)\\s*"
+         "\\(public\\|private\\|protected\\)\s*"
+         "\\(static\\|\\)\s*"
+         "\\(final\\|\\)\s*"
+         "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)\s*"
          "\\([_a-zA-Z0-9]+\\|[_a-zA-Z0-9]+\\[\\]\\)"
-         "\\( =\\|;\\)\\s*"))
+         "\\( =\\|;\\)\s*"))
       (addr 0)
       (colinfos))
     (while addr
