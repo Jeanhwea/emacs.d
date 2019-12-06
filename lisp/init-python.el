@@ -1,13 +1,13 @@
 (add-hook 'python-mode-hook
-  (lambda ()
-    (when (and (when (require 'ggtags)) (derived-mode-p 'python-mode))
-      (ggtags-mode 1))
-    (setq
-      show-trailing-whitespace t
-      indent-tabs-mode nil
-      tab-width 2
-      python-indent-offset 2
-      prettify-symbols-alist
+  #'(lambda ()
+      (when (and (when (require 'ggtags)) (derived-mode-p 'python-mode))
+        (ggtags-mode 1))
+      (setq
+        show-trailing-whitespace t
+        indent-tabs-mode nil
+        tab-width 2
+        python-indent-offset 2
+        prettify-symbols-alist
         (append prettify-symbols-alist
           '(
              ;; ----------------------------------------------------------------
@@ -47,21 +47,19 @@
              ("issubset" . 8834)        ; ⊂
              ;; ----------------------------------------------------------------
              )))
-    (hl-line-mode 1)
-    (rainbow-delimiters-mode 1)
-    (highlight-indent-guides-mode 1)
-    ;; string-inflection
-    (local-set-key (kbd "M-i") 'string-inflection-python-style-cycle)
-    (hs-minor-mode 1)
-    (local-set-key (kbd "C-c h") 'hs-toggle-hiding)
-    (when (require 'elpy)
-      ;; pip install jedi flake8 autopep8 rope
-      (delete 'elpy-module-highlight-indentation elpy-modules)
-      (elpy-mode 1)
-      (elpy-enable)
-      (when (executable-find "python3")
-        (setq elpy-rpc-python-command "python3"))
-      (local-set-key (kbd "M-.") 'elpy-goto-definition))))
+      (hl-line-mode 1)
+      (rainbow-delimiters-mode 1)
+      (highlight-indent-guides-mode 1)
+      ;; string-inflection
+      (local-set-key (kbd "M-i") 'string-inflection-python-style-cycle)
+      (when (require 'elpy)
+        ;; pip install jedi flake8 autopep8 rope
+        (delete 'elpy-module-highlight-indentation elpy-modules)
+        (elpy-mode 1)
+        (elpy-enable)
+        (when (executable-find "python3")
+          (setq elpy-rpc-python-command "python3"))
+        (local-set-key (kbd "M-.") 'elpy-goto-definition))))
 
 (when (executable-find "python3")
   (setq

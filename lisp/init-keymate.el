@@ -53,6 +53,10 @@
   ;; Narrow & Widen
   (define-key leader/f2 (kbd "n") #'narrow-to-region)
   (define-key leader/f2 (kbd "w") #'widen)
+  ;; hide and show
+  (define-key leader/f2 (kbd "h") #'hs-toggle-hiding)
+  (define-key leader/f2 (kbd "1") #'hs-hide-all)
+  (define-key leader/f2 (kbd "0") #'hs-show-all)
   ;; Undotree
   (define-key leader/f2 (kbd "u") #'undo-tree-visualize)
   ;; Search global

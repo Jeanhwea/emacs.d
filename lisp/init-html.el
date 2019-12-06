@@ -18,9 +18,7 @@
         "<!--\\|<[^/>]*[^/]>"
         "-->\\|</[^/>]*[^/]>"
         "<!--"
-        'sgml-skip-tag-forward nil))
-    (hs-minor-mode 1)
-    (local-set-key (kbd "C-c h") 'hs-toggle-hiding)))
+        'sgml-skip-tag-forward nil))))
 
 
 ;; -------------------------------------------------------------------------

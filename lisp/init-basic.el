@@ -39,6 +39,7 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+(hs-minor-mode 1)
 ;; (linum-mode 1)
 
 ;; (nyan-mode 1)

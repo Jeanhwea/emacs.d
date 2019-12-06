@@ -67,9 +67,7 @@
     (local-set-key (kbd "C-c C-r") 'js-comint-send-region)
     (local-set-key (kbd "C-c C-b") 'js-comint-send-buffer)
     ;; string-inflection
-    (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)
-    (hs-minor-mode 1)
-    (local-set-key (kbd "C-c h") 'hs-toggle-hiding)))
+    (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)))
 
 
 (when (require 'js-comint)
