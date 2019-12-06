@@ -3,10 +3,15 @@
 ;; -----------------------------------------------------------------------------
 (defun jh/windows? ()
   "test if system-type is windows?"
-  (string= "windows-nt" system-type))
+  (equal 'windows-nt system-type))
+
 (defun jh/mac? ()
   "test if system-type is mac?"
-  (string= "darwin" system-type))
+  (equal 'darwin system-type))
+
+(defun jh/linux? ()
+  "test if system-type is linux?"
+  (equal 'gnu/linux system-type))
 
 ;; -----------------------------------------------------------------------------
 ;; String, convert shape

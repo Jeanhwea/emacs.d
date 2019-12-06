@@ -66,13 +66,13 @@
 (setq-default
   recentf-max-saved-items 1000
   recentf-exclude
-    '("/.emacs.d/elfeed/*"
-      "/.emacs.d/elpa/*"
-      "/.emacs.d/ido.last"
-      "/.emacs.d/bookmarks"
-      "/agenda/"
-      "/tmp/"
-      "/ssh:"))
+  '("/.emacs.d/elfeed/*"
+     "/.emacs.d/elpa/*"
+     "/.emacs.d/ido.last"
+     "/.emacs.d/bookmarks"
+     "/agenda/"
+     "/tmp/"
+     "/ssh:"))
 (recentf-mode 1)
 
 ;; -----------------------------------------------------------------------------
@@ -124,6 +124,18 @@
 ;; -----------------------------------------------------------------------------
 (when (file-directory-p (expand-file-name "site-lisp/howdoi" user-emacs-directory))
   (require 'howdoi))
+
+;; -----------------------------------------------------------------------------
+;; chinese pinyin input method
+;; git clone https://github.com/wenbinye/emacs-eim.git ~/.emacs.d/site-lisp/emacs-emi
+;; -----------------------------------------------------------------------------
+(when (jh/linux?)
+  (autoload 'eim-use-package "eim" "Another emacs input method")
+  ;; Tooltip 暂时还不好用
+  (setq eim-use-tooltip nil)
+  (register-input-method
+    "eim-py" "euc-cn" 'eim-use-package
+    "拼音" "汉字拼音输入法" "py.txt"))
 
 ;; -----------------------------------------------------------------------------
 ;; font
