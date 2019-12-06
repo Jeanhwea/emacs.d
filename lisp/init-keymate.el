@@ -6,9 +6,10 @@
 ;; |_|  |_| |_| |_|\_\___|\__, |
 ;;                        |___/
 ;; -----------------------------------------------------------------------------
+(global-set-key (kbd "M-;") 'repeat)
 
 ;; -----------------------------------------------------------------------------
-;; F1: File, Window, Frame
+;; f1: file, window, Frame
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f1)
@@ -106,6 +107,7 @@
   (define-key leader/f0 (kbd "c") #'magit-commit)
   (define-key leader/f0 (kbd "l") #'magit-log)
   (define-key leader/f0 (kbd "L") #'magit-log-all)
+  (define-key leader/f0 (kbd "@") #'magit-log-buffer-file)
   (define-key leader/f0 (kbd "p") #'magit-push)
   (define-key leader/f0 (kbd "f") #'magit-fetch)
   (define-key leader/f0 (kbd "m") #'magit-merge)
