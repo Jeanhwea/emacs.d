@@ -39,7 +39,6 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(hs-minor-mode 1)
 ;; (linum-mode 1)
 
 ;; (nyan-mode 1)
@@ -48,6 +47,15 @@
 ;; (global-hl-line-mode 1)
 (global-prettify-symbols-mode 1)
 
+;; hideshow mode
+(add-hook 'c-mode-common-hook 'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+(add-hook 'java-mode-hook 'hs-minor-mode)
+(add-hook 'lisp-mode-hook 'hs-minor-mode)
+(add-hook 'perl-mode-hook 'hs-minor-mode)
+(add-hook 'sh-mode-hook 'hs-minor-mode)
+(add-hook 'mhtml-mode-hook 'hs-minor-mode)
+(add-hook 'python-mode-hook 'hs-minor-mode)
 
 ;; -----------------------------------------------------------------------------
 ;; misc option
