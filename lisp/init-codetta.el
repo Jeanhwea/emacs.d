@@ -28,7 +28,7 @@
   "Execute shell command and capture outputs."
   (let* ((default-directory (or (jh/git-root (buffer-file-name)) default-directory))
           (rawcmds (mapconcat
-                     (lambda (line) (jh/re-replace "^[ \t]*\\(#\\|//\\|;;\\|--\\|rem\\)[ \t]*" "" line))
+                     (lambda (line) (jh/re-replace "^\\s*\\(#\\|//\\|;;\\|--\\|rem\\)\\s*" "" line))
                      (ct/command-lines) "\n"))
           (commands (if (jh/windows?) (jh/trim rawcmds) rawcmds)))
     (shell-command-to-string commands)))

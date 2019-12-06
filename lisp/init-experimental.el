@@ -106,7 +106,7 @@
 
   (defun jh/iterm2-maybe-remove-blank-lines (lines)
     "Maybe remove blank lines."
-    (remove-if (lambda (line) (string-match-p "^[ \t]*$" line)) lines))
+    (remove-if (lambda (line) (string-match-p "^\\s*$" line)) lines))
 
   (defun jh/iterm2-write-line (line)
     "write line statement."

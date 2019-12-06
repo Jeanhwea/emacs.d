@@ -1,13 +1,4 @@
 ;; -----------------------------------------------------------------------------
-;;     _                      _
-;;    / \   _ __   __ _ _   _| | __ _ _ __
-;;   / △ \ | '_ \ / _` | | | | |/ _` | '__|
-;;  / ___ \| | | | (_| | |_| | | (_| | |
-;; /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|
-;;                |___/
-;; -----------------------------------------------------------------------------
-
-;; -----------------------------------------------------------------------------
 ;;  __  __      _        ___        __
 ;; |  \/  | ___| |_ __ _|_ _|_ __  / _| ___
 ;; | |\/| |/ _ \ __/ _` || || '_ \| |_ / _ \
@@ -126,5 +117,44 @@
     (progn
       (find-file file)
       (message (concat "Opened " file)))))
+
+;; -----------------------------------------------------------------------------
+;;  ____   _    ____  ____  _____ ____
+;; |  _ \ / \  |  _ \/ ___|| ____|  _ \
+;; | |_) / _ \ | |_) \___ \|  _| | |_) |
+;; |  __/ ___ \|  _ < ___) | |___|  _ <
+;; |_| /_/   \_\_| \_\____/|_____|_| \_\  for Typescript
+;; -----------------------------------------------------------------------------
+
+(defun ng/parse-typescript-frontinfo (text)
+  "Parse javascript front info. like `export class ClassName ...' "
+  (let
+    ((params (make-hash-table :test 'equal))
+      (regexp
+        (concat
+          "^export\\s+class\\s+"
+          "\\([_A-Za-z][_A-Za-z0-9]*\\)\\s*"
+          "\\(implements\\|\\)\\s*"
+          "\\([_A-Za-z][_A-Za-z0-9]*\\|\\)\\s*"
+          "{"))
+      (addr 0))
+    (save-match-data
+      (setq addr (string-match regexp text addr))
+      (and addr
+        (and
+          (puthash 'visibility (match-string 1 text) params)
+          (setq flag1 (match-string 2 text)) ;; class or interface
+          (setq flag2 (match-string 4 text)) ;; extends or implements
+          (cond
+            ((string= flag1 "class")
+              (puthash 'clzname (match-string 3 text) params))
+            ((string= flag1 "interface")
+              (puthash 'ifacename (match-string 3 text) params)))
+          (cond
+            ((string= flag2 "extends")
+              (puthash 'supername (match-string 5 text) params))
+            ((string= flag2 "implements")
+              (puthash 'implname (match-string 5 text) params))))))
+    params))
 
 (provide 'init-angular)
