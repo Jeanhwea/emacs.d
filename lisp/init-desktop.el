@@ -188,7 +188,7 @@
   '((100 . 100) (90 . 50) (80 . 50) (70 . 50))
   "Transparency list")
 
-(defun jh/cycle-alpha-value ()
+(defun jh/cycle-transparency ()
   "Cycling frame transparency."
   (interactive)
   (let*
