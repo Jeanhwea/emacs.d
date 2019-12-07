@@ -188,8 +188,8 @@
   '((100 . 100) (90 . 50) (80 . 50) (70 . 50))
   "Transparency list")
 
-(defun jh/toggle-transparency ()
-  "Toggle frame transparency."
+(defun jh/cycle-alpha-value ()
+  "Cycling frame transparency."
   (interactive)
   (let*
     ((alpha (frame-parameter nil 'alpha))
