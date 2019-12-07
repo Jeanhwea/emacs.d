@@ -18,7 +18,7 @@
   (define-key leader/f1 (kbd "1") #'delete-other-windows)
   (define-key leader/f1 (kbd "2") #'split-window-below)
   (define-key leader/f1 (kbd "3") #'split-window-right)
-  (define-key leader/f1 (kbd "F") #'toggle-frame-fullscreen)
+  (define-key leader/f1 (kbd "M-f") #'toggle-frame-fullscreen)
   (define-key leader/f1 (kbd "q") #'save-buffers-kill-terminal)
   ;; Frame
   (define-key leader/f1 (kbd "5") #'make-frame-command)
@@ -35,7 +35,7 @@
   (define-key leader/f1 (kbd "r") #'counsel-recentf)
   (define-key leader/f1 (kbd "b") #'ivy-switch-buffer)
   (define-key leader/f1 (kbd "m") #'counsel-bookmark)
-  (define-key leader/f1 (kbd "M") #'workflow-bookmark-current-file)
+  (define-key leader/f1 (kbd "M-m") #'workflow-bookmark-current-file)
   (define-key leader/f1 (kbd "a") #'workflow-swap-alternative-buffer)
   ;; highlight symbol
   (define-key leader/f1 (kbd "h") #'workflow-highlight-symbol)
@@ -67,9 +67,9 @@
   (define-key leader/f2 (kbd "s") #'ag)
   ;; Replace, regular eXpression replace
   (define-key leader/f2 (kbd "r") #'workflow-replace)
-  (define-key leader/f2 (kbd "R") #'projectile-replace)
+  (define-key leader/f2 (kbd "M-r") #'projectile-replace)
   (define-key leader/f2 (kbd "x") #'query-replace-regexp)
-  (define-key leader/f2 (kbd "X") #'projectile-replace-regexp)
+  (define-key leader/f2 (kbd "M-x") #'projectile-replace-regexp)
   ;; Line-wise Editting
   (define-key leader/f2 (kbd "j") #'jh/joinline)
   (define-key leader/f2 (kbd "n") #'jh/shiftdown-line)
@@ -91,7 +91,7 @@
   (define-prefix-command 'leader/f9)
   ;; Color theme
   (define-key leader/f9 (kbd "t") #'jh/cycle-color-theme)
-  (define-key leader/f9 (kbd "T") #'jh/toggle-transparency)
+  (define-key leader/f9 (kbd "M-t") #'jh/toggle-transparency)
   ;;
   (define-key leader/f9 (kbd "c") 'ct/expand-command)
   (define-key leader/f9 (kbd "d") 'workflow-drop-file)
@@ -111,7 +111,7 @@
   (define-key leader/f0 (kbd "b") #'magit-blame)
   (define-key leader/f0 (kbd "c") #'magit-commit)
   (define-key leader/f0 (kbd "l") #'magit-log)
-  (define-key leader/f0 (kbd "L") #'magit-log-all)
+  (define-key leader/f0 (kbd "M-l") #'magit-log-all)
   (define-key leader/f0 (kbd "@") #'magit-log-buffer-file)
   (define-key leader/f0 (kbd "p") #'magit-push)
   (define-key leader/f0 (kbd "f") #'magit-fetch)
@@ -119,14 +119,14 @@
   ;; smerge
   (define-key leader/f0 (kbd "<left>") #'smerge-prev)
   (define-key leader/f0 (kbd "<right>") #'smerge-next)
-  (define-key leader/f0 (kbd "<ret>") #'smerge-keep-current)
+  (define-key leader/f0 (kbd "<return>") #'smerge-keep-current)
   (define-key leader/f0 (kbd "1") #'smerge-keep-mine)
   (define-key leader/f0 (kbd "2") #'smerge-keep-other)
   (define-key leader/f0 (kbd "3") #'smerge-keep-all)
   ;; open remote url
   (define-key leader/f0 (kbd "o") #'browse-at-remote))
 (global-set-key (kbd "<f10>") 'leader/f0)
-(global-set-key (kbd "M-0") 'leader/f0)
+(global-set-key (kbd "M-o") 'leader/f0)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: Fast editing
@@ -160,7 +160,7 @@
   (define-prefix-command 'leader/f12)
   ;; Unit test
   (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
-  (define-key leader/f12 (kbd "U") 'spt/run-test-class-command)
+  (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
   ;; Project starter
   (define-key leader/f12 (kbd "c") #'projectile-compile-project)
   (define-key leader/f12 (kbd "r") #'projectile-run-project)
