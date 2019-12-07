@@ -184,17 +184,22 @@
 ;; -----------------------------------------------------------------------------
 ;; transparency
 ;; -----------------------------------------------------------------------------
+(defvar jh/transparency-alist
+  '((100 . 100) (90 . 50) (80 . 50) (70 . 50))
+  "Transparency list")
+
 (defun jh/toggle-transparency ()
   "Toggle frame transparency."
   (interactive)
-  (let ((alpha (frame-parameter nil 'alpha)))
-    (set-frame-parameter
-      nil 'alpha
-      (if (eql (cond
-                 ((numberp alpha) alpha)
-                 ((numberp (cdr alpha)) (cdr alpha))
-                 ((numberp (cadr alpha)) (cadr alpha)))
-            100)
-        '(85 . 50) '(100 . 100)))))
+  (let*
+    ((alpha (frame-parameter nil 'alpha))
+      (value (or (and alpha (car alpha)) 100))
+      (lookup
+        (member-if
+          #'(lambda (e) (= (car e) value)) jh/transparency-alist))
+      (next
+        (if (> (length lookup) 1)
+          (cadr lookup) (car jh/transparency-alist))))
+    (set-frame-parameter nil 'alpha next)))
 
 (provide 'init-desktop)

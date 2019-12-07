@@ -126,7 +126,7 @@
   ;; open remote url
   (define-key leader/f0 (kbd "o") #'browse-at-remote))
 (global-set-key (kbd "<f10>") 'leader/f0)
-(global-set-key (kbd "M-o") 'leader/f0)
+(global-set-key (kbd "M-0") 'leader/f0)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: Fast editing
