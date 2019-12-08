@@ -26,8 +26,9 @@
   ;; File create & save
   (define-key leader/f1 (kbd "n") #'workflow-new-buffer)
   (define-key leader/f1 (kbd "R") #'toggle-read-only)
-  (define-key leader/f1 (kbd "s") #'workflow-save-buffers)
   (define-key leader/f1 (kbd "k") #'kill-buffer)
+  (define-key leader/f1 (kbd "s") #'workflow-save-buffers)
+  (define-key leader/f1 (kbd "d") #'workflow-delete-file)
   ;; File access
   (define-key leader/f1 (kbd "g") #'counsel-git)
   (define-key leader/f1 (kbd "f") #'counsel-find-file)
