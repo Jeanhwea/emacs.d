@@ -65,6 +65,10 @@
 ;; Variables
 ;; -----------------------------------------------------------------------------
 
+;; pagenation control
+(defvar jh/db-page-size 200 "Data page size")
+
+
 ;; datatypes
 (defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
   "Oracle string datatype list")
@@ -77,8 +81,7 @@
 (defvar jh/oracle-fsep "$ep" "Oracle field separator")
 (defvar jh/oracle-lpre ":) " "Oracle line prefix")
 
-;; parameter
-(defvar jh/oracle-row-limit 200 "Oracle row limit")
+
 
 ;; -----------------------------------------------------------------------------
 ;;
@@ -134,25 +137,31 @@
       "  FROM USER_TAB_COLUMNS utbc"
       (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
 
+(defun jh/oracle-gen-select-columns (colinfos &optional fsep)
+  "Generate oracle select columns string."
+  (let
+    ((trfn #'(lambda (colinfo) (format "  %s" (car colinfo))))
+      (fsep (or fsep ",\n")))
+    (mapconcat trfn colinfos fsep)))
+
 (defun jh/oracle-gen-where-condition (&optional where)
   "Generate oracle where condition for select query."
   (if where
-    ;; todo
-    "1 = 1"
-    (format "ROWNUM <= %d" jh/oracle-row-limit)))
+    (let*
+      ((ps jh/db-page-size)
+        (pn (or (gethash 'pageNumber where) 1))
+        (rmin (* (- pn 1) ps))
+        (rmax (* pn ps))
+        (pageStr (format "ROWNUM > %d AND ROWNUM <= %d" rmin rmax)))
+      pageStr)
+    (format "ROWNUM <= %d" jh/db-page-size)))
 
 (defun jh/oracle-gen-select-query (tabname colinfos)
   "Generate SELECT query."
-  (let*
-    ((fsep ",\n")
-      (colstr
-        (mapconcat
-          #'(lambda (colinfo) (format "  %s" (car colinfo)))
-          colinfos fsep)))
-    (jh/concat-lines
-      "SELECT" colstr
-      (format "FROM %s" tabname)
-      (format "WHERE %s;" (jh/oracle-gen-where-condition)))))
+  (jh/concat-lines "SELECT"
+    (jh/oracle-gen-select-columns colinfos)
+    (format "FROM %s" tabname)
+    (format "WHERE %s;" (jh/oracle-gen-where-condition))))
 
 ;; -----------------------------------------------------------------------------
 ;;

@@ -24,7 +24,7 @@
         (read-string (format "Replace %s with: " old-text)
           old-text)))
     (progn
-      (backward-word)
+      (beginning-of-line)
       (query-replace old-text new-text))))
 
 (defvar wf/project-type-alist
