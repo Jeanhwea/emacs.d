@@ -68,7 +68,6 @@
 ;; pagenation control
 (defvar jh/db-page-size 200 "Data page size")
 
-
 ;; datatypes
 (defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
   "Oracle string datatype list")
@@ -152,8 +151,8 @@
         (pn (or (gethash 'pageNumber where) 1))
         (rmin (* (- pn 1) ps))
         (rmax (* pn ps))
-        (pageStr (format "ROWNUM > %d AND ROWNUM <= %d" rmin rmax)))
-      pageStr)
+        (pagenation (format "ROWNUM > %d AND ROWNUM <= %d" rmin rmax)))
+      pagenation)
     (format "ROWNUM <= %d" jh/db-page-size)))
 
 (defun jh/oracle-gen-select-query (tabname colinfos)
