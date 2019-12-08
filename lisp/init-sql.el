@@ -66,7 +66,7 @@
 ;; -----------------------------------------------------------------------------
 
 ;; pagenation control
-(defvar jh/db-page-size 200 "Data page size")
+(defvar jh/db-page-size 200 "Database output result set page size")
 
 ;; datatypes
 (defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
