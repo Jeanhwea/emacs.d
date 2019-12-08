@@ -45,6 +45,7 @@
 (global-set-key (kbd "<f1>") 'leader/f1)
 (global-set-key (kbd "M-1") 'leader/f1)
 (global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "M-s") 'workflow-save-buffers)
 
 ;; -----------------------------------------------------------------------------
 ;; F2: Edit
