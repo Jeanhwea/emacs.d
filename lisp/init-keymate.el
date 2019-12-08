@@ -25,7 +25,7 @@
   (define-key leader/f1 (kbd "6") #'delete-frame)
   ;; File create & save
   (define-key leader/f1 (kbd "n") #'workflow-new-buffer)
-  (define-key leader/f1 (kbd "R") #'toggle-read-only)
+  (define-key leader/f1 (kbd "l") #'toggle-read-only)
   (define-key leader/f1 (kbd "k") #'kill-buffer)
   (define-key leader/f1 (kbd "s") #'workflow-save-buffers)
   (define-key leader/f1 (kbd "d") #'workflow-delete-file)
