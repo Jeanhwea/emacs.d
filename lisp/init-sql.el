@@ -132,14 +132,25 @@
       "  FROM USER_TAB_COLUMNS utbc"
       (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
 
-(defun jh/oracle-gen-select-query (tabname colinfos &optional limit)
+(defun jh/oracle-gen-where-condition (&optional where)
+  "Generate oracle where condition for select query."
+  (if where
+    ;; todo
+    "1 = 1"
+    (format "ROWNUM <= %d" jh/oracle-row-limit)))
+
+(defun jh/oracle-gen-select-query (tabname colinfos)
   "Generate SELECT query."
-  (let ((limit (or limit jh/oracle-row-limit)) (fsep ",\n"))
+  (let*
+    ((fsep ",\n")
+      (colstr
+        (mapconcat
+          #'(lambda (colinfo) (format "  %s" (car colinfo)))
+          colinfos fsep)))
     (jh/concat-lines
-      "SELECT"
-      (mapconcat #'(lambda (colinfo) (format "  %s" (car colinfo))) colinfos fsep)
-      "FROM" (format "  %s" tabname)
-      "WHERE" (format "  ROWNUM < %d;" limit))))
+      "SELECT" colstr
+      (format "FROM %s" tabname)
+      (format "WHERE %s;" (jh/oracle-gen-where-condition)))))
 
 ;; -----------------------------------------------------------------------------
 ;;
@@ -165,18 +176,20 @@
           colname jh/oracle-nsep))
       (t (format "t.%s" colname)))))
 
-(defun jh/oracle-gen-uniform-select-query (tabname colinfos &optional limit)
+(defun jh/oracle-gen-uniform-select-query (tabname colinfos)
   "generate SELECT query with uniformed column select string."
-  (let ((limit (or limit jh/oracle-row-limit)))
+  (let
+    ((colstr
+       (mapconcat
+         #'(lambda (colinfo)
+             (format "  %s" (jh/oracle-uniform-column colinfo)))
+         colinfos (format "||'%s'||\n" jh/oracle-fsep))))
     (jh/concat-lines
       (format "SELECT '%s'||" jh/oracle-lpre)
-      (mapconcat
-        #'(lambda (colinfo)
-            (format "  %s" (jh/oracle-uniform-column colinfo)))
-        colinfos (format "||'%s'||\n" jh/oracle-fsep))
-      "AS" "  CONTENT"
-      "FROM" (format "  %s t" tabname)
-      "WHERE" (format "  ROWNUM < %d;" limit))))
+      colstr
+      "AS CONTENT"
+      (format "FROM %s t" tabname)
+      (format "WHERE %s;" (jh/oracle-gen-where-condition)))))
 
 (defun jh/oracle-gen-uniform-count-query (tabname)
   "generate COUNT query."
