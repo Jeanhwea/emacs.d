@@ -32,11 +32,12 @@
 
 (defun jh/sql-execute (query)
   "Execute a query."
-  (let ((sqlbuf (sql-find-sqli-buffer))
-         (outbuf "*SQL RESULT SET*")
-         (result))
+  (let
+    ((sqlbuf (sql-find-sqli-buffer))
+      (outbuf "*SQL RESULT SET*")
+      (result))
     (unless sqlbuf
-      (user-error "No SQL interactive buffer found"))
+      (error "No SQL interactive buffer found"))
     (progn
       (switch-to-buffer outbuf)
       (sql-execute sqlbuf outbuf query nil nil)
@@ -46,8 +47,9 @@
 
 (defun jh/sql-escape-string (str)
   "Escape string in sql text."
-  (let* ((str (jh/re-replace "\\\\" "\\\\" str nil t))
-          (str (jh/re-replace "\"" "\\\"" str nil t)))
+  (let*
+    ((str (jh/re-replace "\\\\" "\\\\" str nil t))
+      (str (jh/re-replace "\"" "\\\"" str nil t)))
     str))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
