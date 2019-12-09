@@ -150,16 +150,16 @@
     (and (string-match-p "\\.\\(yml\\|csv\\)$" file)
       (progn
         (set
-          (make-local-variable 'where-condition)
+          (make-local-variable 'query-params)
           (make-hash-table :test 'equal))
-        (puthash 'page-number 1 where-condition)))))
+        (puthash 'page-number 1 query-params)))))
 
 (defun jh/oracle-gen-where-condition ()
   "Generate oracle where condition for select query."
-  (if (local-variable-p 'where-condition)
+  (if (local-variable-p 'query-params)
     (let*
       ((ps jh/database-pagesize)
-        (pn (or (gethash 'page-number where-condition) 1))
+        (pn (or (gethash 'page-number query-params) 1))
         (rmin (* (- pn 1) ps))
         (rmax (* pn ps))
         (pagenation (format "ROWNUM > %d AND ROWNUM <= %d" rmin rmax)))
@@ -440,11 +440,11 @@
 
 (defun jh/oracle-next-page-result-set (tabname)
   "Fetch oracle next page result set."
-  (or (local-variable-p 'where-condition)
+  (or (local-variable-p 'query-params)
     (jh/oracle-init-buffer-params))
   (let
-    ((pn (gethash 'page-number 'where-condition)))
-    (puthash 'page-number (+ pn 1) 'where-condition)
+    ((pn (gethash 'page-number 'query-params)))
+    (puthash 'page-number (+ pn 1) 'query-params)
     (jh/oracle-fetch-result-set)))
 
 (defun jh/oracle-fetch-result-count (tabname)
