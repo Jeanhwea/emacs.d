@@ -80,8 +80,6 @@
 (defvar jh/oracle-fsep "$ep" "Oracle field separator")
 (defvar jh/oracle-lpre ":) " "Oracle line prefix")
 
-
-
 ;; -----------------------------------------------------------------------------
 ;;
 ;; Query Generator
