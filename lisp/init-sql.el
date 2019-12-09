@@ -151,14 +151,11 @@
 
 (defun jh/oracle-init-buffer-params ()
   "Initialize local parameters."
-  (let
-    ((file (buffer-file-name)))
-    (and (string-match-p "\\.\\(yml\\|csv\\)$" file)
-      (progn
-        (set
-          (make-local-variable 'query-params)
-          (make-hash-table :test 'equal))
-        (puthash 'page-number 1 query-params)))))
+  (progn
+    (set
+      (make-local-variable 'query-params)
+      (make-hash-table :test 'equal))
+    (puthash 'page-number 1 query-params)))
 
 (defun jh/oracle-gen-where-condition ()
   "Generate oracle where condition for select query."
@@ -383,6 +380,19 @@
       (setq i (+ i 1)))
     res))
 
+(defun jh/oracle-update-yaml-result-set (tabname rows colinfos)
+  "Update yaml result set."
+  (progn
+    (switch-to-buffer (concat tabname ".yml"))
+    (or (eq major-mode 'yaml-mode) (yaml-mode))
+    (kill-region (point-min) (point-max))
+    ;; insert title
+    (insert (format "### Dump rows of %s ###" tabname))
+    ;; insert content
+    (insert (jh/oracle-yamlfy-result-set rows colinfos))
+    ;; go to the beigining
+    (goto-char (point-min))))
+
 ;; -----------------------------------------------------------------------------
 ;;
 ;; CSV
@@ -433,6 +443,18 @@
           (jh/oracle-csvfy-result-row row colinfos sep))))
     res))
 
+(defun jh/oracle-update-csv-result-set (tabname rows colinfos)
+  "Dump table row data."
+  (progn
+    (switch-to-buffer (concat tabname ".csv"))
+    (or (eq major-mode 'csv-mode) (csv-mode))
+    (kill-region (point-min) (point-max))
+    ;; csv content
+    (insert (jh/oracle-csvfy-result-set rows colinfos))
+    ;; (csv-align-fields t (point-min) (point-max))
+    ;; go to the beigining
+    (goto-char (point-min))))
+
 ;; -----------------------------------------------------------------------------
 ;;
 ;; Result Set Helper
@@ -456,15 +478,6 @@
             (string-match-p (concat "^" jh/oracle-lpre) line))
         (split-string (jh/sql-execute query) "\n")))))
 
-(defun jh/oracle-next-page-result-set (tabname)
-  "Fetch oracle next page result set."
-  (or (local-variable-p 'query-params)
-    (jh/oracle-init-buffer-params))
-  (let
-    ((pn (gethash 'page-number 'query-params)))
-    (puthash 'page-number (+ pn 1) 'query-params)
-    (jh/oracle-fetch-result-set)))
-
 (defun jh/oracle-fetch-result-count (tabname)
   "Fetch total count."
   (string-to-number
@@ -477,6 +490,23 @@
           (split-string
             (jh/sql-execute
               (jh/oracle-gen-uniform-count-query tabname)) "\n"))))))
+
+(defun jh/oracle-fetch-result-set-pagination (tabname action)
+  "Return a result set according to action."
+  (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
+  (let*
+    ((count (jh/oracle-fetch-result-count tabname))
+      (total (ceiling count jh/database-pagesize))
+      (pn (gethash 'page-number query-params)))
+    (cond
+      ((equal 'first action) (puthash 'page-number 1 query-params))
+      ((equal 'last action) (puthash 'page-number total query-params))
+      ((equal 'next action)
+        (and (< pn total) (puthash 'page-number (+ pn 1) query-params)))
+      ((equal 'prev action)
+        (and (> pn 1) (puthash 'page-number (- pn 1) query-params)))
+      (t (user-error "Ops, unknown pagination action!")))
+    (jh/oracle-fetch-result-set tabname)))
 
 ;; -----------------------------------------------------------------------------
 ;;
@@ -499,20 +529,19 @@
 (defun jh/oracle-dump-rows-as-yaml ()
   "Dump table row data."
   (interactive)
-  (let ((tabname (jh/oracle-guess-tabname)))
-    (progn
-      (switch-to-buffer (concat tabname ".yml"))
-      (or (eq major-mode 'yaml-mode) (yaml-mode))
-      (kill-region (point-min) (point-max))
-      ;; insert title
-      (insert (format "### Dump rows of %s ###" tabname))
-      ;; insert content
-      (insert
-        (jh/oracle-yamlfy-result-set
-          (jh/oracle-fetch-result-set tabname)
-          (jh/oracle-list-columns tabname)))
-      ;; go to the beigining
-      (goto-char (point-min)))))
+  (let*
+    ((file (buffer-file-name))
+      (tabname (jh/oracle-guess-tabname))
+      (rows (jh/oracle-fetch-result-set-pagination tabname 'first))
+      (colinfos (jh/oracle-list-columns tabname)))
+    (jh/oracle-update-yaml-result-set tabname rows colinfos)
+    ;; (cond
+    ;;   ((string-match-p "\\.csv$" file)
+    ;;     (jh/oracle-update-csv-result-set tabname rows colinfos))
+    ;;   ((string-match-p "\\.yml$" file)
+    ;;     )
+    ;;   (t (user-error "Ops, unknown file type.")))
+    ))
 
 (defun jh/oracle-dump-rows-as-csv ()
   "Dump table row data."
