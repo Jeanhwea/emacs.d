@@ -310,7 +310,7 @@
 (defun jh/oracle-guess-tabname ()
   "Guess table name."
   (let
-    ((tabnames (jh/java-tabnames))
+    ((tabnames (mapcar #'car (jh/oracle-list-tables)))
       (anno (spt/read-entity-tabname (jh/current-buffer)))
       (name (jh/file-base-name (buffer-name)))
       (symb (thing-at-point 'symbol t)))
