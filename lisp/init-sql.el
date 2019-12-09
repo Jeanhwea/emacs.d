@@ -273,14 +273,20 @@
 
 (defun jh/oracle-list-tables ()
   "List all tables in database."
-  (let* ((query (jh/oracle-gen-list-table-query))
-          (lines (split-string (jh/sql-execute query) "\n")))
+  (let*
+    ((query
+       (jh/concat-lines "SET LINESIZE 32767;"
+         (jh/oracle-gen-list-table-query)))
+      (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/oracle-parse-table-info lines))))
 
 (defun jh/oracle-list-columns (tabname)
   "List all columns in a table with given TABNAME."
-  (let* ((query (jh/oracle-gen-list-column-query tabname))
-          (lines (split-string (jh/sql-execute query) "\n")))
+  (let*
+    ((query
+       (jh/concat-lines "SET LINESIZE 32767;"
+         (jh/oracle-gen-list-column-query tabname)))
+      (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/oracle-parse-columns-info lines))))
 
 ;; -----------------------------------------------------------------------------
@@ -421,8 +427,11 @@
 
 (defun jh/oracle-fetch-result-set (tabname)
   "Fetch oracle result set."
-  (let
-    ((colinfos (jh/oracle-list-columns tabname)))
+  (let*
+    ((colinfos (jh/oracle-list-columns tabname))
+      (query
+        (jh/concat-lines "SET LINESIZE 32767;"
+          (jh/oracle-gen-uniform-select-query tabname colinfos))))
     (mapcar
       #'(lambda (line)
           (split-string
@@ -432,9 +441,7 @@
       (remove-if-not
         #'(lambda (line)
             (string-match-p (concat "^" jh/oracle-lpre) line))
-        (split-string
-          (jh/sql-execute
-            (jh/oracle-gen-uniform-select-query tabname colinfos)) "\n")))))
+        (split-string (jh/sql-execute query) "\n")))))
 
 (defun jh/oracle-next-page-result-set (tabname)
   "Fetch oracle next page result set."
