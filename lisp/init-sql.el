@@ -30,6 +30,14 @@
 ;; SQL Helper
 ;; -----------------------------------------------------------------------------
 
+(defun jh/sql-redirect (query)
+  "Redirect a query."
+  (let
+    ((sqlbuf (sql-find-sqli-buffer)))
+    (unless sqlbuf
+      (error "No SQL interactive buffer found"))
+    (sql-redirect sqlbuf query nil nil)))
+
 (defun jh/sql-execute (query)
   "Execute a query."
   (let
@@ -171,6 +179,12 @@
     (format "FROM %s" tabname)
     (format "WHERE %s;" (jh/oracle-gen-where-condition))))
 
+(defun jh/oracle-init-sqlplus ()
+  "Initialize sqlplus parameters."
+  (jh/sql-redirect
+    (jh/concat-lines
+      "SET LINESIZE 32767;")))
+
 ;; -----------------------------------------------------------------------------
 ;;
 ;; Machine-level SELECT Query Builder
@@ -273,6 +287,7 @@
 
 (defun jh/oracle-list-tables ()
   "List all tables in database."
+  (jh/oracle-init-sqlplus)
   (let*
     ((query (jh/oracle-gen-list-table-query))
       (lines (split-string (jh/sql-execute query) "\n")))
@@ -280,6 +295,7 @@
 
 (defun jh/oracle-list-columns (tabname)
   "List all columns in a table with given TABNAME."
+  (jh/oracle-init-sqlplus)
   (let*
     ((query
        (jh/oracle-gen-list-column-query tabname))
@@ -424,6 +440,7 @@
 
 (defun jh/oracle-fetch-result-set (tabname)
   "Fetch oracle result set."
+  (jh/oracle-init-sqlplus)
   (let*
     ((colinfos (jh/oracle-list-columns tabname))
       (query
