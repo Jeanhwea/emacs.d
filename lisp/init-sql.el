@@ -143,12 +143,23 @@
       (fsep (or fsep ",\n")))
     (mapconcat trfn colinfos fsep)))
 
+(defun jh/oracle-init-buffer-params ()
+  "Initialize local parameters."
+  (let
+    ((file (buffer-file-name)))
+    (and (string-match-p "\\.\\(yml\\|csv\\)$" file)
+      (progn
+        (set
+          (make-local-variable 'where-condition)
+          (make-hash-table :test 'equal))
+        (puthash 'page-number 1 where-condition)))))
+
 (defun jh/oracle-gen-where-condition ()
   "Generate oracle where condition for select query."
-  (if (local-variable-p 'where)
+  (if (local-variable-p 'where-condition)
     (let*
       ((ps jh/database-pagesize)
-        (pn (or (gethash 'page-number where) 1))
+        (pn (or (gethash 'page-number where-condition) 1))
         (rmin (* (- pn 1) ps))
         (rmax (* pn ps))
         (pagenation (format "ROWNUM > %d AND ROWNUM <= %d" rmin rmax)))
@@ -412,7 +423,8 @@
 
 (defun jh/oracle-fetch-result-set (tabname)
   "Fetch oracle result set."
-  (let ((colinfos (jh/oracle-list-columns tabname)))
+  (let
+    ((colinfos (jh/oracle-list-columns tabname)))
     (mapcar
       #'(lambda (line)
           (split-string
@@ -425,6 +437,15 @@
         (split-string
           (jh/sql-execute
             (jh/oracle-gen-uniform-select-query tabname colinfos)) "\n")))))
+
+(defun jh/oracle-next-page-result-set (tabname)
+  "Fetch oracle next page result set."
+  (or (local-variable-p 'where-condition)
+    (jh/oracle-init-buffer-params))
+  (let
+    ((pn (gethash 'page-number 'where-condition)))
+    (puthash 'page-number (+ pn 1) 'where-condition)
+    (jh/oracle-fetch-result-set)))
 
 (defun jh/oracle-fetch-result-count (tabname)
   "Fetch total count."
@@ -467,9 +488,11 @@
       (kill-region (point-min) (point-max))
       ;; insert title
       (insert (format "### Dump rows of %s ###" tabname))
-      (insert (jh/oracle-yamlfy-result-set
-                (jh/oracle-fetch-result-set tabname)
-                (jh/oracle-list-columns tabname)))
+      ;; insert content
+      (insert
+        (jh/oracle-yamlfy-result-set
+          (jh/oracle-fetch-result-set tabname)
+          (jh/oracle-list-columns tabname)))
       ;; go to the beigining
       (goto-char (point-min)))))
 
