@@ -274,9 +274,7 @@
 (defun jh/oracle-list-tables ()
   "List all tables in database."
   (let*
-    ((query
-       (jh/concat-lines "SET LINESIZE 32767;"
-         (jh/oracle-gen-list-table-query)))
+    ((query (jh/oracle-gen-list-table-query))
       (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/oracle-parse-table-info lines))))
 
@@ -284,8 +282,7 @@
   "List all columns in a table with given TABNAME."
   (let*
     ((query
-       (jh/concat-lines "SET LINESIZE 32767;"
-         (jh/oracle-gen-list-column-query tabname)))
+       (jh/oracle-gen-list-column-query tabname))
       (lines (split-string (jh/sql-execute query) "\n")))
     (remove-if 'null (mapcar #'jh/oracle-parse-columns-info lines))))
 
@@ -430,8 +427,7 @@
   (let*
     ((colinfos (jh/oracle-list-columns tabname))
       (query
-        (jh/concat-lines "SET LINESIZE 32767;"
-          (jh/oracle-gen-uniform-select-query tabname colinfos))))
+        (jh/oracle-gen-uniform-select-query tabname colinfos)))
     (mapcar
       #'(lambda (line)
           (split-string
