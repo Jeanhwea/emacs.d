@@ -307,6 +307,8 @@
   (let*
     ((file (buffer-file-name))
       (clzname (jh/file-base-name file)))
+    (or (string-match-p ".*\\.java$" file)
+      (error "Current file is not a java source: %s" file))
     (if (string-match-p ".*Test$" clzname)
       (progn
         (message "Switch to Test Subject.")
