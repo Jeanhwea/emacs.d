@@ -66,7 +66,7 @@
 ;; -----------------------------------------------------------------------------
 
 ;; pagenation control
-(defvar jh/db-page-size 200 "Database output result set page size")
+(defvar jh/database-pagesize 10 "Database output result set page size")
 
 ;; datatypes
 (defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
@@ -143,17 +143,17 @@
       (fsep (or fsep ",\n")))
     (mapconcat trfn colinfos fsep)))
 
-(defun jh/oracle-gen-where-condition (&optional where)
+(defun jh/oracle-gen-where-condition ()
   "Generate oracle where condition for select query."
-  (if where
+  (if (local-variable-p 'where)
     (let*
-      ((ps jh/db-page-size)
-        (pn (or (gethash 'pageNumber where) 1))
+      ((ps jh/database-pagesize)
+        (pn (or (gethash 'page-number where) 1))
         (rmin (* (- pn 1) ps))
         (rmax (* pn ps))
         (pagenation (format "ROWNUM > %d AND ROWNUM <= %d" rmin rmax)))
       pagenation)
-    (format "ROWNUM <= %d" jh/db-page-size)))
+    (format "ROWNUM <= %d" jh/database-pagesize)))
 
 (defun jh/oracle-gen-select-query (tabname colinfos)
   "Generate SELECT query."
