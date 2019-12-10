@@ -96,7 +96,7 @@
       "    SELECT REPLACE(REPLACE(utbc.COMMENTS, CHR(13), ''), CHR(10), '\\n')"
       "      FROM USER_TAB_COMMENTS utbc"
       "     WHERE utbc.TABLE_NAME = utbs.TABLE_NAME AND ROWNUM <= 1"
-      "  ) AS CONTENT"
+      "  ) AS ROWDATA"
       "  FROM USER_TABLES utbs"
       " ORDER BY utbs.TABLE_NAME;")))
 
@@ -131,7 +131,7 @@
       "     WHERE uclc.COLUMN_NAME = utbc.COLUMN_NAME AND"
       "           uclc.TABLE_NAME = utbc.TABLE_NAME AND"
       "           ROWNUM <= 1"
-      "  ) AS CONTENT"
+      "  ) AS ROWDATA"
       "  FROM USER_TAB_COLUMNS utbc"
       (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
 
@@ -158,7 +158,7 @@
         (pn (or (gethash 'page-number query-params) 1))
         (rmin (* (- pn 1) ps))
         (rmax (* pn ps))
-        (pagenation (format "ROWNUM > %d AND ROWNUM <= %d" rmin rmax)))
+        (pagenation (format "ROWIDX > %d AND ROWIDX <= %d" rmin rmax)))
       pagenation)
     (format "ROWNUM <= %d" jh/database-pagesize)))
 
@@ -204,14 +204,16 @@
     ((colstr
        (mapconcat
          #'(lambda (colinfo)
-             (format "  %s" (jh/oracle-uniform-column colinfo)))
+             (format "    %s" (jh/oracle-uniform-column colinfo)))
          colinfos (format "||'%s'||\n" jh/oracle-fsep))))
     (jh/concat-lines
-      (format "SELECT '%s'||" jh/oracle-lpre)
+      "SELECT ROWDATA FROM ("
+      "  SELECT ROWNUM AS ROWIDX,"
+      (format "    '%s'||" jh/oracle-lpre)
       colstr
-      "AS CONTENT"
-      (format "FROM %s t" tabname)
-      (format "WHERE %s;" (jh/oracle-gen-where-condition)))))
+      "  AS ROWDATA"
+      (format "  FROM %s t" tabname)
+      (format ") WHERE %s;" (jh/oracle-gen-where-condition)))))
 
 (defun jh/oracle-gen-uniform-count-query (tabname)
   "generate COUNT query."
@@ -503,19 +505,30 @@
       (t (completing-read "Result Set Type >> " types)))))
 
 (defun jh/oracle-render-rows (rows tabname colinfos)
-  "Add document string here."
+  "Render rows to file content."
   (let
     ((render-format (jh/oracle-read-render-format)))
+    (and
+      (member render-format '("csv" "yaml"))
+      (null (local-variable-p 'query-params))
+      (jh/oracle-init-buffer-params))
     (cond
       ((string= render-format "csv")
-        (progn
-          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
-          (jh/oracle-update-csv-resultset rows tabname colinfos)))
+        (jh/oracle-update-csv-resultset rows tabname colinfos))
       ((string= render-format "yaml")
-        (progn
-          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
-          (jh/oracle-update-yaml-resultset rows tabname colinfos)))
-      (t (user-error "Ops, unknown file display type.")))))
+        (jh/oracle-update-yaml-resultset rows tabname colinfos))
+      (t (user-error "Ops, unknown file format to render.")))))
+
+(defun jh/oracle-table-do (action)
+  "dump table row data."
+  (let*
+    ((tabname (jh/oracle-read-tabname))
+      (colinfos (jh/oracle-list-columns tabname))
+      (rows))
+    (if (member action '(first last next prev))
+      (setq rows (jh/oracle-paginate-resultset tabname action))
+      (user-error "Ops, unknown database table action."))
+    (jh/oracle-render-rows rows tabname colinfos)))
 
 ;; -----------------------------------------------------------------------------
 ;; Interactive Commands
@@ -537,18 +550,12 @@
 (defun jh/oracle-table-open ()
   "Open oracle table."
   (interactive)
-  (jh/oracle-table-do 'open))
+  (jh/oracle-table-do 'first))
 
-(defun jh/oracle-table-do (action)
-  "dump table row data."
-  (cond
-    ((equal action 'open)
-      (let*
-        ((tabname (jh/oracle-read-tabname))
-          (rows (jh/oracle-paginate-resultset tabname))
-          (colinfos (jh/oracle-list-columns tabname)))
-        (jh/oracle-render-rows rows tabname colinfos)))
-    (t (user-error "Ops, unknown database table action."))))
+(defun jh/oracle-table-next ()
+  "Next page of oracle talbe."
+  (interactive)
+  (jh/oracle-table-do 'next))
 
 (defun jh/oracle-copy-list-table-query ()
   "Copy list table query to clipboard"
