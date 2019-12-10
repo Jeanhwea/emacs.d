@@ -459,7 +459,7 @@
             (jh/sql-execute
               (jh/oracle-gen-uniform-count-query tabname)) "\n"))))))
 
-(defun jh/oracle-fetch-resultset-pagination (tabname &optional action)
+(defun jh/oracle-paginate-resultset (tabname &optional action)
   "Return a result set according to action."
   (and action (local-variable-p 'query-params)
     (let*
@@ -545,7 +545,7 @@
     ((equal action 'open)
       (let*
         ((tabname (jh/oracle-read-tabname))
-          (rows (jh/oracle-fetch-resultset-pagination tabname))
+          (rows (jh/oracle-paginate-resultset tabname))
           (colinfos (jh/oracle-list-columns tabname)))
         (jh/oracle-render-rows rows tabname colinfos)))
     (t (user-error "Ops, unknown database table action."))))
