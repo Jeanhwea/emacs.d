@@ -492,20 +492,29 @@
 
 (defun jh/oracle-fetch-resultset-pagination (tabname action)
   "Return a result set according to action."
-  (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
-  (let*
-    ((count (jh/oracle-fetch-result-count tabname))
-      (total (ceiling count jh/database-pagesize))
-      (pn (gethash 'page-number query-params)))
+  (and (local-variable-p 'query-params)
+    (let*
+      ((count (jh/oracle-fetch-result-count tabname))
+        (total (ceiling count jh/database-pagesize))
+        (pn (gethash 'page-number query-params)))
+      (cond
+        ((equal 'first action) (puthash 'page-number 1 query-params))
+        ((equal 'last action) (puthash 'page-number total query-params))
+        ((equal 'next action)
+          (and (< pn total) (puthash 'page-number (+ pn 1) query-params)))
+        ((equal 'prev action)
+          (and (> pn 1) (puthash 'page-number (- pn 1) query-params)))
+        (t (user-error "Ops, unknown pagination action!")))))
+  (jh/oracle-fetch-resultset tabname))
+
+(defun jh/oracle-resultset-display-type ()
+  "Get result set type."
+  (let
+    ((file (buffer-name)) (types '(csv yaml)))
     (cond
-      ((equal 'first action) (puthash 'page-number 1 query-params))
-      ((equal 'last action) (puthash 'page-number total query-params))
-      ((equal 'next action)
-        (and (< pn total) (puthash 'page-number (+ pn 1) query-params)))
-      ((equal 'prev action)
-        (and (> pn 1) (puthash 'page-number (- pn 1) query-params)))
-      (t (user-error "Ops, unknown pagination action!")))
-    (jh/oracle-fetch-resultset tabname)))
+      ((string-match-p "\\.csv$" file) "csv")
+      ((string-match-p "\\.yml$" file) "yaml")
+      (t (completing-read "Result Set Type >> " types)))))
 
 ;; -----------------------------------------------------------------------------
 ;;
@@ -525,29 +534,24 @@
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
-(defun jh/oracle-resultset-display-type ()
-  "Get result set type."
-  (let
-    ((file (buffer-name)) (types '(csv yaml)))
-    (cond
-      ((string-match-p "\\.csv$" file) "csv")
-      ((string-match-p "\\.yml$" file) "yaml")
-      (t (completing-read "Result Set TYPE >> " types)))))
-
 (defun jh/oracle-dump-rows ()
   "Dump table row data."
   (interactive)
   (let*
-    ((type (jh/oracle-resultset-display-type))
+    ((disptype (jh/oracle-resultset-display-type))
       (tabname (jh/oracle-guess-tabname))
       (rows (jh/oracle-fetch-resultset-pagination tabname 'first))
       (colinfos (jh/oracle-list-columns tabname)))
     (cond
-      ((string= type "csv")
-        (jh/oracle-update-csv-resultset tabname rows colinfos))
-      ((string= type "yaml")
-        (jh/oracle-update-yaml-resultset tabname rows colinfos))
-      (t (user-error "Ops, unknown file type.")))))
+      ((string= disptype "csv")
+        (progn
+          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
+          (jh/oracle-update-csv-resultset tabname rows colinfos)))
+      ((string= disptype "yaml")
+        (progn
+          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
+          (jh/oracle-update-yaml-resultset tabname rows colinfos)))
+      (t (user-error "Ops, unknown file display type.")))))
 
 (defun jh/oracle-copy-list-table-query ()
   "Copy list table query to clipboard"
