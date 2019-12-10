@@ -538,7 +538,7 @@
   "Dump table row data."
   (interactive)
   (let*
-    ((type (jh/oracle-result-set-type))
+    ((type (jh/oracle-resultset-display-type))
       (tabname (jh/oracle-guess-tabname))
       (rows (jh/oracle-fetch-resultset-pagination tabname 'first))
       (colinfos (jh/oracle-list-columns tabname)))
