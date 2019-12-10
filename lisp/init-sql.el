@@ -296,24 +296,6 @@
 
 ;; -----------------------------------------------------------------------------
 ;;
-;; Frontend Helper
-;; -----------------------------------------------------------------------------
-
-(defun jh/oracle-guess-tabname ()
-  "Guess table name."
-  (let
-    ((tabnames (mapcar #'car (jh/oracle-list-tables)))
-      (anno (spt/read-entity-tabname (jh/current-buffer)))
-      (name (jh/file-base-name (buffer-name)))
-      (symb (thing-at-point 'symbol t)))
-    (cond
-      ((member anno tabnames) anno)
-      ((member name tabnames) name)
-      ((member symb tabnames) symb)
-      (t (completing-read "Dump Table >> " tabnames)))))
-
-;; -----------------------------------------------------------------------------
-;;
 ;; YAML
 ;; -----------------------------------------------------------------------------
 
@@ -375,7 +357,7 @@
       (setq i (+ i 1)))
     res))
 
-(defun jh/oracle-update-yaml-resultset (tabname rows colinfos)
+(defun jh/oracle-update-yaml-resultset (rows tabname colinfos)
   "Update yaml result set."
   (progn
     (switch-to-buffer (concat tabname ".yml"))
@@ -438,7 +420,7 @@
           (jh/oracle-csvfy-result-row row colinfos sep))))
     res))
 
-(defun jh/oracle-update-csv-resultset (tabname rows colinfos)
+(defun jh/oracle-update-csv-resultset (rows tabname colinfos)
   "Dump table row data."
   (progn
     (switch-to-buffer (concat tabname ".csv"))
@@ -502,7 +484,25 @@
         (t (user-error "Ops, unknown pagination action!")))))
   (jh/oracle-fetch-resultset tabname))
 
-(defun jh/oracle-resultset-display-type ()
+;; -----------------------------------------------------------------------------
+;;
+;; Frontend Helper
+;; -----------------------------------------------------------------------------
+
+(defun jh/oracle-read-tabname ()
+  "Guess table name."
+  (let
+    ((tabnames (mapcar #'car (jh/oracle-list-tables)))
+      (anno (spt/read-entity-tabname (jh/current-buffer)))
+      (name (jh/file-base-name (buffer-name)))
+      (symb (thing-at-point 'symbol t)))
+    (cond
+      ((member anno tabnames) anno)
+      ((member name tabnames) name)
+      ((member symb tabnames) symb)
+      (t (completing-read "Dump Table >> " tabnames)))))
+
+(defun jh/oracle-read-render-format ()
   "Get result set type."
   (let
     ((file (buffer-name)) (types '(csv yaml)))
@@ -510,6 +510,21 @@
       ((string-match-p "\\.csv$" file) "csv")
       ((string-match-p "\\.yml$" file) "yaml")
       (t (completing-read "Result Set Type >> " types)))))
+
+(defun jh/oracle-render-rows (rows tabname colinfos)
+  "Add document string here."
+  (let
+    ((render-format (jh/oracle-read-render-format)))
+    (cond
+      ((string= render-format "csv")
+        (progn
+          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
+          (jh/oracle-update-csv-resultset rows tabname colinfos)))
+      ((string= render-format "yaml")
+        (progn
+          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
+          (jh/oracle-update-yaml-resultset rows tabname colinfos)))
+      (t (user-error "Ops, unknown file display type.")))))
 
 ;; -----------------------------------------------------------------------------
 ;;
@@ -529,43 +544,21 @@
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
-(defun jh/oracle-sheet-open ()
-  "Dump table row data."
+(defun jh/oracle-table-open ()
+  "Open oracle table."
   (interactive)
-  (let*
-    ((disptype (jh/oracle-resultset-display-type))
-      (tabname (jh/oracle-guess-tabname))
-      (rows (jh/oracle-fetch-resultset-pagination tabname))
-      (colinfos (jh/oracle-list-columns tabname)))
-    (cond
-      ((string= disptype "csv")
-        (progn
-          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
-          (jh/oracle-update-csv-resultset tabname rows colinfos)))
-      ((string= disptype "yaml")
-        (progn
-          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
-          (jh/oracle-update-yaml-resultset tabname rows colinfos)))
-      (t (user-error "Ops, unknown file display type.")))))
+  (jh/oracle-table-do 'open))
 
-(defun jh/oracle-sheet-next-page ()
-  "Dump table row data."
-  (interactive)
-  (let*
-    ((disptype (jh/oracle-resultset-display-type))
-      (tabname (jh/oracle-guess-tabname))
-      (rows (jh/oracle-fetch-resultset-pagination tabname 'next))
-      (colinfos (jh/oracle-list-columns tabname)))
-    (cond
-      ((string= disptype "csv")
-        (progn
-          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
-          (jh/oracle-update-csv-resultset tabname rows colinfos)))
-      ((string= disptype "yaml")
-        (progn
-          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
-          (jh/oracle-update-yaml-resultset tabname rows colinfos)))
-      (t (user-error "Ops, unknown file display type.")))))
+(defun jh/oracle-table-do (action)
+  "dump table row data."
+  (cond
+    ((equal action 'open)
+      (let*
+        ((tabname (jh/oracle-read-tabname))
+          (rows (jh/oracle-fetch-resultset-pagination tabname))
+          (colinfos (jh/oracle-list-columns tabname)))
+        (jh/oracle-render-rows rows tabname colinfos)))
+    (t (user-error "Ops, unknown database table action."))))
 
 (defun jh/oracle-copy-list-table-query ()
   "Copy list table query to clipboard"
