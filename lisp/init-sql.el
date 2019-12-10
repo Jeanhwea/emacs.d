@@ -335,17 +335,18 @@
 (defun jh/oracle-yamlfy-result-row (index row colinfos)
   "Convert nth row line string to YAML file block."
   (let*
-    ((pn
-       (and (local-variable-p 'query-pagination-params)
-         (gethash 'page-number query-pagination-params)))
+    ((pagination (local-variable-p 'query-pagination-params))
+      (pn
+        (and pagination
+          (gethash 'page-number query-pagination-params)))
       (cnt
-        (and (local-variable-p 'query-pagination-params)
+        (and pagination
           (gethash 'count query-pagination-params)))
       (idx
-        (and (local-variable-p 'query-pagination-params)
+        (and pagination
           (+ (* (- pn 1) jh/database-pagesize) index)))
       (res
-        (if pn
+        (if pagination
           (format "- ### Row %d of %d in Page %d ###" idx cnt pn)
           (format "- ### Row %d ###" index))))
     (setq j 0)
