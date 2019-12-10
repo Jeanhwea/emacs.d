@@ -146,16 +146,18 @@
   "Initialize local parameters."
   (progn
     (set
-      (make-local-variable 'query-params)
+      (make-local-variable 'query-pagination-params)
       (make-hash-table :test 'equal))
-    (puthash 'page-number 1 query-params)))
+    (puthash 'page-number 1 query-pagination-params)
+    (puthash 'total 0 query-pagination-params)
+    (puthash 'count 0 query-pagination-params)))
 
 (defun jh/oracle-gen-where-condition ()
   "Generate oracle where condition for select query."
-  (if (local-variable-p 'query-params)
+  (if (local-variable-p 'query-pagination-params)
     (let*
       ((ps jh/database-pagesize)
-        (pn (or (gethash 'page-number query-params) 1))
+        (pn (or (gethash 'page-number query-pagination-params) 1))
         (rmin (* (- pn 1) ps))
         (rmax (* pn ps))
         (pagenation (format "ROWIDX > %d AND ROWIDX <= %d" rmin rmax)))
@@ -332,7 +334,14 @@
 
 (defun jh/oracle-yamlfy-result-row (index row colinfos)
   "Convert nth row line string to YAML file block."
-  (let ((res (format "- ### Row %d ###" index)))
+  (let*
+    ((pn
+       (and (local-variable-p 'query-pagination-params)
+         (gethash 'page-number query-pagination-params)))
+      (res
+        (if pn
+          (format "- ### Row %d of Page %d ###" index pn)
+          (format "- ### Row %d ###" index))))
     (setq j 0)
     (dolist (cell row)
       (setq res
@@ -355,16 +364,20 @@
 
 (defun jh/oracle-update-yaml-resultset (rows tabname colinfos)
   "Update yaml result set."
-  (progn
-    (switch-to-buffer (concat tabname ".yml"))
-    (or (eq major-mode 'yaml-mode) (yaml-mode))
-    (kill-region (point-min) (point-max))
-    ;; insert title
-    (insert (format "### Dump rows of %s ###" tabname))
-    ;; insert content
-    (insert (jh/oracle-yamlfy-resultset rows colinfos))
-    ;; go to the beigining
-    (goto-char (point-min))))
+  (let
+    ((count
+       (and (local-variable-p 'query-pagination-params)
+         (gethash 'count query-pagination-params))))
+    (progn
+      (switch-to-buffer (concat tabname ".yml"))
+      (or (eq major-mode 'yaml-mode) (yaml-mode))
+      (kill-region (point-min) (point-max))
+      ;; insert title
+      (insert (format "### Total %d rows in %s ###" count tabname))
+      ;; insert content
+      (insert (jh/oracle-yamlfy-resultset rows colinfos))
+      ;; go to the beigining
+      (goto-char (point-min)))))
 
 ;; -----------------------------------------------------------------------------
 ;; CSV
@@ -461,20 +474,32 @@
             (jh/sql-execute
               (jh/oracle-gen-uniform-count-query tabname)) "\n"))))))
 
-(defun jh/oracle-paginate-resultset (tabname &optional action)
+(defun jh/oracle-paginate-resultset (tabname &optional action goto-page)
   "Return a result set according to action."
-  (and action (local-variable-p 'query-params)
+  (and action
+    (or
+      (local-variable-p 'query-pagination-params)
+      (jh/oracle-init-buffer-params))
     (let*
       ((count (jh/oracle-fetch-result-count tabname))
         (total (ceiling count jh/database-pagesize))
-        (pn (gethash 'page-number query-params)))
+        (pn (gethash 'page-number query-pagination-params)))
+      (puthash 'count count query-pagination-params)
+      (puthash 'total total query-pagination-params)
       (cond
-        ((equal 'first action) (puthash 'page-number 1 query-params))
-        ((equal 'last action) (puthash 'page-number total query-params))
+        ((equal 'first action)
+          (puthash 'page-number 1 query-pagination-params))
+        ((equal 'last action)
+          (puthash 'page-number total query-pagination-params))
         ((equal 'next action)
-          (and (< pn total) (puthash 'page-number (+ pn 1) query-params)))
+          (and (< pn total)
+            (puthash 'page-number (+ pn 1) query-pagination-params)))
         ((equal 'prev action)
-          (and (> pn 1) (puthash 'page-number (- pn 1) query-params)))
+          (and (> pn 1)
+            (puthash 'page-number (- pn 1) query-pagination-params)))
+        ((equal 'goto action)
+          (and (>= pn 1) (<= pn total) (number-or-marker-p goto-page)
+            (puthash 'page-number goto-page query-pagination-params)))
         (t (user-error "Ops, unknown pagination action!")))))
   (jh/oracle-fetch-resultset tabname))
 
@@ -508,10 +533,6 @@
   "Render rows to file content."
   (let
     ((render-format (jh/oracle-read-render-format)))
-    (and
-      (member render-format '("csv" "yaml"))
-      (null (local-variable-p 'query-params))
-      (jh/oracle-init-buffer-params))
     (cond
       ((string= render-format "csv")
         (jh/oracle-update-csv-resultset rows tabname colinfos))
@@ -519,15 +540,18 @@
         (jh/oracle-update-yaml-resultset rows tabname colinfos))
       (t (user-error "Ops, unknown file format to render.")))))
 
-(defun jh/oracle-table-do (action)
+(defun jh/oracle-table-do (action &optional goto-page)
   "dump table row data."
   (let*
     ((tabname (jh/oracle-read-tabname))
       (colinfos (jh/oracle-list-columns tabname))
       (rows))
-    (if (member action '(first last next prev))
-      (setq rows (jh/oracle-paginate-resultset tabname action))
-      (user-error "Ops, unknown database table action."))
+    (cond
+      ((member action '(first last next prev))
+        (setq rows (jh/oracle-paginate-resultset tabname action)))
+      ((equal action 'goto)
+        (setq rows (jh/oracle-paginate-resultset tabname action goto-page)))
+      (t (user-error "Ops, unknown database table action.")))
     (jh/oracle-render-rows rows tabname colinfos)))
 
 ;; -----------------------------------------------------------------------------
@@ -547,15 +571,32 @@
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
-(defun jh/oracle-table-open ()
-  "Open oracle table."
+(defun jh/oracle-table-first ()
+  "First page of oracle table."
   (interactive)
   (jh/oracle-table-do 'first))
+
+(defun jh/oracle-table-last ()
+  "Last page of oracle talbe."
+  (interactive)
+  (jh/oracle-table-do 'last))
 
 (defun jh/oracle-table-next ()
   "Next page of oracle talbe."
   (interactive)
   (jh/oracle-table-do 'next))
+
+(defun jh/oracle-table-prev ()
+  "Previous page of oracle talbe."
+  (interactive)
+  (jh/oracle-table-do 'prev))
+
+(defun jh/oracle-table-goto ()
+  "Previous page of oracle talbe."
+  (interactive)
+  (let
+    ((page (read-number "Goto page >> ")))
+    (jh/oracle-table-do 'goto page)))
 
 (defun jh/oracle-copy-list-table-query ()
   "Copy list table query to clipboard"

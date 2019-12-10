@@ -87,6 +87,21 @@
 (global-set-key (kbd "M-2") 'leader/f2)
 
 ;; -----------------------------------------------------------------------------
+;; F8: Database action
+;; -----------------------------------------------------------------------------
+(progn
+  (define-prefix-command 'leader/f8)
+  (define-key leader/f8 (kbd "t") #'jh/oracle-list-tables)
+  (define-key leader/f8 (kbd "o") 'jh/oracle-table-first)
+  (define-key leader/f8 (kbd "<up>") 'jh/oracle-table-first)
+  (define-key leader/f8 (kbd "<down>") 'jh/oracle-table-last)
+  (define-key leader/f8 (kbd "<left>") 'jh/oracle-table-prev)
+  (define-key leader/f8 (kbd "<right>") 'jh/oracle-table-next)
+  (define-key leader/f8 (kbd "g") 'jh/oracle-table-goto))
+(global-set-key (kbd "<f8>") 'leader/f8)
+(global-set-key (kbd "M-8") 'leader/f8)
+
+;; -----------------------------------------------------------------------------
 ;; F9: Misc
 ;; -----------------------------------------------------------------------------
 (progn
@@ -95,10 +110,10 @@
   (define-key leader/f9 (kbd "t") #'jh/cycle-color-theme)
   (define-key leader/f9 (kbd "M-t") #'jh/cycle-transparency)
   ;;
-  (define-key leader/f9 (kbd "c") 'ct/expand-command)
-  (define-key leader/f9 (kbd "d") 'workflow-drop-file)
-  (define-key leader/f9 (kbd "r") 'workflow-reveal-in-file-manager)
-  (define-key leader/f9 (kbd "s") 'workflow-send-to-shell))
+  (define-key leader/f9 (kbd "c") #'ct/expand-command)
+  (define-key leader/f9 (kbd "d") #'workflow-drop-file)
+  (define-key leader/f9 (kbd "r") #'workflow-reveal-in-file-manager)
+  (define-key leader/f9 (kbd "s") #'workflow-send-to-shell))
 (global-set-key (kbd "<f9>") 'leader/f9)
 (global-set-key (kbd "M-9") 'leader/f9)
 
