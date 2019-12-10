@@ -338,9 +338,13 @@
     ((pn
        (and (local-variable-p 'query-pagination-params)
          (gethash 'page-number query-pagination-params)))
+      (cnt
+        (and (local-variable-p 'query-pagination-params)
+          (gethash 'count query-pagination-params)))
+      (idx (+ (* (- pn 1) jh/database-pagesize) index))
       (res
         (if pn
-          (format "- ### Row %d of Page %d ###" index pn)
+          (format "- ### Row %d of %d in Page %d  ###" idx cnt pn)
           (format "- ### Row %d ###" index))))
     (setq j 0)
     (dolist (cell row)
@@ -365,7 +369,7 @@
 (defun jh/oracle-update-yaml-resultset (rows tabname colinfos)
   "Update yaml result set."
   (let
-    ((count
+    ((cnt
        (and (local-variable-p 'query-pagination-params)
          (gethash 'count query-pagination-params))))
     (progn
@@ -373,7 +377,7 @@
       (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
       ;; insert title
-      (insert (format "### Total %d rows in %s ###" count tabname))
+      (insert (format "### Total %d rows in %s ###" cnt tabname))
       ;; insert content
       (insert (jh/oracle-yamlfy-resultset rows colinfos))
       ;; go to the beigining
