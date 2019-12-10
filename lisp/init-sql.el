@@ -341,7 +341,9 @@
       (cnt
         (and (local-variable-p 'query-pagination-params)
           (gethash 'count query-pagination-params)))
-      (idx (+ (* (- pn 1) jh/database-pagesize) index))
+      (idx
+        (and (local-variable-p 'query-pagination-params)
+          (+ (* (- pn 1) jh/database-pagesize) index)))
       (res
         (if pn
           (format "- ### Row %d of %d in Page %d ###" idx cnt pn)
