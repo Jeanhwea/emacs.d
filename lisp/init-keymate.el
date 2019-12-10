@@ -91,7 +91,7 @@
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f8)
-  (define-key leader/f8 (kbd "t") #'jh/oracle-list-tables)
+  (define-key leader/f8 (kbd "t") #'jh/oracle-tables-list)
   (define-key leader/f8 (kbd "o") 'jh/oracle-table-first)
   (define-key leader/f8 (kbd "<up>") 'jh/oracle-table-first)
   (define-key leader/f8 (kbd "<down>") 'jh/oracle-table-last)

@@ -498,8 +498,13 @@
           (and (> pn 1)
             (puthash 'page-number (- pn 1) query-pagination-params)))
         ((equal 'goto action)
-          (and (>= pn 1) (<= pn total) (number-or-marker-p goto-page)
-            (puthash 'page-number goto-page query-pagination-params)))
+          (if
+            (and
+              (number-or-marker-p goto-page)
+              (>= goto-page 1)
+              (<= goto-page total))
+            (puthash 'page-number goto-page query-pagination-params)
+            (error "Page number should in range %d~%d" 1 total)))
         (t (user-error "Ops, unknown pagination action!")))))
   (jh/oracle-fetch-resultset tabname))
 
