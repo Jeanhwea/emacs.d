@@ -344,7 +344,7 @@
       (idx (+ (* (- pn 1) jh/database-pagesize) index))
       (res
         (if pn
-          (format "- ### Row %d of %d in Page %d  ###" idx cnt pn)
+          (format "- ### Row %d of %d in Page %d ###" idx cnt pn)
           (format "- ### Row %d ###" index))))
     (setq j 0)
     (dolist (cell row)
