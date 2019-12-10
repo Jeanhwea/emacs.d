@@ -68,13 +68,8 @@
 ;;  \___/|_| \_\/_/   \_\____|_____|_____|
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; -----------------------------------------------------------------------------
-;;
-;; Variables
-;; -----------------------------------------------------------------------------
-
 ;; pagenation control
-(defvar jh/database-pagesize 10 "Database output result set page size")
+(defvar jh/database-pagesize 100 "Database output result set page size")
 
 ;; datatypes
 (defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
@@ -490,9 +485,9 @@
             (jh/sql-execute
               (jh/oracle-gen-uniform-count-query tabname)) "\n"))))))
 
-(defun jh/oracle-fetch-resultset-pagination (tabname action)
+(defun jh/oracle-fetch-resultset-pagination (tabname &optional action)
   "Return a result set according to action."
-  (and (local-variable-p 'query-params)
+  (and action (local-variable-p 'query-params)
     (let*
       ((count (jh/oracle-fetch-result-count tabname))
         (total (ceiling count jh/database-pagesize))
@@ -521,7 +516,7 @@
 ;; Interactive Commands
 ;; -----------------------------------------------------------------------------
 
-(defun jh/oracle-dump-tables ()
+(defun jh/oracle-tables-list ()
   "Dump talbe name and comments."
   (interactive)
   (let ((tables (jh/oracle-list-tables)))
@@ -534,13 +529,32 @@
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
-(defun jh/oracle-dump-rows ()
+(defun jh/oracle-sheet-open ()
   "Dump table row data."
   (interactive)
   (let*
     ((disptype (jh/oracle-resultset-display-type))
       (tabname (jh/oracle-guess-tabname))
-      (rows (jh/oracle-fetch-resultset-pagination tabname 'first))
+      (rows (jh/oracle-fetch-resultset-pagination tabname))
+      (colinfos (jh/oracle-list-columns tabname)))
+    (cond
+      ((string= disptype "csv")
+        (progn
+          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
+          (jh/oracle-update-csv-resultset tabname rows colinfos)))
+      ((string= disptype "yaml")
+        (progn
+          (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
+          (jh/oracle-update-yaml-resultset tabname rows colinfos)))
+      (t (user-error "Ops, unknown file display type.")))))
+
+(defun jh/oracle-sheet-next-page ()
+  "Dump table row data."
+  (interactive)
+  (let*
+    ((disptype (jh/oracle-resultset-display-type))
+      (tabname (jh/oracle-guess-tabname))
+      (rows (jh/oracle-fetch-resultset-pagination tabname 'next))
       (colinfos (jh/oracle-list-columns tabname)))
     (cond
       ((string= disptype "csv")
