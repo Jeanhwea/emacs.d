@@ -368,7 +368,7 @@
       (setq j (+ j 1)))
     res))
 
-(defun jh/oracle-yamlfy-result-set (rows colinfos)
+(defun jh/oracle-yamlfy-resultset (rows colinfos)
   "Convert result set to YAML file content."
   (let ((res))
     (setq i 1)
@@ -380,7 +380,7 @@
       (setq i (+ i 1)))
     res))
 
-(defun jh/oracle-update-yaml-result-set (tabname rows colinfos)
+(defun jh/oracle-update-yaml-resultset (tabname rows colinfos)
   "Update yaml result set."
   (progn
     (switch-to-buffer (concat tabname ".yml"))
@@ -389,7 +389,7 @@
     ;; insert title
     (insert (format "### Dump rows of %s ###" tabname))
     ;; insert content
-    (insert (jh/oracle-yamlfy-result-set rows colinfos))
+    (insert (jh/oracle-yamlfy-resultset rows colinfos))
     ;; go to the beigining
     (goto-char (point-min))))
 
@@ -434,7 +434,7 @@
       (setq j (+ j 1)))
     res))
 
-(defun jh/oracle-csvfy-result-set (rows colinfos &optional separator)
+(defun jh/oracle-csvfy-resultset (rows colinfos &optional separator)
   "Convert result set to CSV file content."
   (let* ((sep (or separator ",")) (res (mapconcat #'car colinfos sep)))
     (dolist (row rows)
@@ -443,14 +443,14 @@
           (jh/oracle-csvfy-result-row row colinfos sep))))
     res))
 
-(defun jh/oracle-update-csv-result-set (tabname rows colinfos)
+(defun jh/oracle-update-csv-resultset (tabname rows colinfos)
   "Dump table row data."
   (progn
     (switch-to-buffer (concat tabname ".csv"))
     (or (eq major-mode 'csv-mode) (csv-mode))
     (kill-region (point-min) (point-max))
     ;; csv content
-    (insert (jh/oracle-csvfy-result-set rows colinfos))
+    (insert (jh/oracle-csvfy-resultset rows colinfos))
     ;; (csv-align-fields t (point-min) (point-max))
     ;; go to the beigining
     (goto-char (point-min))))
@@ -460,13 +460,12 @@
 ;; Result Set Helper
 ;; -----------------------------------------------------------------------------
 
-(defun jh/oracle-fetch-result-set (tabname)
+(defun jh/oracle-fetch-resultset (tabname &optional colinfos)
   "Fetch oracle result set."
   (jh/oracle-init-sqlplus)
   (let*
-    ((colinfos (jh/oracle-list-columns tabname))
-      (query
-        (jh/oracle-gen-uniform-select-query tabname colinfos)))
+    ((colinfos (or colinfos (jh/oracle-list-columns tabname)))
+      (query (jh/oracle-gen-uniform-select-query tabname colinfos)))
     (mapcar
       #'(lambda (line)
           (split-string
@@ -491,7 +490,7 @@
             (jh/sql-execute
               (jh/oracle-gen-uniform-count-query tabname)) "\n"))))))
 
-(defun jh/oracle-fetch-result-set-pagination (tabname action)
+(defun jh/oracle-fetch-resultset-pagination (tabname action)
   "Return a result set according to action."
   (or (local-variable-p 'query-params) (jh/oracle-init-buffer-params))
   (let*
@@ -506,7 +505,7 @@
       ((equal 'prev action)
         (and (> pn 1) (puthash 'page-number (- pn 1) query-params)))
       (t (user-error "Ops, unknown pagination action!")))
-    (jh/oracle-fetch-result-set tabname)))
+    (jh/oracle-fetch-resultset tabname)))
 
 ;; -----------------------------------------------------------------------------
 ;;
@@ -526,38 +525,29 @@
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
 
-(defun jh/oracle-dump-rows-as-yaml ()
+(defun jh/oracle-resultset-display-type ()
+  "Get result set type."
+  (let
+    ((file (buffer-name)) (types '(csv yaml)))
+    (cond
+      ((string-match-p "\\.csv$" file) "csv")
+      ((string-match-p "\\.yml$" file) "yaml")
+      (t (completing-read "Result Set TYPE >> " types)))))
+
+(defun jh/oracle-dump-rows ()
   "Dump table row data."
   (interactive)
   (let*
-    ((file (buffer-file-name))
+    ((type (jh/oracle-result-set-type))
       (tabname (jh/oracle-guess-tabname))
-      (rows (jh/oracle-fetch-result-set-pagination tabname 'first))
+      (rows (jh/oracle-fetch-resultset-pagination tabname 'first))
       (colinfos (jh/oracle-list-columns tabname)))
-    (jh/oracle-update-yaml-result-set tabname rows colinfos)
-    ;; (cond
-    ;;   ((string-match-p "\\.csv$" file)
-    ;;     (jh/oracle-update-csv-result-set tabname rows colinfos))
-    ;;   ((string-match-p "\\.yml$" file)
-    ;;     )
-    ;;   (t (user-error "Ops, unknown file type.")))
-    ))
-
-(defun jh/oracle-dump-rows-as-csv ()
-  "Dump table row data."
-  (interactive)
-  (let ((tabname (jh/oracle-guess-tabname)))
-    (progn
-      (switch-to-buffer (concat tabname ".csv"))
-      (or (eq major-mode 'csv-mode) (csv-mode))
-      (kill-region (point-min) (point-max))
-      ;; csv content
-      (insert (jh/oracle-csvfy-result-set
-                (jh/oracle-fetch-result-set tabname)
-                (jh/oracle-list-columns tabname)))
-      ;; (csv-align-fields t (point-min) (point-max))
-      ;; go to the beigining
-      (goto-char (point-min)))))
+    (cond
+      ((string= type "csv")
+        (jh/oracle-update-csv-resultset tabname rows colinfos))
+      ((string= type "yaml")
+        (jh/oracle-update-yaml-resultset tabname rows colinfos))
+      (t (user-error "Ops, unknown file type.")))))
 
 (defun jh/oracle-copy-list-table-query ()
   "Copy list table query to clipboard"
