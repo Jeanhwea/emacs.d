@@ -393,20 +393,23 @@
   (let*
     ((pagination (local-variable-p 'query-pagination-params))
       (ttl
-        (and pagination rows
+        (and pagination
           (gethash 'total query-pagination-params)))
       (cnt
-        (and pagination rows
+        (and pagination
           (gethash 'count query-pagination-params)))
       (header
-        (and pagination rows cnt ttl tabname
-          (format "### Fetch %d rows in %d page of %s ###" cnt ttl tabname))))
+        (if rows
+          (if pagination
+            (format "### Fetch %d rows in %d page of %s ###" cnt ttl tabname)
+            (format "### Result set of %s ###" tabname))
+          "Empty")))
     (progn
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
       ;; insert title
-      (insert (if header (jh/concat-lines header "") "Empty"))
+      (insert (jh/concat-lines header ""))
       ;; insert content
       (and rows (insert (jh/oracle-yamlfy-resultset rows colinfos)))
       ;; go to the beigining
