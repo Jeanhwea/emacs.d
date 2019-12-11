@@ -15,8 +15,8 @@
       '(markdown-code-face ((t (:inherit default)))))))
 
 (add-hook 'markdown-mode-hook
-  (lambda ()
-    (setq pangu-spacing-real-insert-separtor t)
-    (pangu-spacing-mode 1)))
+  #'(lambda ()
+      (setq pangu-spacing-real-insert-separtor t)
+      (pangu-spacing-mode 1)))
 
 (provide 'init-markdown)

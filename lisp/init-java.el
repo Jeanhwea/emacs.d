@@ -1,14 +1,14 @@
 (add-hook 'java-mode-hook
-  (lambda()
-    (setq
-      show-trailing-whitespace t
-      indent-tabs-mode nil
-      c-basic-offset 2
-      tab-width 2
-      compilation-scroll-output t
-      compilation-ask-about-save nil
-      compilation-error-regexp-alist '(java maven)
-      prettify-symbols-alist
+  #'(lambda()
+      (setq
+        show-trailing-whitespace t
+        indent-tabs-mode nil
+        c-basic-offset 2
+        tab-width 2
+        compilation-scroll-output t
+        compilation-ask-about-save nil
+        compilation-error-regexp-alist '(java maven)
+        prettify-symbols-alist
         (append prettify-symbols-alist
           '(
              ;; ----------------------------------------------------------------
@@ -31,11 +31,11 @@
              ;; ("forEach" . 8704)         ; ∀
              ;; ----------------------------------------------------------------
              )))
-    ;; string-inflection
-    (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)
-    (hl-line-mode 1)
-    (rainbow-delimiters-mode 1)
-    (highlight-indent-guides-mode 1)))
+      ;; string-inflection
+      (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)
+      (hl-line-mode 1)
+      (rainbow-delimiters-mode 1)
+      (highlight-indent-guides-mode 1)))
 
 ;; -----------------------------------------------------------------------------
 ;; meghanada
@@ -45,23 +45,23 @@
 ;; -----------------------------------------------------------------------------
 (when (require 'meghanada)
   (add-hook 'java-mode-hook
-    (lambda ()
-      ;; meghanada-mode on
-      (meghanada-mode t)
-      (flycheck-mode +1)
-      (setq c-basic-offset 2)
-      ;; use code format
-      ;; (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)
-      ))
+    #'(lambda ()
+        ;; meghanada-mode on
+        (meghanada-mode t)
+        (flycheck-mode +1)
+        (setq c-basic-offset 2)
+        ;; use code format
+        ;; (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)
+        ))
 
-    (if (jh/windows?)
-      (setq
-        meghanada-java-path
-        (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
-        meghanada-maven-path "mvn.cmd")
-      ;; unix-like system
-      (setq
-        meghanada-java-path "java"
-        meghanada-maven-path "mvn")))
+  (if (jh/windows?)
+    (setq
+      meghanada-java-path
+      (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
+      meghanada-maven-path "mvn.cmd")
+    ;; unix-like system
+    (setq
+      meghanada-java-path "java"
+      meghanada-maven-path "mvn")))
 
 (provide 'init-java)
