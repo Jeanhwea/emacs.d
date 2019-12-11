@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: class with Singleton Partten
-# key: cls
+# name: class with Singleton Partten (non-lazy version)
+# key: cls1
 # --
 package `(jh/java-package-name)`;
 
