@@ -519,6 +519,7 @@
       (regexp
         (concat
           "^\\(\\|public\\|private\\)\s*"
+          "\\(final\\|\\)\s*"
           "\\(class\\|interface\\)\s*"
           "\\([_A-Za-z][_A-Za-z0-9]*\\)\s*"
           "\\(extends\\|implements\\|\\)\s*"
@@ -528,20 +529,27 @@
     (save-match-data
       (setq addr (string-match regexp text addr))
       (and addr
-        (and
-          (puthash 'visibility (match-string 1 text) params)
-          (setq flag1 (match-string 2 text)) ;; class or interface
-          (setq flag2 (match-string 4 text)) ;; extends or implements
+        (let
+          ((str1 (match-string 1 text))
+            (str2 (match-string 2 text))
+            (str3 (match-string 3 text))
+            (str4 (match-string 4 text))
+            (str5 (match-string 5 text))
+            (str6 (match-string 6 text))
+            (str7 (match-string 7 text)))
+          ;; put value
+          (puthash 'visibility str1 params)
+          (and (string= "final" str2) (puthash 'final t params))
           (cond
-            ((string= flag1 "class")
-              (puthash 'clzname (match-string 3 text) params))
-            ((string= flag1 "interface")
-              (puthash 'ifacename (match-string 3 text) params)))
+            ((string= str3 "class")
+              (puthash 'clzname str4 params))
+            ((string= str3 "interface")
+              (puthash 'ifacename str4 params)))
           (cond
-            ((string= flag2 "extends")
-              (puthash 'supername (match-string 5 text) params))
-            ((string= flag2 "implements")
-              (puthash 'implname (match-string 5 text) params))))))
+            ((string= str5 "extends")
+              (puthash 'supername str6 params))
+            ((string= str5 "implements")
+              (puthash 'implname str6 params))))))
     params))
 
 (defun spt/parse-java-imports (text)
