@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: class Helper
+# key: clh
+# --
+package `(jh/java-package-name)`;
+
+public final class ${1:`(jh/java-class-name)`} {
+$>private $1() { }
+$>$0
+}
