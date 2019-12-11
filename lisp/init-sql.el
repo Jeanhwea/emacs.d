@@ -371,16 +371,22 @@
 
 (defun jh/oracle-update-yaml-resultset (rows tabname colinfos)
   "Update yaml result set."
-  (let
-    ((cnt
-       (and (local-variable-p 'query-pagination-params)
-         (gethash 'count query-pagination-params))))
+  (let*
+    ((pagination (local-variable-p 'query-pagination-params))
+      (ttl
+       (and pagination
+         (gethash 'total query-pagination-params)))
+      (cnt
+       (and pagination
+         (gethash 'count query-pagination-params)))
+      (header
+        (format "### Total %d page %d rows in %s ###" ttl cnt tabname)))
     (progn
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
       ;; insert title
-      (insert (format "### Total %d rows in %s ###" cnt tabname))
+      (insert (jh/concat-lines header ""))
       ;; insert content
       (insert (jh/oracle-yamlfy-resultset rows colinfos))
       ;; go to the beigining
