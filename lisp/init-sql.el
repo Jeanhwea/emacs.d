@@ -157,8 +157,8 @@
     (puthash 'total 0 query-pagination-params)
     (puthash 'count 0 query-pagination-params)))
 
-(defun jh/oracle-gen-where-condition ()
-  "Generate oracle where condition for select query."
+(defun jh/oracle-gen-pagination-condition ()
+  "Generate oracle pagination where condition."
   (if (local-variable-p 'query-pagination-params)
     (let*
       ((ps jh/database-pagesize)
@@ -174,7 +174,7 @@
   (jh/concat-lines "SELECT"
     (jh/oracle-gen-select-columns colinfos)
     (format "FROM %s" tabname)
-    (format "WHERE %s;" (jh/oracle-gen-where-condition))))
+    (format "WHERE %s;" (jh/oracle-gen-pagination-condition))))
 
 (defun jh/oracle-init-sqlplus ()
   "Initialize sqlplus parameters."
@@ -212,7 +212,11 @@
        (mapconcat
          #'(lambda (colinfo)
              (format "    %s" (jh/oracle-uniform-column colinfo)))
-         colinfos (format "||'%s'||\n" jh/oracle-fsep))))
+         colinfos (format "||'%s'||\n" jh/oracle-fsep)))
+      (where
+        (if
+          (local-variable-p 'query-where-params)
+          query-where-params "1 = 1")))
     (jh/concat-lines
       "SELECT ROWDATA FROM ("
       "  SELECT ROWNUM AS ROWIDX,"
@@ -220,11 +224,21 @@
       colstr
       "  AS ROWDATA"
       (format "  FROM %s t" tabname)
-      (format ") WHERE %s;" (jh/oracle-gen-where-condition)))))
+      (format "  WHERE %s" where)
+      (format ") WHERE %s;" (jh/oracle-gen-pagination-condition)))))
 
 (defun jh/oracle-gen-uniform-count-query (tabname)
   "generate COUNT query."
-  (format "SELECT '%s'|| COUNT(1) AS TOTAL FROM %s;" jh/oracle-lpre tabname))
+  (let
+    ((where
+       (if
+         (local-variable-p 'query-where-params)
+         query-where-params "1 = 1")))
+    (format
+      "SELECT '%s' || COUNT(1) AS TOTAL FROM %s WHERE %s;"
+      jh/oracle-lpre
+      tabname
+      where)))
 
 ;; -----------------------------------------------------------------------------
 ;; Regexp and Line Parser
@@ -379,13 +393,13 @@
   (let*
     ((pagination (local-variable-p 'query-pagination-params))
       (ttl
-       (and pagination
-         (gethash 'total query-pagination-params)))
+        (and pagination
+          (gethash 'total query-pagination-params)))
       (cnt
-       (and pagination
-         (gethash 'count query-pagination-params)))
+        (and pagination
+          (gethash 'count query-pagination-params)))
       (header
-        (format "### Total %d page %d rows in %s ###" ttl cnt tabname)))
+        (format "### Fetch %d rows in %d page of %s ###" cnt ttl tabname)))
     (progn
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
@@ -618,6 +632,17 @@
   (let
     ((page (read-number "Goto page >> ")))
     (jh/oracle-table-do 'goto page)))
+
+(defun jh/oracle-table-where ()
+  "Previous page of oracle talbe."
+  (interactive)
+  (let*
+    ((wherep (local-variable-p 'query-where-params))
+      (init-where (if wherep query-where-params ""))
+      (where (read-string "WHERE >> " init-where)))
+    (if wherep
+      (setq query-where-params where)
+      (set (make-local-variable 'query-where-params) where))))
 
 (defun jh/oracle-copy-list-table-query ()
   "Copy list table query to clipboard"
