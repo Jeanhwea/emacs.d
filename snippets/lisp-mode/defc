@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Define Constant
+# key: defc
+# --
+(defconst ${1:symname} $0
+$>"${2:Add document string here.}")
