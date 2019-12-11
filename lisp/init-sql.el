@@ -393,21 +393,22 @@
   (let*
     ((pagination (local-variable-p 'query-pagination-params))
       (ttl
-        (and pagination
+        (and pagination rows
           (gethash 'total query-pagination-params)))
       (cnt
-        (and pagination
+        (and pagination rows
           (gethash 'count query-pagination-params)))
       (header
-        (format "### Fetch %d rows in %d page of %s ###" cnt ttl tabname)))
+        (and pagination rows cnt ttl tabname
+          (format "### Fetch %d rows in %d page of %s ###" cnt ttl tabname))))
     (progn
       (switch-to-buffer (concat tabname ".yml"))
       (or (eq major-mode 'yaml-mode) (yaml-mode))
       (kill-region (point-min) (point-max))
       ;; insert title
-      (insert (jh/concat-lines header ""))
+      (insert (if header (jh/concat-lines header "") "Empty"))
       ;; insert content
-      (insert (jh/oracle-yamlfy-resultset rows colinfos))
+      (and rows (insert (jh/oracle-yamlfy-resultset rows colinfos)))
       ;; go to the beigining
       (goto-char (point-min)))))
 
@@ -468,7 +469,8 @@
     (kill-region (point-min) (point-max))
     ;; csv content
     (insert (jh/oracle-csvfy-resultset rows colinfos))
-    ;; (csv-align-fields t (point-min) (point-max))
+    ;; align fields
+    (csv-align-fields t (point-min) (point-max))
     ;; go to the beigining
     (goto-char (point-min))))
 
@@ -586,6 +588,8 @@
         (setq rows (jh/oracle-paginate-resultset tabname action)))
       ((equal action 'goto)
         (setq rows (jh/oracle-paginate-resultset tabname action goto-page)))
+      ((equal action 'refresh)
+        (setq rows (jh/oracle-paginate-resultset tabname)))
       (t (user-error "Ops, unknown database table action.")))
     (jh/oracle-render-rows rows tabname colinfos)))
 
@@ -605,6 +609,11 @@
                (comments (jh/strip (nth 1 table))))
           (insert (format "%s %s\n" colname comments))))
       (goto-char (point-min)))))
+
+(defun jh/oracle-table-refresh ()
+  "First page of oracle table."
+  (interactive)
+  (jh/oracle-table-do 'refresh))
 
 (defun jh/oracle-table-first ()
   "First page of oracle table."
