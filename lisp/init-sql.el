@@ -529,11 +529,9 @@
   "Guess table name."
   (let
     ((tabnames (mapcar #'car (jh/oracle-list-tables)))
-      (anno (spt/read-entity-tabname (jh/current-buffer)))
       (name (jh/file-base-name (buffer-name)))
       (symb (thing-at-point 'symbol t)))
     (cond
-      ((member anno tabnames) anno)
       ((member name tabnames) name)
       ((member symb tabnames) symb)
       (t (completing-read "Dump Table >> " tabnames)))))
