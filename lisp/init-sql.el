@@ -73,19 +73,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; pagenation control
-(defvar jh/database-pagesize 100 "Database output result set page size")
+(defconst jh/database-pagesize 100 "Database output result set page size")
 
 ;; datatypes
-(defvar jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
+(defconst jh/oracle-string-datatype '("CHAR" "NVARCHAR2" "VARCHAR" "VARCHAR2")
   "Oracle string datatype list")
-(defvar jh/oracle-lob-datatype '("CLOB" "BLOB")
+(defconst jh/oracle-lob-datatype '("CLOB" "BLOB")
   "Oracle string datatype list")
 
 ;; separators
-(defvar jh/oracle-lsep "#ew" "Oracle newline separator")
-(defvar jh/oracle-nsep "#il" "Oracle null separator")
-(defvar jh/oracle-fsep "$ep" "Oracle field separator")
-(defvar jh/oracle-lpre ":) " "Oracle line prefix")
+(defconst jh/oracle-lsep "#ew" "Oracle newline separator")
+(defconst jh/oracle-nsep "#il" "Oracle null separator")
+(defconst jh/oracle-fsep "$ep" "Oracle field separator")
+(defconst jh/oracle-lpre ":) " "Oracle line prefix")
 
 ;; -----------------------------------------------------------------------------
 ;; Query Generator
