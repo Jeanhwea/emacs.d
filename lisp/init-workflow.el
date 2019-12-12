@@ -80,7 +80,7 @@
 (defun workflow-drop-file (&optional startdir)
   "Drop the file content to current point according to action."
   (interactive)
-  (let
+  (let*
     ((options
        '("Content" "Filename" "Relative Path" "Relative to Project Root"))
       (action (completing-read "Drop Action >> " options))
