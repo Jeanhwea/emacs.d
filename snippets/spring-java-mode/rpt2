@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: Spring Repository Interface  MES system
+# name: Spring Repository Interface MES system
 # key: rpt2
 # --
 package `(jh/java-package-name)`;

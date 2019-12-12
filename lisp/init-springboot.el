@@ -91,10 +91,10 @@
 
 (defun spt/project-name ()
   "Return project name."
-  (let
+  (let*
     ((root (directory-file-name (spt/project-root)))
-      (parent (regexp-quote (jh/parent-dir root))))
-    (jh/re-replace "/" "" (jh/re-replace parent "" root))))
+      (parent (jh/parent-dir root)))
+    (jh/re-replace "/$" "" (jh/re-replace parent "" root))))
 
 ;; -----------------------------------------------------------------------------
 ;;  ____                             _____ _ _
@@ -338,7 +338,7 @@
     ((fileinfos (spt/scan-source-files))
       (ctrlinfos
         (remove-if-not
-          #'(lambda (e) (equal 'controller (nth 1 e))) fileinfos)))
+          #'(lambda (e) (string= "controller" (nth 1 e))) fileinfos)))
     (dolist (fileinfo ctrlinfos) ;; iterate all controller
       (let*
         ((file (car (last fileinfo)))
@@ -485,7 +485,7 @@
       ;; Case 2: jump from endpoint to markdown
       ((and
          (string-match-p ".*\\.java$" file)
-         (equal 'controller (nth 1 (spt/filename-to-fileinfo file))))
+         (equal "controller" (nth 1 (spt/filename-to-fileinfo file))))
         (progn
           (find-file (spt/coerce-to-markdown file))
           (message (concat "Goto " (spt/coerce-to-markdown file)))))
