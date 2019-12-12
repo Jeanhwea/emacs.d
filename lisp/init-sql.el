@@ -540,6 +540,7 @@
               (<= goto-page total))
             (puthash 'page-number goto-page query-pagination-params)
             (error "Page number should in range %d~%d" 1 total)))
+        ((equal 'refresh action) (message "Refresh result set."))
         (t (user-error "Ops, unknown pagination action!")))))
   (jh/oracle-fetch-resultset tabname))
 
@@ -585,12 +586,12 @@
       (colinfos (jh/oracle-list-columns tabname))
       (rows))
     (cond
+      ((equal action 'refresh)
+        (setq rows (jh/oracle-paginate-resultset tabname action)))
       ((member action '(first last next prev))
         (setq rows (jh/oracle-paginate-resultset tabname action)))
       ((equal action 'goto)
         (setq rows (jh/oracle-paginate-resultset tabname action goto-page)))
-      ((equal action 'refresh)
-        (setq rows (jh/oracle-paginate-resultset tabname)))
       (t (user-error "Ops, unknown database table action.")))
     (jh/oracle-render-rows rows tabname colinfos)))
 
