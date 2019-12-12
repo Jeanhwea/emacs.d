@@ -19,11 +19,9 @@
       (if (jh/windows?) (concat "\n" output "\nmysql> ") (concat "\n" output)))
     (t output)))
 
-(defun jh/sql-interactive-hook ()
-  "Add hooks to `sql-interactive-mode-hook'."
-  (add-hook 'comint-preoutput-filter-functions 'jh/sql-handle-prompt))
-
-(add-hook 'sql-interactive-mode-hook #'jh/sql-interactive-hook)
+(add-hook 'sql-interactive-mode-hook
+  #'(lambda ()
+      (add-hook 'comint-preoutput-filter-functions 'jh/sql-handle-prompt)))
 
 ;; -----------------------------------------------------------------------------
 ;;  ____   ___  _       _   _      _
