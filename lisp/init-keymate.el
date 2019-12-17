@@ -132,7 +132,8 @@
   (define-key leader/f0 (kbd "M-l") #'magit-log-all)
   (define-key leader/f0 (kbd "@") #'magit-log-buffer-file)
   (define-key leader/f0 (kbd "p") #'magit-push)
-  (define-key leader/f0 (kbd "f") #'magit-fetch)
+  (define-key leader/f0 (kbd "F") #'magit-fetch)
+  (define-key leader/f0 (kbd "f") #'magit-pull)
   (define-key leader/f0 (kbd "m") #'magit-merge)
   ;; smerge
   (define-key leader/f0 (kbd "<left>") #'smerge-prev)
