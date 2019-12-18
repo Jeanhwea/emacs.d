@@ -405,7 +405,8 @@
 
 (defun spt/http-prefix-to-basename (prefix)
   "Convert http prefix to basename."
-  (car (split-string (jh/re-replace "^/" "" prefix) "/")))
+  (let ((prefix (or prefix "")))
+    (car (split-string (jh/re-replace "^/" "" prefix) "/"))))
 
 (defun spt/current-endpoint (file)
   "Find current endpoint, the endpoint under cursor."
