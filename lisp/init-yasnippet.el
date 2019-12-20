@@ -16,8 +16,9 @@
 
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
-  (let
-    ((dir (jh/parent-dir (or file (buffer-file-name))))
+  (let*
+    ((file (or file (buffer-file-name)))
+      (dir (jh/parent-dir file))
       (re ".*src\\(/\\(main\\|test\\)\\)?\\(/java\\)?"))
     (mapconcat 'identity
       (split-string
@@ -25,7 +26,8 @@
 
 (defun jh/java-class-name (&optional file)
   "Return the class name for java."
-  (let ((file (or file (buffer-file-name))))
+  (let*
+    ((file (or file (buffer-file-name))))
     (jh/pascalcase (jh/file-base-name file))))
 
 (defun jh/java-test-subjects (&optional file)
