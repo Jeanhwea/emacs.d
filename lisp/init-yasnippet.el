@@ -28,23 +28,23 @@
   (let ((file (or file (buffer-file-name))))
     (jh/pascalcase (jh/file-base-name file))))
 
-(defun jh/java-test-subjects (file)
+(defun jh/java-test-subjects (&optional file)
   "Genearate test subject names."
-  (and (string-match-p "Test$" (jh/java-class-name file))
-    (let*
-      ((srcfile (spt/coerce-to-srcfile file))
-        (methods
-          (spt/parse-java-class-methods
-            (jh/read-file-content srcfile)))
-        (mapfn
-          #'(lambda (method)
-              (concat
-                "test"
-                (jh/pascalcase (gethash 'funcname method))
-                (format-time-string "%H%M%S"))))
-        (fltfn #'(lambda (method) (string= "public" (gethash 'visibility method))))
-        (subjects (mapcar mapfn (remove-if-not fltfn methods))))
-      subjects)))
+  (let*
+    ((file (or file (buffer-file-name)))
+      (srcfile (spt/coerce-to-srcfile file))
+      (methods
+        (spt/parse-java-class-methods
+          (jh/read-file-content srcfile)))
+      (mapfn
+        #'(lambda (method)
+            (concat
+              "test"
+              (jh/pascalcase (gethash 'funcname method))
+              (format-time-string "%H%M%S"))))
+      (fltfn #'(lambda (method) (string= "public" (gethash 'visibility method))))
+      (subjects (mapcar mapfn (remove-if-not fltfn methods))))
+    subjects))
 
 (defun jh/java-coerce-to-entity (whatever)
   "Convert `*RepositoryImpl', `*Service' ... to `*'."
