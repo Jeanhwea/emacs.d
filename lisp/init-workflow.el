@@ -53,7 +53,7 @@
       (t (message "Ops, unknown project type!")))))
 
 (defvar wf/known-indent-mode
-  '(mhtml-mode less-css-mode emacs-lisp-mode sh-mode ymal-mode)
+  '(nxml-mode mhtml-mode less-css-mode emacs-lisp-mode sh-mode ymal-mode)
   "Known indent major mode.")
 
 (defun workflow-format-code ()
