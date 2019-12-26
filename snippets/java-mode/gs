@@ -4,10 +4,10 @@
 # --
 private ${1:String} ${2:fieldName};
 
-public $1 $2() {
+public $1 get${2:$(jh/pascalcase yas-text)}() {
  return this.$2;
 }
 
-public void $2($1 $2) {
+public void set${2:$(jh/pascalcase yas-text)}($1 $2) {
  this.$2 = $2;
 }
