@@ -17,7 +17,7 @@ $>$1(String str) {
 $>$>this.value = str;
 $>}
 
-$>private String getValue() {
+$>public String getValue() {
 $>$>return this.value;
 $>}
 
