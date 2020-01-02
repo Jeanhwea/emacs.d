@@ -105,6 +105,7 @@
          docker
          dockerfile-mode
          edit-indirect
+         editorconfig
          elfeed
          elm-mode
          elpy
