@@ -1,3 +1,27 @@
+# personal added items
+/.mc-lists.el
+/bookmarks
+/elpa*
+/elpy/*
+/elfeed/
+/games/
+/ido.last
+/image-dired/
+/jdee-server/
+/meghanada/
+/newsticker/
+/places
+/projectile-bookmarks.eld
+/projectile.cache
+/recentf
+/site-lisp/
+/smex-items
+/transient/
+/undo/
+/url/
+/var/
+
+
 # Created by https://www.gitignore.io/api/emacs
 
 ### Emacs ###
@@ -49,25 +73,3 @@ flycheck_*.el
 
 
 # End of https://www.gitignore.io/api/emacs
-
-# personal added items
-/.mc-lists.el
-/bookmarks
-/elpa*
-/elfeed/
-/games/
-/ido.last
-/image-dired/
-/jdee-server/
-/meghanada/
-/newsticker/
-/places
-/projectile-bookmarks.eld
-/projectile.cache
-/recentf
-/site-lisp/
-/smex-items
-/transient/
-/undo/
-/url/
-/var/
