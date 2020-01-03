@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: For In Statement
-# key: forin
+# key: for2
 # --
 for ${1:var} in ${2:container}:
 $>${0:pass}

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: For
+# key: for
+# --
+for ${1:index}, ${2:item} in enumerate(${3:alist}):
+$>${0:pass}

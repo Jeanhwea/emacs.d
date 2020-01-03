@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: For Statement
+# name: For Count Statement
 # key: fori
 # --
 for ${1:i} in range(0, ${2:10}):
