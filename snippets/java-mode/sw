@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: @SuppressWarnings(...)
+# key: sw
+# --
+@SuppressWarnings("${1:unchecked}")$0
