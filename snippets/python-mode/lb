@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: lambda function
+# key: lb
+# --
+lambda ${1:x}: ${0:pass}
