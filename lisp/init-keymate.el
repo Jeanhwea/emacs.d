@@ -167,6 +167,7 @@
   ;; jump arround
   (define-key leader/f11 (kbd "j") #'ace-jump-mode)
   ;; Open sources
+  (define-key leader/f11 (kbd "m") #'spt/jump-to-method)
   (define-key leader/f11 (kbd "o") #'workflow-open-class))
 (global-set-key (kbd "<f11>") 'leader/f11)
 (global-set-key (kbd "M-[") 'leader/f11)
