@@ -6,8 +6,8 @@
         tab-width 2)
       ;; for sqlformat
       (setq
-        sqlformat-command 'pgformatter
-        sqlformat-args '("--spaces" "2"))
+        sqlformat-command 'sqlformat
+        sqlformat-args '("--keywords" "lower" "--indent_width" "2"))
       (sqlind-minor-mode 1)
       (hl-line-mode 1)))
 
