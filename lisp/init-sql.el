@@ -4,6 +4,10 @@
         show-trailing-whitespace t
         indent-tabs-mode nil
         tab-width 2)
+      ;; for sqlformat
+      (setq
+        sqlformat-command 'pgformatter
+        sqlformat-args '("--spaces" "2"))
       (sqlind-minor-mode 1)
       (hl-line-mode 1)))
 

@@ -141,6 +141,7 @@
          sicp
          smex
          sql-indent
+         sqlformat
          string-inflection
          swiper
          tide

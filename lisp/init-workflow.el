@@ -63,6 +63,7 @@
     ((eq major-mode 'java-mode) (spt/meghanada-format-code))
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
+    ((eq major-mode 'sql-mode) (sqlformat-buffer))
     ((member major-mode wf/known-indent-mode) (wf/indent-buffer))
     (t (message "Ops, no format backend!"))))
 
