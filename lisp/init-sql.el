@@ -7,7 +7,7 @@
       ;; for sqlformat
       (setq
         sqlformat-command 'sqlformat
-        sqlformat-args '("--keywords" "lower" "--indent_width" "2" "--reindent_aligned"))
+        sqlformat-args '("--keywords" "lower" "--identifiers" "lower" "--indent_width" "2"))
       (sqlind-minor-mode 1)
       (hl-line-mode 1)))
 
