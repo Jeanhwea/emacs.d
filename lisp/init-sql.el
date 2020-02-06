@@ -5,9 +5,12 @@
         indent-tabs-mode nil
         tab-width 2)
       ;; for sqlformat
+      ;; (setq
+      ;;   sqlformat-command 'sqlformat
+      ;;   sqlformat-args '("--keywords" "lower" "--identifiers" "lower" "--indent_width" "2" "--use_space_around_operators"))
       (setq
-        sqlformat-command 'sqlformat
-        sqlformat-args '("--keywords" "lower" "--identifiers" "lower" "--indent_width" "2" "--use_space_around_operators"))
+        sqlformat-command 'pgformatter
+        sqlformat-args '("-u" "1" "-s" "2"))
       (sqlind-minor-mode 1)
       (hl-line-mode 1)))
 
