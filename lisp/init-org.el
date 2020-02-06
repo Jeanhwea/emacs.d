@@ -42,8 +42,6 @@
     org-html-postamble-format
     '(("en" "<p class=\"author\">Last Updated %T. Created by %a at %d.</p>")))
 
-  (when (jh/mac?)
-    (setq org-babel-python-command "python3"))
 
   (define-key global-map (kbd "C-c l") 'org-store-link)
 
@@ -64,7 +62,9 @@
 
   (add-hook 'org-mode-hook
     #'(lambda ()
-        (setq pangu-spacing-real-insert-separtor t)
+        (setq
+          pangu-spacing-real-insert-separtor t
+          org-babel-python-command "python3")
         (pangu-spacing-mode 1)
         (org-babel-do-load-languages
           'org-babel-load-languages
