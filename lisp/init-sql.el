@@ -10,7 +10,7 @@
       ;;   sqlformat-args '("--keywords" "lower" "--identifiers" "lower" "--indent_width" "2" "--use_space_around_operators"))
       (setq
         sqlformat-command 'pgformatter
-        sqlformat-args '("-u" "1" "-s" "2"))
+        sqlformat-args '("-u" "1" "-s" "2" "-w" "80"))
       (sqlind-minor-mode 1)
       (hl-line-mode 1)))
 
