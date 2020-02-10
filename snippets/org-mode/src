@@ -2,6 +2,7 @@
 # name: Insert Source Code
 # key: src
 # --
-#+BEGIN_SRC ${1:sh}
+#+NAME: ${1:blockname}
+#+BEGIN_SRC ${2:sh}
   $0
 #+END_SRC
