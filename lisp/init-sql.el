@@ -8,7 +8,8 @@
       (if (jh/windows?)
         (setq
           sqlformat-command 'sqlformat
-          sqlformat-args '("-k" "lower" "-i" "lower" "--indent_width" "2" "--wrap_after" "80" "-s"))
+          sqlformat-args
+            '("-k" "lower" "-i" "lower" "-s" "--indent_width" "2" "--wrap_after" "80"))
         (setq
           sqlformat-command 'pgformatter
           sqlformat-args '("-u" "1" "-s" "2" "-w" "80")))
