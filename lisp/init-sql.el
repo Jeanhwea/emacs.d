@@ -9,7 +9,7 @@
         (setq
           sqlformat-command 'sqlformat
           sqlformat-args
-            '("-k" "lower" "-i" "lower" "-s" "--indent_width" "2" "--wrap_after" "80"))
+            '("-k" "lower" "-i" "lower" "-s" "--indent_width" "2" "--wrap_after" "50"))
         (setq
           sqlformat-command 'pgformatter
           sqlformat-args '("-u" "1" "-s" "2" "-w" "80")))
