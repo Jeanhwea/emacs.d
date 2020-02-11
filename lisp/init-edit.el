@@ -93,4 +93,10 @@
 (when (require 'expand-region)
   (global-set-key (kbd "C-=") 'er/expand-region))
 
+;; -----------------------------------------------------------------------------
+;; evil-mode
+;; -----------------------------------------------------------------------------
+(when (require 'evil)
+  (evil-mode 1))
+
 (provide 'init-edit)
