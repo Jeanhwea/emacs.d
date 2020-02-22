@@ -74,6 +74,8 @@
   ;; ediff-split-window-function 'split-window-horizontally
   ;; ediff-window-setup-function 'ediff-setup-windows-plain
   display-time-format "%Y-%m-%d %H:%M"
+  ;; disable recenter point
+  scroll-conservatively 100
   ring-bell-function 'ignore
   line-number-mode t
   column-number-mode t
