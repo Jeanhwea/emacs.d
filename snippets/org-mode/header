@@ -8,6 +8,7 @@
 #+DATE: <`(format-time-string "%Y-%m-%d %a %H:%M:%S")`>
 #+HTML_LINK_UP: ../readme.html
 #+HTML_LINK_HOME: ../index.html
+#+SETUPFILE: ~/.emacs.d/site-lisp/org-html-themes/setup/theme-readtheorg-local.setup
 #+TAGS: ${2:tag1 tag2 tag3}
 
 
