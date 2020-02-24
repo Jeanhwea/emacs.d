@@ -78,6 +78,6 @@
              (sql . t)
              ;; ------------------------------------------------------------------
              ))
-        (when (jh/mac?) (org-bullets-mode 1)))))
+        (unless (jh/windows?) (org-bullets-mode 1)))))
 
 (provide 'init-org)
