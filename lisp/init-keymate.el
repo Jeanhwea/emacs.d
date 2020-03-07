@@ -64,9 +64,9 @@
   ;; Undotree
   (define-key leader/f2 (kbd "u") #'undo-tree-visualize)
   ;; Search global
-  (define-key leader/f2 (kbd "a") #'counsel-ag)
+  (define-key leader/f2 (kbd "a") #'ag)
+  (define-key leader/f2 (kbd "s") #'counsel-ag)
   (define-key leader/f2 (kbd "g") #'counsel-git-grep)
-  (define-key leader/f2 (kbd "s") #'ag)
   ;; Replace, regular eXpression replace
   (define-key leader/f2 (kbd "r") #'workflow-replace)
   (define-key leader/f2 (kbd "M-r") #'projectile-replace)
