@@ -134,8 +134,10 @@
          nyan-mode
          org-bullets
          pangu-spacing
+         posframe
          projectile
          protobuf-mode
+         pyim
          rainbow-delimiters
          restclient
          sicp

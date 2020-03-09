@@ -133,15 +133,20 @@
 
 ;; -----------------------------------------------------------------------------
 ;; chinese pinyin input method
-;; git clone https://github.com/wenbinye/emacs-eim.git ~/.emacs.d/site-lisp/emacs-emi
+;; git clone https://github.com/tumashu/pyim
 ;; -----------------------------------------------------------------------------
-(when (jh/linux?)
-  (autoload 'eim-use-package "eim" "Another emacs input method")
-  ;; Tooltip 暂时还不好用
-  (setq eim-use-tooltip nil)
-  (register-input-method
-    "eim-py" "euc-cn" 'eim-use-package
-    "拼音" "汉字拼音输入法" "py.txt"))
+(when
+  (and
+    (jh/linux?)
+    (require 'pyim)
+    (require 'pyim-basedict))
+  (pyim-basedict-enable)
+  (setq
+    pyim-dicts
+    '((:name "bigdict"
+        :file (expand-file-name "pyim/bigdict.pyim" user-emacs-directory)))
+    pyim-page-tooltip 'posframe
+    default-input-method "pyim"))
 
 ;; -----------------------------------------------------------------------------
 ;; font
