@@ -143,8 +143,8 @@
   (pyim-basedict-enable)
   (setq
     pyim-dicts
-    '((:name "bigdict"
-        :file (expand-file-name "pyim/bigdict.pyim" user-emacs-directory)))
+    `((:name "bigdict"
+        :file ,(expand-file-name "pyim/bigdict.pyim" user-emacs-directory)))
     pyim-page-tooltip 'posframe
     default-input-method "pyim"))
 
