@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: logger.trace()
+# key: lt
+# --
+logger.trace($0);
