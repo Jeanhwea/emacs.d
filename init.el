@@ -147,6 +147,7 @@
          string-inflection
          swiper
          tide
+         verb
          web-mode
          yaml-mode
          yasnippet

@@ -60,6 +60,13 @@
       (delete-other-windows)))
   (define-key global-map (kbd "C-c a") 'jh/pop-agenda-list-and-close-other-windows)
 
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; verb needs eval after org-mode
+  ;;   https://github.com/federicotdn/verb
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (when (require 'verb)
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+
   (add-hook 'org-mode-hook
     #'(lambda ()
         (setq
