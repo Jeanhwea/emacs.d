@@ -111,6 +111,7 @@
   (define-key leader/f9 (kbd "t") #'jh/cycle-color-theme)
   (define-key leader/f9 (kbd "M-t") #'jh/cycle-transparency)
   ;;
+  (define-key leader/f9 (kbd "v") #'verb-send-request-on-point-other-window-stay)
   (define-key leader/f9 (kbd "c") #'ct/expand-command)
   (define-key leader/f9 (kbd "d") #'workflow-drop-file)
   (define-key leader/f9 (kbd "r") #'workflow-reveal-in-file-manager)

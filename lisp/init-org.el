@@ -64,8 +64,7 @@
   ;; verb needs eval after org-mode
   ;;   https://github.com/federicotdn/verb
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (when (require 'verb)
-    (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+  (require 'verb)
 
   (add-hook 'org-mode-hook
     #'(lambda ()
