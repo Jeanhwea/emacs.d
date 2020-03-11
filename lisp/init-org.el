@@ -82,6 +82,7 @@
              (python . t)
              (shell . t)
              (sql . t)
+             (verb . t)
              ;; ------------------------------------------------------------------
              ))
         (unless (jh/windows?) (org-bullets-mode 1)))))
