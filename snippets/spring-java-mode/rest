@@ -9,7 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,29 +26,29 @@ $>$>this.$4 = $4;
 $>}
 
 $>@GetMapping("")
-$>public List<${2:${1:$(jh/java-coerce-to-entity yas-text)}}> get${5:${2:$(jh/java-pluralize-entity yas-text)}}List() {
+$>public List<${2:${1:$(jh/java-coerce-to-entity yas-text)}}> get${5:${2:$(jh/java-pluralize-entity yas-text)}}List(@RequestHeader HttpHeaders headers) {
 $>$>return this.$4.findAll$5();
 $>}
 
 $>@ResponseStatus(HttpStatus.CREATED)
 $>@PostMapping("")
-$>public $2 post$5(@RequestBody Map<String, Object> params) {
+$>public $2 post$5(@RequestHeader HttpHeaders headers, @RequestBody Map<String, Object> params) {
 $>$>return this.$4.create$2(params);
 $>}
 
 $>@GetMapping("/{${6:${2:$(concat (jh/camelcase yas-text) "Id")}}}")
-$>public $2 get$2(@PathVariable long $6) {
+$>public $2 get$2(@RequestHeader HttpHeaders headers, @PathVariable long $6) {
 $>$>return this.$4.findById($6);
 $>}
 
 $>@PutMapping("/{$6}")
-$>public $2 put$2(@PathVariable long $6, @RequestBody Map<String, Object> params) {
+$>public $2 put$2(@RequestHeader HttpHeaders headers, @PathVariable long $6, @RequestBody Map<String, Object> params) {
 $>$>return this.$4.replace$2($6, params);
 $>}
 
 $>@ResponseStatus(HttpStatus.NO_CONTENT)
 $>@DeleteMapping("/{$6}")
-$>public void delete$2(@PathVariable long $6) {
+$>public void delete$2(@RequestHeader HttpHeaders headers, @PathVariable long $6) {
 $>$>this.$4.delete$2($6);
 $>}$0
 }
