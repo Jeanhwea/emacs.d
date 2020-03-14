@@ -153,4 +153,15 @@
           (deactivate-mark)))
       (error "select a region first!"))))
 
+;; -----------------------------------------------------------------------------
+;; tilix
+;; -----------------------------------------------------------------------------
+(when (jh/linux?)
+  (defun jh/tilix-cd (&optional dir)
+    "Open a tilix session, and set dir as working directory."
+    (interactive)
+    (let ((working-dir (directory-file-name (or dir default-directory))))
+      (shell-command
+        (format "tilix --working-directory='%s'" working-dir)))))
+
 (provide 'init-experimental)
