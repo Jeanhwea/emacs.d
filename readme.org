@@ -129,7 +129,7 @@
 
 *** D3 Categorial
 
-****  d3.schemeCategory10
+**** d3.schemeCategory10
 
      #+BEGIN_SRC css
        #1776b6 #ff7f00 #24a222 #d8241f #9564bf #8d5649 #e574c3 #7f7f7f #bcbf00 #00bed1
