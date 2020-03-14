@@ -222,4 +222,15 @@
       (switch-to-buffer name)
       (let ((eshell-buffer-name name)) (eshell)))))
 
+;; -----------------------------------------------------------------------------
+;; terminal
+;; -----------------------------------------------------------------------------
+(defun workflow-term-cd ()
+  "Send current working directory to terminal."
+  (interactive)
+  (cond
+    ((jh/linux?) (jh/tilix-cd))
+    ((jh/mac?) (jh/iterm2-cd))
+    (t (message "Unsupport term cd on this OS!"))))
+
 (provide 'init-workflow)
