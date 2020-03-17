@@ -4,12 +4,12 @@
 # key: java
 # --
 #+HEADERS: :classname ${1:MainClass}
-#+BEGIN_SRC java :results output :exports both
-  import java.util.*;
+#+BEGIN_SRC java :exports code
+$>import java.util.*;
 
-  class $1 {
-    public static void main(String args[]) {
-      System.out.println("${0:Hello World}");
-    }
-  }
+$>class $1 {
+$>$>public static void main(String args[]) {
+$>$>$>System.out.println("${0:Hello World}");
+$>$>}
+$>}
 #+END_SRC

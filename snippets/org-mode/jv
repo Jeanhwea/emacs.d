@@ -1,9 +1,11 @@
 # -*- mode: snippet -*-
 # name: Insert Java
-# key: jv
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 't))
+# key: j
 # --
-#+BEGIN_SRC java :classname ${1:$$(format "App%d" (line-number-at-pos))} :exports both :results output
+#+HEADERS: :classname ${1:$$(format "App%d" (line-number-at-pos))}
+#+BEGIN_SRC java :exports both :results output
 $>class $1 {
 $>$0
-}
+$>}
 #+END_SRC
