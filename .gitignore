@@ -21,6 +21,7 @@
 /undo/
 /url/
 /var/
+/.cache
 
 
 # Created by https://www.gitignore.io/api/emacs
