@@ -3,7 +3,7 @@
 # expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 't))
 # key: java
 # --
-#+HEADERS: :classname ${1:MainClass}
+#+HEADER: :classname ${1:MainClass}
 #+BEGIN_SRC java :exports code
 $>import java.util.*;
 
