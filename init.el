@@ -148,7 +148,6 @@
          swiper
          tide
          verb
-         lsp-java
          web-mode
          yaml-mode
          yasnippet
