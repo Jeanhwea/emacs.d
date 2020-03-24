@@ -162,6 +162,19 @@
 ;;       charset
 ;;       (font-spec :family "WenQuanYi Micro Hei Mono" :size 22))))
 
+(defvar jh/english-font-size 14 "English font size.")
+(defvar jh/chinese-font-size 28 "Chinese font size.")
+
+;; ;; english font
+;; (set-face-attribute
+;;   'default nil :font (format "WenQuanYi Micro Hei Mono %d" jh/english-font-size))
+;; ;; 中文字体单独设置
+;; (dolist
+;;   (charset '(kana han symbol cjk-misc bopomofo))
+;;   (set-fontset-font
+;;     (frame-parameter nil 'font)
+;;     charset (font-spec :family "WenQuanYi Micro Hei Mono" :size jh/chinese-font-size)))
+
 ;; -----------------------------------------------------------------------------
 ;; theme
 ;; -----------------------------------------------------------------------------
