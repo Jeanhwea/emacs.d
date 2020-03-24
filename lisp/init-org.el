@@ -3,6 +3,7 @@
 ;; -----------------------------------------------------------------------------
 (when (require 'org)
 
+  ;; git clone  https://github.com/fniessen/org-html-themes.git ~/.emacs.d/site-lisp/org-html-themes
   (defvar jesenia-dir
     (if (jh/windows?)
       "e:/Code/avic/notifly"
