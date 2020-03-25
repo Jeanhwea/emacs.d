@@ -162,8 +162,8 @@
 ;;       charset
 ;;       (font-spec :family "WenQuanYi Micro Hei Mono" :size 22))))
 
-(defvar jh/english-font-size 14 "English font size.")
-(defvar jh/chinese-font-size 28 "Chinese font size.")
+;; (defvar jh/english-font-size 14 "English font size.")
+;; (defvar jh/chinese-font-size 28 "Chinese font size.")
 
 ;; ;; english font
 ;; (set-face-attribute
