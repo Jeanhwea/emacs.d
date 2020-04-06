@@ -91,6 +91,7 @@
        (
          ;; --------------------------------------------------------------------
          ace-jump-mode
+         adoc-mode
          ag
          auctex
          browse-at-remote
