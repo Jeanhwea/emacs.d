@@ -1,6 +1,6 @@
 select
   t.ispk || ',' || t.isuniq || ',' || t.isnul || ',' || t.colname || ',' ||
-    t.coltype || ',' || t.collen || ',' || t.colpcs || ',' || t.colid
+    t.coltype || ',' || t.collen || ',' || t.colpcs || ',' || t.colcmt
 from (
   select
     (
@@ -14,7 +14,7 @@ from (
         and t1.column_name = t2.column_name
         and t1.table_name = t2.table_name
         and lower(t3.constraint_type) = 'p'
-        and rownum <= 1) as ispk, --> col1
+        and rownum <= 1) as ispk, --> Is Primary Key?
       (
         select
           'u' from user_cons_columns t4, user_constraints t5
@@ -26,12 +26,12 @@ from (
         group by
           t5.constraint_name
         having
-          count(1) = 1) as isuniq, --> col2
-      decode(lower(t1.nullable), 'n', '*', '') as isnul, --> col3
-      t1.column_name as colname, --> col4
-      t1.data_type as coltype, --> col5
-      t1.data_length as collen, --> col6
-      t1.data_precision as colpcs, --> col7
+          count(1) = 1) as isuniq, --> Is Unique Key?
+      decode(lower(t1.nullable), 'n', '*', '') as isnul, --> Nullable?
+      t1.column_name as colname, --> Column Name
+      t1.data_type as coltype, --> Column Type
+      t1.data_length as collen, --> Column Length
+      t1.data_precision as colpcs, --> Column Precision
       (
         select
           replace(replace(t6.comments, chr(13), ''), chr(10), '\n')
@@ -39,9 +39,11 @@ from (
         where
           t6.column_name = t1.column_name
           and t6.table_name = t1.table_name
-          and rownum <= 1) as colcmt, --> col8
-      t1.column_id as colid --> col9
+          and rownum <= 1) as colcmt, --> Column Comments
+      t1.column_id as colid --> Column Id
     from
       user_tab_columns t1
     where
-      lower(t1.table_name) = lower('&tablename')) t;
+      lower(t1.table_name) = lower('&tablename')) t
+order by
+  t.colid;
