@@ -33,7 +33,7 @@ from (
     t1.data_precision as colpcs, --> Column Precision
     (
       select
-        replace(replace(t6.comments, chr(13), ''), chr(10), '\n')
+        replace(replace(t6.comments, chr(13), ''), chr(10), '&lsep')
         from user_col_comments t6
       where
         t6.column_name = t1.column_name

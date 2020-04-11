@@ -21,19 +21,24 @@
 ;; | |_| |  __/ | | |  __/ | | (_| | || (_) | |
 ;;  \____|\___|_| |_|\___|_|  \__,_|\__\___/|_|
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun qy/gen-list-table-query (&optional separator)
+(defun qy/gen-list-table-query (&optional fsep lsep)
   "Generate list table query."
   (let
-    ((sep (or separator ","))
+    ((fsep (or fsep ","))
+      (lsep (or lsep "_rn_"))
       (raw-query (jh/read-file-content qy/dump-tables-file)))
-    (jh/re-replace "&fsep" sep raw-query)))
+    (jh/re-replace "&fsep" fsep
+      (jh/re-replace "&lsep" lsep raw-query))))
 
-(defun qy/gen-list-column-query (tabname &optional separator)
+(defun qy/gen-list-column-query (tabname &optional fsep lsep)
   "Generate list table columns query."
-  (let ((sep (or separator ","))
-         (raw-query (jh/read-file-content qy/dump-columns-file)))
+  (let
+    ((fsep (or fsep ","))
+      (lsep (or lsep "_rn_"))
+      (raw-query (jh/read-file-content qy/dump-columns-file)))
     (jh/re-replace "&tablename" tabname
-      (jh/re-replace "&fsep" sep raw-query))))
+      (jh/re-replace "&fsep" fsep
+        (jh/re-replace "&lsep" lsep raw-query)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  ____
