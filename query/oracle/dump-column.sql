@@ -1,6 +1,7 @@
 select
-  t.ispk || ',' || t.isuniq || ',' || t.isnul || ',' || t.colname || ',' ||
-    t.coltype || ',' || t.collen || ',' || t.colpcs || ',' || t.colcmt
+  t.ispk || '&fsep' || t.isuniq || '&fsep' || t.isnul || '&fsep' || t.colname
+    || '&fsep' || t.coltype || '&fsep' || t.collen || '&fsep' || t.colpcs ||
+    '&fsep' || substr(t.colcmt, 1, 40) as csvrow
 from (
   select
     (
@@ -34,7 +35,7 @@ from (
       t1.data_precision as colpcs, --> Column Precision
       (
         select
-          substr(replace(replace(t6.comments, chr(13), ''), chr(10), '\n'), 1, 40)
+          replace(replace(t6.comments, chr(13), ''), chr(10), '\n')
           from user_col_comments t6
         where
           t6.column_name = t1.column_name
