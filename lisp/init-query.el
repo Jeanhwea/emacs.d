@@ -75,7 +75,14 @@
           #'(lambda (line) (string-match-p presym line))
           (split-string result "\n"))))))
 
-(defun qy/parse-columns (str)
+(defun qy/parse-table-row-data (str)
+  "Parse the table row data."
+  (let
+    ((fields (split-string str qy/fsep)))
+    `((tabname . ,(nth 0 fields))
+       (tabcmt . ,(nth 1 fields)))))
+
+(defun qy/parse-column-row-data (str)
   "Parse the table column row data."
   (let
     ((fields (split-string str qy/fsep)))
@@ -88,9 +95,14 @@
        (colpcs . ,(string-to-number (nth 6 fields)))
        (colcmt . ,(nth 7 fields)))))
 
-(defun qy/fetch-table-columns (tabname)
-  "Fetch the meta data for TABNAME."
-  (mapcar #'qy/parse-columns
+(defun qy/read-tables-meta ()
+  "Read all tables meta data in a database."
+  (mapcar #'qy/parse-table-row-data
+    (qy/sql-execute (qy/gen-list-table-query))))
+
+(defun qy/read-columns-meta (tabname)
+  "Read all columns meta data of a table TABNAME."
+  (mapcar #'qy/parse-column-row-data
     (qy/sql-execute (qy/gen-list-column-query tabname))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
