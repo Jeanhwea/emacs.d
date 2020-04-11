@@ -60,6 +60,7 @@
       (result))
     (unless sqlbuf
       (error "No SQL interactive buffer found"))
+    ;; execute a query, and get raw results
     (progn
       (switch-to-buffer outbuf)
       (sql-redirect sqlbuf "SET LINESIZE 32767;" nil nil)
@@ -67,7 +68,7 @@
       (sql-execute sqlbuf outbuf query nil nil)
       (setq result (buffer-string))
       (kill-buffer outbuf))
-    ;; extract result line
+    ;; extract results line, and return a list
     (let
       ((presym (concat "^" qy/lpre)))
       (mapcar
