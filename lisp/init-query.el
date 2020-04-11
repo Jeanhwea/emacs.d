@@ -14,6 +14,12 @@
 (defconst qy/dump-columns-file (expand-file-name "columns.sql" qy/snippets-dir)
   "Dump columns of a table SQL script file name.")
 
+;; separators
+(defconst qy/fsep "$ep" "Oracle field separator")
+(defconst qy/lsep "#ew" "Oracle newline separator")
+(defconst qy/lpre ":) " "Oracle line prefix")
+(defconst qy/nsep "#il" "Oracle null separator")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   ____                           _
 ;;  / ___| ___ _ __   ___ _ __ __ _| |_ ___  _ __
@@ -21,26 +27,23 @@
 ;; | |_| |  __/ | | |  __/ | | (_| | || (_) | |
 ;;  \____|\___|_| |_|\___|_|  \__,_|\__\___/|_|
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun qy/replace-placeholder (str &optional fsep lpre lsep)
+(defun qy/replace-placeholder (str &optional fsep lsep lpre nsep)
   "Replace common placeholder in STR."
-  (let
-    ((fsep (or fsep ","))
-      (lpre (or lpre ""))
-      (lsep (or lsep "")))
-    (jh/re-replace "&fsep" fsep
-      (jh/re-replace "&lpre" lpre
-        (jh/re-replace "&lsep" lsep raw-query)))))
+  (jh/re-replace "&fsep" (or fsep qy/fsep)
+    (jh/re-replace "&lsep" (or lsep qy/lsep)
+      (jh/re-replace "&lpre" (or lpre qy/lpre)
+        (jh/re-replace "&nsep" (or nsep qy/nsep) str)))))
 
-(defun qy/gen-list-table-query (&optional fsep lpre lsep)
+(defun qy/gen-list-table-query ()
   "Generate list table query."
-  (let ((raw-query (jh/read-file-content qy/dump-tables-file)))
-    (qy/replace-placeholder raw-query fsep lpre lsep)))
+  (qy/replace-placeholder
+    (jh/read-file-content qy/dump-tables-file) "," " " ""))
 
-(defun qy/gen-list-column-query (tabname &optional fsep lpre lsep)
+(defun qy/gen-list-column-query (tabname)
   "Generate list table columns query."
-  (let ((raw-query (jh/read-file-content qy/dump-columns-file)))
-    (jh/re-replace "&tablename" tabname
-      (qy/replace-placeholder raw-query fsep lpre lsep))))
+  (jh/re-replace "&tablename" tabname
+    (qy/replace-placeholder
+      (jh/read-file-content qy/dump-columns-file) "," " " "")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  ____
