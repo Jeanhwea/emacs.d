@@ -1,5 +1,5 @@
 select
-  t.tabname || '&fsep' || substr(t.tabcmt, 1, 40) as rowdata
+  '&lpre' || t.tabname || '&fsep' || substr(t.tabcmt, 1, 40) as rowdata
 from (
   select
     t1.table_name as tabname, --> Table Name

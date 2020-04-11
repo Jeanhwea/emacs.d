@@ -21,24 +21,26 @@
 ;; | |_| |  __/ | | |  __/ | | (_| | || (_) | |
 ;;  \____|\___|_| |_|\___|_|  \__,_|\__\___/|_|
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun qy/gen-list-table-query (&optional fsep lsep)
-  "Generate list table query."
+(defun qy/replace-placeholder (str &optional fsep lpre lsep)
+  "Replace common placeholder in STR."
   (let
     ((fsep (or fsep ","))
-      (lsep (or lsep "_rn_"))
-      (raw-query (jh/read-file-content qy/dump-tables-file)))
+      (lpre (or lpre ""))
+      (lsep (or lsep "")))
     (jh/re-replace "&fsep" fsep
-      (jh/re-replace "&lsep" lsep raw-query))))
-
-(defun qy/gen-list-column-query (tabname &optional fsep lsep)
-  "Generate list table columns query."
-  (let
-    ((fsep (or fsep ","))
-      (lsep (or lsep "_rn_"))
-      (raw-query (jh/read-file-content qy/dump-columns-file)))
-    (jh/re-replace "&tablename" tabname
-      (jh/re-replace "&fsep" fsep
+      (jh/re-replace "&lpre" lpre
         (jh/re-replace "&lsep" lsep raw-query)))))
+
+(defun qy/gen-list-table-query (&optional fsep lpre lsep)
+  "Generate list table query."
+  (let ((raw-query (jh/read-file-content qy/dump-tables-file)))
+    (qy/replace-placeholder raw-query fsep lpre lsep)))
+
+(defun qy/gen-list-column-query (tabname &optional fsep lpre lsep)
+  "Generate list table columns query."
+  (let ((raw-query (jh/read-file-content qy/dump-columns-file)))
+    (jh/re-replace "&tablename" tabname
+      (qy/replace-placeholder raw-query fsep lpre lsep))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  ____
