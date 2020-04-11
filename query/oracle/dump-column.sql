@@ -1,7 +1,7 @@
 select
   t.ispk || '&fsep' || t.isuniq || '&fsep' || t.isnul || '&fsep' || t.colname
     || '&fsep' || t.coltype || '&fsep' || t.collen || '&fsep' || t.colpcs ||
-    '&fsep' || substr(t.colcmt, 1, 40) as csvrow
+    '&fsep' || substr(t.colcmt, 1, 40) as rowdata
 from (
   select
     t1.column_id as colid, --> Column Id
