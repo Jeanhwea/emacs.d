@@ -97,15 +97,19 @@
 ;; -----------------------------------------------------------------------------
 ;; Query Generator
 ;; -----------------------------------------------------------------------------
-(defconst jh/dumptable
+(defconst jh/dump-tables-file
   (expand-file-name "query/tables.sql" user-emacs-directory)
+  "Dump table SQL script file name.")
+
+(defconst jh/dump-columns-file
+  (expand-file-name "query/columns.sql" user-emacs-directory)
   "Dump table SQL script file name.")
 
 (defun jh/oracle-gen-list-table-query (&optional separator)
   "Generate list table query."
   (let
     ((sep (or separator ","))
-      (raw-query (jh/read-file-content jh/dumptable)))
+      (raw-query (jh/read-file-content jh/dump-tables-file)))
     (jh/re-replace "&fsep" sep raw-query)))
 
 (defun jh/oracle-gen-list-column-query (tabname &optional separator)
