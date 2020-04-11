@@ -95,12 +95,12 @@
        (colpcs . ,(string-to-number (nth 6 fields)))
        (colcmt . ,(nth 7 fields)))))
 
-(defun qy/read-tables-meta ()
+(defun qy/read-tables-meta-data ()
   "Read all tables meta data in a database."
   (mapcar #'qy/parse-table-row-data
     (qy/sql-execute (qy/gen-list-table-query))))
 
-(defun qy/read-columns-meta (tabname)
+(defun qy/read-columns-meta-data (tabname)
   "Read all columns meta data of a table TABNAME."
   (mapcar #'qy/parse-column-row-data
     (qy/sql-execute (qy/gen-list-column-query tabname))))
