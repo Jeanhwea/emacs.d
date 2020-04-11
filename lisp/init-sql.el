@@ -114,38 +114,10 @@
 
 (defun jh/oracle-gen-list-column-query (tabname &optional separator)
   "Generate list table columns query."
-  (let ((sep (or separator ",")))
-    (jh/concat-lines
-      "SELECT"
-      (format "  utbc.COLUMN_NAME || '%s' ||" sep)
-      (format "  utbc.DATA_TYPE || '%s' ||" sep)
-      (format "  utbc.DATA_LENGTH || '%s' ||" sep)
-      (format "  DECODE(utbc.NULLABLE, 'N', 'N', '') || '%s' ||" sep)
-      "  (SELECT 'U'"
-      "     FROM USER_CONS_COLUMNS uccl, USER_CONSTRAINTS ucst"
-      "    WHERE ucst.CONSTRAINT_NAME = uccl.CONSTRAINT_NAME AND"
-      "          utbc.COLUMN_NAME = uccl.COLUMN_NAME AND"
-      "          utbc.TABLE_NAME = uccl.TABLE_NAME AND"
-      "          ucst.CONSTRAINT_TYPE = 'U'"
-      "    GROUP BY ucst.CONSTRAINT_NAME"
-      (format "   HAVING COUNT(1) = 1) || '%s' ||" sep)
-      "  (SELECT 'P'"
-      "     FROM USER_CONS_COLUMNS uccl, USER_CONSTRAINTS ucst"
-      "    WHERE ucst.CONSTRAINT_NAME = uccl.CONSTRAINT_NAME AND"
-      "          utbc.COLUMN_NAME = uccl.COLUMN_NAME AND"
-      "          utbc.TABLE_NAME = uccl.TABLE_NAME AND"
-      "          ucst.CONSTRAINT_TYPE = 'P' AND"
-      (format "          ROWNUM <= 1) || '%s' ||" sep)
-      (format "  utbc.DATA_PRECISION || '%s' ||" sep)
-      "  ("
-      "    SELECT REPLACE(REPLACE(uclc.COMMENTS, CHR(13), ''), CHR(10), '\\n')"
-      "      FROM USER_COL_COMMENTS uclc"
-      "     WHERE uclc.COLUMN_NAME = utbc.COLUMN_NAME AND"
-      "           uclc.TABLE_NAME = utbc.TABLE_NAME AND"
-      "           ROWNUM <= 1"
-      "  ) AS ROWDATA"
-      "  FROM USER_TAB_COLUMNS utbc"
-      (format " WHERE UPPER(utbc.TABLE_NAME) = '%s';" tabname))))
+  (let ((sep (or separator ","))
+         (raw-query (jh/read-file-content jh/dump-columns-file)))
+    (jh/re-replace "&tablename" tabname
+      (jh/re-replace "&fsep" sep raw-query))))
 
 (defun jh/oracle-gen-select-columns (colinfos &optional fsep)
   "Generate oracle select columns string."
