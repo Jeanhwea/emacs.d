@@ -36,14 +36,12 @@
 
 (defun qy/gen-list-table-query ()
   "Generate list table query."
-  (qy/replace-placeholder
-    (jh/read-file-content qy/dump-tables-file) "," " "))
+  (qy/replace-placeholder (jh/read-file-content qy/dump-tables-file)))
 
 (defun qy/gen-list-column-query (tabname)
   "Generate list table columns query."
   (jh/re-replace "&tablename" tabname
-    (qy/replace-placeholder
-      (jh/read-file-content qy/dump-columns-file) "," " ")))
+    (qy/replace-placeholder (jh/read-file-content qy/dump-columns-file))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  ____
@@ -76,6 +74,24 @@
         (remove-if-not
           #'(lambda (line) (string-match-p presym line))
           (split-string result "\n"))))))
+
+(defun qy/parse-columns (str)
+  "Parse the table column row data."
+  (let
+    ((fields (split-string str qy/fsep)))
+    `((ispk . ,(> (length (nth 0 fields)) 0))
+       (isuniq . ,(> (length (nth 1 fields)) 0))
+       (isnul . ,(> (length (nth 2 fields)) 0))
+       (colname . ,(nth 3 fields))
+       (coltype . ,(nth 4 fields))
+       (collen . ,(string-to-number (nth 5 fields)))
+       (colpcs . ,(string-to-number (nth 6 fields)))
+       (colcmt . ,(nth 7 fields)))))
+
+(defun qy/fetch-table-columns (tabname)
+  "Fetch the meta data for TABNAME."
+  (mapcar #'qy/parse-columns
+    (qy/sql-execute (qy/gen-list-column-query tabname))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  _____                _                 _
