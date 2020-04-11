@@ -9,7 +9,7 @@
         (setq
           sqlformat-command 'sqlformat
           sqlformat-args
-            '("-k" "lower" "-i" "lower" "-s" "--indent_width" "2" "--wrap_after" "50"))
+          '("-k" "lower" "-i" "lower" "-s" "--indent_width" "2" "--wrap_after" "50"))
         (setq
           sqlformat-command 'pgformatter
           sqlformat-args '("-u" "1" "-s" "2" "-w" "80")))
@@ -97,20 +97,16 @@
 ;; -----------------------------------------------------------------------------
 ;; Query Generator
 ;; -----------------------------------------------------------------------------
+(defconst jh/dumptable
+  (expand-file-name "query/tables.sql" user-emacs-directory)
+  "Dump table SQL script file name.")
 
 (defun jh/oracle-gen-list-table-query (&optional separator)
   "Generate list table query."
-  (let ((sep (or separator ",")))
-    (jh/concat-lines
-      "SELECT"
-      (format "  utbs.TABLE_NAME || '%s' ||" sep)
-      "  ("
-      "    SELECT REPLACE(REPLACE(utbc.COMMENTS, CHR(13), ''), CHR(10), '\\n')"
-      "      FROM USER_TAB_COMMENTS utbc"
-      "     WHERE utbc.TABLE_NAME = utbs.TABLE_NAME AND ROWNUM <= 1"
-      "  ) AS ROWDATA"
-      "  FROM USER_TABLES utbs"
-      " ORDER BY utbs.TABLE_NAME;")))
+  (let
+    ((sep (or separator ","))
+      (raw-query (jh/read-file-content jh/dumptable)))
+    (jh/re-replace "&fsep" sep raw-query)))
 
 (defun jh/oracle-gen-list-column-query (tabname &optional separator)
   "Generate list table columns query."
