@@ -39,6 +39,7 @@
 (require 'init-org)
 (require 'init-projectile)
 (require 'init-markdown)
+(require 'init-query)
 (require 'init-springboot)
 (require 'init-angular)
 (require 'init-yasnippet)
