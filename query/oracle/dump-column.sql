@@ -1,5 +1,5 @@
 select
-  t.isnul || '&fsep' || t.isuniq || '&fsep' || t.ispk || '&fsep' || t.colname
+  t.ispk || '&fsep' || t.isuniq || '&fsep' || t.isnul || '&fsep' || t.colname
     || '&fsep' || t.coltype || '&fsep' || t.collen || '&fsep' || t.colpcs ||
     '&fsep' || substr(t.colcmt, 1, 40) as csvrow
 from (
