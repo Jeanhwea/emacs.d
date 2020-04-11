@@ -74,7 +74,7 @@
       (mapcar
         #'(lambda (line) (jh/re-replace presym "" line))
         (remove-if-not
-          #'(lambda (line) (string-match-p (concat "^" qy/lpre) line))
+          #'(lambda (line) (string-match-p presym line))
           (split-string result "\n"))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
