@@ -4,7 +4,7 @@ select
     '&fsep' || substr(t.colcmt, 1, 40) as csvrow
 from (
   select
-    decode(lower(t1.nullable), 'n', '*', '') as isnul, --> Nullable?
+    t1.column_id as colid, --> Column Id
     (
       select
         'p' from user_cons_columns t2, user_constraints t3
@@ -26,6 +26,7 @@ from (
         t5.constraint_name
       having
         count(1) = 1) as isuniq, --> Is Unique Key?
+    decode(lower(t1.nullable), 'n', '*', '') as isnul, --> Nullable?
     t1.column_name as colname, --> Column Name
     t1.data_type as coltype, --> Column Type
     t1.data_length as collen, --> Column Length
@@ -37,8 +38,7 @@ from (
       where
         t6.column_name = t1.column_name
         and t6.table_name = t1.table_name
-        and rownum <= 1) as colcmt, --> Column Comments
-    t1.column_id as colid --> Column Id
+        and rownum <= 1) as colcmt --> Column Comments
   from
     user_tab_columns t1
   where
