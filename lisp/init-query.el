@@ -8,18 +8,18 @@
 (defconst qy/dump-columns-file (expand-file-name "columns.sql" qy/snippets-dir)
   "Dump columns of a table SQL script file name.")
 
-(defun qy/oracle-gen-list-table-query (&optional separator)
+(defun qy/gen-list-table-query (&optional separator)
   "Generate list table query."
   (let
     ((sep (or separator ","))
-      (raw-query (qy/read-file-content qy/dump-tables-file)))
-    (qy/re-replace "&fsep" sep raw-query)))
+      (raw-query (jh/read-file-content qy/dump-tables-file)))
+    (jh/re-replace "&fsep" sep raw-query)))
 
-(defun qy/oracle-gen-list-column-query (tabname &optional separator)
+(defun qy/gen-list-column-query (tabname &optional separator)
   "Generate list table columns query."
   (let ((sep (or separator ","))
-         (raw-query (qy/read-file-content qy/dump-columns-file)))
-    (qy/re-replace "&tablename" tabname
-      (qy/re-replace "&fsep" sep raw-query))))
+         (raw-query (jh/read-file-content qy/dump-columns-file)))
+    (jh/re-replace "&tablename" tabname
+      (jh/re-replace "&fsep" sep raw-query))))
 
 (provide 'init-query)
