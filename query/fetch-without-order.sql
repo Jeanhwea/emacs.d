@@ -1,10 +1,10 @@
 select
-  t2.*
+  t.*
 from (
   select
-    myid,
+    t1.myid,
     rownum as rowidx
   from
     '&tablename' t1
   where
-    1 = 1) t2;
+    1 = 1) t;
