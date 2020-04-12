@@ -1,11 +1,11 @@
 select
   t3.* (
     select
-      t2.*
+      t2.*,
+      rownum as rowidx
     from (
       select
-        myid,
-        rownum as rowidx
+        t1.*,
       from
         '&tablename' t1
       where
