@@ -30,10 +30,10 @@
 (defun qy/replace-pipe (str &optional fsep lsep nsep)
   "Replace common placeholder in STR."
   (let*
-    ((str (jh/re-replace "&fsep" (or fsep qy/fsep) str nil t))
+    ((str (jh/re-replace "&lpre" qy/lpre str nil t))
+      (str (jh/re-replace "&fsep" (or fsep qy/fsep) str nil t))
       (str (jh/re-replace "&lsep" (or fsep qy/lsep) str nil t))
-      (str (jh/re-replace "&nsep" (or fsep qy/nsep) str nil t))
-      (str (jh/re-replace "&lpre" qy/lpre str nil t)))
+      (str (jh/re-replace "&nsep" (or fsep qy/nsep) str nil t)))
     str))
 
 (defun qy/gen-list-table-query ()
