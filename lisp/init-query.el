@@ -8,10 +8,10 @@
 (defconst qy/snippets-dir (expand-file-name "query" user-emacs-directory)
   "The Directory that stores all query files.")
 
-(defconst qy/dump-tables-file (expand-file-name "tables.sql" qy/snippets-dir)
+(defconst qy/dump-tables-file (expand-file-name "dump-tables.sql" qy/snippets-dir)
   "Dump table SQL script file name.")
 
-(defconst qy/dump-columns-file (expand-file-name "columns.sql" qy/snippets-dir)
+(defconst qy/dump-columns-file (expand-file-name "dump-columns.sql" qy/snippets-dir)
   "Dump columns of a table SQL script file name.")
 
 ;; separators
