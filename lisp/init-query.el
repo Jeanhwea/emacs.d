@@ -72,13 +72,12 @@
 
 (defun qy/daemon-init ()
   "Initialize daemon client."
-  (qy/daemon-eval "set linesize 30000\n")
+  (qy/daemon-eval "set linesize 32767\n")
   (qy/daemon-eval "set pagesize 9999\n")
   (qy/daemon-eval "set feedback off\n"))
 
-(defun qy/start-client (user pass sid &optional host port)
+(defun qy/daemon-start (user pass sid &optional host port)
   "Start a client as the query daemon."
-  (interactive)
   (let
     ((host (or host "localhost")) (port (or port 1521)))
     (progn
@@ -97,6 +96,17 @@
         (buffer-substring-no-properties (point-min) (point-max))))
     result))
 
+(defun qy/sql-execute (query)
+  "Execute a QUERY and get the results as list."
+  (unless qy/daemon-buffer (error "No SQL interactive buffer found"))
+  (let
+    ((presym (concat "^" qy/lpre)))
+    (mapcar
+      #'(lambda (line) (jh/re-replace presym "" line))
+      (remove-if-not
+        #'(lambda (line) (string-match-p presym line))
+        (split-string (qy/daemon-execute query) "\n")))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  _____
 ;; |  __ \
@@ -105,30 +115,6 @@
 ;; | |   | (_| || |   \__ \|  __/| |
 ;; |_|    \__,_||_|   |___/ \___||_|
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun qy/sql-execute (query)
-  "Execute a QUERY and get the results as list."
-  (let
-    ((sqlbuf (sql-find-sqli-buffer))
-      (outbuf "*SQL RESULT SET*")
-      (result))
-    (unless sqlbuf
-      (error "No SQL interactive buffer found"))
-    ;; execute a query, and get raw results
-    (progn
-      (switch-to-buffer outbuf)
-      (sql-redirect sqlbuf "SET LINESIZE 32767;" nil nil)
-      (sql-redirect sqlbuf "SET PAGESIZE 9999;" nil nil)
-      (sql-execute sqlbuf outbuf query nil nil)
-      (setq result (buffer-string))
-      (kill-buffer outbuf))
-    ;; extract results line, and return a list
-    (let
-      ((presym (concat "^" qy/lpre)))
-      (mapcar
-        #'(lambda (line) (jh/re-replace presym "" line))
-        (remove-if-not
-          #'(lambda (line) (string-match-p presym line))
-          (split-string result "\n"))))))
 
 (defun qy/parse-table-row-data (str)
   "Parse the table row data."
