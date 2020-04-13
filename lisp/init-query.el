@@ -22,8 +22,9 @@
 (defconst qy/lpre ":) " "Oracle line prefix")
 
 ;; process
-(defconst qy/cli-program "sqlplus")
-(defconst qy/cli-buffer "*query-buffer*")
+(defconst qy/daemon-name "query-daemon")
+(defconst qy/daemon-buffer "*query-buffer*")
+(defconst qy/daemon-prog "sqlplus")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   _____                                 _
@@ -59,12 +60,42 @@
 ;; | |__| || (_| ||  __/| | | | | || (_) || | | |
 ;; |_____/  \__,_| \___||_| |_| |_| \___/ |_| |_|
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun qy/start-client (user pass host port sid)
-  "Start a background daemon as client."
+(defun qy/daemon-fork (user pass sid host port)
+  "Start the query daemon."
+  (start-process
+    qy/daemon-name qy/daemon-buffer qy/daemon-prog
+    (format "%s/%s@%s:%d/%s" user pass host port sid)))
+
+(defun qy/daemon-eval (str)
+  "Send STR to query daemon."
+  (process-send-string qy/daemon-name str))
+
+(defun qy/daemon-init ()
+  "Initialize daemon client."
+  (qy/daemon-eval "set linesize 30000\n")
+  (qy/daemon-eval "set pagesize 9999\n")
+  (qy/daemon-eval "set feedback off\n"))
+
+(defun qy/start-client (user pass sid &optional host port)
+  "Start a client as the query daemon."
   (interactive)
   (let
-    ((cstr (format "%s/%s@%s:%d/%x" user pass host port sid)))
-    (start-process "query-daemon" qy/cli-buffer qy/cli-program "-s" cstr)))
+    ((host (or host "localhost")) (port (or port 1521)))
+    (progn
+      (qy/daemon-fork user pass sid host port)
+      (qy/daemon-init))))
+
+(defun qy/daemon-execute (query)
+  "Execute a query and get output as string."
+  (let ((oldbuf (current-buffer)) (result))
+    (with-current-buffer qy/daemon-buffer
+      (kill-region  (point-min) (point-max))
+      (qy/daemon-eval query)
+      ;; sqlplus needs sleep a while for responsing
+      (sleep-for 1)
+      (setq result
+        (buffer-substring-no-properties (point-min) (point-max))))
+    result))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  _____
