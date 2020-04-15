@@ -43,26 +43,25 @@
 ;;   git clone https://github.com/mopemope/meghanada-emacs.git
 ;;
 ;; -----------------------------------------------------------------------------
-(when (require 'meghanada)
-  (add-hook 'java-mode-hook
-    #'(lambda ()
-        ;; meghanada-mode on
-        (meghanada-mode t)
-        (flycheck-mode +1)
-        (setq c-basic-offset 2)
-        ;; use code format
-        ;; (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)
-        ))
-
-  (if (jh/windows?)
-    (setq
-      meghanada-java-path
-      (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
-      meghanada-maven-path "mvn.cmd")
-    ;; unix-like system
-    (setq
-      meghanada-java-path "java"
-      meghanada-maven-path "mvn")))
+;; (when (require 'meghanada)
+;;   (add-hook 'java-mode-hook
+;;     #'(lambda ()
+;;         ;; meghanada-mode on
+;;         (meghanada-mode t)
+;;         (flycheck-mode +1)
+;;         (setq c-basic-offset 2)
+;;         ;; use code format
+;;         ;; (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)
+;;         ))
+;;   (if (jh/windows?)
+;;     (setq
+;;       meghanada-java-path
+;;       (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
+;;       meghanada-maven-path "mvn.cmd")
+;;     ;; unix-like system
+;;     (setq
+;;       meghanada-java-path "java"
+;;       meghanada-maven-path "mvn")))
 
 ;; (when (require 'lsp-java)
 ;;   (add-hook 'java-mode-hook #'lsp))
