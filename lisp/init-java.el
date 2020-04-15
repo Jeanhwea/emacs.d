@@ -38,8 +38,8 @@
       (highlight-indent-guides-mode 1)))
 
 (defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
-;; (defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")
-(defconst jh/gjf-file "google-java-format-1.7-120-all-deps.jar")
+(defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")
+;; (defconst jh/gjf-file "google-java-format-1.7-120-all-deps.jar")
 (defun jh/format-java-source (&optional file)
   "Format java source code."
   (let
