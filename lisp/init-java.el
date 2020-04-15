@@ -50,7 +50,7 @@
       (shell-command (format "java -jar %s --replace %s" jarfile file))
       ;; reload buffer
       (revert-buffer nil t)
-      (message (format "Done formatting Java source %s" file)))))
+      (message (format "Done format file: %s" file)))))
 
 ;; -----------------------------------------------------------------------------
 ;; meghanada
