@@ -37,47 +37,48 @@
       (rainbow-delimiters-mode 1)
       (highlight-indent-guides-mode 1)))
 
-
+(defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
+(defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")
 (defun jh/format-java-source (&optional file)
   "Format java source code."
   (let
     ((file (or file (buffer-file-name)))
-      (jarfile
-        (expand-file-name
-          "resource/google-java-format-1.7-all-deps.jar" user-emacs-directory))
-      (progn
-        (save-buffer)
-        (shell-command
-          (format "java -jar %s --replace %s" jarfile file))
-        (message (format "Done formatting Java source %s" file)))))
+      (jarfile (expand-file-name jh/gjf-file jh/gjf-dir)))
+    (progn
+      (save-buffer)
+      ;; format buffer
+      (shell-command (format "java -jar %s --replace %s" jarfile file))
+      ;; reload buffer
+      (revert-buffer nil t)
+      (message (format "Done formatting Java source %s" file)))))
 
-  ;; -----------------------------------------------------------------------------
-  ;; meghanada
-  ;;
-  ;;   git clone https://github.com/mopemope/meghanada-emacs.git
-  ;;
-  ;; -----------------------------------------------------------------------------
-  ;; (when (require 'meghanada)
-  ;;   (add-hook 'java-mode-hook
-  ;;     #'(lambda ()
-  ;;         ;; meghanada-mode on
-  ;;         (meghanada-mode t)
-  ;;         (flycheck-mode +1)
-  ;;         (setq c-basic-offset 2)
-  ;;         ;; use code format
-  ;;         ;; (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)
-  ;;         ))
-  ;;   (if (jh/windows?)
-  ;;     (setq
-  ;;       meghanada-java-path
-  ;;       (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
-  ;;       meghanada-maven-path "mvn.cmd")
-  ;;     ;; unix-like system
-  ;;     (setq
-  ;;       meghanada-java-path "java"
-  ;;       meghanada-maven-path "mvn")))
+;; -----------------------------------------------------------------------------
+;; meghanada
+;;
+;;   git clone https://github.com/mopemope/meghanada-emacs.git
+;;
+;; -----------------------------------------------------------------------------
+;; (when (require 'meghanada)
+;;   (add-hook 'java-mode-hook
+;;     #'(lambda ()
+;;         ;; meghanada-mode on
+;;         (meghanada-mode t)
+;;         (flycheck-mode +1)
+;;         (setq c-basic-offset 2)
+;;         ;; use code format
+;;         ;; (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)
+;;         ))
+;;   (if (jh/windows?)
+;;     (setq
+;;       meghanada-java-path
+;;       (expand-file-name "bin/java.exe" (getenv "JAVA_HOME"))
+;;       meghanada-maven-path "mvn.cmd")
+;;     ;; unix-like system
+;;     (setq
+;;       meghanada-java-path "java"
+;;       meghanada-maven-path "mvn")))
 
-  ;; (when (require 'lsp-java)
-  ;;   (add-hook 'java-mode-hook #'lsp))
+;; (when (require 'lsp-java)
+;;   (add-hook 'java-mode-hook #'lsp))
 
-  (provide 'init-java)
+(provide 'init-java)
