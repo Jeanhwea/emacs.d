@@ -5,6 +5,8 @@
 package `(jh/java-package-name)`;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public enum ${1:`(jh/java-class-name)`} {
 
@@ -26,5 +28,12 @@ $>$>return Arrays.asList($1.values()).stream()
 $>$>$>$>.filter(element -> element.getValue().equals(str))
 $>$>$>$>.findFirst()
 $>$>$>$>.orElse($1.Unknown);
+$>}
+
+$>public static List<String> validValues() {
+$>$>return Arrays.asList($1.values()).stream()
+$>$>$>$>.filter(e -> e != $1.Unknown)
+$>$>$>$>.map(e -> e.getValue())
+$>$>$>$>.collect(Collectors.toList());
 $>}
 }
