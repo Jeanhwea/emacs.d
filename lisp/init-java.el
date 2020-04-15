@@ -37,6 +37,17 @@
       (rainbow-delimiters-mode 1)
       (highlight-indent-guides-mode 1)))
 
+(defun jh/format-java-source (&optional file)
+  "Format java source code."
+  (let
+    ((file (or file (buffer-file-name)))
+      (gjf "/Users/hujinghui/Downloads/google-java-format-1.7-all-deps.jar")
+      (command ))
+    (progn
+      (save-buffer)
+      (shell-command
+        (format "java -jar %s --replace %s" gjf file)))))
+
 ;; -----------------------------------------------------------------------------
 ;; meghanada
 ;;

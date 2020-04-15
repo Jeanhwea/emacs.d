@@ -60,7 +60,7 @@
   "Format codes."
   (interactive)
   (cond
-    ((eq major-mode 'java-mode) (spt/meghanada-format-code))
+    ((eq major-mode 'java-mode) (jh/format-java-source))
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (sqlformat-buffer))
