@@ -30,7 +30,7 @@ $>$>$>$>.findFirst()
 $>$>$>$>.orElse($1.Unknown);
 $>}
 
-$>public static List<String> validValues() {
+$>public static List<String> expect() {
 $>$>return Arrays.asList($1.values()).stream()
 $>$>$>$>.filter(e -> e != $1.Unknown)
 $>$>$>$>.map(e -> e.getValue())
