@@ -149,15 +149,15 @@
     (car (remove-if-not pred cache))))
 
 ;; todo: remove
-(defun jh/sql-tabcols ()
-  "Get table columns for current buffer."
-  (or (local-variable-p 'tabcols)
-    (let
-      ((tabname
-         (or (spt/read-entity-tabname (jh/current-buffer))
-           (completing-read "Load Table >> " (jh/sql-tabnames)))))
-      (set (make-local-variable 'tabcols) (jh/oracle-list-columns tabname))))
-  tabcols)
+;; (defun jh/sql-tabcols ()
+;;   "Get table columns for current buffer."
+;;   (or (local-variable-p 'tabcols)
+;;     (let
+;;       ((tabname
+;;          (or (spt/read-entity-tabname (jh/current-buffer))
+;;            (completing-read "Load Table >> " (jh/sql-tabnames)))))
+;;       (set (make-local-variable 'tabcols) (jh/oracle-list-columns tabname))))
+;;   tabcols)
 
 (defun jh/java-source-colnames ()
   "Read colunm names in Java source code."
@@ -172,30 +172,14 @@
       (ignored '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")))
     (remove-if #'(lambda (x) (or (member x added) (member x ignored))) all)))
 
-(defvar jh/dbtype-fields-type-alist
-  '(("BLOB" . "byte[]")
-     ("CHAR" . "String")
-     ("CLOB" . "String")
-     ("NVARCHAR2" . "String")
-     ("VARCHAR" . "String")
-     ("VARCHAR2" . "String")
-     ("DATE" . "Timestamp")
-     ("NUMBER" . "double"))
-  "Map dbtype to entity field type.")
-
 (defun jh/java-type (coltype)
   "Transfer column type to java type."
-  (let
-    ((trans-table
-       '(("BLOB" . "byte[]")
-          ("CHAR" . "String")
-          ("CLOB" . "String")
-          ("NVARCHAR2" . "String")
-          ("VARCHAR" . "String")
-          ("VARCHAR2" . "String")
-          ("DATE" . "Timestamp")
-          ("NUMBER" . "double"))))
-    (assoc (gethash 'colname column) trans-table)))
+  (cond
+    ((= coltype "BLOB") "byte[]")
+    ((= coltype "DATE") "Timestamp")
+    ((= coltype "NUMBER" "double"))
+    ((member coltype '("CHAR" "CLOB" "VARCHAR2" "VARCHAR" "NVARCHAR2")) "String")
+    (t "void")))
 
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
@@ -217,31 +201,24 @@
 
 (defun jh/java-column-header (colname)
   "Build additional header, like @Lob, @Basic(...) blabla."
-  (let*
-    ((column (assoc colname (jh/sql-tabcols)))
-      (colname (nth 0 column))
-      (dbtype (nth 1 column)))
+  (let
+    ((column (jh/sql-lookup-columns colname)))
     (cond
-      ((member dbtype '("CLOB" "BLOB"))
+      ((member (gethash 'coltype column) '("CLOB" "BLOB"))
         "@Lob\n  @Basic(fetch = FetchType.LAZY)\n")
       (t ""))))
 
 (defun jh/java-column-type (colname)
   "Get field type."
-  (let*
-    ((column (assoc colname (jh/sql-tabcols)))
-      (lookup
-        (and column
-          (assoc (cadr column) jh/dbtype-fields-type-alist))))
-    (if lookup (cdr lookup) "void")))
+  (let
+    ((column (jh/sql-lookup-columns colname)))
+    (jh/java-type (gethash 'coltype column))))
 
 (defun jh/java-column-comments (colname)
   "Get field comments."
   (let
-    ((column (assoc colname (jh/sql-tabcols))))
-    (if column
-      (concat " // "(car (last column)))
-      " // TODO: Add Comment")))
+    ((column (jh/sql-lookup-columns colname)))
+    (concat " // " (and (gethash 'colcmt column) "TODO: Add Comment"))))
 
 (defun jh/java-column-field (colname)
   "Get field name."
