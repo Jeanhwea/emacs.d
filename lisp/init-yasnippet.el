@@ -175,10 +175,12 @@
 (defun jh/java-type (coltype)
   "Transfer column type to java type."
   (cond
-    ((= coltype "BLOB") "byte[]")
-    ((= coltype "DATE") "Timestamp")
-    ((= coltype "NUMBER" "double"))
-    ((member coltype '("CHAR" "CLOB" "VARCHAR2" "VARCHAR" "NVARCHAR2")) "String")
+    ((string= coltype "BLOB") "byte[]")
+    ((string= coltype "DATE") "Timestamp")
+    ((string= coltype "NUMBER") "double")
+    ((member coltype
+       '("CHAR" "CLOB" "VARCHAR2" "VARCHAR" "NVARCHAR2"))
+      "String")
     (t "void")))
 
 (defun jh/java-column-args (colname)
@@ -186,15 +188,15 @@
   (let
     ((column (jh/sql-lookup-columns colname))
       (args))
-    (and (gethash 'isnul column)
+    (and column (gethash 'isnul column)
       (add-to-list 'args "nullable = false"))
-    (and (gethash 'isuniq column)
+    (and column (gethash 'isuniq column)
       (add-to-list 'args "unique = true"))
-    (and (string= "String" (jh/java-type (gethash 'coltype column)))
+    (and column (string= "String" (jh/java-type (gethash 'coltype column)))
       (add-to-list 'args (format "length = %d" (nth 2 column))))
-    (and (string= "CLOB" (gethash 'coltype column))
+    (and column (string= "CLOB" (gethash 'coltype column))
       (add-to-list 'args "columnDefinition = \"CLOB\""))
-    (and (string= "BLOB" (gethash 'coltype column))
+    (and column (string= "BLOB" (gethash 'coltype column))
       (add-to-list 'args "columnDefinition = \"BLOB\""))
     ;; return args
     (and args (concat ", " (mapconcat #'identity args ", ")))))
