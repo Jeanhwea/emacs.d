@@ -120,7 +120,7 @@
     (set (make-local-variable 'columns) (qy/read-columns-meta-data tablename)))
   columns)
 
-(defun jh/java-tabnames ()
+(defun jh/sql-tabnames ()
   "Return all table name."
   (or (local-variable-p 'tabnames)
     (set (make-local-variable 'tabnames)
@@ -133,8 +133,8 @@
     (let
       ((tabname
          (or (spt/read-entity-tabname (jh/current-buffer))
-           (completing-read "Load Table >> " (jh/java-tabnames)))))
-      (set (make-local-variable 'tabcols) (jh/oracle-list-columns tabname))))
+           (completing-read "Load Table >> " (jh/sql-tabnames)))))
+      (set (make-local-variable 'tabcols) (jh/sql-columns tabname))))
   tabcols)
 
 (defvar jh/java-ignored-colnames '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")
