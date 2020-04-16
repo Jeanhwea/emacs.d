@@ -121,21 +121,28 @@
   columns)
 
 (defun jh/sql-tabnames ()
-  "Return all table name."
+  "Return table names for current buffer."
   (or (local-variable-p 'tabnames)
     (set (make-local-variable 'tabnames)
       (mapcar #'(lambda (x) (alist-get 'tabname x)) (jh/sql-tables))))
   tabnames)
 
-(defun jh/java-tabcols ()
-  "Get table columns for current buffer."
-  (or (local-variable-p 'tabcols)
-    (let
-      ((tabname
-         (or (spt/read-entity-tabname (jh/current-buffer))
-           (completing-read "Load Table >> " (jh/sql-tabnames)))))
-      (set (make-local-variable 'tabcols) (jh/sql-columns tabname))))
-  tabcols)
+(defun jh/sql-lookup-tables (tabname)
+  "Lookup tables with tabname."
+  (let
+    ((cache (jh/sql-tables))
+      (pred #'(lambda (x) (string= (alist-get 'tabname x) tabname))))
+    (car (remove-if-not pred cache))))
+
+(defun jh/sql-lookup-columns (colname)
+  "Lookup columns with colname."
+  (let*
+    ((tabname
+       (or (spt/read-entity-tabname (jh/current-buffer))
+         (completing-read "Load Table >> " (jh/sql-tabnames))))
+      (cache (jh/sql-columns tabname))
+      (pred #'(lambda (x) (string= (alist-get 'colname x) colname))))
+    (car (remove-if-not pred cache))))
 
 (defvar jh/java-ignored-colnames '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")
   "Java entity ignored columns.")
@@ -155,7 +162,7 @@
               (cdr (assoc (gethash 'name f) fcmap)))
           (spt/parse-java-fields text)))
       (colnames
-        (mapcar #'car (jh/java-tabcols))))
+        (mapcar #'car (jh/sql-tabcols))))
     (remove-if
       #'(lambda (x)
           (or (member x fields) (member x jh/java-ignored-colnames)))
@@ -175,7 +182,7 @@
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
   (let*
-    ((column (alist-get 'colname (jh/java-tabcols)))
+    ((column (alist-get 'colname (jh/sql-tabcols)))
       (lookup (assoc (cadr column) jh/dbtype-fields-type-alist))
       (args))
     (and (string= "N" (nth 3 column))
@@ -194,7 +201,7 @@
 (defun jh/java-column-header (colname)
   "Build additional header, like @Lob, @Basic(...) blabla."
   (let*
-    ((column (assoc colname (jh/java-tabcols)))
+    ((column (assoc colname (jh/sql-tabcols)))
       (colname (nth 0 column))
       (dbtype (nth 1 column)))
     (cond
@@ -205,7 +212,7 @@
 (defun jh/java-column-type (colname)
   "Get field type."
   (let*
-    ((column (assoc colname (jh/java-tabcols)))
+    ((column (assoc colname (jh/sql-tabcols)))
       (lookup
         (and column
           (assoc (cadr column) jh/dbtype-fields-type-alist))))
@@ -214,7 +221,7 @@
 (defun jh/java-column-comments (colname)
   "Get field comments."
   (let
-    ((column (assoc colname (jh/java-tabcols))))
+    ((column (assoc colname (jh/sql-tabcols))))
     (if column
       (concat " // "(car (last column)))
       " // TODO: Add Comment")))
