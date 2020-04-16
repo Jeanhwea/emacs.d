@@ -15,6 +15,9 @@
 (defconst qy/dump-columns-file (expand-file-name "dump-columns.sql" qy/snippets-dir)
   "Dump columns of a table SQL script file name.")
 
+(defconst qy/sppass-file (expand-file-name "~/.sppass")
+  "Default sqlplus configuration file")
+
 ;; separators
 (defconst qy/fsep "$ep" "Oracle field separator")
 (defconst qy/lsep "#ew" "Oracle newline separator")
@@ -60,11 +63,11 @@
 ;; | |__| || (_| ||  __/| | | | | || (_) || | | |
 ;; |_____/  \__,_| \___||_| |_| |_| \___/ |_| |_|
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun qy/daemon-fork (user pass sid host port)
-  "Start the query daemon."
-  (start-process
-    qy/daemon-name qy/daemon-buffer qy/daemon-prog
-    (format "%s/%s@%s:%d/%s" user pass host port sid)))
+(defun qy/daemon-fork (file)
+  "Start the query daemon with give configuration FILE."
+  (let
+    ((conn-str (car (jh/read-file-content-as-lines qy/sppass-file))))
+    (start-process qy/daemon-name qy/daemon-buffer qy/daemon-prog conn-str)))
 
 (defun qy/daemon-eval (str)
   "Send STR to query daemon."
@@ -76,13 +79,13 @@
   (qy/daemon-eval "set pagesize 9999\n")
   (qy/daemon-eval "set feedback off\n"))
 
-(defun qy/daemon-start (user pass sid &optional host port)
+(defun qy/daemon-start ()
   "Start a client as the query daemon."
-  (let
-    ((host (or host "localhost")) (port (or port 1521)))
-    (progn
-      (qy/daemon-fork user pass sid host port)
-      (qy/daemon-init))))
+  (interactive)
+  (or (file-exists-p qy/sppass-file)
+    (error "Need configuration file: %s" qy/sppass-file))
+  (progn
+    (qy/daemon-fork qy/sppass-file) (qy/daemon-init)))
 
 (defun qy/daemon-execute (query)
   "Execute a query and get output as string."
