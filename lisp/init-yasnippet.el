@@ -155,32 +155,22 @@
     (let
       ((tabname
          (or (spt/read-entity-tabname (jh/current-buffer))
-           (completing-read "Load Table >> " (jh/java-tabnames)))))
+           (completing-read "Load Table >> " (jh/sql-tabnames)))))
       (set (make-local-variable 'tabcols) (jh/oracle-list-columns tabname))))
   tabcols)
 
-(defvar jh/java-ignored-colnames '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")
-  "Java entity ignored columns.")
+(defun jh/java-source-colnames ()
+  "Read colunm names in Java source code."
+  (let ((trans #'(lambda (x) (gethash 'colname x))))
+    (mapcar trans (spt/read-column-infos (jh/current-buffer)))))
 
 (defun jh/java-column-names ()
   "Return all column name."
-  (let*
-    ((text (jh/current-buffer))
-      (fcmap
-        (mapcar
-          #'(lambda (e)
-              (cons (gethash 'name e) (gethash 'colname e)))
-          (spt/read-column-infos text)))
-      (fields
-        (mapcar
-          #'(lambda (f)
-              (cdr (assoc (gethash 'name f) fcmap)))
-          (spt/parse-java-fields text)))
-      (colnames (jh/sql-colnames)))
-    (remove-if
-      #'(lambda (x)
-          (or (member x fields) (member x jh/java-ignored-colnames)))
-      colnames)))
+  (let
+    ((all (jh/sql-colnames))
+      (added (jh/java-source-colnames))
+      (ignored '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")))
+    (remove-if #'(lambda (x) (or (member x added) (member x ignored))) all)))
 
 (defvar jh/dbtype-fields-type-alist
   '(("BLOB" . "byte[]")
@@ -193,21 +183,34 @@
      ("NUMBER" . "double"))
   "Map dbtype to entity field type.")
 
+(defun jh/java-type (coltype)
+  "Transfer column type to java type."
+  (let
+    ((trans-table
+       '(("BLOB" . "byte[]")
+          ("CHAR" . "String")
+          ("CLOB" . "String")
+          ("NVARCHAR2" . "String")
+          ("VARCHAR" . "String")
+          ("VARCHAR2" . "String")
+          ("DATE" . "Timestamp")
+          ("NUMBER" . "double"))))
+    (assoc (gethash 'colname column) trans-table)))
+
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
-  (let*
-    ((column (assoc colname (jh/sql-tabcols)))
-      (lookup (assoc (cadr column) jh/dbtype-fields-type-alist))
+  (let
+    ((column (jh/sql-lookup-columns colname))
       (args))
-    (and (string= "N" (nth 3 column))
+    (and (gethash 'isnul column)
       (add-to-list 'args "nullable = false"))
-    (and (string= "U" (nth 4 column))
+    (and (gethash 'isuniq column)
       (add-to-list 'args "unique = true"))
-    (and lookup (string= "String" (cdr lookup))
+    (and (string= "String" (jh/java-type (gethash 'coltype column)))
       (add-to-list 'args (format "length = %d" (nth 2 column))))
-    (and (string= "CLOB" (nth 1 column))
+    (and (string= "CLOB" (gethash 'coltype column))
       (add-to-list 'args "columnDefinition = \"CLOB\""))
-    (and (string= "BLOB" (nth 1 column))
+    (and (string= "BLOB" (gethash 'coltype column))
       (add-to-list 'args "columnDefinition = \"BLOB\""))
     ;; return args
     (and args (concat ", " (mapconcat #'identity args ", ")))))
