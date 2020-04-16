@@ -108,24 +108,31 @@
 ;; | |_| / ___ \| |/ ___ \| |_) / ___ \ ___) | |___
 ;; |____/_/   \_\_/_/   \_\____/_/   \_\____/|_____|
 ;; -----------------------------------------------------------------------------
+(defun jh/sql-guess-tabname ()
+  "Guess the table name"
+  (or (spt/read-entity-tabname (jh/current-buffer))
+    (completing-read "Choose a Table >> " (jh/sql-tabnames))))
+
 (defun jh/sql-tables ()
   "Return all tables."
   (or (local-variable-p 'tables)
     (set (make-local-variable 'tables) (qy/read-tables-meta-data)))
   tables)
 
-(defun jh/sql-columns (tablename)
+(defun jh/sql-columns ()
   "Read all columns with given TABLENAME."
   (or (local-variable-p 'columns)
-    (set (make-local-variable 'columns) (qy/read-columns-meta-data tablename)))
+    (set (make-local-variable 'columns)
+      (qy/read-columns-meta-data (jh/sql-guess-tabname))))
   columns)
 
 (defun jh/sql-tabnames ()
   "Return table names for current buffer."
-  (or (local-variable-p 'tabnames)
-    (set (make-local-variable 'tabnames)
-      (mapcar #'(lambda (x) (alist-get 'tabname x)) (jh/sql-tables))))
-  tabnames)
+  (mapcar #'(lambda (x) (alist-get 'tabname x)) (jh/sql-tables)))
+
+(defun jh/sql-colnames ()
+  "Return columns names for current buffer."
+  (mapcar #'(lambda (x) (alist-get 'colname x)) (jh/sql-columns)))
 
 (defun jh/sql-lookup-tables (tabname)
   "Lookup tables with tabname."
@@ -136,11 +143,8 @@
 
 (defun jh/sql-lookup-columns (colname)
   "Lookup columns with colname."
-  (let*
-    ((tabname
-       (or (spt/read-entity-tabname (jh/current-buffer))
-         (completing-read "Load Table >> " (jh/sql-tabnames))))
-      (cache (jh/sql-columns tabname))
+  (let
+    ((cache (jh/sql-columns))
       (pred #'(lambda (x) (string= (alist-get 'colname x) colname))))
     (car (remove-if-not pred cache))))
 
@@ -161,8 +165,7 @@
           #'(lambda (f)
               (cdr (assoc (gethash 'name f) fcmap)))
           (spt/parse-java-fields text)))
-      (colnames
-        (mapcar #'car (jh/sql-tabcols))))
+      (colnames (jh/sql-colnames)))
     (remove-if
       #'(lambda (x)
           (or (member x fields) (member x jh/java-ignored-colnames)))
