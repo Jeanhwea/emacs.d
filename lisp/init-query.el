@@ -67,7 +67,7 @@
   "Start the query daemon with give configuration FILE."
   (let
     ((conn-str (car (jh/read-file-content-as-lines qy/sppass-file))))
-    (start-process qy/daemon-name qy/daemon-buffer qy/daemon-prog conn-str)))
+    (start-process qy/daemon-name qy/daemon-buffer qy/daemon-prog "-s" conn-str)))
 
 (defun qy/daemon-eval (str)
   "Send STR to query daemon."

@@ -108,10 +108,24 @@
 ;; | |_| / ___ \| |/ ___ \| |_) / ___ \ ___) | |___
 ;; |____/_/   \_\_/_/   \_\____/_/   \_\____/|_____|
 ;; -----------------------------------------------------------------------------
+(defun jh/sql-tables ()
+  "Return all tables."
+  (or (local-variable-p 'tables)
+    (set (make-local-variable 'tables) (qy/read-tables-meta-data)))
+  tables)
+
+(defun jh/sql-columns (tablename)
+  "Read all columns with given TABLENAME."
+  (or (local-variable-p 'columns)
+    (set (make-local-variable 'columns) (qy/read-columns-meta-data tablename)))
+  columns)
 
 (defun jh/java-tabnames ()
   "Return all table name."
-  (mapcar #'(lambda (x) (alist-get 'tabname x)) (qy/read-tables-meta-data)))
+  (or (local-variable-p 'tabnames)
+    (set (make-local-variable 'tabnames)
+      (mapcar #'(lambda (x) (alist-get 'tabname x)) (jh/sql-tables))))
+  tabnames)
 
 (defun jh/java-tabcols ()
   "Get table columns for current buffer."
@@ -161,7 +175,7 @@
 (defun jh/java-column-args (colname)
   "Build the arguments in @Column(...)"
   (let*
-    ((column (assoc colname (jh/java-tabcols)))
+    ((column (alist-get 'colname (jh/java-tabcols)))
       (lookup (assoc (cadr column) jh/dbtype-fields-type-alist))
       (args))
     (and (string= "N" (nth 3 column))
