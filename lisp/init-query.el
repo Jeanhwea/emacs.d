@@ -87,6 +87,8 @@
   (interactive)
   (or (file-exists-p qy/sppass-file)
     (error "Need configuration file: %s" qy/sppass-file))
+  (and (get-buffer qy/daemon-buffer)
+    (error "Query daemon already started!"))
   (progn
     (qy/daemon-fork qy/sppass-file) (qy/daemon-init)))
 
@@ -121,26 +123,29 @@
 ;; | |   | (_| || |   \__ \|  __/| |
 ;; |_|    \__,_||_|   |___/ \___||_|
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun qy/parse-table-row-data (str)
   "Parse the table row data."
   (let
-    ((fields (split-string str qy/fsep)))
-    `((tabname . ,(nth 0 fields))
-       (tabcmt . ,(nth 1 fields)))))
+    ((fields (split-string str qy/fsep))
+      (tabinfo (make-hash-table :test 'equal :size 2)))
+    (puthash 'tabname (nth 0 fields) tabinfo)
+    (puthash 'tabcmt (nth 1 fields) tabinfo)
+    tabinfo))
 
 (defun qy/parse-column-row-data (str)
   "Parse the table column row data."
   (let
-    ((fields (split-string str qy/fsep)))
-    `((ispk . ,(> (length (nth 0 fields)) 0))
-       (isuniq . ,(> (length (nth 1 fields)) 0))
-       (isnul . ,(> (length (nth 2 fields)) 0))
-       (colname . ,(nth 3 fields))
-       (coltype . ,(nth 4 fields))
-       (collen . ,(string-to-number (nth 5 fields)))
-       (colpcs . ,(string-to-number (nth 6 fields)))
-       (colcmt . ,(nth 7 fields)))))
+    ((fields (split-string str qy/fsep))
+      (colinfo (make-hash-table :test 'equal :size 8)))
+    (puthash 'ispk  (> (length (nth 0 fields)) 0) colinfo)
+    (puthash 'isuniq (> (length (nth 1 fields)) 0) colinfo)
+    (puthash 'isnul (> (length (nth 2 fields)) 0) colinfo)
+    (puthash 'colname (nth 3 fields) colinfo)
+    (puthash 'coltype (nth 4 fields) colinfo)
+    (puthash 'collen (string-to-number (nth 5 fields)) colinfo)
+    (puthash 'colpcs (string-to-number (nth 6 fields)) colinfo)
+    (puthash 'colcmt (nth 7 fields) colinfo)
+    colinfo))
 
 (defun qy/read-tables-meta-data ()
   "Read all tables meta data in a database."

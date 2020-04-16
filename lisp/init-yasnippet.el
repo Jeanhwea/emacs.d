@@ -128,24 +128,24 @@
 
 (defun jh/sql-tabnames ()
   "Return table names for current buffer."
-  (mapcar #'(lambda (x) (alist-get 'tabname x)) (jh/sql-tables)))
+  (mapcar #'(lambda (x) (gethash 'tabname x)) (jh/sql-tables)))
 
 (defun jh/sql-colnames ()
   "Return columns names for current buffer."
-  (mapcar #'(lambda (x) (alist-get 'colname x)) (jh/sql-columns)))
+  (mapcar #'(lambda (x) (gethash 'colname x)) (jh/sql-columns)))
 
 (defun jh/sql-lookup-tables (tabname)
   "Lookup tables with tabname."
   (let
     ((cache (jh/sql-tables))
-      (pred #'(lambda (x) (string= (alist-get 'tabname x) tabname))))
+      (pred #'(lambda (x) (string= (gethash 'tabname x) tabname))))
     (car (remove-if-not pred cache))))
 
 (defun jh/sql-lookup-columns (colname)
   "Lookup columns with colname."
   (let
     ((cache (jh/sql-columns))
-      (pred #'(lambda (x) (string= (alist-get 'colname x) colname))))
+      (pred #'(lambda (x) (string= (gethash 'colname x) colname))))
     (car (remove-if-not pred cache))))
 
 ;; todo: remove
