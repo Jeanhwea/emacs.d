@@ -71,6 +71,9 @@
 
 (defun qy/daemon-eval (str)
   "Send STR to query daemon."
+  (or
+    (get-buffer qy/daemon-buffer)
+    (error "Query Daemon haven't start"))
   (process-send-string qy/daemon-name str))
 
 (defun qy/daemon-init ()

@@ -111,7 +111,7 @@
 
 (defun jh/java-tabnames ()
   "Return all table name."
-  (mapcar 'car (jh/oracle-list-tables)))
+  (mapcar #'(lambda (x) (alist-get 'tabname x)) (qy/read-tables-meta-data)))
 
 (defun jh/java-tabcols ()
   "Get table columns for current buffer."

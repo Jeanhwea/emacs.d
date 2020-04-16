@@ -1125,19 +1125,4 @@
       (goto-char (cdr (assoc mtdkey mtdtable)))
       (search-forward-regexp "{$"))))
 
-(defun spt/meghanada-format-code ()
-  "Format java source file code."
-  (interactive)
-  (let*
-    ((saved-point (point))
-      (file (buffer-file-name))
-      (fileinfo (spt/filename-to-fileinfo file)))
-    (and (string-match-p "\\.java$" file)
-      (progn
-        (meghanada-code-beautify)
-        (save-buffer)
-        (if (> saved-point (point-max))
-          (goto-char (point-max))
-          (goto-char saved-point))))))
-
 (provide 'init-springboot)
