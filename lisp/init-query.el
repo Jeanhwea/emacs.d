@@ -82,16 +82,6 @@
   (qy/daemon-eval "set pagesize 9999\n")
   (qy/daemon-eval "set feedback off\n"))
 
-(defun qy/daemon-start ()
-  "Start a client as the query daemon."
-  (interactive)
-  (or (file-exists-p qy/sppass-file)
-    (error "Need configuration file: %s" qy/sppass-file))
-  (and (get-buffer qy/daemon-buffer)
-    (error "Query daemon already started!"))
-  (progn
-    (qy/daemon-fork qy/sppass-file) (qy/daemon-init)))
-
 (defun qy/daemon-execute (query)
   "Execute a query and get output as string."
   (let ((oldbuf (current-buffer)) (result))
@@ -99,7 +89,7 @@
       (kill-region  (point-min) (point-max))
       (qy/daemon-eval query)
       ;; sqlplus needs sleep a while for responsing
-      (sleep-for 1)
+      (sleep-for 0 500)
       (setq result
         (buffer-substring-no-properties (point-min) (point-max))))
     result))
@@ -114,6 +104,16 @@
       (remove-if-not
         #'(lambda (line) (string-match-p presym line))
         (split-string (qy/daemon-execute query) "\n")))))
+
+(defun query-daemon ()
+  "Start a client as the query daemon."
+  (interactive)
+  (or (file-exists-p qy/sppass-file)
+    (error "Need configuration file: %s" qy/sppass-file))
+  (and (get-buffer qy/daemon-buffer)
+    (error "Query daemon already started!"))
+  (progn
+    (qy/daemon-fork qy/sppass-file) (qy/daemon-init)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  _____
