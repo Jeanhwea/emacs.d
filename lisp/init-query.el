@@ -105,7 +105,7 @@
         #'(lambda (line) (string-match-p presym line))
         (split-string (qy/daemon-execute query) "\n")))))
 
-(defun query-daemon ()
+(defun daemon-client-start ()
   "Start a client as the query daemon."
   (interactive)
   (or (file-exists-p qy/sppass-file)
