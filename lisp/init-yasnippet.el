@@ -206,7 +206,9 @@
   (let
     ((column (jh/sql-lookup-columns colname)))
     (cond
-      ((member (gethash 'coltype column) '("CLOB" "BLOB"))
+      ((member
+         (and column (gethash 'coltype column))
+         '("CLOB" "BLOB"))
         "@Lob\n  @Basic(fetch = FetchType.LAZY)\n")
       (t ""))))
 
@@ -214,13 +216,15 @@
   "Get field type."
   (let
     ((column (jh/sql-lookup-columns colname)))
-    (jh/java-type (gethash 'coltype column))))
+    (jh/java-type (and column (gethash 'coltype column)))))
 
 (defun jh/java-column-comments (colname)
   "Get field comments."
-  (let
-    ((column (jh/sql-lookup-columns colname)))
-    (concat " // " (and (gethash 'colcmt column) "TODO: Add Comment"))))
+  (let*
+    ((column (jh/sql-lookup-columns colname))
+      (colcmt (and column (gethash 'colcmt column))))
+    (concat " // "
+      (if (> (length colcmt) 0) colcmt "TODO: Add Comment"))))
 
 (defun jh/java-column-field (colname)
   "Get field name."
