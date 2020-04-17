@@ -73,7 +73,7 @@
   "Send STR to query daemon."
   (or
     (get-buffer qy/daemon-buffer)
-    (error "Query Daemon haven't start"))
+    (error "Query Daemon haven't start, run by daemon-client-start"))
   (process-send-string qy/daemon-name str))
 
 (defun qy/daemon-init ()
