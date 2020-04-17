@@ -27,7 +27,7 @@ $>}
 
 $>@GetMapping("")
 $>public List<${2:${1:$(jh/java-coerce-to-entity yas-text)}}> get${5:${2:$(jh/java-pluralize-entity yas-text)}}List(@RequestHeader HttpHeaders headers, @RequestParam Map<String, Object> params) {
-$>$>return this.$4.findAll$5();
+$>$>return this.$4.findAll$5(params);
 $>}
 
 $>@ResponseStatus(HttpStatus.CREATED)
