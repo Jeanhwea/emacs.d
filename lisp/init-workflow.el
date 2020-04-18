@@ -135,7 +135,7 @@
       (if lookup (unhighlight-regexp sym-regexp) (highlight-symbol-at-point))
       (message "Ops: No sysmbol to highlight at point!"))))
 
-(defun workflow-wipeout-all-highlight ()
+(defun workflow-wipeout-all-highlights ()
   "Unhighlight all symbols"
   (interactive)
   (let ((pattens (mapcar #'car hi-lock-interactive-patterns)))
