@@ -254,13 +254,8 @@
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (sqlformat-buffer))
     ((member major-mode
-       '(emacs-lisp-mode
-          less-css-mode
-          mhtml-mode
-          nxml-mode
-          sh-mode
-          ymal-mode)
-       wf/known-indent-mode) (jh/indent-current-buffer))
+       '(emacs-lisp-mode less-css-mode mhtml-mode nxml-mode sh-mode ymal-mode))
+      (jh/indent-current-buffer))
     (t (message "Ops, no format backend!"))))
 
 (defun workflow-comment-source-code ()
@@ -270,6 +265,12 @@
     (use-region-p)
     (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line 1)))
+
+;; Part 2-4: Test
+(defun workflow-post-http-request ()
+  "Post a HTTP request by verb in org-mode."
+  (interactive)
+  (verb-send-request-on-point-other-window-stay))
 
 ;; Part 2-9: Misc
 (defun workflow-codetta-expand-command ()

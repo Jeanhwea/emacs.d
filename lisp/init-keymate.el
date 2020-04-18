@@ -19,7 +19,6 @@
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f9)
-  (define-key leader/f9 (kbd "v") #'verb-send-request-on-point-other-window-stay)
   (define-key leader/f9 (kbd "c") #'ct/expand-command)
   (define-key leader/f9 (kbd "d") #'workflow-drop-file)
   (define-key leader/f9 (kbd "r") #'workflow-open-default-folder)
@@ -124,13 +123,15 @@
   (define-key leader/f12 (kbd "x") #'workflow-regexp-replace)
   (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
   ;; Source code related
-  (define-key leader/f12 (kbd "f") 'workflow-format-current-source)
+  (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
   ;; Unit test & Project starter
   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
   ;; (define-key leader/f12 (kbd "c") #'projectile-compile-project)
   ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
+  ;; Test
+  (define-key leader/f12 (kbd "p") #'workflow-post-http-request)
   ;; Misc
   (define-key leader/f12 (kbd "c") #'workflow-codetta-expand-command)
   (define-key leader/f12 (kbd "e") #'workflow-eshell-open-from-here)
