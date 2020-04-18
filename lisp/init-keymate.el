@@ -99,7 +99,7 @@
 (global-set-key (kbd "M-0") 'leader/f0)
 
 ;; -----------------------------------------------------------------------------
-;; F11: Fast editing
+;; F11: UI operations
 ;; -----------------------------------------------------------------------------
 (progn
   ;; Leader Key
@@ -107,29 +107,29 @@
   ;; Window
   (define-key leader/f11 (kbd "o") #'delete-other-windows)
   (define-key leader/f11 (kbd "x") #'delete-window)
-  (define-key leader/f11 (kbd "v") #'split-window-below)
-  (define-key leader/f11 (kbd "h") #'split-window-right)
+  (define-key leader/f11 (kbd "/") #'split-window-below)
+  (define-key leader/f11 (kbd "'") #'split-window-right)
   (define-key leader/f11 (kbd "q") #'save-buffers-kill-terminal)
   (define-key leader/f11 (kbd "w") #'minimize-window)
   (define-key leader/f11 (kbd "e") #'toggle-frame-fullscreen)
   ;; File access
-  (define-key leader/f11 (kbd "g") #'counsel-git)
-  (define-key leader/f11 (kbd "f") #'counsel-find-file)
-  (define-key leader/f11 (kbd "p") #'projectile-find-file)
   (define-key leader/f11 (kbd "r") #'counsel-recentf)
-  (define-key leader/f11 (kbd "b") #'ivy-switch-buffer)
-  (define-key leader/f11 (kbd "m") #'counsel-bookmark)
-  (define-key leader/f11 (kbd "M-m") #'workflow-bookmark-current-file)
+  (define-key leader/f11 (kbd "g") #'counsel-git)
+  (define-key leader/f11 (kbd "f") #'projectile-find-file)
+  (define-key leader/f11 (kbd ".") #'counsel-find-file)
+  (define-key leader/f11 (kbd "<SPC>") #'ivy-switch-buffer)
+  (define-key leader/f11 (kbd "b") #'counsel-bookmark)
+  (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
   (define-key leader/f11 (kbd "a") #'workflow-swap-alternative-buffer)
   ;; highlight symbol
   (define-key leader/f11 (kbd "h") #'workflow-highlight-symbol)
   (define-key leader/f11 (kbd "H") #'workflow-unhighlight-all)
   ;; Frame
-  (define-key leader/f11 (kbd "5") #'make-frame-command)
-  (define-key leader/f11 (kbd "6") #'delete-frame)
+  ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
+  ;; (define-key leader/f11 (kbd "6") #'delete-frame)
   ;; File create & save
   (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
-  (define-key leader/f11 (kbd "l") #'toggle-read-only)
+  ;; (define-key leader/f11 (kbd "l") #'toggle-read-only)
   (define-key leader/f11 (kbd "k") #'kill-buffer)
   (define-key leader/f11 (kbd "s") #'workflow-save-buffers)
   (define-key leader/f11 (kbd "d") #'workflow-delete-file)
