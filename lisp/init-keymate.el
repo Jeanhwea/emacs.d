@@ -15,28 +15,6 @@
 (global-set-key (kbd "M-s") 'save-buffer)
 
 ;; -----------------------------------------------------------------------------
-;; F2: Edit
-;; -----------------------------------------------------------------------------
-(progn
-  (define-prefix-command 'leader/f2)
-  ;; Narrow & Widen
-  (define-key leader/f2 (kbd "n") #'narrow-to-region)
-  (define-key leader/f2 (kbd "w") #'widen)
-  ;; Line-wise Editting
-  (define-key leader/f2 (kbd "j") #'jh/joinline)
-  (define-key leader/f2 (kbd "n") #'jh/shiftdown-line)
-  (define-key leader/f2 (kbd "p") #'jh/shiftup-line)
-  ;; Multiple line
-  (define-key leader/f2 (kbd "|") #'mc/edit-lines)
-  (define-key leader/f2 (kbd "=") #'mc/mark-all-like-this)
-  (define-key leader/f2 (kbd "<left>") #'mc/mark-previous-like-this)
-  (define-key leader/f2 (kbd "<right>") #'mc/mark-next-like-this)
-  ;; evil mode
-  (define-key leader/f2 (kbd "v") #'evil-mode))
-(global-set-key (kbd "<f2>") 'leader/f2)
-(global-set-key (kbd "M-2") 'leader/f2)
-
-;; -----------------------------------------------------------------------------
 ;; F9: Misc
 ;; -----------------------------------------------------------------------------
 (progn
@@ -149,8 +127,8 @@
   (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
   ;; Project starter
-  (define-key leader/f12 (kbd "c") #'projectile-compile-project)
-  (define-key leader/f12 (kbd "r") #'projectile-run-project)
+  ;; (define-key leader/f12 (kbd "c") #'projectile-compile-project)
+  ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
   (define-key leader/f12 (kbd "t") #'workflow-shrimp-open)
   (define-key leader/f12 (kbd "w") #'workflow-working-directory-send)
   ;; Prettify source code

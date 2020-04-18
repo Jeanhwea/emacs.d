@@ -326,6 +326,11 @@
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
 
+(defun workflow-codetta-expand-command ()
+  "Codetta expand command."
+  (interactive)
+  (ct/expand-command))
+
 ;; -----------------------------------------------------------------------------
 ;; shrimp shell
 ;; -----------------------------------------------------------------------------
