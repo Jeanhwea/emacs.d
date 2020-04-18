@@ -114,7 +114,7 @@
 (progn
   ;; Leader Key
   (define-prefix-command 'leader/f12)
-  ;; Search global
+  ;; Search any thing
   (define-key leader/f12 (kbd "a") #'workflow-ag-search)
   (define-key leader/f12 (kbd "s") #'workflow-search-any-text)
   (define-key leader/f12 (kbd "g") #'workflow-git-search)
@@ -124,19 +124,17 @@
   (define-key leader/f12 (kbd "x") #'workflow-regexp-replace)
   (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
   ;; Source code related
+  (define-key leader/f12 (kbd "f") 'workflow-format-current-source)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
   ;; Unit test & Project starter
   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
   ;; (define-key leader/f12 (kbd "c") #'projectile-compile-project)
   ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
-
-  ;; misc
+  ;; Misc
   (define-key leader/f12 (kbd "c") #'workflow-codetta-expand-command)
   (define-key leader/f12 (kbd "e") #'workflow-eshell-open-from-here)
-  (define-key leader/f12 (kbd "w") #'workflow-working-directory-send)
-  ;; Prettify source code
-  (define-key leader/f12 (kbd "f") 'workflow-format-current-source))
+  (define-key leader/f12 (kbd "w") #'workflow-working-directory-send))
 (global-set-key (kbd "<f12>") 'leader/f12)
 (global-set-key (kbd "M-]") 'leader/f12)
 

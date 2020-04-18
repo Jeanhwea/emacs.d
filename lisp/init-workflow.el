@@ -244,7 +244,25 @@
   (interactive)
   (projectile-replace-regexp))
 
-;; Part 2-3: Comment
+;; Part 2-3: Source code realted: Formatting, Comment
+(defun workflow-format-current-source ()
+  "Format codes."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (jh/format-java-source))
+    ((eq major-mode 'python-mode) (elpy-format-code))
+    ((eq major-mode 'typescript-mode) (tide-format))
+    ((eq major-mode 'sql-mode) (sqlformat-buffer))
+    ((member major-mode
+       '(emacs-lisp-mode
+          less-css-mode
+          mhtml-mode
+          nxml-mode
+          sh-mode
+          ymal-mode)
+       wf/known-indent-mode) (jh/indent-current-buffer))
+    (t (message "Ops, no format backend!"))))
+
 (defun workflow-comment-source-code ()
   "Comment the source code"
   (interactive)
@@ -254,7 +272,29 @@
     (comment-line 1)))
 
 ;; Part 2-9: Misc
+(defun workflow-codetta-expand-command ()
+  "Codetta expand command."
+  (interactive)
+  (ct/expand-command))
 
+(defun workflow-eshell-open-from-here ()
+  "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
+  (interactive)
+  (let*
+    ((project (jh/project-name))
+      (name (if project (format "*shrimp[%s]*" project) "*shrimp*")))
+    (if (get-buffer name)
+      (switch-to-buffer name) (let ((eshell-buffer-name name)) (eshell)))))
+
+(defun workflow-working-directory-send ()
+  "Send current working directory to terminal."
+  (interactive)
+  (cond
+    ((jh/linux?) (jh/tilix-cd))
+    ((jh/mac?) (jh/iterm2-cd))
+    (t (message "Unsupport term cd on this OS!"))))
+
+;; todo: add
 (defvar wf/project-type-alist
   '(("pom.xml" . maven) ("package.json" . angular))
   "Project file to project type.")
@@ -279,24 +319,6 @@
       ((equal project-type 'maven) (spt/jump-to-class))
       ((equal project-type 'angular) (ng/find-source-file))
       (t (message "Ops, unknown project type!")))))
-
-(defun workflow-format-current-source ()
-  "Format codes."
-  (interactive)
-  (cond
-    ((eq major-mode 'java-mode) (jh/format-java-source))
-    ((eq major-mode 'python-mode) (elpy-format-code))
-    ((eq major-mode 'typescript-mode) (tide-format))
-    ((eq major-mode 'sql-mode) (sqlformat-buffer))
-    ((member major-mode
-       '(emacs-lisp-mode
-          less-css-mode
-          mhtml-mode
-          nxml-mode
-          sh-mode
-          ymal-mode)
-       wf/known-indent-mode) (jh/indent-current-buffer))
-    (t (message "Ops, no format backend!"))))
 
 (defun workflow-drop-file (&optional startdir)
   "Drop the file content to current point according to action."
@@ -334,30 +356,5 @@
   (if (use-region-p)
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
-
-(defun workflow-codetta-expand-command ()
-  "Codetta expand command."
-  (interactive)
-  (ct/expand-command))
-
-(defun workflow-eshell-open-from-here ()
-  "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
-  (interactive)
-  (let*
-    ((project (jh/project-name))
-      (name (if project (format "*shrimp[%s]*" project) "*shrimp*")))
-    (if (get-buffer name)
-      (switch-to-buffer name) (let ((eshell-buffer-name name)) (eshell)))))
-
-;; -----------------------------------------------------------------------------
-;; terminal
-;; -----------------------------------------------------------------------------
-(defun workflow-working-directory-send ()
-  "Send current working directory to terminal."
-  (interactive)
-  (cond
-    ((jh/linux?) (jh/tilix-cd))
-    ((jh/mac?) (jh/iterm2-cd))
-    (t (message "Unsupport term cd on this OS!"))))
 
 (provide 'init-workflow)
