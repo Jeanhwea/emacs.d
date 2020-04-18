@@ -22,22 +22,6 @@
   ;; Narrow & Widen
   (define-key leader/f2 (kbd "n") #'narrow-to-region)
   (define-key leader/f2 (kbd "w") #'widen)
-  ;; hide and show
-  (define-key leader/f2 (kbd "h") #'hs-toggle-hiding)
-  (define-key leader/f2 (kbd "l") #'workflow-cycle-hide-level)
-  (define-key leader/f2 (kbd "0") #'hs-hide-all)
-  (define-key leader/f2 (kbd "9") #'hs-show-all)
-  ;; Undotree
-  (define-key leader/f2 (kbd "u") #'undo-tree-visualize)
-  ;; Search global
-  (define-key leader/f2 (kbd "a") #'ag)
-  (define-key leader/f2 (kbd "s") #'counsel-ag)
-  (define-key leader/f2 (kbd "g") #'counsel-git-grep)
-  ;; Replace, regular eXpression replace
-  (define-key leader/f2 (kbd "r") #'workflow-replace)
-  (define-key leader/f2 (kbd "M-r") #'projectile-replace)
-  (define-key leader/f2 (kbd "x") #'query-replace-regexp)
-  (define-key leader/f2 (kbd "M-x") #'projectile-replace-regexp)
   ;; Line-wise Editting
   (define-key leader/f2 (kbd "j") #'jh/joinline)
   (define-key leader/f2 (kbd "n") #'jh/shiftdown-line)
@@ -120,12 +104,20 @@
   (define-key leader/f11 (kbd "k") #'workflow-kill-buffer)
   (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
   (define-key leader/f11 (kbd "s") #'workflow-save-all-buffers) ;; M-s => save current buffer
+  (define-key leader/f11 (kbd "R") #'workflow-rename-current-file)
   (define-key leader/f11 (kbd "d") #'workflow-delete-current-file)
+  ;; Hide & Show
+  (define-key leader/f11 (kbd "<") #'hs-toggle-hiding)
+  (define-key leader/f11 (kbd "l") #'workflow-cycle-hide-level)
+  (define-key leader/f11 (kbd "<") #'hs-hide-all)
+  (define-key leader/f11 (kbd ">") #'hs-show-all)
   ;; Highlight symbol & Colortheme, Transparency
   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
   (define-key leader/f11 (kbd "w") #'workflow-wipeout-all-highlights)
   (define-key leader/f11 (kbd "c") #'workflow-colortheme-cycling)
   (define-key leader/f11 (kbd "t") #'workflow-transparency-cycling)
+  ;; Undotree
+  ;; (define-key leader/f11 (kbd "i") #'undo-tree-visualize)
   ;; Frame
   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
   ;; (define-key leader/f11 (kbd "6") #'delete-frame)
@@ -142,6 +134,15 @@
 (progn
   ;; Leader Key
   (define-prefix-command 'leader/f12)
+  ;; Search global
+  (define-key leader/f12 (kbd "a") #'workflow-ag-search)
+  (define-key leader/f12 (kbd "s") #'workflow-search-any-text)
+  (define-key leader/f12 (kbd "g") #'workflow-git-search)
+  ;; Replace, regular eXpression replace
+  (define-key leader/f12 (kbd "r") #'workflow-replace)
+  (define-key leader/f12 (kbd "R") #'workflow-replace-projectile)
+  (define-key leader/f12 (kbd "x") #'workflow-regexp-replace)
+  (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
   ;; Unit test
   (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)

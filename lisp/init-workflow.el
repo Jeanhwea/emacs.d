@@ -110,6 +110,20 @@
   (interactive)
   (save-some-buffers t t))
 
+(defun workflow-rename-current-file (name)
+  "Rename both current buffer and file it's visiting to name."
+  (interactive "sRename current file to: ")
+  (let
+    ((buffername (buffer-name))
+      (filename (buffer-file-name)))
+    (unless filename
+      (error "Buffer '%s' is not visiting a file!" buffername))
+    (progn
+      (when (file-exists-p filename)
+        (rename-file filename name 1))
+      (set-visited-file-name name)
+      (rename-buffer name))))
+
 (defun workflow-delete-current-file ()
   "Delete the current file, and kill the buffer."
   (interactive)
@@ -122,7 +136,34 @@
     (delete-file (buffer-file-name))
     (kill-this-buffer)))
 
-;; Part 1-4: Highlight symbol & change color theme
+;; Part 1-4: Hide & Show
+(defun workflow-toggle-hideshow ()
+  "Toggling hide and show state."
+  (interactive)
+  (hs-toggle-hiding))
+
+(defun workflow-hide-all-level ()
+  "Hide all level."
+  (interactive)
+  (hs-hide-all))
+
+(defun workflow-show-all-level ()
+  "Show all level."
+  (interactive)
+  (hs-show-all))
+
+(defun workflow-cycle-hide-level ()
+  "Cycling hide level."
+  (interactive)
+  (if (local-variable-p 'hs-cycle-level)
+    (progn
+      (setq hs-cycle-level (% (+ hs-cycle-level 1) 5))
+      (hs-hide-level (+ hs-cycle-level 1)))
+    (progn
+      (set (make-local-variable 'hs-cycle-level) 0)
+      (hs-hide-level (+ hs-cycle-level 1)))))
+
+;; Part 1-5: Highlight symbol & change color theme
 (defun workflow-highlight-symbol ()
   "Toggle highlight state of symbol at point."
   (interactive)
@@ -151,20 +192,56 @@
   (interactive)
   (jh/cycle-transparency))
 
-;; TODO: update
+;; Part 2-1: Search
+(defun workflow-ag-search ()
+  "Search by ag."
+  (interactive)
+  (ag))
+
+(defun workflow-search-any-text ()
+  "Search any text by grep-like program."
+  (interactive)
+  (counsel-ag))
+
+(defun workflow-git-search ()
+  "Search under by git-grep."
+  (interactive)
+  (counsel-git-grep))
+
+;; Part 2-2: Replace & Regular eXpression Replace
 (defun workflow-replace ()
   "Better workflow for query-replace."
   (interactive)
   (let*
     ((old-text
-       (read-string "Replace: "
-         (wf/symbol-or-selection-at-point)))
+       (read-string "Replace: " (wf/symbol-or-selection-at-point)))
       (new-text
-        (read-string (format "Replace %s with: " old-text)
-          old-text)))
+        (read-string (format "Replace %s with: " old-text) old-text)))
     (progn
       (beginning-of-line)
       (query-replace old-text new-text))))
+
+(defun workflow-replace-projectile ()
+  "Repace in this project."
+  (interactive)
+  (projectile-replace))
+
+(defun workflow-regexp-replace ()
+  "Better workflow for regexp query replace."
+  (interactive)
+  (let*
+    ((old-regexp
+       (read-string "Replace regexp: " (wf/symbol-or-selection-at-point)))
+      (new-regexp
+        (read-string (format "Replace regexp %s with: " old-regexp) old-regexp)))
+    (progn
+      (beginning-of-line)
+      (query-replace-regexp old-regexp new-regexp))))
+
+(defun workflow-regexp-replace-projectile ()
+  "Regexp replace in this project."
+  (interactive)
+  (projectile-replace-regexp))
 
 (defvar wf/project-type-alist
   '(("pom.xml" . maven) ("package.json" . angular))
@@ -254,30 +331,6 @@
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
 
-(defun workflow-rename-file (name)
-  "Rename both current buffer and file it's visiting to name."
-  (interactive "sNew name: ")
-  (let
-    ((buffername (buffer-name))
-      (filename (buffer-file-name)))
-    (unless filename
-      (error "Buffer '%s' is not visiting a file!" buffername))
-    (progn
-      (when (file-exists-p filename)
-        (rename-file filename name 1))
-      (set-visited-file-name name)
-      (rename-buffer name))))
-
-(defun workflow-cycle-hide-level ()
-  "Cycling hide level."
-  (interactive)
-  (if (local-variable-p 'hs-cycle-level)
-    (progn
-      (setq hs-cycle-level (% (+ hs-cycle-level 1) 5))
-      (hs-hide-level (+ hs-cycle-level 1)))
-    (progn
-      (set (make-local-variable 'hs-cycle-level) 0)
-      (hs-hide-level (+ hs-cycle-level 1)))))
 
 ;; -----------------------------------------------------------------------------
 ;; shrimp shell
