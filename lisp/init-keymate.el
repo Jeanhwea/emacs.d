@@ -105,12 +105,13 @@
   ;; Leader Key
   (define-prefix-command 'leader/f11)
   ;; Window
-  (define-key leader/f11 (kbd "0") #'delete-window)
-  (define-key leader/f11 (kbd "1") #'delete-other-windows)
-  (define-key leader/f11 (kbd "2") #'split-window-below)
-  (define-key leader/f11 (kbd "3") #'split-window-right)
-  (define-key leader/f11 (kbd "z") #'toggle-frame-fullscreen)
+  (define-key leader/f11 (kbd "o") #'delete-window)
+  (define-key leader/f11 (kbd "x") #'delete-other-windows)
+  (define-key leader/f11 (kbd "-") #'split-window-below)
+  (define-key leader/f11 (kbd "|") #'split-window-right)
   (define-key leader/f11 (kbd "q") #'save-buffers-kill-terminal)
+  (define-key leader/f11 (kbd "w") #'minimize-window)
+  (define-key leader/f11 (kbd "e") #'toggle-frame-fullscreen)
   ;; File access
   (define-key leader/f11 (kbd "g") #'counsel-git)
   (define-key leader/f11 (kbd "f") #'counsel-find-file)
