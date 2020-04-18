@@ -161,7 +161,7 @@
       (set (make-local-variable 'hs-cycle-level) 0)
       (hs-hide-level (+ hs-cycle-level 1)))))
 
-;; Part 1-5: Highlight symbol & change color theme
+;; Part 1-5: Highlight symbol & Change Colortheme
 (defun workflow-highlight-symbol ()
   "Toggle highlight state of symbol at point."
   (interactive)
@@ -243,6 +243,15 @@
   "Regexp replace in this project."
   (interactive)
   (projectile-replace-regexp))
+
+;; Part 2-3: Comment
+(defun workflow-comment-source-code ()
+  "Comment the source code"
+  (interactive)
+  (if
+    (use-region-p)
+    (comment-or-uncomment-region (region-beginning) (region-end))
+    (comment-line 1)))
 
 (defvar wf/project-type-alist
   '(("pom.xml" . maven) ("package.json" . angular))

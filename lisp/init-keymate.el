@@ -88,7 +88,7 @@
   (define-key leader/f11 (kbd "d") #'workflow-delete-current-file)
   ;; Hide & Show
   (define-key leader/f11 (kbd "<tab>") #'workflow-hideshow-toggle)
-  (define-key leader/f11 (kbd "/") #'workflow-cycle-hide-level)
+  (define-key leader/f11 (kbd "=") #'workflow-cycle-hide-level)
   (define-key leader/f11 (kbd "<") #'workflow-hide-all-level)
   (define-key leader/f11 (kbd ">") #'workflow-show-all-level)
   ;; Highlight symbol & Colortheme, Transparency
@@ -123,6 +123,8 @@
   (define-key leader/f12 (kbd "R") #'workflow-replace-projectile)
   (define-key leader/f12 (kbd "x") #'workflow-regexp-replace)
   (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
+  ;; Source code related
+  (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
   ;; Unit test
   (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
