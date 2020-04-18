@@ -212,6 +212,18 @@
       (write-file file)
       (kill-buffer newbuf))))
 
+;; useful helper function
+(defun jh/symbol-at-point ()
+  "Read symbol and selection at point."
+  (if (use-region-p)
+    (let
+      ((beg (region-beginning)) (end (region-end)))
+      (deactivate-mark)
+      (buffer-substring-no-properties beg end))
+    (let
+      ((sym (symbol-at-point)))
+      (and sym (symbol-name sym)))))
+
 ;; -----------------------------------------------------------------------------
 ;; setup timer
 ;; -----------------------------------------------------------------------------

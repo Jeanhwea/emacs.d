@@ -1,15 +1,3 @@
-;; utils
-(defun wf/symbol-or-selection-at-point ()
-  "Read symbol and selection at point."
-  (if (use-region-p)
-    (let
-      ((beg (region-beginning)) (end (region-end)))
-      (deactivate-mark)
-      (buffer-substring-no-properties beg end))
-    (let
-      ((sym (symbol-at-point)))
-      (and sym (symbol-name sym)))))
-
 ;; Part 1-1: windows commands
 (defun workflow-unique-window ()
   "Delete other windows, just leave current windows."
@@ -178,7 +166,7 @@
   "Toggle highlight state of symbol at point."
   (interactive)
   (let*
-    ((sym (wf/symbol-or-selection-at-point))
+    ((sym (jh/symbol-at-point))
       (sym-regexp (concat "\\_<" sym "\\_>"))
       (lookup
         (and sym (member sym-regexp (mapcar #'car hi-lock-interactive-patterns)))))
@@ -204,9 +192,12 @@
 
 ;; Part 2-1: Search
 (defun workflow-ag-search ()
-  "Search by ag."
-  (interactive)
-  (ag))
+  "Search by ag, which should provide string and directory."
+  (interactive
+    (list
+      (ag/read-from-minibuffer "Search string")
+      (read-directory-name "Directory: ")))
+  (ag/search string directory))
 
 (defun workflow-search-any-text ()
   "Search any text by grep-like program."
@@ -224,7 +215,7 @@
   (interactive)
   (let*
     ((old-text
-       (read-string "Replace: " (wf/symbol-or-selection-at-point)))
+       (read-string "Replace: " (jh/symbol-at-point)))
       (new-text
         (read-string (format "Replace %s with: " old-text) old-text)))
     (progn
@@ -241,7 +232,7 @@
   (interactive)
   (let*
     ((old-regexp
-       (read-string "Replace regexp: " (wf/symbol-or-selection-at-point)))
+       (read-string "Replace regexp: " (jh/symbol-at-point)))
       (new-regexp
         (read-string (format "Replace regexp %s with: " old-regexp) old-regexp)))
     (progn
@@ -298,8 +289,6 @@
       (wf/indent-buffer))
     (t (message "Ops, no format backend!"))))
 
-
-
 (defun workflow-drop-file (&optional startdir)
   "Drop the file content to current point according to action."
   (interactive)
@@ -337,7 +326,6 @@
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
 
-
 ;; -----------------------------------------------------------------------------
 ;; shrimp shell
 ;; -----------------------------------------------------------------------------
@@ -367,7 +355,7 @@
 ;; -----------------------------------------------------------------------------
 ;; terminal
 ;; -----------------------------------------------------------------------------
-(defun workflow-term-cd ()
+(defun workflow-working-directory-send ()
   "Send current working directory to terminal."
   (interactive)
   (cond
