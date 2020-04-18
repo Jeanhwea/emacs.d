@@ -224,6 +224,10 @@
       ((sym (symbol-at-point)))
       (and sym (symbol-name sym)))))
 
+(defun jh/indent-current-buffer ()
+  "Indent current buffer."
+  (save-excursion (indent-region (point-min) (point-max))))
+
 (defun jh/project-name ()
   "Return the project name."
   (let*

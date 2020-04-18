@@ -79,7 +79,7 @@
   (define-key leader/f11 (kbd "b") #'workflow-bookmark-open-file)
   (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
   ;; Buffer operation
-  (define-key leader/f11 (kbd "<SPC>") #'workflow-swith-to-buffer)
+  (define-key leader/f11 (kbd "<SPC>") #'workflow-switch-to-buffer)
   (define-key leader/f11 (kbd "a") #'workflow-alternative-buffer)
   (define-key leader/f11 (kbd "k") #'workflow-kill-buffer)
   (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
@@ -125,12 +125,13 @@
   (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
   ;; Source code related
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
-  ;; Unit test
-  (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
-  (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
-  ;; Project starter
+  ;; Unit test & Project starter
+  ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
+  ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
   ;; (define-key leader/f12 (kbd "c") #'projectile-compile-project)
   ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
+
+  ;; misc
   (define-key leader/f12 (kbd "c") #'workflow-codetta-expand-command)
   (define-key leader/f12 (kbd "e") #'workflow-eshell-open-from-here)
   (define-key leader/f12 (kbd "w") #'workflow-working-directory-send)

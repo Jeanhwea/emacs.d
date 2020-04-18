@@ -140,7 +140,9 @@
   (defun jh/iterm2-cd (&optional dir)
     "Change iterm2 directory."
     (interactive)
-    (jh/iterm2-send-string (concat "cd " (or dir default-directory))))
+    (let ((wd (directory-file-name (or dir default-directory))))
+      (jh/iterm2-send-string (concat "cd " wd))
+      (message (format "iterm2 switch to %s" wd))))
 
   (defun jh/iterm2-send-region ()
     "Send selected text to iterm2."
@@ -160,8 +162,8 @@
   (defun jh/tilix-cd (&optional dir)
     "Open a tilix session, and set dir as working directory."
     (interactive)
-    (let ((working-dir (directory-file-name (or dir default-directory))))
-      (shell-command
-        (format "tilix --working-directory='%s'" working-dir)))))
+    (let ((wd (directory-file-name (or dir default-directory))))
+      (shell-command (format "tilix --working-directory='%s'" wd))
+      (message (format "tilix switch to %s" wd)))))
 
 (provide 'init-experimental)

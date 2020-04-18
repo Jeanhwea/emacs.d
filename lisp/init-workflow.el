@@ -80,8 +80,8 @@
         (message (concat "Added bookmark: " name))))))
 
 ;; Part 1-3: Buffers
-(defun workflow-swith-to-buffer ()
-  "Swith to a buffer."
+(defun workflow-switch-to-buffer ()
+  "Switch to a buffer."
   (interactive)
   (ivy-switch-buffer))
 
@@ -253,6 +253,8 @@
     (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line 1)))
 
+;; Part 2-9: Misc
+
 (defvar wf/project-type-alist
   '(("pom.xml" . maven) ("package.json" . angular))
   "Project file to project type.")
@@ -278,14 +280,6 @@
       ((equal project-type 'angular) (ng/find-source-file))
       (t (message "Ops, unknown project type!")))))
 
-(defvar wf/known-indent-mode
-  '(nxml-mode mhtml-mode less-css-mode emacs-lisp-mode sh-mode ymal-mode)
-  "Known indent major mode.")
-
-(defun wf/indent-buffer ()
-  "Indent current buffer."
-  (save-excursion (indent-region (point-min) (point-max))))
-
 (defun workflow-format-current-source ()
   "Format codes."
   (interactive)
@@ -294,8 +288,14 @@
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (sqlformat-buffer))
-    ((member major-mode wf/known-indent-mode)
-      (wf/indent-buffer))
+    ((member major-mode
+       '(emacs-lisp-mode
+          less-css-mode
+          mhtml-mode
+          nxml-mode
+          sh-mode
+          ymal-mode)
+       wf/known-indent-mode) (jh/indent-current-buffer))
     (t (message "Ops, no format backend!"))))
 
 (defun workflow-drop-file (&optional startdir)
