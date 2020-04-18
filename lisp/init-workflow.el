@@ -137,7 +137,7 @@
     (kill-this-buffer)))
 
 ;; Part 1-4: Hide & Show
-(defun workflow-toggle-hideshow ()
+(defun workflow-hideshow-toggle ()
   "Toggling hide and show state."
   (interactive)
   (hs-toggle-hiding))

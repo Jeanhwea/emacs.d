@@ -107,10 +107,10 @@
   (define-key leader/f11 (kbd "R") #'workflow-rename-current-file)
   (define-key leader/f11 (kbd "d") #'workflow-delete-current-file)
   ;; Hide & Show
-  (define-key leader/f11 (kbd "<") #'hs-toggle-hiding)
-  (define-key leader/f11 (kbd "l") #'workflow-cycle-hide-level)
-  (define-key leader/f11 (kbd "<") #'hs-hide-all)
-  (define-key leader/f11 (kbd ">") #'hs-show-all)
+  (define-key leader/f11 (kbd "<tab>") #'workflow-hideshow-toggle)
+  (define-key leader/f11 (kbd "/") #'workflow-cycle-hide-level)
+  (define-key leader/f11 (kbd "<") #'workflow-hide-all-level)
+  (define-key leader/f11 (kbd ">") #'workflow-show-all-level)
   ;; Highlight symbol & Colortheme, Transparency
   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
   (define-key leader/f11 (kbd "w") #'workflow-wipeout-all-highlights)
