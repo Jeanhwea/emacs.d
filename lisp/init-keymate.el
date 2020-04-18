@@ -99,7 +99,7 @@
 (global-set-key (kbd "M-0") 'leader/f0)
 
 ;; -----------------------------------------------------------------------------
-;; F11: UI operations
+;; F11: UI & Basic Operations
 ;; -----------------------------------------------------------------------------
 (progn
   ;; Leader Key
@@ -112,39 +112,39 @@
   (define-key leader/f11 (kbd "q") #'workflow-quit-emacs-application)
   (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
   ;; File access
-  (define-key leader/f11 (kbd "<SPC>") #'workflow-swith-to-buffer)
   (define-key leader/f11 (kbd "r") #'workflow-recentf-open-file)
   (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
   (define-key leader/f11 (kbd "g") #'workflow-git-open-file)
   (define-key leader/f11 (kbd ".") #'workflow-currdir-open-file)
   (define-key leader/f11 (kbd "b") #'workflow-bookmark-open-file)
   (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
+  ;; Buffer operation
+  (define-key leader/f11 (kbd "<SPC>") #'workflow-swith-to-buffer)
   (define-key leader/f11 (kbd "a") #'workflow-alternative-buffer)
+  (define-key leader/f11 (kbd "k") #'workflow-kill-buffer)
+  (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
+  ;; M-s => save current buffer
+  (define-key leader/f11 (kbd "s") #'workflow-save-all-buffers)
+  (define-key leader/f11 (kbd "d") #'workflow-delete-current-file)
   ;; Highlight symbol & Color theme
   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
   (define-key leader/f11 (kbd "c") #'workflow-cycle-color-theme)
-  ;; bu
   ;; Frame
   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
   ;; (define-key leader/f11 (kbd "6") #'delete-frame)
   ;; File create & save
   ;; (define-key leader/f11 (kbd "l") #'toggle-read-only)
-  (define-key leader/f11 (kbd "k") #'kill-buffer)
-  (define-key leader/f11 (kbd "s") #'workflow-save-buffers)
-  (define-key leader/f11 (kbd "d") #'workflow-delete-file)
   ;; Ace jump
   (define-key leader/f11 (kbd "[") #'ace-jump-mode))
 (global-set-key (kbd "<f11>") 'leader/f11)
 (global-set-key (kbd "M-[") 'leader/f11)
 
 ;; -----------------------------------------------------------------------------
-;; F12: Project Management
+;; F12: Editing & Source Code Editing
 ;; -----------------------------------------------------------------------------
 (progn
   ;; Leader Key
   (define-prefix-command 'leader/f12)
-  ;; misc
-  (define-key leader/f12 (kbd "n") #'workflow-new-buffer)
   ;; Unit test
   (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)

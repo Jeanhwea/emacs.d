@@ -42,11 +42,6 @@
   (toggle-frame-fullscreen))
 
 ;; Part 1-2: File & Buffer, Bookmark
-(defun workflow-swith-to-buffer ()
-  "Swith to a buffer."
-  (interactive)
-  (ivy-switch-buffer))
-
 (defun workflow-recentf-open-file ()
   "Open recently opened files."
   (interactive)
@@ -86,25 +81,36 @@
         (bookmark-set name)
         (message (concat "Added bookmark: " name))))))
 
+;; Part 1-3: Buffers
+(defun workflow-swith-to-buffer ()
+  "Swith to a buffer."
+  (interactive)
+  (ivy-switch-buffer))
+
 (defun workflow-alternative-buffer ()
   "Swap between recently buffer."
   (interactive)
   (progn
     (switch-to-buffer nil)))
 
-(defun workflow-save-buffers ()
-  "Save buffers."
+(defun workflow-kill-buffer ()
+  "Kill current buffer"
   (interactive)
-  (save-some-buffers t t))
+  (kill-buffer))
 
 (defun workflow-new-buffer ()
   "Create a temporary buffer."
   (interactive)
   (let
-    ((tailstr (format-time-string "%Y%m%d%H%M%S")))
-    (switch-to-buffer (concat "scratch+" tailstr))))
+    ((suffix (format-time-string "%Y%m%d%H%M%S")))
+    (switch-to-buffer (concat "scratch+" suffix))))
 
-(defun workflow-delete-file ()
+(defun workflow-save-all-buffers ()
+  "Save buffers."
+  (interactive)
+  (save-some-buffers t t))
+
+(defun workflow-delete-current-file ()
   "Delete the current file, and kill the buffer."
   (interactive)
   (unless (buffer-file-name)
@@ -116,7 +122,7 @@
     (delete-file (buffer-file-name))
     (kill-this-buffer)))
 
-;; Part 1-3: Highlight symbol & change color theme
+;; Part 1-4: Highlight symbol & change color theme
 (defun workflow-highlight-symbol ()
   "Toggle highlight state of symbol at point."
   (interactive)
