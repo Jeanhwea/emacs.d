@@ -128,6 +128,7 @@
   (define-key leader/f11 (kbd "d") #'workflow-delete-current-file)
   ;; Highlight symbol & Color theme
   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
+  (define-key leader/f11 (kbd "w") #'workflow-wipeout-all-highlight)
   (define-key leader/f11 (kbd "c") #'workflow-cycle-color-theme)
   ;; Frame
   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
