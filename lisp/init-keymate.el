@@ -107,8 +107,8 @@
   ;; Window
   (define-key leader/f11 (kbd "o") #'delete-other-windows)
   (define-key leader/f11 (kbd "x") #'delete-window)
-  (define-key leader/f11 (kbd "/") #'split-window-below)
-  (define-key leader/f11 (kbd "'") #'split-window-right)
+  (define-key leader/f11 (kbd "h") #'split-window-below)
+  (define-key leader/f11 (kbd "v") #'split-window-right)
   (define-key leader/f11 (kbd "q") #'save-buffers-kill-terminal)
   (define-key leader/f11 (kbd "w") #'minimize-window)
   (define-key leader/f11 (kbd "e") #'toggle-frame-fullscreen)
@@ -117,13 +117,12 @@
   (define-key leader/f11 (kbd "g") #'counsel-git)
   (define-key leader/f11 (kbd "f") #'projectile-find-file)
   (define-key leader/f11 (kbd ".") #'counsel-find-file)
-  (define-key leader/f11 (kbd "<SPC>") #'ivy-switch-buffer)
   (define-key leader/f11 (kbd "b") #'counsel-bookmark)
   (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
   (define-key leader/f11 (kbd "a") #'workflow-swap-alternative-buffer)
-  ;; highlight symbol
-  (define-key leader/f11 (kbd "h") #'workflow-highlight-symbol)
-  (define-key leader/f11 (kbd "H") #'workflow-unhighlight-all)
+  ;; highlight symbol & color
+  (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
+  (define-key leader/f11 (kbd "c") #'jh/cycle-color-theme)
   ;; Frame
   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
   ;; (define-key leader/f11 (kbd "6") #'delete-frame)

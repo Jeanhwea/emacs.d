@@ -122,10 +122,10 @@
     ((sym (wf/symbol-or-selection-at-point))
       (sym-re (concat "\\_<" sym "\\_>"))
       (lookup
-        (member sym-re
-          (mapcar #'car hi-lock-interactive-patterns))))
-    (if lookup
-      (unhighlight-regexp sym-re) (highlight-symbol-at-point))))
+        (and sym (member sym-re (mapcar #'car hi-lock-interactive-patterns)))))
+    (if sym
+      (if lookup (unhighlight-regexp sym-re) (highlight-symbol-at-point))
+      (message "Ops: No sysmbol to highlight at point!"))))
 
 (defun workflow-unhighlight-all ()
   "Unhighlight all symbols"
