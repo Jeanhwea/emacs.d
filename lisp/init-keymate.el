@@ -115,7 +115,7 @@
   (define-key leader/f11 (kbd "r") #'workflow-recentf-open-file)
   (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
   (define-key leader/f11 (kbd "g") #'workflow-git-open-file)
-  (define-key leader/f11 (kbd ".") #'workflow-currdir-open-file)
+  (define-key leader/f11 (kbd ".") #'workflow-dot-open-file)
   (define-key leader/f11 (kbd "b") #'workflow-bookmark-open-file)
   (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
   ;; Buffer operation

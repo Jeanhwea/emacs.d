@@ -57,7 +57,7 @@
   (interactive)
   (counsel-git))
 
-(defun workflow-currdir-open-file ()
+(defun workflow-dot-open-file ()
   "Open file under current directory."
   (interactive)
   (counsel-find-file))
