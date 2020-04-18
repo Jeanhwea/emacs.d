@@ -121,7 +121,7 @@
   (define-key leader/f11 (kbd "a") #'workflow-swap-alternative-buffer)
   ;; highlight symbol & color
   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
-  (define-key leader/f11 (kbd "c") #'jh/cycle-color-theme)
+  (define-key leader/f11 (kbd "c") #'workflow-cycle-color-theme)
   ;; Frame
   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
   ;; (define-key leader/f11 (kbd "6") #'delete-frame)

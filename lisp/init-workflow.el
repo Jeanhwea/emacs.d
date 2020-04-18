@@ -10,7 +10,7 @@
       ((sym (symbol-at-point)))
       (and sym (symbol-name sym)))))
 
-;; Part 01: windows commands
+;; Part 1-1: windows commands
 (defun workflow-unique-window ()
   "Delete other windows, just leave current windows."
   (interactive)
@@ -41,6 +41,31 @@
   (interactive)
   (toggle-frame-fullscreen))
 
+;; Part 1-3: Highlight symbol & change color theme
+(defun workflow-highlight-symbol ()
+  "Toggle highlight state of symbol at point."
+  (interactive)
+  (let*
+    ((sym (wf/symbol-or-selection-at-point))
+      (sym-re (concat "\\_<" sym "\\_>"))
+      (lookup
+        (and sym (member sym-re (mapcar #'car hi-lock-interactive-patterns)))))
+    (if sym
+      (if lookup (unhighlight-regexp sym-re) (highlight-symbol-at-point))
+      (message "Ops: No sysmbol to highlight at point!"))))
+
+(defun workflow-unhighlight-all ()
+  "Unhighlight all symbols"
+  (interactive)
+  (dolist (sym-re (mapcar #'car hi-lock-interactive-patterns))
+    (unhighlight-regexp sym-re)))
+
+(defun workflow-cycle-color-theme ()
+  "Cycle color theme ring."
+  (interactive)
+  (jh/cycle-color-theme))
+
+;; TODO: update
 (defun workflow-replace ()
   "Better workflow for query-replace."
   (interactive)
@@ -148,28 +173,6 @@
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
 
-(defun workflow-highlight-symbol ()
-  "Toggle highlight state of symbol at point."
-  (interactive)
-  (let*
-    ((sym (wf/symbol-or-selection-at-point))
-      (sym-re (concat "\\_<" sym "\\_>"))
-      (lookup
-        (and sym (member sym-re (mapcar #'car hi-lock-interactive-patterns)))))
-    (if sym
-      (if lookup (unhighlight-regexp sym-re) (highlight-symbol-at-point))
-      (message "Ops: No sysmbol to highlight at point!"))))
-
-(defun workflow-unhighlight-all ()
-  "Unhighlight all symbols"
-  (interactive)
-  (dolist (sym-re (mapcar #'car hi-lock-interactive-patterns))
-    (unhighlight-regexp sym-re)))
-
-(defun workflow-cycle-color-theme ()
-  "Cycle color theme ring."
-  (interactive)
-  (jh/cycle-color-theme))
 
 (defun workflow-save-buffers ()
   "Save buffers."
