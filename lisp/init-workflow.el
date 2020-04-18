@@ -86,11 +86,35 @@
         (bookmark-set name)
         (message (concat "Added bookmark: " name))))))
 
-(defun workflow-swap-alternative-buffer ()
+(defun workflow-alternative-buffer ()
   "Swap between recently buffer."
   (interactive)
   (progn
     (switch-to-buffer nil)))
+
+(defun workflow-save-buffers ()
+  "Save buffers."
+  (interactive)
+  (save-some-buffers t t))
+
+(defun workflow-new-buffer ()
+  "Create a temporary buffer."
+  (interactive)
+  (let
+    ((tailstr (format-time-string "%Y%m%d%H%M%S")))
+    (switch-to-buffer (concat "scratch+" tailstr))))
+
+(defun workflow-delete-file ()
+  "Delete the current file, and kill the buffer."
+  (interactive)
+  (unless (buffer-file-name)
+    (error "No file is binding to this buffer!"))
+  (when
+    (yes-or-no-p
+      (format "Delete %s: "
+        (file-name-nondirectory buffer-file-name)))
+    (delete-file (buffer-file-name))
+    (kill-this-buffer)))
 
 ;; Part 1-3: Highlight symbol & change color theme
 (defun workflow-highlight-symbol ()
@@ -98,18 +122,18 @@
   (interactive)
   (let*
     ((sym (wf/symbol-or-selection-at-point))
-      (sym-re (concat "\\_<" sym "\\_>"))
+      (sym-regexp (concat "\\_<" sym "\\_>"))
       (lookup
-        (and sym (member sym-re (mapcar #'car hi-lock-interactive-patterns)))))
+        (and sym (member sym-regexp (mapcar #'car hi-lock-interactive-patterns)))))
     (if sym
-      (if lookup (unhighlight-regexp sym-re) (highlight-symbol-at-point))
+      (if lookup (unhighlight-regexp sym-regexp) (highlight-symbol-at-point))
       (message "Ops: No sysmbol to highlight at point!"))))
 
 (defun workflow-unhighlight-all ()
   "Unhighlight all symbols"
   (interactive)
-  (dolist (sym-re (mapcar #'car hi-lock-interactive-patterns))
-    (unhighlight-regexp sym-re)))
+  (let ((pattens (mapcar #'car hi-lock-interactive-patterns)))
+    (dolist (sym-regexp pattens) (unhighlight-regexp sym-regexp))))
 
 (defun workflow-cycle-color-theme ()
   "Cycle color theme ring."
@@ -218,31 +242,6 @@
   (if (use-region-p)
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
-
-
-(defun workflow-save-buffers ()
-  "Save buffers."
-  (interactive)
-  (save-some-buffers t t))
-
-(defun workflow-new-buffer ()
-  "Create a temporary buffer."
-  (interactive)
-  (let
-    ((tailstr (format-time-string "%Y%m%d%H%M%S")))
-    (switch-to-buffer (concat "scratch+" tailstr))))
-
-(defun workflow-delete-file ()
-  "Delete the current file, and kill the buffer."
-  (interactive)
-  (unless (buffer-file-name)
-    (error "No file is binding to this buffer!"))
-  (when
-    (yes-or-no-p
-      (format "Delete %s: "
-        (file-name-nondirectory buffer-file-name)))
-    (delete-file (buffer-file-name))
-    (kill-this-buffer)))
 
 (defun workflow-rename-file (name)
   "Rename both current buffer and file it's visiting to name."

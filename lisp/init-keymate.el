@@ -119,18 +119,18 @@
   (define-key leader/f11 (kbd ".") #'workflow-currdir-open-file)
   (define-key leader/f11 (kbd "b") #'workflow-bookmark-open-file)
   (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
-  (define-key leader/f11 (kbd "a") #'workflow-swap-alternative-buffer)
-  ;; highlight symbol & color
+  (define-key leader/f11 (kbd "a") #'workflow-alternative-buffer)
+  ;; Highlight symbol & Color theme
   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
   (define-key leader/f11 (kbd "c") #'workflow-cycle-color-theme)
+  ;; bu
   ;; Frame
   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
   ;; (define-key leader/f11 (kbd "6") #'delete-frame)
   ;; File create & save
-  (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
   ;; (define-key leader/f11 (kbd "l") #'toggle-read-only)
   (define-key leader/f11 (kbd "k") #'kill-buffer)
-  (define-key leader/f11 (kbd "s") #'wogrkflow-save-buffers)
+  (define-key leader/f11 (kbd "s") #'workflow-save-buffers)
   (define-key leader/f11 (kbd "d") #'workflow-delete-file)
   ;; Ace jump
   (define-key leader/f11 (kbd "[") #'ace-jump-mode))
@@ -143,6 +143,8 @@
 (progn
   ;; Leader Key
   (define-prefix-command 'leader/f12)
+  ;; misc
+  (define-key leader/f12 (kbd "n") #'workflow-new-buffer)
   ;; Unit test
   (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
