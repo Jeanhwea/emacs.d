@@ -224,6 +224,13 @@
       ((sym (symbol-at-point)))
       (and sym (symbol-name sym)))))
 
+(defun jh/project-name ()
+  "Return the project name."
+  (let*
+    ((dir default-directory)
+      (root (directory-file-name (or (jh/git-root dir) dir)))
+      (parent (regexp-quote (jh/parent-dir root))))
+    (jh/re-replace parent "" root nil 'literal)))
 ;; -----------------------------------------------------------------------------
 ;; setup timer
 ;; -----------------------------------------------------------------------------

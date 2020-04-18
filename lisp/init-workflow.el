@@ -331,31 +331,14 @@
   (interactive)
   (ct/expand-command))
 
-;; -----------------------------------------------------------------------------
-;; shrimp shell
-;; -----------------------------------------------------------------------------
-(defun wf/shrimp-project-name ()
-  "Return the project name."
-  (let*
-    ((dir default-directory)
-      (root
-        (directory-file-name
-          (or (jh/git-root dir) dir)))
-      (parent (regexp-quote (jh/parent-dir root))))
-    (jh/re-replace parent "" root nil 'literal)))
-
-(defun wf/shrimp-shell-name ()
-  "Return the shell name."
-  (let ((name (wf/shrimp-project-name)))
-    (if name (format "*shrimp[%s]*" name) "*shrimp*")))
-
-(defun workflow-shrimp-open ()
+(defun workflow-eshell-open-from-here ()
   "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
   (interactive)
-  (let ((name (wf/shrimp-shell-name)))
+  (let*
+    ((project (jh/project-name))
+      (name (if project (format "*shrimp[%s]*" project) "*shrimp*")))
     (if (get-buffer name)
-      (switch-to-buffer name)
-      (let ((eshell-buffer-name name)) (eshell)))))
+      (switch-to-buffer name) (let ((eshell-buffer-name name)) (eshell)))))
 
 ;; -----------------------------------------------------------------------------
 ;; terminal

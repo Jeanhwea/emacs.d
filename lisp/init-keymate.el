@@ -129,7 +129,7 @@
   ;; Project starter
   ;; (define-key leader/f12 (kbd "c") #'projectile-compile-project)
   ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
-  (define-key leader/f12 (kbd "t") #'workflow-shrimp-open)
+  (define-key leader/f12 (kbd "e") #'workflow-eshell-open-from-here)
   (define-key leader/f12 (kbd "w") #'workflow-working-directory-send)
   ;; Prettify source code
   (define-key leader/f12 (kbd "f") 'workflow-format-current-source))
