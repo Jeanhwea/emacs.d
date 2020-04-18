@@ -57,10 +57,6 @@
 ;; -----------------------------------------------------------------------------
 (progn
   (define-prefix-command 'leader/f9)
-  ;; Color theme
-  (define-key leader/f9 (kbd "t") #'jh/cycle-color-theme)
-  (define-key leader/f9 (kbd "M-t") #'jh/cycle-transparency)
-  ;;
   (define-key leader/f9 (kbd "v") #'verb-send-request-on-point-other-window-stay)
   (define-key leader/f9 (kbd "c") #'ct/expand-command)
   (define-key leader/f9 (kbd "d") #'workflow-drop-file)
@@ -123,13 +119,13 @@
   (define-key leader/f11 (kbd "a") #'workflow-alternative-buffer)
   (define-key leader/f11 (kbd "k") #'workflow-kill-buffer)
   (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
-  ;; M-s => save current buffer
-  (define-key leader/f11 (kbd "s") #'workflow-save-all-buffers)
+  (define-key leader/f11 (kbd "s") #'workflow-save-all-buffers) ;; M-s => save current buffer
   (define-key leader/f11 (kbd "d") #'workflow-delete-current-file)
-  ;; Highlight symbol & Color theme
+  ;; Highlight symbol & Colortheme, Transparency
   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
   (define-key leader/f11 (kbd "w") #'workflow-wipeout-all-highlights)
-  (define-key leader/f11 (kbd "c") #'workflow-cycle-color-theme)
+  (define-key leader/f11 (kbd "c") #'workflow-colortheme-cycling)
+  (define-key leader/f11 (kbd "t") #'workflow-transparency-cycling)
   ;; Frame
   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
   ;; (define-key leader/f11 (kbd "6") #'delete-frame)

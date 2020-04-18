@@ -141,10 +141,15 @@
   (let ((pattens (mapcar #'car hi-lock-interactive-patterns)))
     (dolist (sym-regexp pattens) (unhighlight-regexp sym-regexp))))
 
-(defun workflow-cycle-color-theme ()
-  "Cycle color theme ring."
+(defun workflow-colortheme-cycling ()
+  "Cycling color theme ring."
   (interactive)
   (jh/cycle-color-theme))
+
+(defun workflow-transparency-cycling ()
+  "Cycling frame transparency."
+  (interactive)
+  (jh/cycle-transparency))
 
 ;; TODO: update
 (defun workflow-replace ()
