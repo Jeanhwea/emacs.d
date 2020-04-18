@@ -286,7 +286,7 @@
   "Indent current buffer."
   (save-excursion (indent-region (point-min) (point-max))))
 
-(defun workflow-format-code ()
+(defun workflow-format-current-source ()
   "Format codes."
   (interactive)
   (cond

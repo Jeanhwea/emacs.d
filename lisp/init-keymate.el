@@ -154,8 +154,7 @@
   (define-key leader/f12 (kbd "s") #'workflow-shrimp-open)
   (define-key leader/f12 (kbd "t") #'workflow-term-cd)
   ;; Prettify source code
-  (define-key leader/f12 (kbd "f") 'workflow-format-code)
-  (define-key leader/f12 (kbd "i") 'spt/import-unknown-class))
+  (define-key leader/f12 (kbd "f") 'workflow-format-current-source))
 (global-set-key (kbd "<f12>") 'leader/f12)
 (global-set-key (kbd "M-]") 'leader/f12)
 
