@@ -1,3 +1,4 @@
+;; utils
 (defun wf/symbol-or-selection-at-point ()
   "Read symbol and selection at point."
   (if (use-region-p)
@@ -9,9 +10,36 @@
       ((sym (symbol-at-point)))
       (and sym (symbol-name sym)))))
 
-(defun wf/indent-buffer ()
-  "Indent current buffer."
-  (save-excursion (indent-region (point-min) (point-max))))
+;; Part 01: windows commands
+(defun workflow-unique-window ()
+  "Delete other windows, just leave current windows."
+  (interactive)
+  (delete-other-windows))
+
+(defun workflow-close-current-window ()
+  "Delete current window."
+  (interactive)
+  (delete-window))
+
+(defun workflow-horizontal-split-window ()
+  "Horizontal split window."
+  (interactive)
+  (split-window-below))
+
+(defun workflow-vertically-split-window ()
+  "Vertically split window."
+  (interactive)
+  (split-window-right))
+
+(defun workflow-quit-emacs-application ()
+  "Quit emacs."
+  (interactive)
+  (save-buffers-kill-terminal))
+
+(defun workflow-expand-fullscreen ()
+  "Expand or toggle the fullscreen of frame."
+  (interactive)
+  (toggle-frame-fullscreen))
 
 (defun workflow-replace ()
   "Better workflow for query-replace."
@@ -56,6 +84,10 @@
   '(nxml-mode mhtml-mode less-css-mode emacs-lisp-mode sh-mode ymal-mode)
   "Known indent major mode.")
 
+(defun wf/indent-buffer ()
+  "Indent current buffer."
+  (save-excursion (indent-region (point-min) (point-max))))
+
 (defun workflow-format-code ()
   "Format codes."
   (interactive)
@@ -64,7 +96,8 @@
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (sqlformat-buffer))
-    ((member major-mode wf/known-indent-mode) (wf/indent-buffer))
+    ((member major-mode wf/known-indent-mode)
+      (wf/indent-buffer))
     (t (message "Ops, no format backend!"))))
 
 (defun workflow-swap-alternative-buffer ()
@@ -132,6 +165,11 @@
   (interactive)
   (dolist (sym-re (mapcar #'car hi-lock-interactive-patterns))
     (unhighlight-regexp sym-re)))
+
+(defun workflow-cycle-color-theme ()
+  "Cycle color theme ring."
+  (interactive)
+  (jh/cycle-color-theme))
 
 (defun workflow-save-buffers ()
   "Save buffers."

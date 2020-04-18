@@ -105,13 +105,12 @@
   ;; Leader Key
   (define-prefix-command 'leader/f11)
   ;; Window
-  (define-key leader/f11 (kbd "o") #'delete-other-windows)
-  (define-key leader/f11 (kbd "x") #'delete-window)
-  (define-key leader/f11 (kbd "h") #'split-window-below)
-  (define-key leader/f11 (kbd "v") #'split-window-right)
-  (define-key leader/f11 (kbd "q") #'save-buffers-kill-terminal)
-  (define-key leader/f11 (kbd "w") #'minimize-window)
-  (define-key leader/f11 (kbd "e") #'toggle-frame-fullscreen)
+  (define-key leader/f11 (kbd "u") #'workflow-unique-window)
+  (define-key leader/f11 (kbd "x") #'workflow-close-current-window)
+  (define-key leader/f11 (kbd "h") #'workflow-horizontal-split-window)
+  (define-key leader/f11 (kbd "v") #'workflow-vertically-split-window)
+  (define-key leader/f11 (kbd "q") #'workflow-quit-emacs-application)
+  (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
   ;; File access
   (define-key leader/f11 (kbd "r") #'counsel-recentf)
   (define-key leader/f11 (kbd "g") #'counsel-git)
@@ -130,7 +129,7 @@
   (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
   ;; (define-key leader/f11 (kbd "l") #'toggle-read-only)
   (define-key leader/f11 (kbd "k") #'kill-buffer)
-  (define-key leader/f11 (kbd "s") #'workflow-save-buffers)
+  (define-key leader/f11 (kbd "s") #'wogrkflow-save-buffers)
   (define-key leader/f11 (kbd "d") #'workflow-delete-file)
   ;; Ace jump
   (define-key leader/f11 (kbd "[") #'ace-jump-mode))
