@@ -112,11 +112,12 @@
   (define-key leader/f11 (kbd "q") #'workflow-quit-emacs-application)
   (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
   ;; File access
-  (define-key leader/f11 (kbd "r") #'counsel-recentf)
-  (define-key leader/f11 (kbd "g") #'counsel-git)
-  (define-key leader/f11 (kbd "f") #'projectile-find-file)
-  (define-key leader/f11 (kbd ".") #'counsel-find-file)
-  (define-key leader/f11 (kbd "b") #'counsel-bookmark)
+  (define-key leader/f11 (kbd "<SPC>") #'workflow-swith-to-buffer)
+  (define-key leader/f11 (kbd "r") #'workflow-recentf-open-file)
+  (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
+  (define-key leader/f11 (kbd "g") #'workflow-git-open-file)
+  (define-key leader/f11 (kbd ".") #'workflow-currdir-open-file)
+  (define-key leader/f11 (kbd "b") #'workflow-bookmark-open-file)
   (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
   (define-key leader/f11 (kbd "a") #'workflow-swap-alternative-buffer)
   ;; highlight symbol & color

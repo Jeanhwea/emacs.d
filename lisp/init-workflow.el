@@ -41,6 +41,57 @@
   (interactive)
   (toggle-frame-fullscreen))
 
+;; Part 1-2: File & Buffer, Bookmark
+(defun workflow-swith-to-buffer ()
+  "Swith to a buffer."
+  (interactive)
+  (ivy-switch-buffer))
+
+(defun workflow-recentf-open-file ()
+  "Open recently opened files."
+  (interactive)
+  (counsel-recentf))
+
+(defun workflow-fuzzy-open-file ()
+  "Open file in this project, fuzzy find way."
+  (interactive)
+  (projectile-find-file))
+
+(defun workflow-git-open-file ()
+  "Open file under git version control."
+  (interactive)
+  (counsel-git))
+
+(defun workflow-currdir-open-file ()
+  "Open file under current directory."
+  (interactive)
+  (counsel-find-file))
+
+(defun workflow-bookmark-open-file ()
+  "Open file that bookmarked."
+  (interactive)
+  (counsel-bookmark))
+
+(defun workflow-bookmark-current-file ()
+  "Add/Remove current file to bookmark"
+  (interactive)
+  (let*
+    ((name (buffer-name))
+      (lookup (member name (bookmark-all-names))))
+    (if lookup
+      (progn
+        (bookmark-delete name)
+        (message (concat "Removed bookmark: " name)))
+      (progn
+        (bookmark-set name)
+        (message (concat "Added bookmark: " name))))))
+
+(defun workflow-swap-alternative-buffer ()
+  "Swap between recently buffer."
+  (interactive)
+  (progn
+    (switch-to-buffer nil)))
+
 ;; Part 1-3: Highlight symbol & change color theme
 (defun workflow-highlight-symbol ()
   "Toggle highlight state of symbol at point."
@@ -125,11 +176,6 @@
       (wf/indent-buffer))
     (t (message "Ops, no format backend!"))))
 
-(defun workflow-swap-alternative-buffer ()
-  "Swap between recently buffer."
-  (interactive)
-  (progn
-    (switch-to-buffer nil)))
 
 (defun workflow-reveal-in-file-manager ()
   "Open the folder containing this buffer file"
@@ -211,20 +257,6 @@
         (rename-file filename name 1))
       (set-visited-file-name name)
       (rename-buffer name))))
-
-(defun workflow-bookmark-current-file ()
-  "Add/Remove current file to bookmark"
-  (interactive)
-  (let*
-    ((name (buffer-name))
-      (lookup (member name (bookmark-all-names))))
-    (if lookup
-      (progn
-        (bookmark-delete name)
-        (message (concat "Removed bookmark: " name)))
-      (progn
-        (bookmark-set name)
-        (message (concat "Added bookmark: " name))))))
 
 (defun workflow-cycle-hide-level ()
   "Cycling hide level."
