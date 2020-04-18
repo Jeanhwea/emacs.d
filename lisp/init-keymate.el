@@ -44,7 +44,7 @@
   (define-key leader/f9 (kbd "v") #'verb-send-request-on-point-other-window-stay)
   (define-key leader/f9 (kbd "c") #'ct/expand-command)
   (define-key leader/f9 (kbd "d") #'workflow-drop-file)
-  (define-key leader/f9 (kbd "r") #'workflow-reveal-in-file-manager)
+  (define-key leader/f9 (kbd "r") #'workflow-open-default-folder)
   (define-key leader/f9 (kbd "s") #'workflow-send-to-shell))
 (global-set-key (kbd "<f9>") 'leader/f9)
 (global-set-key (kbd "M-9") 'leader/f9)
@@ -92,6 +92,7 @@
   (define-key leader/f11 (kbd "q") #'workflow-quit-emacs-application)
   (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
   ;; File access
+  (define-key leader/f11 (kbd "o") #'workflow-open-default-folder)
   (define-key leader/f11 (kbd "r") #'workflow-recentf-open-file)
   (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
   (define-key leader/f11 (kbd "g") #'workflow-git-open-file)

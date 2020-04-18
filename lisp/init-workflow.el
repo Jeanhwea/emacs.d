@@ -42,6 +42,11 @@
   (toggle-frame-fullscreen))
 
 ;; Part 1-2: File & Buffer, Bookmark
+(defun workflow-open-default-folder ()
+  "Open the folder containing this buffer file"
+  (interactive)
+  (browse-url default-directory))
+
 (defun workflow-recentf-open-file ()
   "Open recently opened files."
   (interactive)
@@ -289,10 +294,6 @@
     (t (message "Ops, no format backend!"))))
 
 
-(defun workflow-reveal-in-file-manager ()
-  "Open the folder containing this buffer file"
-  (interactive)
-  (browse-url default-directory))
 
 (defun workflow-drop-file (&optional startdir)
   "Drop the file content to current point according to action."
