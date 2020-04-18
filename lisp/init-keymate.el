@@ -107,10 +107,10 @@
   ;; Window
   (define-key leader/f11 (kbd "o") #'delete-other-windows)
   (define-key leader/f11 (kbd "x") #'delete-window)
-  (define-key leader/f11 (kbd "-") #'split-window-below)
-  (define-key leader/f11 (kbd "|") #'split-window-right)
+  (define-key leader/f11 (kbd "v") #'split-window-below)
+  (define-key leader/f11 (kbd "h") #'split-window-right)
   (define-key leader/f11 (kbd "q") #'save-buffers-kill-terminal)
-  (define-key leader/f11 (kbd "v") #'minimize-window)
+  (define-key leader/f11 (kbd "w") #'minimize-window)
   (define-key leader/f11 (kbd "e") #'toggle-frame-fullscreen)
   ;; File access
   (define-key leader/f11 (kbd "g") #'counsel-git)
