@@ -47,6 +47,11 @@
   (interactive)
   (browse-url default-directory))
 
+(defun workflow-open-this-file ()
+  "Open this file by default open method."
+  (interactive)
+  (browse-url (buffer-file-name)))
+
 (defun workflow-recentf-open-file ()
   "Open recently opened files."
   (interactive)
