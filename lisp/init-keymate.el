@@ -9,42 +9,8 @@
 (global-set-key (kbd "M-;") 'repeat)
 
 ;; -----------------------------------------------------------------------------
-;; f1: file, window, Frame
+;; Most common used commands
 ;; -----------------------------------------------------------------------------
-(progn
-  (define-prefix-command 'leader/f1)
-  ;; Window
-  (define-key leader/f1 (kbd "0") #'delete-window)
-  (define-key leader/f1 (kbd "1") #'delete-other-windows)
-  (define-key leader/f1 (kbd "2") #'split-window-below)
-  (define-key leader/f1 (kbd "3") #'split-window-right)
-  (define-key leader/f1 (kbd "M-f") #'toggle-frame-fullscreen)
-  (define-key leader/f1 (kbd "q") #'save-buffers-kill-terminal)
-  ;; Frame
-  (define-key leader/f1 (kbd "5") #'make-frame-command)
-  (define-key leader/f1 (kbd "6") #'delete-frame)
-  ;; File create & save
-  (define-key leader/f1 (kbd "n") #'workflow-new-buffer)
-  (define-key leader/f1 (kbd "l") #'toggle-read-only)
-  (define-key leader/f1 (kbd "k") #'kill-buffer)
-  (define-key leader/f1 (kbd "s") #'workflow-save-buffers)
-  (define-key leader/f1 (kbd "d") #'workflow-delete-file)
-  ;; File access
-  (define-key leader/f1 (kbd "g") #'counsel-git)
-  (define-key leader/f1 (kbd "f") #'counsel-find-file)
-  (define-key leader/f1 (kbd "p") #'projectile-find-file)
-  (define-key leader/f1 (kbd "r") #'counsel-recentf)
-  (define-key leader/f1 (kbd "b") #'ivy-switch-buffer)
-  (define-key leader/f1 (kbd "m") #'counsel-bookmark)
-  (define-key leader/f1 (kbd "M-m") #'workflow-bookmark-current-file)
-  (define-key leader/f1 (kbd "a") #'workflow-swap-alternative-buffer)
-  ;; highlight symbol
-  (define-key leader/f1 (kbd "h") #'workflow-highlight-symbol)
-  (define-key leader/f1 (kbd "H") #'workflow-unhighlight-all)
-  ;; Project management
-  (define-key leader/f1 (kbd "o") #'projectile-switch-project))
-(global-set-key (kbd "<f1>") 'leader/f1)
-(global-set-key (kbd "M-1") 'leader/f1)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
 
@@ -85,22 +51,6 @@
   (define-key leader/f2 (kbd "v") #'evil-mode))
 (global-set-key (kbd "<f2>") 'leader/f2)
 (global-set-key (kbd "M-2") 'leader/f2)
-
-;; -----------------------------------------------------------------------------
-;; F8: Database action
-;; -----------------------------------------------------------------------------
-(progn
-  (define-prefix-command 'leader/f8)
-  (define-key leader/f8 (kbd "t") #'jh/oracle-tables-list)
-  (define-key leader/f8 (kbd "o") 'jh/oracle-table-refresh)
-  (define-key leader/f8 (kbd "w") 'jh/oracle-table-where)
-  (define-key leader/f8 (kbd "<up>") 'jh/oracle-table-first)
-  (define-key leader/f8 (kbd "<down>") 'jh/oracle-table-last)
-  (define-key leader/f8 (kbd "<left>") 'jh/oracle-table-prev)
-  (define-key leader/f8 (kbd "<right>") 'jh/oracle-table-next)
-  (define-key leader/f8 (kbd "g") 'jh/oracle-table-goto))
-(global-set-key (kbd "<f8>") 'leader/f8)
-(global-set-key (kbd "M-8") 'leader/f8)
 
 ;; -----------------------------------------------------------------------------
 ;; F9: Misc
@@ -154,22 +104,36 @@
 (progn
   ;; Leader Key
   (define-prefix-command 'leader/f11)
-  ;; Switcher Keybinding for Springboot
-  (define-key leader/f11 (kbd "e") #'(lambda () (interactive) (spt/switch-to 'entity)))
-  (define-key leader/f11 (kbd "r") #'(lambda () (interactive) (spt/switch-to 'repo)))
-  (define-key leader/f11 (kbd "s") #'(lambda () (interactive) (spt/switch-to 'service)))
-  (define-key leader/f11 (kbd "i") #'(lambda () (interactive) (spt/switch-to 'impl)))
-  (define-key leader/f11 (kbd "c") #'(lambda () (interactive) (spt/switch-to 'controller)))
-  (define-key leader/f11 (kbd "h") #'(lambda () (interactive) (spt/switch-to 'helper)))
-  (define-key leader/f11 (kbd "t") #'spt/swap-test-and-source)
-  (define-key leader/f11 (kbd "d") #'spt/swap-markdown-and-endpoint)
-  ;; Swither for Angular
-  (define-key leader/f11 (kbd "a") #'ng/cycle-source-files)
-  ;; jump arround
-  (define-key leader/f11 (kbd "j") #'ace-jump-mode)
-  ;; Open sources
-  (define-key leader/f11 (kbd "m") #'spt/jump-to-method)
-  (define-key leader/f11 (kbd "o") #'workflow-open-class))
+  ;; Window
+  (define-key leader/f11 (kbd "0") #'delete-window)
+  (define-key leader/f11 (kbd "1") #'delete-other-windows)
+  (define-key leader/f11 (kbd "2") #'split-window-below)
+  (define-key leader/f11 (kbd "3") #'split-window-right)
+  (define-key leader/f11 (kbd "z") #'toggle-frame-fullscreen)
+  (define-key leader/f11 (kbd "q") #'save-buffers-kill-terminal)
+  ;; File access
+  (define-key leader/f11 (kbd "g") #'counsel-git)
+  (define-key leader/f11 (kbd "f") #'counsel-find-file)
+  (define-key leader/f11 (kbd "p") #'projectile-find-file)
+  (define-key leader/f11 (kbd "r") #'counsel-recentf)
+  (define-key leader/f11 (kbd "b") #'ivy-switch-buffer)
+  (define-key leader/f11 (kbd "m") #'counsel-bookmark)
+  (define-key leader/f11 (kbd "M-m") #'workflow-bookmark-current-file)
+  (define-key leader/f11 (kbd "a") #'workflow-swap-alternative-buffer)
+  ;; highlight symbol
+  (define-key leader/f11 (kbd "h") #'workflow-highlight-symbol)
+  (define-key leader/f11 (kbd "H") #'workflow-unhighlight-all)
+  ;; Frame
+  (define-key leader/f11 (kbd "5") #'make-frame-command)
+  (define-key leader/f11 (kbd "6") #'delete-frame)
+  ;; File create & save
+  (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
+  (define-key leader/f11 (kbd "l") #'toggle-read-only)
+  (define-key leader/f11 (kbd "k") #'kill-buffer)
+  (define-key leader/f11 (kbd "s") #'workflow-save-buffers)
+  (define-key leader/f11 (kbd "d") #'workflow-delete-file)
+  ;; Ace jump
+  (define-key leader/f11 (kbd "[") #'ace-jump-mode))
 (global-set-key (kbd "<f11>") 'leader/f11)
 (global-set-key (kbd "M-[") 'leader/f11)
 
