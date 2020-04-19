@@ -38,7 +38,13 @@
 (defun workflow-open-this-file ()
   "Open this file by default open method."
   (interactive)
-  (browse-url (buffer-file-name)))
+  (let ((file (buffer-file-name)) (line (jh/line-number)))
+    (cond
+      ((eq major-mode 'java-mode)
+        (progn
+          (shell-command (format "idea %s:%d" file line))
+          (message (format "idea open %s:%d" file line))))
+      (t (browse-url (buffer-file-name))))))
 
 (defun workflow-recentf-open-file ()
   "Open recently opened files."
