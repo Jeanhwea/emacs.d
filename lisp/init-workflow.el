@@ -287,21 +287,21 @@
   "Commit current changes."
   (interactive)
   (progn
-    (save-some-buffers t t)
+    (workflow-save-all-buffers)
     (magit-commit-create)))
 
 (defun workflow-git-push ()
   "Push current project to remote."
   (interactive)
   (progn
-    (save-some-buffers t t)
+    (workflow-save-all-buffers)
     (magit-push)))
 
 (defun workflow-git-pull ()
   "Pull all change from previous remote."
   (interactive)
   (progn
-    (save-some-buffers t t)
+    (workflow-save-all-buffers)
     (magit-pull)))
 
 (defun workflow-git-keep-current ()
