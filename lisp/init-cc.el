@@ -27,8 +27,6 @@
              ("!=" . 8800)              ; ≠
              ;; ----------------------------------------------------------------
              )))
-      ;; string-inflection
-      (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)
       (highlight-indent-guides-mode 1)))

@@ -3,6 +3,7 @@
 ;; -----------------------------------------------------------------------------
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
+(global-set-key (kbd "M-i") 'workflow-inflect-string)
 (global-set-key (kbd "M-r") 'workflow-replace)
 (global-set-key (kbd "M-;") 'workflow-goto-definition)
 

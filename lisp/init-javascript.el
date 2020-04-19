@@ -65,9 +65,7 @@
       (local-set-key (kbd "C-c C-e") 'js-comint-send-region)
       (local-set-key (kbd "C-c C-c") 'js-comint-send-last-sexp)
       (local-set-key (kbd "C-c C-r") 'js-comint-send-region)
-      (local-set-key (kbd "C-c C-b") 'js-comint-send-buffer)
-      ;; string-inflection
-      (local-set-key (kbd "M-i") 'string-inflection-java-style-cycle)))
+      (local-set-key (kbd "C-c C-b") 'js-comint-send-buffer)))
 
 (when (require 'js-comint)
   (setq js-comint-program-command "node"))

@@ -340,10 +340,13 @@
 
 ;; ------------------------------------------------------------------------------
 ;; Global common used commands
-(defun workflow-inflect-word-cases ()
+(defun workflow-inflect-string ()
   "Inflect string or word cases."
   (interactive)
-  (string-inflection-all-cycle-function))
+  (cond
+    ((eq major-mode 'java-mode) (string-inflection-java-style-cycle))
+    ((eq major-mode 'python-mode) (string-inflection-python-style-cycle))
+    (t (string-inflection-all-cycle-function))))
 
 ;; todo: add
 (defvar wf/project-type-alist
