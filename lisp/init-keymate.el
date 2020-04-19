@@ -125,6 +125,8 @@
   ;; Source code related
   (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
+  ;; Codes Navigation
+  (define-key leader/f12 (kbd "]") #'workflow-goto-definition)
   ;; Unit test & Project starter
   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)

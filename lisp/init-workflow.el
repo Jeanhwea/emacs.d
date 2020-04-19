@@ -265,7 +265,13 @@
     (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line 1)))
 
-;; Part 2-4: Test
+;; Part 2-4: Code Navigation
+(defun workflow-goto-definition ()
+  "Goto definition of current symbol."
+  (interactive)
+  (evil-jump-to-tag))
+
+;; Part 2-5: Test
 (defun workflow-post-http-request ()
   "Post a HTTP request by verb in org-mode."
   (interactive)
