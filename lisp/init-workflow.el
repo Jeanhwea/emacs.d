@@ -196,14 +196,6 @@
   (jh/cycle-transparency))
 
 ;; Part 2-1: Search
-;; (defun workflow-ag-search ()
-;;   "Search by ag, which should provide string and directory."
-;;   (interactive
-;;     (list
-;;       (ag/read-from-minibuffer "Search string")
-;;       (read-directory-name "Directory: ")))
-;;   (ag/search string directory))
-
 (defun workflow-search-any-text ()
   "Search any text by grep-like program."
   (interactive)
