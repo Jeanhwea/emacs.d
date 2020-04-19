@@ -4,6 +4,7 @@
 (global-set-key (kbd "M-;") 'repeat)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
+(global-set-key (kbd "M-r") 'workflow-replace)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: UI & Basic Operations
@@ -84,13 +85,12 @@
   (define-key leader/f12 (kbd "l") #'workflow-git-pull)
   (define-key leader/f12 (kbd "o") #'workflow-git-browse-remote)
   (define-key leader/f12 (kbd "<return>") #'workflow-git-keep-current)
-  ;; Unit Tests & Starter
+  ;; Unit Test & Starter
   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
   ;; (define-key leader/f12 (kbd "c") #'projectile-compile-project)
   ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
-  ;; Test
-  (define-key leader/f12 (kbd "R") #'workflow-post-http-request)
+  (define-key leader/f12 (kbd "P") #'workflow-post-http-request)
   ;; Misc
   (define-key leader/f12 (kbd "C") #'workflow-codetta-expand-command)
   (define-key leader/f12 (kbd "E") #'workflow-eshell-open-from-here)
