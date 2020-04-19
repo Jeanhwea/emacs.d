@@ -128,24 +128,6 @@
     (or (file-directory-p dir) (error "DIR should be a directory"))
     (file-relative-name absfile absdir)))
 
-;; (defun jh/relative-path (file dir)
-;;   "Return a relative path of FILE to DIR."
-;;   (let ((abs-file (jh/absolute-path file))
-;;          (abs-dir (jh/absolute-path dir))
-;;          res)
-;;     (or (file-directory-p dir) (error "DIR should be a directory"))
-;;     (dolist (parent (jh/directory-sequence abs-dir))
-;;       (and (file-in-directory-p abs-file parent) (null res)
-;;         (let ((com-file (jh/re-replace parent "" abs-file))
-;;                (com-dir (jh/re-replace parent "" abs-dir)))
-;;           (setq res
-;;             (if (string-empty-p com-dir) com-file
-;;               (concat
-;;                 (mapconcat (lambda (_x) "..")
-;;                   (remove-if 'string-empty-p (split-string com-dir "/")) "/")
-;;                 "/" com-file))))))
-;;     res))
-
 (defun jh/parent-dir (file)
   "Return the parent directory of FILE."
   (file-name-directory
@@ -174,8 +156,12 @@
   (file-name-nondirectory (file-name-sans-extension file)))
 
 ;; -----------------------------------------------------------------------------
-;; file content and string reader
+;; File related helper
 ;; -----------------------------------------------------------------------------
+(defun jh/line-number ()
+  "Return current line number."
+  (line-number-at-pos))
+
 (defun jh/read-file-content (file)
   "Read a file content, and put all into a list of lines."
   (with-temp-buffer
