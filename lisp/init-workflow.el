@@ -348,6 +348,11 @@
     ((eq major-mode 'python-mode) (string-inflection-python-style-cycle))
     (t (string-inflection-all-cycle-function))))
 
+(defun workflow-M-x ()
+  "Start M-x, but add `workflow-' as the default prefix."
+  (interactive)
+  (counsel-M-x "^workflow "))
+
 ;; todo: add
 (defvar wf/project-type-alist
   '(("pom.xml" . maven) ("package.json" . angular))
