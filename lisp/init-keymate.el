@@ -68,7 +68,8 @@
   (define-prefix-command 'leader/f12)
   ;; Search any thing
   (define-key leader/f12 (kbd "s") #'workflow-search-any-text)
-  (define-key leader/f12 (kbd "g") #'workflow-git-search)
+  (define-key leader/f12 (kbd "g") #'workflow-search-git)
+  (define-key leader/f12 (kbd "a") #'workflow-search-ag)
   ;; Replace, regular eXpression replace
   (define-key leader/f12 (kbd "r") #'workflow-replace)
   (define-key leader/f12 (kbd "R") #'workflow-replace-projectile)

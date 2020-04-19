@@ -201,10 +201,15 @@
   (interactive)
   (counsel-ag))
 
-(defun workflow-git-search ()
-  "Search under by git-grep."
+(defun workflow-search-git ()
+  "Search by git-grep."
   (interactive)
   (counsel-git-grep))
+
+(defun workflow-search-ag ()
+  "Search by ag"
+  (interactive)
+  (call-interactively #'ag))
 
 ;; Part 2-2: Replace & Regular eXpression Replace
 (defun workflow-replace ()
