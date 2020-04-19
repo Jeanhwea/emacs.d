@@ -274,6 +274,18 @@
   (interactive)
   (evil-jump-to-tag))
 
+(defun workflow-build-tags ()
+  "Build the TAGS file."
+  (interactive)
+  (let*
+    ((dir (jh/git-root default-directory))
+      (default-directory dir)
+      (srcdir (expand-file-name "src" dir)))
+    (and
+      (file-directory-p srcdir)
+      (shell-command (format "ctags -e --languages=java -R %s" srcdir))
+      (message (format "Generate TAGS at %s" srcdir)))))
+
 ;; Part 2-5: Test
 (defun workflow-post-http-request ()
   "Post a HTTP request by verb in org-mode."
