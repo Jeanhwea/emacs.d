@@ -285,21 +285,24 @@
 
 (defun workflow-git-commit-changes ()
   "Commit current changes."
+  (interactive)
   (progn
-    (save-some-buffers)
+    (save-some-buffers t t)
     (magit-commit-create)))
 
 (defun workflow-git-push ()
   "Push current project to remote."
   (interactive)
-  (magit-push-current-to-upstream))
+  (progn
+    (save-some-buffers t t)
+    (magit-push)))
 
 (defun workflow-git-pull ()
   "Pull all change from previous remote."
   (interactive)
   (progn
-    (save-some-buffers)
-    (magit-pull-from-upstream)))
+    (save-some-buffers t t)
+    (magit-pull)))
 
 (defun workflow-git-keep-current ()
   "Accept current change in this diff."
