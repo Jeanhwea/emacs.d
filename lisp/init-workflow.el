@@ -190,13 +190,13 @@
   (jh/cycle-transparency))
 
 ;; Part 2-1: Search
-(defun workflow-ag-search ()
-  "Search by ag, which should provide string and directory."
-  (interactive
-    (list
-      (ag/read-from-minibuffer "Search string")
-      (read-directory-name "Directory: ")))
-  (ag/search string directory))
+;; (defun workflow-ag-search ()
+;;   "Search by ag, which should provide string and directory."
+;;   (interactive
+;;     (list
+;;       (ag/read-from-minibuffer "Search string")
+;;       (read-directory-name "Directory: ")))
+;;   (ag/search string directory))
 
 (defun workflow-search-any-text ()
   "Search any text by grep-like program."
@@ -288,7 +288,7 @@
   (interactive)
   (progn
     (workflow-save-all-buffers)
-    (magit-stage)
+    (magit-stage-modified)
     (magit-commit)))
 
 (defun workflow-git-push ()
@@ -337,6 +337,13 @@
     ((jh/linux?) (jh/tilix-cd))
     ((jh/mac?) (jh/iterm2-cd))
     (t (message "Unsupport term cd on this OS!"))))
+
+;; ------------------------------------------------------------------------------
+;; Global common used commands
+(defun workflow-inflect-word-cases ()
+  "Inflect string or word cases."
+  (interactive)
+  (string-inflection-all-cycle-function))
 
 ;; todo: add
 (defvar wf/project-type-alist
