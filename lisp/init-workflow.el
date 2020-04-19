@@ -274,18 +274,6 @@
   (interactive)
   (evil-jump-to-tag))
 
-(defun workflow-build-tags ()
-  "Build the TAGS file."
-  (interactive)
-  (let*
-    ((dir (jh/git-root default-directory))
-      (default-directory dir)
-      (srcdir (expand-file-name "src" dir)))
-    (and
-      (file-directory-p srcdir)
-      (shell-command (format "ctags -e --languages=java -R %s" srcdir))
-      (message (format "Generate TAGS at %s" srcdir)))))
-
 ;; Part 2-5: Test
 (defun workflow-post-http-request ()
   "Post a HTTP request by verb in org-mode."
@@ -384,6 +372,18 @@
           (mapcar #'car wf/project-type-alist))))
     (cdr (assoc (car lookup) wf/project-type-alist))))
 
+(defun workflow-build-tags ()
+  "Build the TAGS file."
+  (interactive)
+  (let*
+    ((dir (jh/git-root default-directory))
+      (default-directory dir)
+      (srcdir (expand-file-name "src" dir)))
+    (and
+      (file-directory-p srcdir)
+      (shell-command (format "ctags -e --languages=java -R %s" srcdir))
+      (message (format "Generate TAGS at %s" srcdir)))))
+
 (defun workflow-open-class ()
   "Open a class source file."
   (interactive)
@@ -394,32 +394,25 @@
       ((equal project-type 'angular) (ng/find-source-file))
       (t (message "Ops, unknown project type!")))))
 
-(defun workflow-drop-file (&optional startdir)
+(defun workflow-drop-file (&optional dir)
   "Drop the file content to current point according to action."
   (interactive)
   (let*
-    ((options
-       '("Content" "Filename" "Relative Path" "Relative to Project Root"))
-      (action (completing-read "Drop Action >> " options))
-      (filename
-        (expand-file-name
-          (read-file-name "Drop file >> "
-            (or startdir default-directory)))))
+    ((opts '("Content" "Filename" "Relative Path" "Relative to Project Root"))
+      (action (completing-read "Drop Action >> " opts))
+      (filename (read-file-name "Drop file >> " (or dir default-directory)))
+      (file (expand-file-name filename)))
     (cond
       ((string= action "Content")
-        (and (file-regular-p filename)
-          (file-readable-p filename)
-          (insert (jh/read-file-content filename))))
+        (and (file-regular-p file) (file-readable-p file) (insert (jh/read-file-content file))))
       ((string= action "Filename")
-        (and (file-exists-p filename) (insert filename)))
+        (and (file-exists-p file) (insert file)))
       ((string= action "Relative Path")
-        (and (file-exists-p filename)
-          (insert (jh/relative-path filename default-directory))))
+        (and (file-exists-p file)
+          (insert (jh/relative-path file default-directory))))
       ((string= action "Relative to Project Root")
-        (and (file-exists-p filename)
-          (insert
-            (jh/relative-path filename
-              (jh/git-root default-directory)))))
+        (and (file-exists-p file)
+          (insert (jh/relative-path file (jh/git-root default-directory)))))
       (t (error "Never happend in workflow-drop-file!")))))
 
 (defun workflow-send-to-shell ()
