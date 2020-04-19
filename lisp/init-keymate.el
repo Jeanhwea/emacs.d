@@ -1,59 +1,9 @@
 ;; -----------------------------------------------------------------------------
-;;  _____        _  __
-;; |  ___| __   | |/ /___ _   _
-;; | |_ | '_ \  | ' // _ \ | | |
-;; |  _|| | | | | . \  __/ |_| |
-;; |_|  |_| |_| |_|\_\___|\__, |
-;;                        |___/
+;; Most common used commands first
 ;; -----------------------------------------------------------------------------
 (global-set-key (kbd "M-;") 'repeat)
-
-;; -----------------------------------------------------------------------------
-;; Most common used commands
-;; -----------------------------------------------------------------------------
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
-
-;; -----------------------------------------------------------------------------
-;; F9: Misc
-;; -----------------------------------------------------------------------------
-(progn
-  (define-prefix-command 'leader/f9)
-  (define-key leader/f9 (kbd "c") #'ct/expand-command)
-  (define-key leader/f9 (kbd "d") #'workflow-drop-file)
-  (define-key leader/f9 (kbd "r") #'workflow-open-default-folder)
-  (define-key leader/f9 (kbd "s") #'workflow-send-to-shell))
-(global-set-key (kbd "<f9>") 'leader/f9)
-(global-set-key (kbd "M-9") 'leader/f9)
-
-;; -----------------------------------------------------------------------------
-;; F0: Version control & Git
-;; -----------------------------------------------------------------------------
-(progn
-  (define-prefix-command 'leader/f0)
-  ;; git
-  (define-key leader/f0 (kbd "v") #'magit)
-  (define-key leader/f0 (kbd "s") #'magit-status)
-  (define-key leader/f0 (kbd "b") #'magit-blame)
-  (define-key leader/f0 (kbd "c") #'magit-commit)
-  (define-key leader/f0 (kbd "l") #'magit-log)
-  (define-key leader/f0 (kbd "M-l") #'magit-log-all)
-  (define-key leader/f0 (kbd "@") #'magit-log-buffer-file)
-  (define-key leader/f0 (kbd "p") #'magit-push)
-  (define-key leader/f0 (kbd "F") #'magit-fetch)
-  (define-key leader/f0 (kbd "f") #'magit-pull)
-  (define-key leader/f0 (kbd "m") #'magit-merge)
-  ;; smerge
-  (define-key leader/f0 (kbd "<left>") #'smerge-prev)
-  (define-key leader/f0 (kbd "<right>") #'smerge-next)
-  (define-key leader/f0 (kbd "<return>") #'smerge-keep-current)
-  (define-key leader/f0 (kbd "1") #'smerge-keep-mine)
-  (define-key leader/f0 (kbd "2") #'smerge-keep-other)
-  (define-key leader/f0 (kbd "3") #'smerge-keep-all)
-  ;; open remote url
-  (define-key leader/f0 (kbd "o") #'browse-at-remote))
-(global-set-key (kbd "<f10>") 'leader/f0)
-(global-set-key (kbd "M-0") 'leader/f0)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: UI & Basic Operations
@@ -127,6 +77,8 @@
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
   ;; Codes Navigation
   (define-key leader/f12 (kbd "]") #'workflow-goto-definition)
+  ;; Git & Version Control
+  (define-key leader/f12 (kbd "v") #'workflow-git-popup)
   ;; Unit test & Project starter
   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)

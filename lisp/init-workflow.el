@@ -277,6 +277,40 @@
   (interactive)
   (verb-send-request-on-point-other-window-stay))
 
+;; Part 2-6: Git version control
+(defun workflow-git-popup ()
+  "Popup magit control."
+  (interactive)
+  (magit))
+
+(defun workflow-git-commit-changes ()
+  "Commit current changes."
+  (progn
+    (save-some-buffers)
+    (magit-commit-create)))
+
+(defun workflow-git-push ()
+  "Push current project to remote."
+  (interactive)
+  (magit-push-current-to-upstream))
+
+(defun workflow-git-pull ()
+  "Pull all change from previous remote."
+  (interactive)
+  (progn
+    (save-some-buffers)
+    (magit-pull-from-upstream)))
+
+(defun workflow-git-keep-current ()
+  "Accept current change in this diff."
+  (interactive)
+  (smerge-keep-current))
+
+(defun workflow-git-browse-remote ()
+  "Open git remote in browser."
+  (interactive)
+  (browse-at-remote))
+
 ;; Part 2-9: Misc
 (defun workflow-codetta-expand-command ()
   "Codetta expand command."
