@@ -18,7 +18,7 @@
   (define-key leader/f11 (kbd "u") #'workflow-unique-window)
   (define-key leader/f11 (kbd "x") #'workflow-close-current-window)
   (define-key leader/f11 (kbd "h") #'workflow-horizontal-split-window)
-  (define-key leader/f11 (kbd "v") #'workflow-vertically-split-window)
+  (define-key leader/f11 (kbd "v") #'workflow-vertical-split-window)
   (define-key leader/f11 (kbd "q") #'workflow-quit-emacs-application)
   (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
   ;; File access

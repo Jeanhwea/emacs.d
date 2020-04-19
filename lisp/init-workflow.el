@@ -14,8 +14,8 @@
   (interactive)
   (split-window-below))
 
-(defun workflow-vertically-split-window ()
-  "Vertically split window."
+(defun workflow-vertical-split-window ()
+  "Vertical split window."
   (interactive)
   (split-window-right))
 
