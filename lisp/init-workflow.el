@@ -88,13 +88,12 @@
 (defun workflow-alternative-buffer ()
   "Swap between recently buffer."
   (interactive)
-  (progn
-    (switch-to-buffer nil)))
+  (switch-to-buffer nil))
 
 (defun workflow-kill-buffer ()
   "Kill current buffer"
   (interactive)
-  (kill-buffer))
+  (ido-kill-buffer))
 
 (defun workflow-new-buffer ()
   "Create a temporary buffer."
