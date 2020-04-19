@@ -131,7 +131,7 @@
          lua-mode
          magit
          markdown-mode
-         meghanada
+         ;; meghanada
          multiple-cursors
          nyan-mode
          org-bullets
