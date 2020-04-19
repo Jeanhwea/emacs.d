@@ -49,7 +49,6 @@
              )))
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)
-      (highlight-indent-guides-mode 1)
       (when (require 'elpy)
         ;; pip install jedi flake8 autopep8 rope
         (delete 'elpy-module-highlight-indentation elpy-modules)

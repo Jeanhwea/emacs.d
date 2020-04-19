@@ -32,8 +32,7 @@
              ;; ----------------------------------------------------------------
              )))
       (hl-line-mode 1)
-      (rainbow-delimiters-mode 1)
-      (highlight-indent-guides-mode 1)))
+      (rainbow-delimiters-mode 1)))
 
 (defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
 (defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")

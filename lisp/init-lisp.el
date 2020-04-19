@@ -23,7 +23,6 @@
              ;; ----------------------------------------------------------------
              )))
       (hl-line-mode 1)
-      (rainbow-delimiters-mode)
-      (highlight-indent-guides-mode 1)))
+      (rainbow-delimiters-mode)))
 
 (provide 'init-lisp)

@@ -76,16 +76,16 @@
 ;; -----------------------------------------------------------------------------
 ;; highlight-indent-guides
 ;; -----------------------------------------------------------------------------
-(when (require 'highlight-indent-guides)
-  (defun jh/highlighter (level responsive display)
-    (if (> 1 level) nil
-      (highlight-indent-guides--highlighter-default level responsive display)))
-  (setq
-    highlight-indent-guides-method 'character
-    highlight-indent-guides-character 182 ; ¶
-    highlight-indent-guides-auto-character-face-perc 0
-    highlight-indent-guides-responsive 'top
-    highlight-indent-guides-highlighter-function 'jh/highlighter))
+;; (when (require 'highlight-indent-guides)
+;;   (defun jh/highlighter (level responsive display)
+;;     (if (> 1 level) nil
+;;       (highlight-indent-guides--highlighter-default level responsive display)))
+;;   (setq
+;;     highlight-indent-guides-method 'character
+;;     highlight-indent-guides-character 182 ; ¶
+;;     highlight-indent-guides-auto-character-face-perc 0
+;;     highlight-indent-guides-responsive 'top
+;;     highlight-indent-guides-highlighter-function 'jh/highlighter))
 
 (when (require 'keyfreq)
   (keyfreq-mode 1)

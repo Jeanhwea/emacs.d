@@ -28,8 +28,7 @@
              ;; ----------------------------------------------------------------
              )))
       (hl-line-mode 1)
-      (rainbow-delimiters-mode 1)
-      (highlight-indent-guides-mode 1)))
+      (rainbow-delimiters-mode 1)))
 
 (when (require 'cuda-mode)
   (add-to-list 'auto-mode-alist '("\\.cu.cc\\'" . cuda-mode)))

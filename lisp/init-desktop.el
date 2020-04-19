@@ -26,12 +26,6 @@
 ;; auto delete trailing whitespace before saving
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-;; -----------------------------------------------------------------------------
-;; navigation helper
-;; -----------------------------------------------------------------------------
-(when (require 'fancy-narrow)
-  (fancy-narrow-mode 1))
-
 (when (require 'dashboard)
   (dashboard-setup-startup-hook)
   (setq

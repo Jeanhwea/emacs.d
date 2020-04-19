@@ -116,7 +116,6 @@
          evil
          exec-path-from-shell
          expand-region
-         fancy-narrow
          figlet
          fill-column-indicator
          flycheck
@@ -124,7 +123,6 @@
          graphviz-dot-mode
          groovy-mode
          haskell-mode
-         highlight-indent-guides
          htmlize
          js-comint
          keyfreq
