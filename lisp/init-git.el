@@ -11,12 +11,9 @@
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
-  (add-to-list
-    'browse-at-remote-remote-type-domains '("192.168.0.202" . "gitlab2"))
-  (add-to-list
-    'browse-at-remote-remote-type-domains '("dev58.mti.avic.com" . "gitlab3"))
-  (add-to-list
-    'browse-at-remote-remote-type-domains '("minix.jeanhwea.io" . "gitlab3"))
+  (add-to-list 'browse-at-remote-remote-type-domains '("192.168.0.202" . "gitlab2"))
+  (add-to-list 'browse-at-remote-remote-type-domains '("dev58.mti.avic.com" . "gitlab3"))
+  (add-to-list 'browse-at-remote-remote-type-domains '("minix.jeanhwea.io" . "gitlab3"))
 
   (defun browse-at-remote--format-commit-url-as-gitlab2 (repo-url commithash)
     "commit url formatted for gitlab2."
@@ -51,8 +48,11 @@
          (jh/re-replace
            "^\\(https://\\)\\([^/]+\\)\\(.+\\)$"
            "http://\\2/gitlab\\3" repo-url)))
-      (browse-at-remote--format-region-url-as-gitlab
-        repo-url location filename linestart lineend))))
+      (if (string-match-p "\\.\\(md\\|org\\)$" filename)
+        (browse-at-remote--format-region-url-as-gitlab
+          repo-url location filename)
+        (browse-at-remote--format-region-url-as-gitlab
+          repo-url location filename linestart lineend)))))
 
 ;; -----------------------------------------------------------------------------
 ;; some helper function with git repository
