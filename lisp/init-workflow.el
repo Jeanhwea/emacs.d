@@ -288,7 +288,8 @@
   (interactive)
   (progn
     (workflow-save-all-buffers)
-    (magit-commit-create)))
+    (magit-stage)
+    (magit-commit)))
 
 (defun workflow-git-push ()
   "Push current project to remote."
