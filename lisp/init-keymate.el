@@ -1,10 +1,10 @@
 ;; -----------------------------------------------------------------------------
 ;; Most common used commands first
 ;; -----------------------------------------------------------------------------
-(global-set-key (kbd "M-;") 'repeat)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-r") 'workflow-replace)
+(global-set-key (kbd "M-;") 'workflow-goto-definition)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: UI & Basic Operations
@@ -65,7 +65,6 @@
   ;; Leader Key
   (define-prefix-command 'leader/f12)
   ;; Search any thing
-  (define-key leader/f12 (kbd "a") #'workflow-ag-search)
   (define-key leader/f12 (kbd "s") #'workflow-search-any-text)
   (define-key leader/f12 (kbd "g") #'workflow-git-search)
   ;; Replace, regular eXpression replace
