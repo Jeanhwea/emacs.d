@@ -78,7 +78,7 @@
   (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
   ;; Codes Navigation
-  (define-key leader/f12 (kbd "]") #'workflow-goto-definition)
+  (define-key leader/f12 (kbd ";") #'workflow-goto-definition)
   ;; Git & Version Control
   (define-key leader/f12 (kbd "v") #'workflow-git-popup)
   (define-key leader/f12 (kbd "c") #'workflow-git-commit-changes)
