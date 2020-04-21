@@ -1,7 +1,7 @@
 ;; -----------------------------------------------------------------------------
 ;; Most common used commands first
 ;; -----------------------------------------------------------------------------
-(global-set-key (kbd "M-n") 'workflow-M-x)
+(global-set-key (kbd "M-w") 'workflow-M-x)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
@@ -95,8 +95,8 @@
   (define-key leader/f12 (kbd "P") #'workflow-post-http-request)
   ;; Misc
   (define-key leader/f12 (kbd "C") #'workflow-codetta-expand-command)
-  (define-key leader/f12 (kbd "E") #'workflow-eshell-open-from-here)
-  (define-key leader/f12 (kbd "W") #'workflow-working-directory-send))
+  (define-key leader/f12 (kbd "e") #'workflow-eshell-open-from-here)
+  (define-key leader/f12 (kbd "w") #'workflow-working-directory-send))
 (global-set-key (kbd "<f12>") 'leader/f12)
 (global-set-key (kbd "M-]") 'leader/f12)
 
