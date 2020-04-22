@@ -85,7 +85,7 @@
   (define-key leader/f12 (kbd "c") #'workflow-git-commit-changes)
   (define-key leader/f12 (kbd "p") #'workflow-git-push)
   (define-key leader/f12 (kbd "l") #'workflow-git-pull)
-  (define-key leader/f12 (kbd "o") #'workflow-git-browse-remote)
+  (define-key leader/f12 (kbd "b") #'workflow-git-browse-remote)
   (define-key leader/f12 (kbd "<return>") #'workflow-git-keep-current)
   ;; Unit Test & Starter
   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
