@@ -46,10 +46,17 @@
   ;; Highlight symbol & Colortheme, Transparency
   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
   (define-key leader/f11 (kbd "w") #'workflow-wipeout-all-highlights)
-  (define-key leader/f11 (kbd "c") #'workflow-colortheme-cycling)
-  (define-key leader/f11 (kbd "t") #'workflow-transparency-cycling)
+  (define-key leader/f11 (kbd "C") #'workflow-colortheme-cycling)
+  (define-key leader/f11 (kbd "T") #'workflow-transparency-cycling)
+  ;; Git & Version Control
+  (define-key leader/f11 (kbd "/") #'workflow-git-popup)
+  (define-key leader/f11 (kbd "c") #'workflow-git-commit-changes)
+  (define-key leader/f11 (kbd "p") #'workflow-git-push)
+  (define-key leader/f11 (kbd "l") #'workflow-git-pull)
+  (define-key leader/f11 (kbd "i") #'workflow-git-browse-remote)
+  (define-key leader/f11 (kbd "<return>") #'workflow-git-keep-current)
   ;; Undotree
-  ;; (define-key leader/f11 (kbd "i") #'undo-tree-visualize)
+  (define-key leader/f11 (kbd "U") #'undo-tree-visualize)
   ;; Frame
   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
   ;; (define-key leader/f11 (kbd "6") #'delete-frame)
@@ -80,13 +87,6 @@
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
   ;; Codes Navigation
   (define-key leader/f12 (kbd ";") #'workflow-goto-definition)
-  ;; Git & Version Control
-  (define-key leader/f12 (kbd "v") #'workflow-git-popup)
-  (define-key leader/f12 (kbd "c") #'workflow-git-commit-changes)
-  (define-key leader/f12 (kbd "p") #'workflow-git-push)
-  (define-key leader/f12 (kbd "l") #'workflow-git-pull)
-  (define-key leader/f12 (kbd "b") #'workflow-git-browse-remote)
-  (define-key leader/f12 (kbd "<return>") #'workflow-git-keep-current)
   ;; Unit Test & Starter
   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)

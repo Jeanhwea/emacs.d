@@ -195,6 +195,44 @@
   (interactive)
   (jh/cycle-transparency))
 
+;; Part 1-6: Git version control
+(defun workflow-git-popup ()
+  "Popup magit control."
+  (interactive)
+  (magit))
+
+(defun workflow-git-commit-changes ()
+  "Commit current changes."
+  (interactive)
+  (progn
+    (workflow-save-all-buffers)
+    (magit-stage-modified)
+    (magit-commit)))
+
+(defun workflow-git-push ()
+  "Push current project to remote."
+  (interactive)
+  (progn
+    (workflow-save-all-buffers)
+    (magit-push)))
+
+(defun workflow-git-pull ()
+  "Pull all change from previous remote."
+  (interactive)
+  (progn
+    (workflow-save-all-buffers)
+    (magit-pull)))
+
+(defun workflow-git-keep-current ()
+  "Accept current change in this diff."
+  (interactive)
+  (smerge-keep-current))
+
+(defun workflow-git-browse-remote ()
+  "Open git remote in browser."
+  (interactive)
+  (browse-at-remote))
+
 ;; Part 2-1: Search
 (defun workflow-search-any-text ()
   "Search any text by grep-like program."
@@ -279,44 +317,6 @@
   "Post a HTTP request by verb in org-mode."
   (interactive)
   (verb-send-request-on-point-other-window-stay))
-
-;; Part 2-6: Git version control
-(defun workflow-git-popup ()
-  "Popup magit control."
-  (interactive)
-  (magit))
-
-(defun workflow-git-commit-changes ()
-  "Commit current changes."
-  (interactive)
-  (progn
-    (workflow-save-all-buffers)
-    (magit-stage-modified)
-    (magit-commit)))
-
-(defun workflow-git-push ()
-  "Push current project to remote."
-  (interactive)
-  (progn
-    (workflow-save-all-buffers)
-    (magit-push)))
-
-(defun workflow-git-pull ()
-  "Pull all change from previous remote."
-  (interactive)
-  (progn
-    (workflow-save-all-buffers)
-    (magit-pull)))
-
-(defun workflow-git-keep-current ()
-  "Accept current change in this diff."
-  (interactive)
-  (smerge-keep-current))
-
-(defun workflow-git-browse-remote ()
-  "Open git remote in browser."
-  (interactive)
-  (browse-at-remote))
 
 ;; Part 2-9: Misc
 (defun workflow-codetta-expand-command ()
