@@ -1,5 +1,5 @@
 ;; Part 1-1: windows commands
-(defun workflow-unique-window ()
+(defun workflow-delete-other-windows ()
   "Delete other windows, just leave current windows."
   (interactive)
   (delete-other-windows))

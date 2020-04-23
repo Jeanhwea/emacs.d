@@ -15,7 +15,7 @@
   ;; Leader Key
   (define-prefix-command 'leader/f11)
   ;; Window
-  (define-key leader/f11 (kbd "u") #'workflow-unique-window)
+  (define-key leader/f11 (kbd "<SPC>") #'workflow-delete-other-windows)
   (define-key leader/f11 (kbd "x") #'workflow-close-current-window)
   (define-key leader/f11 (kbd "h") #'workflow-horizontal-split-window)
   (define-key leader/f11 (kbd "v") #'workflow-vertical-split-window)
@@ -31,7 +31,7 @@
   (define-key leader/f11 (kbd "b") #'workflow-bookmark-open-file)
   (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
   ;; Buffer operation
-  (define-key leader/f11 (kbd "<SPC>") #'workflow-switch-to-buffer)
+  (define-key leader/f11 (kbd ",") #'workflow-switch-to-buffer)
   (define-key leader/f11 (kbd "a") #'workflow-alternative-buffer)
   (define-key leader/f11 (kbd "k") #'workflow-kill-buffer)
   (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
