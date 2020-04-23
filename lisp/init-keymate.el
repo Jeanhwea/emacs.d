@@ -6,7 +6,7 @@
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
 (global-set-key (kbd "M-r") 'workflow-recentf-open-file)
-(global-set-kbd (key "M-;") 'workflow-goto-definition)
+(global-set-key (kbd "M-;") 'workflow-goto-definition)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: UI & Basic Operations
