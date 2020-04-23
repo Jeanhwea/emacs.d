@@ -223,8 +223,7 @@
   (let*
     ((column (jh/sql-lookup-columns colname))
       (colcmt (and column (gethash 'colcmt column))))
-    (concat " // "
-      (if (> (length colcmt) 0) colcmt "TODO: Add Comment"))))
+    (if (> (length colcmt) 0) colcmt "TODO: Add Comment")))
 
 (defun jh/java-column-field (colname)
   "Get field name."

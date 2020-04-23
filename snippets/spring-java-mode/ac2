@@ -2,8 +2,9 @@
 # name: JPA Field Accessor v2
 # key: ac2
 # --
+// ${1:$(jh/java-column-comments yas-text)}
 ${1:$(jh/java-column-header yas-text)}@Column(name = "${1:$$(yas-choose-value (jh/java-column-names))}"${1:$(jh/java-column-args yas-text)})
-private ${2:${1:$(jh/java-column-type yas-text)}} ${3:${1:$(jh/java-column-field yas-text)}};${1:$(jh/java-column-comments yas-text)}
+private ${2:${1:$(jh/java-column-type yas-text)}} ${3:${1:$(jh/java-column-field yas-text)}};
 
 @JsonProperty("$3")
 public $2 $3() {
