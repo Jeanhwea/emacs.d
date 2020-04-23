@@ -35,8 +35,8 @@
   (interactive)
   (browse-url default-directory))
 
-(defun workflow-open-this-file ()
-  "Open this file by default open method."
+(defun workflow-inspect-file ()
+  "Inspect file by IDEA or Open by default open method."
   (interactive)
   (let ((file (buffer-file-name)) (line (jh/line-number)))
     (cond
@@ -347,9 +347,11 @@
   "Inflect string or word cases."
   (interactive)
   (cond
-    ((eq major-mode 'java-mode) (string-inflection-java-style-cycle))
-    ((eq major-mode 'python-mode) (string-inflection-python-style-cycle))
-    (t (string-inflection-all-cycle-function))))
+    ((eq major-mode 'java-mode)
+      (string-inflection-java-style-cycle))
+    ((eq major-mode 'python-mode)
+      (string-inflection-python-style-cycle))
+    (t (string-inflection-all-cycle))))
 
 (defun workflow-M-x ()
   "Start M-x, but add `workflow-' as the default prefix."

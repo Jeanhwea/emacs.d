@@ -23,7 +23,7 @@
   (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
   ;; File access
   (define-key leader/f11 (kbd "o") #'workflow-open-default-folder)
-  (define-key leader/f11 (kbd "O") #'workflow-open-this-file)
+  (define-key leader/f11 (kbd "i") #'workflow-inspect-file)
   (define-key leader/f11 (kbd "r") #'workflow-recentf-open-file)
   (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
   (define-key leader/f11 (kbd "g") #'workflow-git-open-file)
@@ -53,7 +53,7 @@
   (define-key leader/f11 (kbd "c") #'workflow-git-commit-changes)
   (define-key leader/f11 (kbd "p") #'workflow-git-push)
   (define-key leader/f11 (kbd "l") #'workflow-git-pull)
-  (define-key leader/f11 (kbd "i") #'workflow-git-browse-remote)
+  (define-key leader/f11 (kbd "o") #'workflow-git-browse-remote)
   (define-key leader/f11 (kbd "<return>") #'workflow-git-keep-current)
   ;; Undotree
   (define-key leader/f11 (kbd "U") #'undo-tree-visualize)
