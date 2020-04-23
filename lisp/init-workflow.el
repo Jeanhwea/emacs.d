@@ -30,7 +30,7 @@
   (toggle-frame-fullscreen))
 
 ;; Part 1-2: File & Buffer, Bookmark
-(defun workflow-open-default-folder ()
+(defun workflow-open-in-file-manager ()
   "Open the folder containing this buffer file"
   (interactive)
   (browse-url default-directory))

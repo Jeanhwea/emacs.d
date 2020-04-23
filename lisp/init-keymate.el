@@ -5,8 +5,8 @@
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
-(global-set-key (kbd "M-r") 'workflow-replace)
-(global-set-key (kbd "M-;") 'workflow-goto-definition)
+(global-set-key (kbd "M-r") 'workflow-recentf-open-file)
+(global-set-kbd (key "M-;") 'workflow-goto-definition)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: UI & Basic Operations
@@ -22,7 +22,7 @@
   (define-key leader/f11 (kbd "q") #'workflow-quit-emacs-application)
   (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
   ;; File access
-  (define-key leader/f11 (kbd "o") #'workflow-open-default-folder)
+  (define-key leader/f11 (kbd "m") #'workflow-open-in-file-manager)
   (define-key leader/f11 (kbd "i") #'workflow-inspect-file)
   (define-key leader/f11 (kbd "r") #'workflow-recentf-open-file)
   (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
