@@ -35,10 +35,13 @@
   (let
     ((regexp
        (concat "^.*/"
-         (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern) "$"))
+         (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern)
+         "$"))
       (topic))
-    (save-match-data
-      (and (string-match regexp file) (setq topic (match-string 1 file))))
+    (and file
+      (save-match-data
+        (and (string-match regexp file)
+          (setq topic (match-string 1 file)))))
     topic))
 
 (defun spt/files-get (&optional file)
