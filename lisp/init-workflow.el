@@ -66,6 +66,11 @@
   (interactive)
   (counsel-find-file))
 
+(defun workflow-jump-to-relative-file ()
+  "Jump to relative files."
+  (interactive)
+  (spt/switch-to))
+
 (defun workflow-bookmark-open-file ()
   "Open file that bookmarked."
   (interactive)
