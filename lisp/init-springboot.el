@@ -68,7 +68,7 @@
     (or from (user-error "Ops: I cannot get any information about this file."))
     (or to (user-error "Ops: I don't know where to go."))
     ;; do the find work
-    (cond ((eq which 'test) "todo")
+    (cond ((eq which 'test) (error "todo"))
       (t (spt/goto-related-topic-file file from to)))))
 
 (defun spt/switch-to (&optional which file)
