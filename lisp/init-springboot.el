@@ -30,7 +30,7 @@
      (test . "{}Test.java"))
   "A Maven or Spring MVC related file alist, use `{}' represent TOPIC.")
 
-(defun spt/testfile (file pattern)
+(defun spt/file-matches (file pattern)
   "Test if the file matches pattern."
   (let*
     ((idgrp "\\\\([_a-zA-Z0-9]+\\\\)" )
@@ -45,14 +45,14 @@
   "Get the first element that matches spt/files."
   (let
     ((file (or file (buffer-file-name)))
-      (pred #'(lambda (e) (spt/testfile file (cdr e)))))
+      (pred #'(lambda (e) (spt/file-matches file (cdr e)))))
     (car (remove-if-not pred spt/files))))
 
 (defun spt/topic (&optional file)
   "Get the topic of file."
   (let
     ((file (or file (buffer-file-name)))
-      (pred #'(lambda (e) (spt/testfile file (cdr e)))))
+      (pred #'(lambda (e) (spt/file-matches file (cdr e)))))
     (car (remove-if #'null (mapcar pred spt/files)))))
 
 (defun spt/cons-prefix (topic file)
