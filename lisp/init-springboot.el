@@ -59,7 +59,7 @@
       (suffix (jh/re-replace "{}" topic (cdr to))))
     (concat prefix suffix)))
 
-(defun spt/dest-file (which &optional file)
+(defun spt/find-the-new-place (which &optional file)
   "Return the destination filename."
   (let*
     ((file (or file (buffer-file-name)))
@@ -76,7 +76,7 @@
   (let*
     ((file (or file (buffer-file-name)))
       (which (completing-read "Switch to >> " spt/files nil t))
-      (dest (spt/dest-file (intern which) file)))
+      (dest (spt/find-the-new-place (intern which) file)))
     (progn
       (find-file dest)
       (message "Switched to `%s'" dest))))
