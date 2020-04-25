@@ -18,27 +18,40 @@
 ;;       +- impl (服务实现类包)
 ;;
 ;; -----------------------------------------------------------------------------
-;; Spring MVC structure
-(defconst spt/structure
+;; Maven and Spring MVC related file
+(defconst spt/files
   '((entity . "domain/entity/{}.java")
      (repository . "domain/repo/{}Repository.java")
      (helper . "helper/{}Helper.java")
      (service . "service/{}Service.java")
      (worker . "service/impl/{}ServiceImpl.java")
-     (controller . "controller/{}Controller.java"))
-  "A simple Spring MVC project structure, use `{}' represent TOPIC.")
+     (controller . "controller/{}Controller.java")
+     (implement . "impl/{}Impl.java")
+     (test . "{}Test.java"))
+  "A Maven or Spring MVC related file alist, use `{}' represent TOPIC.")
 
-(defconst spt/alterfile
-  '((test . "{}Test.java")
-     (implement . "impl/{}Impl.java"))
-  "Alternative file swap rule.")
+(defun spt/testfile (file pattern)
+  "Test if the file match pattern."
+  (let
+    ((regexp
+       (concat "^.*/"
+         (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern) "$"))
+      (topic))
+    (save-match-data
+      (and (string-match regexp file) (setq topic (match-string 1 file))))
+    topic))
+
+(defun spt/files-get (&optional file)
+  "Get the first element that matches spt/files."
+  (let ((file (or file (buffer-file-name))))
+    (car (remove-if-not #'(lambda (e) (spt/testfile file (cdr e))) spt/files))))
 
 (defun spt/topic (&optional file)
   "Get the topic of file."
   (let
     ((file (or file (buffer-file-name)))
       (topic))
-    (dolist (pattern (mapcar #'cdr spt/structure))
+    (dolist (pattern (mapcar #'cdr spt/files))
       (setq regexp
         (concat "^.*/"
           (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern) "$"))
@@ -49,14 +62,19 @@
 (defun spt/cons-prefix (topic file)
   "Construct the prefix of the file."
   (let ((prefix file))
-    (dolist (pattern (mapcar #'cdr spt/structure))
+    (dolist (pattern (mapcar #'cdr spt/files))
       (setq prefix
         (jh/re-replace (concat (jh/re-replace "{}" topic pattern) "$") "" prefix)))
     prefix))
 
 (defun spt/cons-suffix (topic key)
   "Construct a suffix for this topic."
-  (jh/re-replace "{}" topic (alist-get (intern key) spt/structure)))
+  (jh/re-replace "{}" topic (alist-get (intern key) spt/files)))
+
+(defun spt/find-file (topic file curr)
+  "Return the new filename based on current file and topic."
+  (let ((topic (spt/topic file)))
+    topic))
 
 (defun spt/switch-to (&optional curr file)
   "Switch to a new type file based on file."
@@ -66,7 +84,7 @@
       (dest))
     (or topic (user-error "Cannot find a topic for `%s'" file))
     (setq curr
-      (or curr (completing-read "Switch to >> " spt/structure nil t)))
+      (or curr (completing-read "Switch to >> " spt/files nil t)))
     (setq dest (concat (spt/cons-prefix topic file) (spt/cons-suffix topic curr)))
     (and dest (find-file dest))
     (message "Switch to `%s'" dest)))
