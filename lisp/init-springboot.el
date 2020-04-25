@@ -59,24 +59,24 @@
           (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file)))
     (concat prefix suffix)))
 
-(defun spt/find-the-new-place (which &optional file)
+(defun spt/find-the-new-place (where &optional file)
   "Return the destination filename."
   (let*
     ((file (or file (buffer-file-name)))
       (from (spt/files-get file))
-      (to (assoc which spt/files)))
+      (to (assoc where spt/files)))
     (or from (user-error "Ops: Cannot get any information about this file."))
     (or to (user-error "Ops: Missing place to go."))
     ;; do the find work
-    (cond ((eq which 'test) (error "todo"))
+    (cond ((eq where 'test) (error "todo"))
       (t (spt/goto-related-topic-file file from to)))))
 
-(defun spt/switch-to (&optional which file)
+(defun spt/switch-to (&optional where file)
   "Switch to a new type file based on file."
   (let*
     ((file (or file (buffer-file-name)))
-      (which (completing-read "Switch to >> " spt/files nil t))
-      (dest (spt/find-the-new-place (intern which) file)))
+      (where (completing-read "Switch to >> " spt/files nil t))
+      (dest (spt/find-the-new-place (intern where) file)))
     (progn
       (find-file dest)
       (message "Switched to `%s'" dest))))
