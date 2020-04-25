@@ -32,11 +32,9 @@
 
 (defun spt/testfile (file pattern)
   "Test if the file matches pattern."
-  (let
-    ((regexp
-       (concat "^.*/"
-         (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern)
-         "$"))
+  (let*
+    ((idgrp "\\\\([_a-zA-Z0-9]+\\\\)" )
+      (regexp (concat "^.*/" (jh/re-replace "{}" idgrp pattern) "$"))
       (topic))
     (or file (user-error "Ops: Test file is nil."))
     (save-match-data
