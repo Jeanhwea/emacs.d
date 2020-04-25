@@ -30,7 +30,7 @@
      (test . "{}Test.java"))
   "A Maven or Spring MVC related file alist, use `{}' represent TOPIC.")
 
-(defun spt/file-matches (file pattern)
+(defun spt/files-match (file pattern)
   "Test if the file matches pattern."
   (let*
     ((idgrp "\\\\([_a-zA-Z0-9]+\\\\)" )
@@ -45,45 +45,47 @@
   "Get the first element that matches spt/files."
   (let
     ((file (or file (buffer-file-name)))
-      (pred #'(lambda (e) (spt/file-matches file (cdr e)))))
+      (pred #'(lambda (e) (spt/files-match file (cdr e)))))
     (car (remove-if-not pred spt/files))))
 
 (defun spt/topic (&optional file)
   "Get the topic of file."
   (let
     ((file (or file (buffer-file-name)))
-      (pred #'(lambda (e) (spt/file-matches file (cdr e)))))
+      (pred #'(lambda (e) (spt/files-match file (cdr e)))))
     (car (remove-if #'null (mapcar pred spt/files)))))
 
-(defun spt/cons-prefix (topic file)
-  "Construct the prefix of the file."
-  (let ((prefix file))
-    (dolist (pattern (mapcar #'cdr spt/files))
-      (setq prefix
-        (jh/re-replace (concat (jh/re-replace "{}" topic pattern) "$") "" prefix)))
-    prefix))
+(defun spt/goto-related-topic (file from to)
+  "Add document string here."
+  (let*
+    ((topic (spt/topic file))
+      (prefix
+        (jh/re-replace
+          (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file))
+      (suffix (jh/re-replace "{}" topic (cdr to))))
+    (concat prefix suffix)))
 
-(defun spt/cons-suffix (topic key)
-  "Construct a suffix for this topic."
-  (jh/re-replace "{}" topic (alist-get (intern key) spt/files)))
+(defun spt/dest-file (which &optional file)
+  "TODO: "
+  (let*
+    ((file (or file (buffer-file-name)))
+      (from (spt/files-get file))
+      (to (assoc which spt/files)))
+    (or from (user-error "Ops: I cannot get any information about this file."))
+    (or to (user-error "Ops: I don't know where to go."))
+    ;; do the find work
+    (cond ((eq which 'test) "todo")
+      (t (spt/goto-related-topic file from to)))))
 
-(defun spt/find-file (topic file curr)
-  "Return the new filename based on current file and topic."
-  (let ((topic (spt/topic file)))
-    topic))
-
-(defun spt/switch-to (&optional curr file)
+(defun spt/switch-to (&optional which file)
   "Switch to a new type file based on file."
   (let
     ((file (or file (buffer-file-name)))
-      (topic (spt/topic file))
-      (dest))
-    (or topic (user-error "Cannot find a topic for `%s'" file))
-    (setq curr
-      (or curr (completing-read "Switch to >> " spt/files nil t)))
-    (setq dest (concat (spt/cons-prefix topic file) (spt/cons-suffix topic curr)))
-    (and dest (find-file dest))
-    (message "Switch to `%s'" dest)))
+      (which (or which (completing-read "Switch to >> " spt/files nil t)))
+      (dest (spt/dest-file which file)))
+    (progn
+      (find-file dest)
+      (message "Switch to `%s'" dest))))
 
 ;; Project Constants
 (defun spt/proj-root (&optional dir)
