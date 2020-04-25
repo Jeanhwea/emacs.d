@@ -24,9 +24,14 @@
      (repository . "domain/repo/{}Repository.java")
      (helper . "helper/{}Helper.java")
      (service . "service/{}Service.java")
-     (implement-service . "service/impl/{}ServiceImpl.java")
+     (worker . "service/impl/{}ServiceImpl.java")
      (controller . "controller/{}Controller.java"))
   "A simple Spring MVC project structure, use `{}' represent TOPIC.")
+
+(defconst spt/alterfile
+  '((test . "{}Test.java")
+     (implement . "impl/{}Impl.java"))
+  "Alternative file swap rule.")
 
 (defun spt/topic (&optional file)
   "Get the topic of file."
@@ -53,14 +58,15 @@
   "Construct a suffix for this topic."
   (jh/re-replace "{}" topic (alist-get (intern key) spt/structure)))
 
-(defun spt/switch-to (&optional file)
+(defun spt/switch-to (&optional curr file)
   "Switch to a new type file based on file."
   (let
     ((file (or file (buffer-file-name)))
       (topic (spt/topic file))
       (dest))
     (or topic (user-error "Cannot find a topic for `%s'" file))
-    (setq curr (completing-read "Switch to >> " (mapcar #'car spt/structure)))
+    (setq curr
+      (or curr (completing-read "Switch to >> " (mapcar #'car spt/structure))))
     (setq dest (concat (spt/cons-prefix topic file) (spt/cons-suffix topic curr)))
     (and dest (find-file dest))
     (message "Switch to `%s'" dest)))
