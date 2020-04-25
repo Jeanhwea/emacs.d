@@ -61,9 +61,9 @@
       (user-error "Failed to get Application root of `%s'!" dir))
     (jh/parent-dir root)))
 
-(defun spt/project-name ()
+(defun spt/proj (&optional dir)
   "Return project name."
-  (file-name-nondirectory (directory-file-name (spt/proj-root))))
+  (file-name-nondirectory (directory-file-name (spt/proj-root dir))))
 
 (defun spt/read-entity-tabname (text)
   "Read entity table name. like `@Table(...)' "
