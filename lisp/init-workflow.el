@@ -346,7 +346,6 @@
     ((jh/mac?) (jh/iterm2-cd))
     (t (message "Unsupport term cd on this OS!"))))
 
-;; ------------------------------------------------------------------------------
 ;; Global common used commands
 (defun workflow-inflect-string ()
   "Inflect string or word cases."
@@ -363,22 +362,6 @@
   (interactive)
   (counsel-M-x "^workflow "))
 
-;; todo: add
-(defvar wf/project-type-alist
-  '(("pom.xml" . maven) ("package.json" . angular))
-  "Project file to project type.")
-
-(defun wf/project-type ()
-  "Get current project type."
-  (let*
-    ((root (jh/git-root default-directory))
-      (lookup
-        (remove-if-not
-          #'(lambda (f)
-              (file-exists-p (expand-file-name f root)))
-          (mapcar #'car wf/project-type-alist))))
-    (cdr (assoc (car lookup) wf/project-type-alist))))
-
 (defun workflow-build-tags ()
   "Build the TAGS file."
   (interactive)
@@ -390,6 +373,11 @@
       (file-directory-p srcdir)
       (shell-command (format "ctags -e --languages=java -R %s" srcdir))
       (message (format "Generate TAGS at %s" srcdir)))))
+
+(defun workflow-sql-client-start ()
+  "Start the SQL client daemon."
+  (interactive)
+  (daemon-client-start))
 
 (defun workflow-drop-file (&optional dir)
   "Drop the file content to current point according to action."

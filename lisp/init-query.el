@@ -107,7 +107,6 @@
 
 (defun daemon-client-start ()
   "Start a client as the query daemon."
-  (interactive)
   (or (file-exists-p qy/sppass-file)
     (error "Need configuration file: %s" qy/sppass-file))
   (and (get-buffer qy/daemon-buffer)
