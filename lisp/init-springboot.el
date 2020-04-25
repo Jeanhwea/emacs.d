@@ -18,53 +18,52 @@
 ;;       +- impl (服务实现类包)
 ;;
 ;; -----------------------------------------------------------------------------
-(defun spt/project-root ()
-  "Return current project root dir."
-  (or (jh/git-root default-directory)
-    (error "This file is not inside a GIT repository")))
-
-(defun spt/app-root (&optional entry)
-  "Return current source root dir."
-  (let*
-    ((re (format "^.*%s\\.java$" (or entry "Application")))
-      (dirs (directory-files-recursively (spt/src-root) re)))
-    (or dirs (error "Failed to get application root!"))
-    (jh/parent-dir (car dirs))))
-
-(defun spt/app-test-root (&optional entry)
-  "Return current source root dir."
-  (let*
-    ((re (format "^.*%s\\.java$" (or entry "ApplicationTest")))
-      (dirs (directory-files-recursively (spt/test-root) re)))
-    (or dirs (error "Failed to get application test root!"))
-    (jh/parent-dir (car dirs))))
-
-(defun spt/src-root ()
-  "Return current source root dir."
+(defun spt/project-root (&optional dir)
+  "Return project root dir."
   (let
-    ((dir
-       (file-name-as-directory
-         (expand-file-name "src/main/java" (spt/project-root)))))
-    (or (file-exists-p dir)
-      (error "Folder `src/main/java' is not exists!"))
-    dir))
+    ((dir (or dir default-directory))
+      (root))
+    (setq root (jh/git-root dir))
+    (or root
+      (user-error "This `%s' is not a GIT repository!" dir))
+    (or (file-exists-p (expand-file-name "pom.xml" root))
+      (user-error "This `%s' seems not a maven project!" root))
+    root))
 
-(defun spt/test-root ()
-  "Return current test case root dir."
+(defun spt/src-root (&optional dir)
+  "Return source root dir."
   (let
-    ((dir
-       (file-name-as-directory
-         (expand-file-name "src/test/java" (spt/project-root)))))
-    (or (file-exists-p dir)
-      (error "Folder `src/test/java' is not exists!"))
-    dir))
+    ((dir (or dir (spt/project-root)))
+      (srcdir "src/main/java")
+      (root))
+    (setq root (file-name-as-directory (expand-file-name srcdir dir)))
+    (or (file-exists-p root) (user-error "Folder `%s' is not exists!" root))
+    root))
+
+(defun spt/test-root (&optional dir)
+  "Return test root dir."
+  (let
+    ((dir (or dir (spt/project-root)))
+      (testdir "src/test/java")
+      (root))
+    (setq root (file-name-as-directory (expand-file-name testdir dir)))
+    (or (file-exists-p root) (user-error "Folder `%s' is not exists!" root))
+    root))
+
+(defun spt/app-root (&optional dir)
+  "Return application root dir."
+  (let
+    ((dir (or dir (spt/src-root)))
+      (appre "^.*Application.java$")
+      (root))
+    (setq root (car (directory-files-recursively dir appre)))
+    (or root ;; if root is nil, then failed to get Application.java
+      (user-error "Failed to get Application root of `%s'!" dir))
+    (jh/parent-dir root)))
 
 (defun spt/project-name ()
   "Return project name."
-  (let*
-    ((root (directory-file-name (spt/project-root)))
-      (parent (jh/parent-dir root)))
-    (jh/re-replace "/$" "" (jh/re-replace parent "" root))))
+  (file-name-nondirectory (directory-file-name (spt/project-root))))
 
 (defun spt/read-entity-tabname (text)
   "Read entity table name. like `@Table(...)' "
