@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: @Override annotation
-# key: or
-# --
-@Override
-public ${1:$$(yas-choose-value (jh/java-iface-method-sign))} {
-$>$0// TODO:
-$>return null;
-}

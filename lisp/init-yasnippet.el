@@ -75,32 +75,6 @@
   "Convert `*Impl' to `*'"
   (jh/pascalcase (jh/re-replace "Impl$" "" name)))
 
-(defun jh/java-endpoint-uri ()
-  "Return a full url, to put it as the header of the doc, like `GET /api/'."
-  (spt/endpoint-uri (buffer-file-name)))
-
-(defun jh/java-iface-method-sign ()
-  "Complete the signature of interface's method."
-  (save-some-buffers t)
-  (let*
-    ((file (buffer-file-name))
-      (ifacefile (spt/find-iface-file file))
-      (implmtds
-        (spt/parse-java-class-methods (jh/read-file-content file)))
-      (ifacemtds
-        (spt/parse-java-iface-methods (jh/read-file-content ifacefile)))
-      (mapfn
-        #'(lambda (method)
-            (format
-              "%s %s(%s)"
-              (gethash 'return method)
-              (gethash 'funcname method)
-              (gethash 'args method))))
-      (implsigns (mapcar mapfn implmtds))
-      (ifacesigns (mapcar mapfn ifacemtds))
-      (todo (remove-if #'(lambda (x) (member x implsigns)) ifacesigns)))
-    (if todo todo '("String toString()"))))
-
 ;; -----------------------------------------------------------------------------
 ;;  ____    _  _____  _    ____    _    ____  _____
 ;; |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____|
