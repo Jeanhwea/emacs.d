@@ -87,8 +87,7 @@
         (concat "^.*/"
           (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern) "$"))
       (save-match-data
-        (and (string-match regexp file)
-          (setq topic (match-string 1 file)))))
+        (and (string-match regexp file) (setq topic (match-string 1 file)))))
     topic))
 
 (defun spt/cons-prefix (topic file)
