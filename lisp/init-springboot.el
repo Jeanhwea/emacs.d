@@ -48,17 +48,11 @@
       (pred #'(lambda (e) (spt/files-match file (cdr e)))))
     (car (remove-if-not pred spt/files))))
 
-(defun spt/topic (&optional file)
-  "Get the topic of file."
-  (let
-    ((file (or file (buffer-file-name)))
-      (pred #'(lambda (e) (spt/files-match file (cdr e)))))
-    (car (remove-if #'null (mapcar pred spt/files)))))
-
-(defun spt/goto-related-topic (file from to)
+(defun spt/goto-related-topic-file (file from to)
   "Add document string here."
   (let*
-    ((topic (spt/topic file))
+    ((pred #'(lambda (e) (spt/files-match file (cdr e))))
+      (topic (car (remove-if #'null (mapcar pred spt/files))))
       (prefix
         (jh/re-replace
           (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file))
@@ -75,17 +69,17 @@
     (or to (user-error "Ops: I don't know where to go."))
     ;; do the find work
     (cond ((eq which 'test) "todo")
-      (t (spt/goto-related-topic file from to)))))
+      (t (spt/goto-related-topic-file file from to)))))
 
 (defun spt/switch-to (&optional which file)
   "Switch to a new type file based on file."
-  (let
+  (let*
     ((file (or file (buffer-file-name)))
-      (which (or which (completing-read "Switch to >> " spt/files nil t)))
-      (dest (spt/dest-file which file)))
+      (which (completing-read "Switch to >> " spt/files nil t))
+      (dest (spt/dest-file (intern which) file)))
     (progn
       (find-file dest)
-      (message "Switch to `%s'" dest))))
+      (message "Switched to `%s'" dest))))
 
 ;; Project Constants
 (defun spt/proj-root (&optional dir)
