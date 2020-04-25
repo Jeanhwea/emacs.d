@@ -18,55 +18,6 @@
 ;;       +- impl (服务实现类包)
 ;;
 ;; -----------------------------------------------------------------------------
-
-;; folder reader
-(defun spt/proj-root (&optional dir)
-  "Return project root dir."
-  (let
-    ((dir (or dir default-directory))
-      (root))
-    (setq root (jh/git-root dir))
-    (or root
-      (user-error "This `%s' is not a GIT repository!" dir))
-    (or (file-exists-p (expand-file-name "pom.xml" root))
-      (user-error "This `%s' seems not a maven project!" root))
-    root))
-
-(defun spt/src-root (&optional dir)
-  "Return source root dir."
-  (let
-    ((dir (or dir (spt/proj-root)))
-      (srcdir "src/main/java")
-      (root))
-    (setq root (file-name-as-directory (expand-file-name srcdir dir)))
-    (or (file-exists-p root) (user-error "Folder `%s' is not exists!" root))
-    root))
-
-(defun spt/test-root (&optional dir)
-  "Return test root dir."
-  (let
-    ((dir (or dir (spt/proj-root)))
-      (testdir "src/test/java")
-      (root))
-    (setq root (file-name-as-directory (expand-file-name testdir dir)))
-    (or (file-exists-p root) (user-error "Folder `%s' is not exists!" root))
-    root))
-
-(defun spt/app-root (&optional dir)
-  "Return application root dir."
-  (let
-    ((dir (or dir (spt/src-root)))
-      (appre "^.*Application.java$")
-      (root))
-    (setq root (car (directory-files-recursively dir appre)))
-    (or root ;; if root is nil, then failed to get Application.java
-      (user-error "Failed to get Application root of `%s'!" dir))
-    (jh/parent-dir root)))
-
-(defun spt/proj (&optional dir)
-  "Return project name."
-  (file-name-nondirectory (directory-file-name (spt/proj-root dir))))
-
 ;; Spring MVC structure
 (defconst spt/structure
   '((entity . "domain/entity/{}.java")
@@ -114,7 +65,55 @@
     (and dest (find-file dest))
     (message "Switch to `%s'" dest)))
 
-;; database information reader
+;; Project Constants
+(defun spt/proj-root (&optional dir)
+  "Return project root dir."
+  (let
+    ((dir (or dir default-directory))
+      (root))
+    (setq root (jh/git-root dir))
+    (or root
+      (user-error "This `%s' is not a GIT repository!" dir))
+    (or (file-exists-p (expand-file-name "pom.xml" root))
+      (user-error "This `%s' seems not a maven project!" root))
+    root))
+
+(defun spt/src-root (&optional dir)
+  "Return source root dir."
+  (let
+    ((dir (or dir (spt/proj-root)))
+      (srcdir "src/main/java")
+      (root))
+    (setq root (file-name-as-directory (expand-file-name srcdir dir)))
+    (or (file-exists-p root) (user-error "Folder `%s' is not exists!" root))
+    root))
+
+(defun spt/test-root (&optional dir)
+  "Return test root dir."
+  (let
+    ((dir (or dir (spt/proj-root)))
+      (testdir "src/test/java")
+      (root))
+    (setq root (file-name-as-directory (expand-file-name testdir dir)))
+    (or (file-exists-p root) (user-error "Folder `%s' is not exists!" root))
+    root))
+
+(defun spt/app-root (&optional dir)
+  "Return application root dir."
+  (let
+    ((dir (or dir (spt/src-root)))
+      (appre "^.*Application.java$")
+      (root))
+    (setq root (car (directory-files-recursively dir appre)))
+    (or root ;; if root is nil, then failed to get Application.java
+      (user-error "Failed to get Application root of `%s'!" dir))
+    (jh/parent-dir root)))
+
+(defun spt/proj (&optional dir)
+  "Return project name."
+  (file-name-nondirectory (directory-file-name (spt/proj-root dir))))
+
+;; Database Information Reader
 (defun spt/read-entity-tabname (text)
   "Read entity table name. like `@Table(...)' "
   (let
@@ -147,7 +146,6 @@
           (setq addr (+ addr 1)))))
     fields))
 
-
 ;; -----------------------------------------------------------------------------
 ;;   ____ ___  __  __ ____   _    _   ___   __
 ;;  / ___/ _ \|  \/  |  _ \ / \  | \ | \ \ / /
@@ -177,7 +175,6 @@
 ;; |  _ <| |_| | |\  | |\  | |___|  _ <
 ;; |_| \_\\___/|_| \_|_| \_|_____|_| \_\ for Maven Springboot Test
 ;; -----------------------------------------------------------------------------
-
 (defun spt/compilation-start (command &optional dir)
   "Run compilation command."
   (let ((default-directory (or dir (spt/proj-root))))
