@@ -60,13 +60,13 @@
     (concat prefix suffix)))
 
 (defun spt/dest-file (which &optional file)
-  "TODO: "
+  "Return the destination filename."
   (let*
     ((file (or file (buffer-file-name)))
       (from (spt/files-get file))
       (to (assoc which spt/files)))
-    (or from (user-error "Ops: I cannot get any information about this file."))
-    (or to (user-error "Ops: I don't know where to go."))
+    (or from (user-error "Ops: Cannot get any information about this file."))
+    (or to (user-error "Ops: Missing place to go."))
     ;; do the find work
     (cond ((eq which 'test) (error "todo"))
       (t (spt/goto-related-topic-file file from to)))))
