@@ -10,7 +10,7 @@
 ;; - app-root
 ;;   +- module (业务模块包)
 ;;     +- controller (控制器类包)
-;;     +- domain (问题模型包)
+;;     +- domain (领域模型包)
 ;;       +- entity (实体类包)
 ;;       +- repo (仓库类包)
 ;;         +- impl (仓库实现类包)
