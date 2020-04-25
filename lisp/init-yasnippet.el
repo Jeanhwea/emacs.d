@@ -148,21 +148,10 @@
       (pred #'(lambda (x) (string= (gethash 'colname x) colname))))
     (car (remove-if-not pred cache))))
 
-;; todo: remove
-;; (defun jh/sql-tabcols ()
-;;   "Get table columns for current buffer."
-;;   (or (local-variable-p 'tabcols)
-;;     (let
-;;       ((tabname
-;;          (or (spt/read-entity-tabname (jh/current-buffer))
-;;            (completing-read "Load Table >> " (jh/sql-tabnames)))))
-;;       (set (make-local-variable 'tabcols) (jh/oracle-list-columns tabname))))
-;;   tabcols)
-
 (defun jh/java-source-colnames ()
   "Read colunm names in Java source code."
   (let ((trans #'(lambda (x) (gethash 'colname x))))
-    (mapcar trans (spt/read-column-infos (jh/current-buffer)))))
+    (mapcar trans (spt/read-fields (jh/current-buffer)))))
 
 (defun jh/java-column-names ()
   "Return all column name."

@@ -386,16 +386,6 @@
       (shell-command (format "ctags -e --languages=java -R %s" srcdir))
       (message (format "Generate TAGS at %s" srcdir)))))
 
-(defun workflow-open-class ()
-  "Open a class source file."
-  (interactive)
-  (let
-    ((project-type (wf/project-type)))
-    (cond
-      ((equal project-type 'maven) (spt/jump-to-class))
-      ((equal project-type 'angular) (ng/find-source-file))
-      (t (message "Ops, unknown project type!")))))
-
 (defun workflow-drop-file (&optional dir)
   "Drop the file content to current point according to action."
   (interactive)
