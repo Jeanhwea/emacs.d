@@ -18,7 +18,7 @@
 ;;       +- impl (服务实现类包)
 ;;
 ;; -----------------------------------------------------------------------------
-(defun spt/prj-root (&optional dir)
+(defun spt/proj-root (&optional dir)
   "Return project root dir."
   (let
     ((dir (or dir default-directory))
@@ -33,7 +33,7 @@
 (defun spt/src-root (&optional dir)
   "Return source root dir."
   (let
-    ((dir (or dir (spt/prj-root)))
+    ((dir (or dir (spt/proj-root)))
       (srcdir "src/main/java")
       (root))
     (setq root (file-name-as-directory (expand-file-name srcdir dir)))
@@ -43,7 +43,7 @@
 (defun spt/test-root (&optional dir)
   "Return test root dir."
   (let
-    ((dir (or dir (spt/prj-root)))
+    ((dir (or dir (spt/proj-root)))
       (testdir "src/test/java")
       (root))
     (setq root (file-name-as-directory (expand-file-name testdir dir)))
@@ -63,7 +63,7 @@
 
 (defun spt/project-name ()
   "Return project name."
-  (file-name-nondirectory (directory-file-name (spt/prj-root))))
+  (file-name-nondirectory (directory-file-name (spt/proj-root))))
 
 (defun spt/read-entity-tabname (text)
   "Read entity table name. like `@Table(...)' "
@@ -130,7 +130,7 @@
 
 (defun spt/compilation-start (command &optional dir)
   "Run compilation command."
-  (let ((default-directory (or dir (spt/prj-root))))
+  (let ((default-directory (or dir (spt/proj-root))))
     (compilation-start command)))
 
 (defun spt/current-test-method-name ()
