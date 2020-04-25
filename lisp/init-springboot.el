@@ -53,10 +53,10 @@
   (let*
     ((pred #'(lambda (e) (spt/files-match file (cdr e))))
       (topic (car (remove-if #'null (mapcar pred spt/files))))
+      (suffix (jh/re-replace "{}" topic (cdr to)))
       (prefix
         (jh/re-replace
-          (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file))
-      (suffix (jh/re-replace "{}" topic (cdr to))))
+          (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file)))
     (concat prefix suffix)))
 
 (defun spt/find-the-new-place (which &optional file)
