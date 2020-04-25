@@ -31,7 +31,7 @@
   "A Maven or Spring MVC related file alist, use `{}' represent TOPIC.")
 
 (defun spt/testfile (file pattern)
-  "Test if the file match pattern."
+  "Test if the file matches pattern."
   (let
     ((regexp
        (concat "^.*/"
@@ -45,21 +45,17 @@
 
 (defun spt/files-get (&optional file)
   "Get the first element that matches spt/files."
-  (let ((file (or file (buffer-file-name))))
-    (car (remove-if-not #'(lambda (e) (spt/testfile file (cdr e))) spt/files))))
+  (let
+    ((file (or file (buffer-file-name)))
+      (pred #'(lambda (e) (spt/testfile file (cdr e)))))
+    (car (remove-if-not pred spt/files))))
 
 (defun spt/topic (&optional file)
   "Get the topic of file."
   (let
     ((file (or file (buffer-file-name)))
-      (topic))
-    (dolist (pattern (mapcar #'cdr spt/files))
-      (setq regexp
-        (concat "^.*/"
-          (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern) "$"))
-      (save-match-data
-        (and (string-match regexp file) (setq topic (match-string 1 file)))))
-    topic))
+      (pred #'(lambda (e) (spt/testfile file (cdr e)))))
+    (car (remove-if #'null (mapcar pred spt/files)))))
 
 (defun spt/cons-prefix (topic file)
   "Construct the prefix of the file."
