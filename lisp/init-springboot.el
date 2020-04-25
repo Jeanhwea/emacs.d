@@ -66,7 +66,7 @@
       (dest))
     (or topic (user-error "Cannot find a topic for `%s'" file))
     (setq curr
-      (or curr (completing-read "Switch to >> " (mapcar #'car spt/structure))))
+      (or curr (completing-read "Switch to >> " spt/structure nil t)))
     (setq dest (concat (spt/cons-prefix topic file) (spt/cons-suffix topic curr)))
     (and dest (find-file dest))
     (message "Switch to `%s'" dest)))
