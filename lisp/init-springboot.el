@@ -38,10 +38,9 @@
          (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern)
          "$"))
       (topic))
-    (and file
-      (save-match-data
-        (and (string-match regexp file)
-          (setq topic (match-string 1 file)))))
+    (or file (user-error "Ops: Test file is nil."))
+    (save-match-data
+      (and (string-match regexp file) (setq topic (match-string 1 file))))
     topic))
 
 (defun spt/files-get (&optional file)
