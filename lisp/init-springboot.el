@@ -91,6 +91,30 @@
           (setq topic (match-string 1 file)))))
     topic))
 
+(defun spt/cons-prefix (topic file)
+  "Construct the prefix of the file."
+  (let ((prefix file))
+    (dolist (pattern (mapcar #'cdr spt/structure))
+      (setq prefix
+        (jh/re-replace (concat (jh/re-replace "{}" topic pattern) "$") "" prefix)))
+    prefix))
+
+(defun spt/cons-suffix (topic key)
+  "Construct a suffix for this topic."
+  (jh/re-replace "{}" topic (alist-get (intern key) spt/structure)))
+
+(defun spt/switch-to (&optional file)
+  "Switch to a new type file based on file."
+  (let
+    ((file (or file (buffer-file-name)))
+      (topic (spt/topic file))
+      (dest))
+    (or topic (user-error "Cannot find a topic for `%s'" file))
+    (setq curr (completing-read "Switch to >> " (mapcar #'car spt/structure)))
+    (setq dest (concat (spt/cons-prefix topic file) (spt/cons-suffix topic curr)))
+    (and dest (find-file dest))
+    (message "Switch to `%s'" dest)))
+
 ;; database information reader
 (defun spt/read-entity-tabname (text)
   "Read entity table name. like `@Table(...)' "
