@@ -76,7 +76,7 @@
       (and addr (setq tabname (match-string 1 text))))
     tabname))
 
-(defun spt/read-fields (text)
+(defun spt/read-entity-fields (text)
   "Read entity fields, like `@Column(...)' or `@JoinColumn(...)'. "
   (let
     ((regexp "^[ \t]*@\\(JoinColumn\\|Column\\)(name = \"\\([_A-Za-z0-9]+\\)\"")
@@ -104,7 +104,6 @@
 ;; | |__| |_| | |  | |  __/ ___ \| |\  | | |
 ;;  \____\___/|_|  |_|_| /_/   \_\_| \_| |_|
 ;; -----------------------------------------------------------------------------
-
 (defun spt/company-jpa-backend (command &optional arg &rest ignored)
   (interactive (list 'interactive))
   (cl-case command

@@ -125,7 +125,7 @@
 (defun jh/java-source-colnames ()
   "Read colunm names in Java source code."
   (let ((trans #'(lambda (x) (gethash 'colname x))))
-    (mapcar trans (spt/read-fields (jh/current-buffer)))))
+    (mapcar trans (spt/read-entity-fields (jh/current-buffer)))))
 
 (defun jh/java-column-names ()
   "Return all column name."
