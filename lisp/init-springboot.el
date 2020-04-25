@@ -18,6 +18,8 @@
 ;;       +- impl (服务实现类包)
 ;;
 ;; -----------------------------------------------------------------------------
+
+;; folder reader
 (defun spt/proj-root (&optional dir)
   "Return project root dir."
   (let
@@ -65,6 +67,31 @@
   "Return project name."
   (file-name-nondirectory (directory-file-name (spt/proj-root dir))))
 
+;; Spring MVC structure
+(defconst spt/structure
+  '((entity . "domain/entity/{}.java")
+     (repository . "domain/repo/{}Repository.java")
+     (helper . "helper/{}Helper.java")
+     (service . "service/{}Service.java")
+     (implement-service . "service/impl/{}ServiceImpl.java")
+     (controller . "controller/{}Controller.java"))
+  "A simple Spring MVC project structure, use `{}' represent TOPIC.")
+
+(defun spt/topic (&optional file)
+  "Get the topic of file."
+  (let
+    ((file (or file (buffer-file-name)))
+      (topic))
+    (dolist (pattern (mapcar #'cdr spt/structure))
+      (setq regexp
+        (concat "^.*/"
+          (jh/re-replace "{}" "\\\\([_a-zA-Z0-9]+\\\\)" pattern) "$"))
+      (save-match-data
+        (and (string-match regexp file)
+          (setq topic (match-string 1 file)))))
+    topic))
+
+;; database information reader
 (defun spt/read-entity-tabname (text)
   "Read entity table name. like `@Table(...)' "
   (let
@@ -96,6 +123,7 @@
             (add-to-list 'fields field t))
           (setq addr (+ addr 1)))))
     fields))
+
 
 ;; -----------------------------------------------------------------------------
 ;;   ____ ___  __  __ ____   _    _   ___   __
