@@ -90,7 +90,8 @@
     ((file (or file (buffer-file-name)))
       (from (spt/files-get file))
       (to (assoc where spt/files)))
-    ;; (or from (user-error "Ops: Cannot get any information about this file."))
+    (or (string-match-p ".java$" file)
+      from (user-error "Ops: Cannot get any information about this file."))
     (or to (user-error "Ops: Missing place to go."))
     ;; do the find work
     (cond
