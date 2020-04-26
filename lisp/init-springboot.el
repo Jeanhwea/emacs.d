@@ -70,18 +70,34 @@
       (jh/re-replace srcdir testdir
         (jh/re-replace ".java$" "Test.java" file)))))
 
+(defun spt/swap-implement-and-service-file (file from to)
+  "Switch implement and service file."
+  (let
+    ((dir (file-name-directory file))
+      (name (file-name-nondirectory file)))
+    (if
+      (or (eq (car from) 'implement) (eq (car from) 'worker))
+      ;; implement -> service
+      (expand-file-name
+        (jh/re-replace "Impl.java$" ".java" name) (jh/parent-dir dir))
+      ;; service -> implement
+      (expand-file-name
+        (jh/re-replace ".java$" "Impl.java" name) (expand-file-name "impl" dir)))))
+
 (defun spt/find-the-new-place (where &optional file)
   "Return the destination filename."
   (let*
     ((file (or file (buffer-file-name)))
       (from (spt/files-get file))
       (to (assoc where spt/files)))
-    (or from (user-error "Ops: Cannot get any information about this file."))
+    ;; (or from (user-error "Ops: Cannot get any information about this file."))
     (or to (user-error "Ops: Missing place to go."))
     ;; do the find work
     (cond
       ((eq where 'test)
         (spt/swap-test-and-subject-file file from to))
+      ((eq where 'implement)
+        (spt/swap-implement-and-service-file file from to))
       (t (spt/goto-related-topic-file file from to)))))
 
 (defun spt/switch-to (&optional where file)
