@@ -49,7 +49,7 @@
     (car (remove-if-not pred spt/files))))
 
 (defun spt/goto-related-topic-file (file from to)
-  "Add document string here."
+  "Goto related topic file."
   (let*
     ((pred #'(lambda (e) (spt/files-match file (cdr e))))
       (topic (car (remove-if #'null (mapcar pred spt/files))))
@@ -58,6 +58,17 @@
         (jh/re-replace
           (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file)))
     (concat prefix suffix)))
+
+(defun spt/swap-test-and-subject-file (file from to)
+  "Switch test case and test subject file."
+  (let ((srcdir "src/main/java") (testdir "src/test/java"))
+    (if (eq (car from) 'test)
+      ;; test -> subject
+      (jh/re-replace testdir srcdir
+        (jh/re-replace "Test.java$" ".java" file))
+      ;; subject -> test
+      (jh/re-replace srcdir testdir
+        (jh/re-replace ".java$" "Test.java" file)))))
 
 (defun spt/find-the-new-place (where &optional file)
   "Return the destination filename."
@@ -68,7 +79,9 @@
     (or from (user-error "Ops: Cannot get any information about this file."))
     (or to (user-error "Ops: Missing place to go."))
     ;; do the find work
-    (cond ((eq where 'test) (error "todo"))
+    (cond
+      ((eq where 'test)
+        (spt/swap-test-and-subject-file file from to))
       (t (spt/goto-related-topic-file file from to)))))
 
 (defun spt/switch-to (&optional where file)
