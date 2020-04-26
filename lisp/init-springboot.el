@@ -88,7 +88,7 @@
   "Switch to a new type file based on file."
   (let*
     ((file (or file (buffer-file-name)))
-      (where (completing-read "Switch to >> " spt/files nil t))
+      (where (completing-read "Switch to >> " spt/files nil t "^"))
       (dest (spt/find-the-new-place (intern where) file)))
     (progn
       (find-file dest)
