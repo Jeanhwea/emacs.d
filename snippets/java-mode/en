@@ -24,16 +24,16 @@ $>$>return this.symbol;
 $>}
 
 $>public static $1 of(String symbol) {
-$>$>return Arrays.asList($1.values()).stream()
+$>$>return Arrays.stream($1.values())
 $>$>$>$>.filter(element -> element.symbol().equals(symbol))
 $>$>$>$>.findFirst()
 $>$>$>$>.orElse($1.Unknown);
 $>}
 
 $>public static List<String> expect() {
-$>$>return Arrays.asList($1.values()).stream()
+$>$>return Arrays.stream($1.values())
 $>$>$>$>.filter(e -> e != $1.Unknown)
-$>$>$>$>.map(e -> e.symbol())
+$>$>$>$>.map($1::symbol)
 $>$>$>$>.collect(Collectors.toList());
 $>}
 }
