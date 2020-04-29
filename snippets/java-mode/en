@@ -13,19 +13,19 @@ public enum ${1:`(jh/java-class-name)`} {
 $>Enum1$0,
 $>${2:Unknown}("未知");
 
-$>private String value;
+$>private String symbol;
 
 $>$1(String str) {
-$>$>this.value = str;
+$>$>this.symbol = str;
 $>}
 
-$>public String getValue() {
-$>$>return this.value;
+$>public String symbol() {
+$>$>return this.symbol;
 $>}
 
 $>public static $1 of(String str) {
 $>$>return Arrays.asList($1.values()).stream()
-$>$>$>$>.filter(element -> element.getValue().equals(str))
+$>$>$>$>.filter(element -> element.symbol().equals(str))
 $>$>$>$>.findFirst()
 $>$>$>$>.orElse($1.Unknown);
 $>}
@@ -33,7 +33,7 @@ $>}
 $>public static List<String> expect() {
 $>$>return Arrays.asList($1.values()).stream()
 $>$>$>$>.filter(e -> e != $1.Unknown)
-$>$>$>$>.map(e -> e.getValue())
+$>$>$>$>.map(e -> e.symbol())
 $>$>$>$>.collect(Collectors.toList());
 $>}
 }
