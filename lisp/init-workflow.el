@@ -313,7 +313,7 @@
     (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line 1)))
 
-(defun workflow-rename-symbol-at-point ()
+(defun workflow-change-symbol-name-at-point ()
   "Do rename symbol at point"
   (interactive)
   (cond
