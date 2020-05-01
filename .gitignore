@@ -23,6 +23,9 @@
 /var/
 /.cache
 
+.lsp-session-*
+workspace
+
 
 # Created by https://www.gitignore.io/api/emacs
 

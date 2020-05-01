@@ -98,6 +98,7 @@
          color-theme-sanityinc-solarized
          color-theme-sanityinc-tomorrow
          company
+         company-lsp
          counsel
          csharp-mode
          csv-mode
@@ -120,15 +121,18 @@
          flycheck
          ggtags
          graphviz-dot-mode
+         ;; meghanada
          groovy-mode
          haskell-mode
          htmlize
          js-comint
          keyfreq
+         lsp-java
+         lsp-mode
+         lsp-ui
          lua-mode
          magit
          markdown-mode
-         ;; meghanada
          multiple-cursors
          nyan-mode
          org-bullets

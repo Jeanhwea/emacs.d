@@ -34,6 +34,10 @@
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)))
 
+(when
+  (and (require 'lsp-mode) (require 'company-lsp) (require 'lsp-ui) (require 'lsp-java))
+  (add-hook 'java-mode-hook 'lsp))
+
 (defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
 (defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")
 ;; (defconst jh/gjf-file "google-java-format-1.7-120-all-deps.jar")
