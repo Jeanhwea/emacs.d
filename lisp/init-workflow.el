@@ -313,12 +313,18 @@
     (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line 1)))
 
+(defun workflow-goto-implementation ()
+  "Goto to implemention."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-goto-implementation))
+    (t (user-error "Ops, no implementation found."))))
+
 (defun workflow-change-symbol-name-at-point ()
   "Do rename symbol at point"
   (interactive)
   (cond
-    ((eq major-mode 'java-mode)
-      (call-interactively #'lsp-rename))
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-rename))
     (t (user-error "Ops, can not rename symbol here."))))
 
 (defun workflow-execute-code-action ()
