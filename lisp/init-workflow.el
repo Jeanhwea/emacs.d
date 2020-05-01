@@ -69,7 +69,9 @@
 (defun workflow-jump-to-relative-file ()
   "Jump to relative files."
   (interactive)
-  (spt/switch-to))
+  (cond
+    ((eq major-mode 'java-mode) (spt/switch-to))
+    (t (user-error "Ops: unknown jump to relative file."))))
 
 (defun workflow-bookmark-open-file ()
   "Open file that bookmarked."
@@ -182,7 +184,7 @@
         (and sym (member sym-regexp (mapcar #'car hi-lock-interactive-patterns)))))
     (if sym
       (if lookup (unhighlight-regexp sym-regexp) (highlight-symbol-at-point))
-      (message "Ops: No sysmbol to highlight at point!"))))
+      (user-error "Ops: No sysmbol to highlight at point!"))))
 
 (defun workflow-wipeout-all-highlights ()
   "Unhighlight all symbols"
@@ -301,7 +303,7 @@
     ((member major-mode
        '(emacs-lisp-mode less-css-mode mhtml-mode nxml-mode sh-mode ymal-mode))
       (jh/indent-current-buffer))
-    (t (message "Ops, no format backend!"))))
+    (t (user-error "Ops, no format backend!"))))
 
 (defun workflow-comment-source-code ()
   "Comment the source code"
@@ -310,6 +312,22 @@
     (use-region-p)
     (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line 1)))
+
+(defun workflow-rename-symbol-at-point ()
+  "Do rename symbol at point"
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode)
+      (call-interactively #'lsp-rename))
+    (t (user-error "Ops, can not rename symbol here."))))
+
+(defun workflow-execute-code-action ()
+  "Execute action for code writing."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode)
+      (call-interactively #'lsp-execute-code-action))
+    (t (user-error "Ops, unknown code action type."))))
 
 ;; Part 2-4: Code Navigation
 (defun workflow-goto-definition ()
@@ -344,7 +362,7 @@
   (cond
     ((jh/linux?) (jh/tilix-cd))
     ((jh/mac?) (jh/iterm2-cd))
-    (t (message "Unsupport term cd on this OS!"))))
+    (t (user-error "Unsupport term cd on this OS!"))))
 
 ;; Global common used commands
 (defun workflow-inflect-string ()

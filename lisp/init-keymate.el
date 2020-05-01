@@ -86,6 +86,7 @@
   ;; Source code related
   (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
+  (define-key leader/f12 (kbd "<tab>") #'workflow-execute-code-action)
   ;; Codes Navigation
   (define-key leader/f12 (kbd ";") #'workflow-goto-definition)
   ;; Unit Test & Starter
