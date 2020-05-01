@@ -313,12 +313,12 @@
     (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line 1)))
 
-(defun workflow-goto-implementation ()
-  "Goto to implemention."
+(defun workflow-execute-code-action ()
+  "Execute action for code writing."
   (interactive)
   (cond
-    ((eq major-mode 'java-mode) (call-interactively #'lsp-goto-implementation))
-    (t (user-error "Ops, no implementation found."))))
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-execute-code-action))
+    (t (user-error "Ops, unknown code action type."))))
 
 (defun workflow-change-symbol-name-at-point ()
   "Do rename symbol at point"
@@ -327,19 +327,96 @@
     ((eq major-mode 'java-mode) (call-interactively #'lsp-rename))
     (t (user-error "Ops, can not rename symbol here."))))
 
-(defun workflow-execute-code-action ()
-  "Execute action for code writing."
+(defun workflow-describe-things-at-point ()
+  "Display help for the thing at point."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-describe-thing-at-point))
+    (t (user-error "Ops, unknown describe things."))))
+
+(defun workflow-organize-imports ()
+  "Organize imports."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-organize-imports))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-generate-overrides ()
+  "Generate Override methods."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-java-generate-overrides))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-generate-getter-and-setter ()
+  "Generate Getter and Setter."
   (interactive)
   (cond
     ((eq major-mode 'java-mode)
-      (call-interactively #'lsp-execute-code-action))
-    (t (user-error "Ops, unknown code action type."))))
+      (call-interactively #'lsp-java-generate-getters-and-setters))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-extract-to-constant ()
+  "Extract constant refactoring."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-java-extract-to-constant))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-add-unimplemented-methods ()
+  "Extract constant refactoring"
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-java-add-unimplemented-methods))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-create-parameter ()
+  "Create parameter refactoring"
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-java-create-parameter))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-create-field ()
+  "Create field refactoring"
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-java-create-field))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-create-local ()
+  "Create local refactoring"
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-java-create-local))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-extract-method ()
+  "Extract method refactoring"
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-java-extract-method))
+    (t (user-error "Ops, unknown command action."))))
+
+(defun workflow-add-import ()
+  "Add missing import"
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-java-add-import))
+    (t (user-error "Ops, unknown command action."))))
 
 ;; Part 2-4: Code Navigation
 (defun workflow-goto-definition ()
   "Goto definition of current symbol."
   (interactive)
   (evil-jump-to-tag))
+
+(defun workflow-goto-implementation ()
+  "Goto to implemention."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-goto-implementation))
+    (t (user-error "Ops, no implementation found."))))
 
 ;; Part 2-5: Test
 (defun workflow-post-http-request ()

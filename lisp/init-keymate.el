@@ -83,14 +83,14 @@
   (define-key leader/f12 (kbd "R") #'workflow-replace-projectile)
   (define-key leader/f12 (kbd "x") #'workflow-regexp-replace)
   (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
-  ;; Source code related
+  ;; Source code related, refactoring
   (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
-  (define-key leader/f12 (kbd "i") #'workflow-goto-implementation)
-  (define-key leader/f12 (kbd "c") #'workflow-change-symbol-name-at-point)
   (define-key leader/f12 (kbd "<tab>") #'workflow-execute-code-action)
+  (define-key leader/f12 (kbd "c") #'workflow-change-symbol-name-at-point)
   ;; Codes Navigation
   (define-key leader/f12 (kbd ";") #'workflow-goto-definition)
+  (define-key leader/f12 (kbd "i") #'workflow-goto-implementation)
   ;; Unit Test & Starter
   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
   ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
