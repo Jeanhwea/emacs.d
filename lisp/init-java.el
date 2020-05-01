@@ -38,7 +38,11 @@
   (and (require 'lsp-mode) (require 'company-lsp)
     ;; (require 'lsp-ui)
     (require 'lsp-java))
-  (setq lsp-ui-doc-enable nil)
+  (setq
+    lsp-ui-doc-enable nil
+    lsp-java-completion-import-order
+      ["org.springframework" "com.avic" "java" "javax" "com" "org"])
+
   (add-hook 'java-mode-hook 'lsp))
 
 (defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
