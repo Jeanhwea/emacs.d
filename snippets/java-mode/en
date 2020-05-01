@@ -13,7 +13,7 @@ public enum ${1:`(jh/java-class-name)`} {
 $>Enum1$0,
 $>${2:Unknown}("未知");
 
-$>private String symbol;
+$>private final String symbol;
 
 $>$1(String symbol) {
 $>$>this.symbol = symbol;
