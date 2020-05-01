@@ -37,7 +37,7 @@ $>$>return this.$4.create$2(params);
 $>}
 
 $>@GetMapping("/{${6:${2:$(concat (jh/camelcase yas-text) "Id")}}}")
-$>public $2 get$2(@RequestHeader HttpHeaders headers, @PathVariable long $6) {
+$>public $2 get$2(@RequestHeader HttpHeaders headers, @PathVariable long $6, @RequestParam Map<String, Object> params) {
 $>$>return this.$4.findById($6);
 $>}
 
@@ -48,7 +48,7 @@ $>}
 
 $>@ResponseStatus(HttpStatus.NO_CONTENT)
 $>@DeleteMapping("/{$6}")
-$>public void delete$2(@RequestHeader HttpHeaders headers, @PathVariable long $6) {
+$>public void delete$2(@RequestHeader HttpHeaders headers, @PathVariable long $6, @RequestParam Map<String, Object> params) {
 $>$>this.$4.delete$2($6);
 $>}$0
 }
