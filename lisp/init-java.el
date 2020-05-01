@@ -39,9 +39,9 @@
     ;; (require 'lsp-ui)
     (require 'lsp-java))
   (setq
+    lsp-ui-sideline-show-code-actions nil
     lsp-ui-doc-enable nil
-    lsp-java-completion-import-order
-      ["org.springframework" "com.avic" "java" "javax" "com" "org"])
+    lsp-java-completion-import-order ["org.springframework" "com.avic" "java" "javax" "com" "org"])
 
   (add-hook 'java-mode-hook 'lsp))
 
