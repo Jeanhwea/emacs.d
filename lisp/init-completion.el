@@ -27,7 +27,7 @@
   (ivy-mode 1)
   (setq
     ivy-use-virtual-buffers t
-    ivy-height (min (- (window-height) 5) 30)
+    ivy-height (min (- (window-height) 5) 40)
     enable-recursive-minibuffers t)
 
   (global-set-key (kbd "C-s") 'swiper)
