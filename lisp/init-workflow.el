@@ -320,7 +320,7 @@
     ((eq major-mode 'java-mode) (call-interactively #'lsp-execute-code-action))
     (t (user-error "Ops, unknown code action type."))))
 
-(defun workflow-change-symbol-name-at-point ()
+(defun workflow-rename-symbol-here ()
   "Do rename symbol at point"
   (interactive)
   (cond
