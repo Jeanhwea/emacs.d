@@ -7,6 +7,7 @@
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
 (global-set-key (kbd "M-r") 'workflow-recentf-open-file)
 (global-set-key (kbd "M-;") 'workflow-goto-definition)
+(global-set-key (kbd "M-0") 'ace-jump-mode)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: UI & Basic Operations
