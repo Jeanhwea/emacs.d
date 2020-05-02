@@ -95,6 +95,7 @@
          ag
          auctex
          browse-at-remote
+         browse-kill-ring
          color-theme-sanityinc-solarized
          color-theme-sanityinc-tomorrow
          company

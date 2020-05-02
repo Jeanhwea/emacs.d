@@ -291,6 +291,11 @@
   (interactive)
   (projectile-replace-regexp))
 
+(defun workflow-browse-kill-ring ()
+  "Browse the king ring."
+  (interactive)
+  (call-interactively #'browse-kill-ring))
+
 ;; Part 2-3: Source code realted: Formatting, Comment
 (defun workflow-format-current-source ()
   "Format codes."

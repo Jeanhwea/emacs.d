@@ -83,6 +83,7 @@
   (define-key leader/f12 (kbd "R") #'workflow-replace-projectile)
   (define-key leader/f12 (kbd "x") #'workflow-regexp-replace)
   (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
+  (define-key leader/f12 (kbd "b") #'workflow-browse-kill-ring)
   ;; Source code related, refactoring
   (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
