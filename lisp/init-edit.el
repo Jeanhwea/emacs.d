@@ -77,6 +77,7 @@
 (when (require 'flyspell)
   (setq
     ;; ispell-personal-dictionary "C:/path/to/your/.ispell"
+    ;; hunspell, aspell
     ispell-program-name "aspell"))
 
 ;; -----------------------------------------------------------------------------
