@@ -1,9 +1,9 @@
 (when (require 'yasnippet)
   (setq
-    yas-snippet-dirs '("~/.emacs.d/snippets")
+    yas-snippet-dirs
+    `(,(expand-file-name "snippets" user-emacs-directory))
     ;; yas-visit-from-menu t
     yas-indent-line 'auto)
-
   (yas-global-mode 1))
 
 ;; -----------------------------------------------------------------------------
@@ -13,7 +13,6 @@
 ;; | |_| | (_| |\ V / (_| |
 ;;  \___/ \__,_| \_/ \__,_|
 ;; -----------------------------------------------------------------------------
-
 (defun jh/java-package-name (&optional file)
   "Return the package name for a java file."
   (let*
