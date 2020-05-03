@@ -47,6 +47,7 @@
 (defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
 (defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")
 ;; (defconst jh/gjf-file "google-java-format-1.7-120-all-deps.jar")
+
 (defun jh/format-java-source (&optional file)
   "Format java source code."
   (let
@@ -58,7 +59,8 @@
       (shell-command (format "java -jar %s --replace %s" jarfile file))
       ;; reload buffer
       (revert-buffer nil t)
-      (message (format "Done format file: %s" file)))))
+      ;; leave a messge
+      (message (format "Formatted %s" file)))))
 
 ;; -----------------------------------------------------------------------------
 ;; meghanada
