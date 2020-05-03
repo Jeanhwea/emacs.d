@@ -120,9 +120,9 @@
          figlet
          fill-column-indicator
          flycheck
+         flyspell-correct
          ggtags
          graphviz-dot-mode
-         ;; meghanada
          groovy-mode
          haskell-mode
          htmlize
