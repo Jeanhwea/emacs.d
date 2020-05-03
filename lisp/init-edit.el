@@ -2,7 +2,7 @@
 (defmacro save-column (&rest BODY)
   `(let ((column (current-column)))
      (unwind-protect
-         (progn ,@BODY)
+       (progn ,@BODY)
        (move-to-column column))))
 (put 'save-column 'lisp-indent-function 0)
 
@@ -73,6 +73,11 @@
 ;; string-inflection
 ;; -----------------------------------------------------------------------------
 (require 'string-inflection)
+
+(when (require 'flyspell)
+  (setq
+    ;; ispell-personal-dictionary "C:/path/to/your/.ispell"
+    ispell-program-name "aspell"))
 
 ;; -----------------------------------------------------------------------------
 ;; hungry-delete
