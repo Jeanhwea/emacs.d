@@ -22,7 +22,7 @@
 /url/
 /var/
 /.cache
-
+/lsp-cache
 .lsp-session-*
 workspace
 
