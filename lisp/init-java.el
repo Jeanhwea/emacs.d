@@ -38,6 +38,7 @@
 (when
   (and (require 'lsp-mode) (require 'company-lsp) (require 'lsp-ui) (require 'lsp-java))
   (setq
+    lsp-server-install-dir (expand-file-name "lsp-cache" user-emacs-directory)
     lsp-ui-sideline-show-code-actions nil
     lsp-ui-doc-enable nil
     lsp-java-completion-import-order
