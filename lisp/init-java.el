@@ -35,13 +35,12 @@
       (rainbow-delimiters-mode 1)))
 
 (when
-  (and (require 'lsp-mode) (require 'company-lsp)
-    ;; (require 'lsp-ui)
-    (require 'lsp-java))
+  (and (require 'lsp-mode) (require 'company-lsp) (require 'lsp-ui) (require 'lsp-java))
   (setq
     lsp-ui-sideline-show-code-actions nil
     lsp-ui-doc-enable nil
-    lsp-java-completion-import-order ["org.springframework" "com.avic" "java" "javax" "com" "org"])
+    lsp-java-completion-import-order
+    ["com.avic" "org.springframework" "java" "javax" "com" "org"])
 
   (add-hook 'java-mode-hook 'lsp))
 
@@ -86,8 +85,5 @@
 ;;     (setq
 ;;       meghanada-java-path "java"
 ;;       meghanada-maven-path "mvn")))
-
-;; (when (require 'lsp-java)
-;;   (add-hook 'java-mode-hook #'lsp))
 
 (provide 'init-java)
