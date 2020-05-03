@@ -416,6 +416,13 @@
   (interactive)
   (evil-jump-to-tag))
 
+(defun workflow-find-references ()
+  "Find references."
+  (interactive)
+  (cond
+    ((eq major-mode 'java-mode) (call-interactively #'lsp-find-references))
+    (t (user-error "Ops, no reference found."))))
+
 (defun workflow-goto-implementation ()
   "Goto to implemention."
   (interactive)
