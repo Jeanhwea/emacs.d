@@ -2,4 +2,4 @@
 # name: List
 # key: list
 # --
-List<String> ${1:name}${2: = new ArrayList<>();}$0
+List<${1:String}> $0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: LinkedList
+# key: llist
+# --
+List<String> ${0:name} = new LinkedList<>();

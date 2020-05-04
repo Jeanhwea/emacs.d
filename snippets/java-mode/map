@@ -2,4 +2,4 @@
 # name: Map
 # key: map
 # --
-Map<String, Object> ${1:name}${2: = new HashMap<>();}$0
+Map<${1:String}, ${2:Object}> $0
