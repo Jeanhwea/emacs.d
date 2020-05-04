@@ -31,6 +31,7 @@
              ;; ("forEach" . 8704)         ; ∀
              ;; ----------------------------------------------------------------
              )))
+      (company-fuzzy-mode 1)
       (flyspell-mode 1)
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)))

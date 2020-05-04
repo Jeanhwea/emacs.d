@@ -99,6 +99,7 @@
          color-theme-sanityinc-solarized
          color-theme-sanityinc-tomorrow
          company
+         company-fuzzy
          company-lsp
          counsel
          csharp-mode
