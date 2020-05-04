@@ -23,6 +23,7 @@
              ;; ----------------------------------------------------------------
              )))
       (hl-line-mode 1)
+      (company-fuzzy-mode 1)
       (rainbow-delimiters-mode)))
 
 (provide 'init-lisp)
