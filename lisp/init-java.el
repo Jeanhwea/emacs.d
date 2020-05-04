@@ -36,7 +36,7 @@
       (rainbow-delimiters-mode 1)))
 
 (when
-  (and (require 'lsp-mode) (require 'company-lsp) (require 'lsp-ui) (require 'lsp-java))
+  (and (require 'lsp-mode) (require 'lsp-ui) (require 'lsp-java))
   (setq
     lsp-server-install-dir (expand-file-name "lsp-cache" user-emacs-directory)
     lsp-java-server-install-dir (expand-file-name "jdtls" lsp-server-install-dir)
