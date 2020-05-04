@@ -179,6 +179,7 @@
   (defvar jh/themes
     (list
       'sanityinc-solarized-dark
+      'zenburn
       'sanityinc-solarized-light
       'sanityinc-tomorrow-bright
       'sanityinc-tomorrow-day

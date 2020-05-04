@@ -134,6 +134,7 @@
          lua-mode
          magit
          markdown-mode
+         monokai
          multiple-cursors
          nyan-mode
          org-bullets
@@ -146,6 +147,7 @@
          restclient
          sicp
          smex
+         spacemacs-theme
          sql-indent
          sqlformat
          string-inflection
@@ -154,6 +156,7 @@
          verb
          web-mode
          yaml-mode
+         zenburn-theme
          yasnippet
          ;; --------------------------------------------------------------------
          ))))
