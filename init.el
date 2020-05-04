@@ -134,7 +134,7 @@
          lua-mode
          magit
          markdown-mode
-         monokai
+         monokai-theme
          multiple-cursors
          nyan-mode
          org-bullets
