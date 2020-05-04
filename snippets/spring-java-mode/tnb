@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: throw new BadRequestException(...);
+# key: tnb
+# --
+throw new BadRequestException($0);
