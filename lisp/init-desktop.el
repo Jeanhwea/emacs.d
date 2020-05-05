@@ -196,9 +196,8 @@
       (if next-theme
         (load-theme next-theme t) (load-theme (car jh/themes) t))))
   ;; default theme
-  ;; (load-theme 'sanityinc-solarized-light t)
   ;; (load-theme 'zenburn t)
-  (load-theme 'sanityinc-tomorrow-bright t))
+  (load-theme 'sanityinc-solarized-light t))
 
 ;; -----------------------------------------------------------------------------
 ;; transparency
