@@ -155,7 +155,7 @@
     (and column (gethash 'isuniq column)
       (add-to-list 'args "unique = true"))
     (and column (string= "String" (jh/java-type (gethash 'coltype column)))
-      (add-to-list 'args (format "length = %d" (nth 2 column))))
+      (add-to-list 'args (format "length = %d" (gethash 'collen column))))
     (and column (string= "CLOB" (gethash 'coltype column))
       (add-to-list 'args "columnDefinition = \"CLOB\""))
     (and column (string= "BLOB" (gethash 'coltype column))
