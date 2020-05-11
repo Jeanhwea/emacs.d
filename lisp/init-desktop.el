@@ -26,27 +26,27 @@
 ;; auto delete trailing whitespace before saving
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-(when (require 'dashboard)
-  (dashboard-setup-startup-hook)
-  (setq
-    show-week-agenda-p t
-    dashboard-banner-logo-title
-    (format
-      "%s@%s: Keep thinking while not in coding!"
-      (user-login-name) (system-name))
-    dashboard-startup-banner
-    (concat user-emacs-directory "dashboard-banner.png")
-    dashboard-items
-    '((bookmarks . 5)
-       (recents  . 10)
-       (agenda . 5)
-       (projects . 5)))
-  (defun jh/switch-to-dashboard ()
-    "Load dashboard at this frame."
-    (interactive)
-    (switch-to-buffer "*dashboard*")
-    (dashboard-refresh-buffer))
-  (global-set-key (kbd "C-c d") 'jh/switch-to-dashboard))
+;; (when (require 'dashboard)
+;;   (dashboard-setup-startup-hook)
+;;   (setq
+;;     show-week-agenda-p t
+;;     dashboard-banner-logo-title
+;;     (format
+;;       "%s@%s: Keep thinking while not in coding!"
+;;       (user-login-name) (system-name))
+;;     dashboard-startup-banner
+;;     (concat user-emacs-directory "dashboard-banner.png")
+;;     dashboard-items
+;;     '((bookmarks . 5)
+;;        (recents  . 10)
+;;        (agenda . 5)
+;;        (projects . 5)))
+;;   (defun jh/switch-to-dashboard ()
+;;     "Load dashboard at this frame."
+;;     (interactive)
+;;     (switch-to-buffer "*dashboard*")
+;;     (dashboard-refresh-buffer))
+;;   (global-set-key (kbd "C-c d") 'jh/switch-to-dashboard))
 
 (when (require 'ace-jump-mode)
   (autoload 'ace-jump-mode "ace-jump-mode" "Emacs quick move minor mode" t))
