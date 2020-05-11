@@ -150,16 +150,17 @@
   (let
     ((column (jh/sql-lookup-columns colname))
       (args))
-    (and column (gethash 'isnul column)
-      (add-to-list 'args "nullable = false"))
-    (and column (gethash 'isuniq column)
-      (add-to-list 'args "unique = true"))
-    (and column (string= "String" (jh/java-type (gethash 'coltype column)))
-      (add-to-list 'args (format "length = %d" (gethash 'collen column))))
-    (and column (string= "CLOB" (gethash 'coltype column))
-      (add-to-list 'args "columnDefinition = \"CLOB\""))
-    (and column (string= "BLOB" (gethash 'coltype column))
-      (add-to-list 'args "columnDefinition = \"BLOB\""))
+    (when column
+      (and (gethash 'isnul column)
+        (add-to-list 'args "nullable = false"))
+      (and  (gethash 'isuniq column)
+        (add-to-list 'args "unique = true"))
+      (and  (string= "String" (jh/java-type (gethash 'coltype column)))
+        (add-to-list 'args (format "length = %d" (gethash 'collen column))))
+      (and  (string= "CLOB" (gethash 'coltype column))
+        (add-to-list 'args "columnDefinition = \"CLOB\""))
+      (and  (string= "BLOB" (gethash 'coltype column))
+        (add-to-list 'args "columnDefinition = \"BLOB\"")))
     ;; return args
     (and args (concat ", " (mapconcat #'identity args ", ")))))
 
