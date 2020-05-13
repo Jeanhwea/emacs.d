@@ -272,7 +272,7 @@
 (defun workflow-replace-projectile ()
   "Repace in this project."
   (interactive)
-  (projectile-replace))
+  (call-interactively #'projectile-replace))
 
 (defun workflow-regexp-replace ()
   "Better workflow for regexp query replace."
@@ -289,7 +289,7 @@
 (defun workflow-regexp-replace-projectile ()
   "Regexp replace in this project."
   (interactive)
-  (projectile-replace-regexp))
+  (call-interactively #'projectile-replace-regexp))
 
 (defun workflow-browse-kill-ring ()
   "Browse the king ring."
