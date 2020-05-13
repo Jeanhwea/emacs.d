@@ -7,7 +7,7 @@
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
 (global-set-key (kbd "M-r") 'workflow-recentf-open-file)
 (global-set-key (kbd "M-;") 'workflow-goto-definition)
-(global-set-key (kbd "M-<return>") 'ace-jump-mode)
+;; (global-set-key (kbd "M-<return>") 'ace-jump-mode)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: UI & Basic Operations
@@ -100,6 +100,7 @@
   ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
   (define-key leader/f12 (kbd "P") #'workflow-post-http-request)
   ;; Misc
+  (define-key leader/f12 (kbd "j") 'ace-jump-mode)
   (define-key leader/f12 (kbd "C") #'workflow-codetta-expand-command)
   (define-key leader/f12 (kbd "e") #'workflow-eshell-open-from-here)
   (define-key leader/f12 (kbd "w") #'workflow-working-directory-send))
