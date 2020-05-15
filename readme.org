@@ -4,9 +4,6 @@
 #+DATE: 2018-10-22
 #+TAGS: emacs configuration elisp
 
-** Screenshot
-   [[file:screenshot.png]]
-
 ** Packages
 *** Built-in
     - eshell: unix style shell
