@@ -474,6 +474,21 @@
       (delete-region pt1 pt2)
       (insert (url-encode-url str)))))
 
+(defun workflow-decode-string-at-point ()
+  "Decode the string at point."
+  (interactive)
+  (let ((pt1) (pt2))
+    (if (use-region-p)
+      (and (setq pt1 (region-beginning))
+        (setq pt2 (region-end)))
+      (and (setq pt1 (beginning-of-thing 'symbol))
+        (setq pt2 (end-of-thing 'symbol))))
+    (progn
+      (setq str (buffer-substring-no-properties pt1 pt2))
+      (message "Decoding \"%s\"" str)
+      (delete-region pt1 pt2)
+      (insert (decode-coding-string (url-unhex-string str) 'utf-8)))))
+
 ;; Global common used commands
 (defun workflow-inflect-string ()
   "Inflect string or word cases."
