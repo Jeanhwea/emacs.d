@@ -101,7 +101,9 @@
 ;; -----------------------------------------------------------------------------
 ;; evil-mode
 ;; -----------------------------------------------------------------------------
-(when (require 'evil)
-  (evil-mode 1))
+(when (and (require 'evil) (require 'evil-leader))
+  (evil-mode 1)
+  (global-evil-leader-mode)
+  (evil-leader/set-leader ","))
 
 (provide 'init-edit)

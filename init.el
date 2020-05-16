@@ -115,6 +115,7 @@
          emmet-mode
          engine-mode
          evil
+         evil-leader
          exec-path-from-shell
          expand-region
          figlet
