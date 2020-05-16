@@ -66,7 +66,6 @@
   ;; (define-key leader/f11 (kbd "l") #'toggle-read-only)
   ;; Ace jump
   (define-key leader/f11 (kbd "[") #'ace-jump-mode))
-(global-set-key (kbd ",") 'leader/f11)
 (global-set-key (kbd "<f11>") 'leader/f11)
 (global-set-key (kbd "M-[") 'leader/f11)
 
