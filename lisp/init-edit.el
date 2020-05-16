@@ -104,6 +104,8 @@
 (when (and (require 'evil) (require 'evil-leader))
   (evil-mode 1)
   (global-evil-leader-mode)
-  (evil-leader/set-leader ","))
+  (evil-leader/set-leader ",")
+  ;; (evil-leader/set-key "sb" 'workflow-switch-to-buffer)
+  )
 
 (provide 'init-edit)
