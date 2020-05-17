@@ -489,6 +489,11 @@
       (delete-region pt1 pt2)
       (insert (decode-coding-string (url-unhex-string str) 'utf-8)))))
 
+(defun workflow-server-start ()
+  "Running a emacs server"
+  (interactive)
+  (unless (server-running-p) (server-start)))
+
 ;; Global common used commands
 (defun workflow-inflect-string ()
   "Inflect string or word cases."
