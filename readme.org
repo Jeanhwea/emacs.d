@@ -138,7 +138,6 @@
 
 ** TODOs
    1. add *clipit*, intergrate with clipboard
-
 ** Link
    1. [[https://mirrors.tuna.tsinghua.edu.cn/gnu/emacs/windows/][emacs-windows-download tuna tsinghua]]
    2. [[http://mirrors.ustc.edu.cn/gnu/emacs/windows/][emacs-windows-download ustc]]
