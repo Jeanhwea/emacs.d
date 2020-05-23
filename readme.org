@@ -45,7 +45,6 @@
    #+END_SRC
 
 ** Symbol
-
 *** Chinese Tones
     #+BEGIN_SRC text
       ā ē ī ō ū á é í ó ú ě à è ì ò ù
@@ -115,7 +114,6 @@
     #+END_SRC
 
 ** Colors
-
 *** Natural Colors
 
     #+BEGIN_SRC css
@@ -137,6 +135,9 @@
      #+BEGIN_SRC css
        #7fc97f #beaed4 #fdc086 #ffff99 #386cb0 #f0027f #bf5b17 #666666
      #+END_SRC
+
+** TODOs
+   1. add *clipit*, intergrate with clipboard
 
 ** Link
    1. [[https://mirrors.tuna.tsinghua.edu.cn/gnu/emacs/windows/][emacs-windows-download tuna tsinghua]]
