@@ -46,10 +46,15 @@
           (message (format "idea open %s:%d" file line))))
       (t (browse-url (buffer-file-name))))))
 
-(defun workflow-recentf-open-file ()
+(defun workflow-buffer-or-recentf-open ()
+  "Open buffer or recently opened files."
+  (interactive)
+  (call-interactively #'counsel-buffer-or-recentf))
+
+(defun workflow-recentf-open ()
   "Open recently opened files."
   (interactive)
-  (counsel-recentf))
+  (call-interactively #'counsel-recentf))
 
 (defun workflow-fuzzy-open-file ()
   "Open file in this project, fuzzy find way."

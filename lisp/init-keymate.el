@@ -5,7 +5,7 @@
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
-(global-set-key (kbd "M-r") 'workflow-recentf-open-file)
+(global-set-key (kbd "M-r") 'workflow-buffer-or-recentf-open)
 (global-set-key (kbd "M-;") 'workflow-goto-definition)
 ;; (global-set-key (kbd "M-<return>") 'ace-jump-mode)
 
@@ -25,7 +25,7 @@
   ;; File access
   (define-key leader/f11 (kbd "m") #'workflow-open-in-file-manager)
   (define-key leader/f11 (kbd "i") #'workflow-inspect-file)
-  (define-key leader/f11 (kbd "r") #'workflow-recentf-open-file)
+  (define-key leader/f11 (kbd "r") #'workflow-recentf-open)
   (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
   (define-key leader/f11 (kbd "g") #'workflow-git-open-file)
   (define-key leader/f11 (kbd ".") #'workflow-dot-open-file)
