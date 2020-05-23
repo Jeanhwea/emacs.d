@@ -117,8 +117,8 @@
   "Create a temporary buffer."
   (interactive)
   (let
-    ((suffix (format-time-string "%Y%m%d%H%M%S")))
-    (switch-to-buffer (concat "scratch+" suffix))))
+    ((suffix (format-time-string "%Y-%m-%d %H:%M:%S")))
+    (switch-to-buffer (format "*empty %s*" suffix))))
 
 (defun workflow-save-all-buffers ()
   "Save buffers."
