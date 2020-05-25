@@ -48,7 +48,7 @@ $>}
 
 $>@ResponseStatus(HttpStatus.NO_CONTENT)
 $>@DeleteMapping("/{$6}")
-$>public void delete$2(@RequestHeader HttpHeaders headers, @PathVariable long $6, @RequestParam Map<String, Object> params) {
+$>public void delete$2(@RequestHeader HttpHeaders headers, @PathVariable long $6, @RequestBody Map<String, Object> params) {
 $>$>this.$4.delete$2($6);
 $>}$0
 }
