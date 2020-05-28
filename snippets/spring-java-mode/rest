@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${1:$(jh/java-ctrl-http-prefix yas-text)}")
 public class ${1:`(jh/java-class-name)`} {
 
-$>public static final Logger logger = LoggerFactory.getLogger($1.class);
+$>private static final Logger logger = LoggerFactory.getLogger($1.class);
 
 $>private final ${3:${2:$(concat yas-text "Service")}} ${4:${3:$(jh/camelcase yas-text)}};
 

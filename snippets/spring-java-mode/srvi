@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ${1:`(jh/java-class-name)`} implements ${1:$(jh/java-impl-to-iface yas-text)} {
 
-$>public static final Logger logger = LoggerFactory.getLogger($1.class);
+$>private static final Logger logger = LoggerFactory.getLogger($1.class);
 
 $>// private final ${2:${1:$(concat (jh/java-coerce-to-entity yas-text) "Repository")}} ${3:${2:$(jh/camelcase yas-text)}};
 
