@@ -129,6 +129,7 @@
          htmlize
          js-comint
          keyfreq
+         leetcode
          lsp-java
          lsp-mode
          lsp-ui
