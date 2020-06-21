@@ -189,7 +189,7 @@
             (puthash 'colname str2 field)
             (puthash 'addr addr field)
             (add-to-list 'fields field t))
-          (setq addr (+ addr 1)))))
+          (setq addr (1+ addr)))))
     fields))
 
 ;; -----------------------------------------------------------------------------

@@ -368,7 +368,7 @@
           (gethash 'count query-pagination-params)))
       (idx
         (and pagination
-          (+ (* (- pn 1) jh/database-pagesize) index)))
+          (+ (* (1- pn) jh/database-pagesize) index)))
       (res
         (if pagination
           (format "- ### Row %d of %d in Page %d ###" idx cnt pn)
@@ -378,7 +378,7 @@
       (setq res
         (jh/concat-lines res
           (jh/oracle-yamlfy-result-cell cell (nth j colinfos))))
-      (setq j (+ j 1)))
+      (setq j (1+ j)))
     res))
 
 (defun jh/oracle-yamlfy-resultset (rows colinfos)
@@ -390,7 +390,7 @@
         (jh/concat-lines
           (if (eq i 1) res (concat res "\n"))
           (jh/oracle-yamlfy-result-row i row colinfos)))
-      (setq i (+ i 1)))
+      (setq i (1+ i)))
     res))
 
 (defun jh/oracle-update-yaml-resultset (rows tabname colinfos)
@@ -457,7 +457,7 @@
       (setq res
         (concat (if (eq j 0) res (concat res separator))
           (jh/oracle-csvfy-result-cell cell (nth j colinfos))))
-      (setq j (+ j 1)))
+      (setq j (1+ j)))
     res))
 
 (defun jh/oracle-csvfy-resultset (rows colinfos &optional separator)
@@ -535,7 +535,7 @@
           (puthash 'page-number total query-pagination-params))
         ((equal 'next action)
           (and (< pn total)
-            (puthash 'page-number (+ pn 1) query-pagination-params)))
+            (puthash 'page-number (1+ pn) query-pagination-params)))
         ((equal 'prev action)
           (and (> pn 1)
             (puthash 'page-number (- pn 1) query-pagination-params)))
