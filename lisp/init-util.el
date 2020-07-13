@@ -221,6 +221,7 @@
       (root (directory-file-name (or (jh/git-root dir) dir)))
       (parent (regexp-quote (jh/parent-dir root))))
     (jh/re-replace parent "" root nil 'literal)))
+
 ;; -----------------------------------------------------------------------------
 ;; setup timer
 ;; -----------------------------------------------------------------------------
@@ -237,5 +238,16 @@
 (defun jh/sent-to-clipboard (text)
   "Sent text to clipboard."
   (kill-new text))
+
+;; -----------------------------------------------------------------------------
+;; some random function
+;; -----------------------------------------------------------------------------
+(defvar jh/alphabet "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+  "Random alphabet list.")
+
+(defvar jh/alphabet-length (length jh/alphabet)
+  "Length of alphabet list.")
+
+(substring jh/alphabet 0 1)
 
 (provide 'init-util)
