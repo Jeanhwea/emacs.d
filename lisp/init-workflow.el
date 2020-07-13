@@ -172,11 +172,11 @@
   (interactive)
   (if (local-variable-p 'hs-cycle-level)
     (progn
-      (setq hs-cycle-level (% (+ hs-cycle-level 1) 5))
-      (hs-hide-level (+ hs-cycle-level 1)))
+      (setq hs-cycle-level (% (1+ hs-cycle-level) 5))
+      (hs-hide-level (1+ hs-cycle-level)))
     (progn
       (set (make-local-variable 'hs-cycle-level) 0)
-      (hs-hide-level (+ hs-cycle-level 1)))))
+      (hs-hide-level (1+ hs-cycle-level)))))
 
 ;; Part 1-5: Highlight symbol & Change Colortheme
 (defun workflow-highlight-symbol ()
