@@ -248,6 +248,10 @@
 (defvar jh/alphabet-length (length jh/alphabet)
   "Length of alphabet list.")
 
-;; (substring jh/alphabet 0 1)
+(defun jh/shortid (len)
+  "Generate a shortid with length of LEN."
+  (let ((randfn #'(lambda (x) (random jh/alphabet-length)))
+         (strfn #'(lambda (x) (substring jh/alphabet x (1+ x)))))
+    (mapconcat strfn (mapcar randfn (number-sequence 1 len)) "")))
 
 (provide 'init-util)
