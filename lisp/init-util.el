@@ -248,6 +248,6 @@
 (defvar jh/alphabet-length (length jh/alphabet)
   "Length of alphabet list.")
 
-(substring jh/alphabet 0 1)
+;; (substring jh/alphabet 0 1)
 
 (provide 'init-util)
