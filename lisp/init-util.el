@@ -254,4 +254,8 @@
          (strfn #'(lambda (x) (substring jh/alphabet x (1+ x)))))
     (mapconcat strfn (mapcar randfn (number-sequence 1 len)) "")))
 
+(defun jh/now ()
+  "Now as date string."
+  (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
+
 (provide 'init-util)
