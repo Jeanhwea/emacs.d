@@ -311,7 +311,7 @@
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (sqlformat-buffer))
     ((member major-mode
-       '(emacs-lisp-mode less-css-mode mhtml-mode nxml-mode sh-mode ymal-mode))
+       '(c++-mode cuda-mode emacs-lisp-mode less-css-mode mhtml-mode nxml-mode sh-mode ymal-mode))
       (jh/indent-current-buffer))
     (t (user-error "Ops, no format backend!"))))
 
