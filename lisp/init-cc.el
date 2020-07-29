@@ -30,6 +30,19 @@
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)))
 
+(defun jh/format-cc-source (&optional file)
+  "Format cc source code."
+  (let
+    ((file (or file (buffer-file-name))))
+    (progn
+      (save-buffer)
+      ;; format buffer
+      (shell-command (format "clang-format -i %s" file))
+      ;; reload buffer
+      (revert-buffer nil t)
+      ;; leave a messge
+      (message (format "Formatted %s" file)))))
+
 (when (require 'cuda-mode)
   (add-to-list 'auto-mode-alist '("\\.cu.cc\\'" . cuda-mode)))
 
