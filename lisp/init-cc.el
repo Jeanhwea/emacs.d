@@ -37,7 +37,7 @@
     (progn
       (save-buffer)
       ;; format buffer
-      (shell-command (format "clang-format -i %s" file))
+      (shell-command (format "clang-format -style=\"{BasedOnStyle: Google, ColumnLimit:120}\" -i %s" file))
       ;; reload buffer
       (revert-buffer nil t)
       ;; leave a messge
