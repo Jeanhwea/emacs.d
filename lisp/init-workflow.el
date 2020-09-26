@@ -27,7 +27,9 @@
 (defun workflow-expand-fullscreen ()
   "Expand or toggle the fullscreen of frame."
   (interactive)
-  (toggle-frame-fullscreen))
+  (if (jh/windows?)
+    (toggle-frame-maximized)
+    (toggle-frame-fullscreen)))
 
 ;; Part 1-2: File & Buffer, Bookmark
 (defun workflow-open-in-file-manager ()
