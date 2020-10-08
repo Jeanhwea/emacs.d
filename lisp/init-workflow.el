@@ -251,7 +251,7 @@
 (defun workflow-search-any-text ()
   "Search any text by grep-like program."
   (interactive)
-  (counsel-ag))
+  (counsel-rg))
 
 (defun workflow-search-git ()
   "Search by git-grep."
@@ -261,7 +261,8 @@
 (defun workflow-search-ag ()
   "Search by ag"
   (interactive)
-  (call-interactively #'ag))
+  ;; (call-interactively #'ag)
+  (counsel-ag))
 
 ;; Part 2-2: Replace & Regular eXpression Replace
 (defun workflow-replace ()

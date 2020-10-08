@@ -147,6 +147,7 @@
          pyim
          rainbow-delimiters
          restclient
+         ripgrep
          sicp
          smex
          spacemacs-theme
