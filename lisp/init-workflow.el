@@ -251,7 +251,7 @@
 (defun workflow-search-any-text ()
   "Search any text by grep-like program."
   (interactive)
-  (counsel-ag))
+  (counsel-rg))
 
 (defun workflow-search-git ()
   "Search by git-grep."
@@ -261,7 +261,8 @@
 (defun workflow-search-ag ()
   "Search by ag"
   (interactive)
-  (call-interactively #'ag))
+  ;; (call-interactively #'ag)
+  (counsel-ag))
 
 ;; Part 2-2: Replace & Regular eXpression Replace
 (defun workflow-replace ()
@@ -312,7 +313,8 @@
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (sqlformat-buffer))
-    ((member major-mode '(c++-mode cuda-mode)) ((jh/format-cc-source)))
+    ;; ((member major-mode '(c++-mode cuda-mode)) (jh/format-cc-source))
+    ((member major-mode '(c++-mode cuda-mode)) (jh/indent-current-buffer))
     ((member major-mode
        '(emacs-lisp-mode less-css-mode mhtml-mode nxml-mode sh-mode ymal-mode))
       (jh/indent-current-buffer))

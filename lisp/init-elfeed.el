@@ -18,8 +18,8 @@
          ("https://nullprogram.com/feed/" nullprogram blog coding important)
          ("https://blog.csdn.net/pennyliang/rss/list" pennyliang blog coding)
          ;; news
-         ("https://laod.cn/feed/" laod blog news)
-         ("https://www.zhihu.com/rss" zhihu blog daily-popular news)
+         ;; ("https://laod.cn/feed/" laod blog news)
+         ;; ("https://www.zhihu.com/rss" zhihu blog daily-popular news)
          ("https://blog.github.com/blog.atom" github blog git))
     elfeed-db-directory
       (expand-file-name "elfeed" user-emacs-directory)
