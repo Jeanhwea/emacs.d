@@ -2,6 +2,6 @@
 # name: Insert Python Code
 # key: py
 # --
-#+BEGIN_SRC python :results output
+#+BEGIN_SRC python :session cpython :exports both :results output pp
   $0
 #+END_SRC
