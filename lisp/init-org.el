@@ -87,6 +87,8 @@
              (verb . t)
              ;; ------------------------------------------------------------------
              ))
+        (add-to-list 'org-babel-default-header-args '(:eval . "never-export"))
+        (add-to-list 'org-babel-default-header-args:python '(:preamble  . "# -*- coding: utf-8 -*-"))
         (unless (jh/windows?) (org-bullets-mode 1)))))
 
 (provide 'init-org)
