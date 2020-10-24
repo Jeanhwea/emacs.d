@@ -105,7 +105,10 @@
   (evil-mode 1)
   (global-evil-leader-mode)
   (evil-leader/set-leader ",")
-  ;; (evil-leader/set-key "sb" 'workflow-switch-to-buffer)
+  ;; (evil-leader/set-key
+  ;;   "e" 'find-file
+  ;;   "b" 'workflow-switch-to-buffer
+  ;;   "k" 'kill-buffer)
   )
 
 (provide 'init-edit)

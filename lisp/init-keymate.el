@@ -87,8 +87,10 @@
   (define-key leader/f12 (kbd "b") #'workflow-browse-kill-ring)
   ;; Source code related, refactoring
   (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
+  (define-key leader/f12 (kbd "<tab>") #'workflow-emmet-expand)
+  (define-key leader/f12 (kbd "3") #'workflow-comment-source-code)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
-  (define-key leader/f12 (kbd "<tab>") #'workflow-execute-code-action)
+  (define-key leader/f12 (kbd "!") #'workflow-execute-code-action)
   (define-key leader/f12 (kbd "c") #'workflow-rename-symbol-here)
   ;; Codes Navigation
   (define-key leader/f12 (kbd ";") #'workflow-goto-definition)

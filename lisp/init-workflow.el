@@ -328,6 +328,13 @@
     (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-line 1)))
 
+(defun workflow-emmet-expand ()
+  "Expand emmet line."
+  (interactive)
+  (if (member 'emmet-mode minor-mode-list)
+    (call-interactively #'emmet-expand-line)
+    (user-error "Ops, emmet-mode is disable in current buffer.")))
+
 (defun workflow-execute-code-action ()
   "Execute action for code writing."
   (interactive)
