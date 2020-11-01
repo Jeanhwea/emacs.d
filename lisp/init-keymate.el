@@ -7,6 +7,7 @@
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
 (global-set-key (kbd "M-r") 'workflow-buffer-or-recentf-open)
 (global-set-key (kbd "M-;") 'workflow-goto-definition)
+(global-set-key (kbd "C-j") 'workflow-emmet-expand)
 ;; (global-set-key (kbd "M-<return>") 'ace-jump-mode)
 
 ;; -----------------------------------------------------------------------------
@@ -87,7 +88,6 @@
   (define-key leader/f12 (kbd "b") #'workflow-browse-kill-ring)
   ;; Source code related, refactoring
   (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
-  (define-key leader/f12 (kbd "<tab>") #'workflow-emmet-expand)
   (define-key leader/f12 (kbd "3") #'workflow-comment-source-code)
   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
   (define-key leader/f12 (kbd "!") #'workflow-execute-code-action)
