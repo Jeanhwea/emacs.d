@@ -4,7 +4,6 @@
 (when (require 'engine-mode)
   (defengine allacronyms
     "https://www.allacronyms.com/%s/abbreviated"
-
     :keybinding "a")
 
   (defengine codelf
