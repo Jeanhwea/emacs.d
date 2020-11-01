@@ -74,7 +74,7 @@
     (progn
       (save-buffer)
       ;; format buffer
-      (shell-command (format "prettier --write \"%s\"" file))
+      (shell-command (format "prettier --single-quote --write \"%s\"" file))
       ;; reload buffer
       (revert-buffer nil t)
       ;; leave a messge
