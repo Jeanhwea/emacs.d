@@ -59,7 +59,7 @@
     (progn
       (save-buffer)
       ;; format buffer
-      (shell-command (format "java -jar %s --replace %s" jarfile file))
+      (shell-command (format "java -jar \"%s\" --replace \"%s\"" jarfile file))
       ;; reload buffer
       (revert-buffer nil t)
       ;; leave a messge
