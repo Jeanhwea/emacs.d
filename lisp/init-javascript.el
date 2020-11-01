@@ -67,6 +67,19 @@
       (local-set-key (kbd "C-c C-r") 'js-comint-send-region)
       (local-set-key (kbd "C-c C-b") 'js-comint-send-buffer)))
 
+(defun jh/format-js-source (&optional file)
+  "Format js source code."
+  (let
+    ((file (or file (buffer-file-name))))
+    (progn
+      (save-buffer)
+      ;; format buffer
+      (shell-command (format "prettier --write \"%s\"" file))
+      ;; reload buffer
+      (revert-buffer nil t)
+      ;; leave a messge
+      (message (format "Formatted %s" file)))))
+
 (when (require 'js-comint)
   (setq js-comint-program-command "node"))
 
