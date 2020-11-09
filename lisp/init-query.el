@@ -89,7 +89,7 @@
       (kill-region  (point-min) (point-max))
       (qy/daemon-eval query)
       ;; sqlplus needs sleep a while for responsing
-      (sleep-for 0 500)
+      (sleep-for 0 1500)
       (setq result
         (buffer-substring-no-properties (point-min) (point-max))))
     result))
