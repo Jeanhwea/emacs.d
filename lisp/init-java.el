@@ -35,17 +35,17 @@
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)))
 
-(when
-  (and (require 'lsp-mode) (require 'lsp-ui) (require 'lsp-java))
-  (setq
-    lsp-server-install-dir (expand-file-name "lsp-cache" user-emacs-directory)
-    lsp-java-server-install-dir (expand-file-name "jdtls" lsp-server-install-dir)
-    lsp-ui-sideline-show-code-actions nil
-    lsp-ui-doc-enable nil
-    lsp-java-completion-import-order
-    ["com.avic" "org.springframework" "java" "javax" "com" "org"])
+;; (when
+;;   (and (require 'lsp-mode) (require 'lsp-ui) (require 'lsp-java))
+;;   (setq
+;;     lsp-server-install-dir (expand-file-name "lsp-cache" user-emacs-directory)
+;;     lsp-java-server-install-dir (expand-file-name "jdtls" lsp-server-install-dir)
+;;     lsp-ui-sideline-show-code-actions nil
+;;     lsp-ui-doc-enable nil
+;;     lsp-java-completion-import-order
+;;     ["com.avic" "org.springframework" "java" "javax" "com" "org"])
 
-  (add-hook 'java-mode-hook 'lsp))
+;;   (add-hook 'java-mode-hook 'lsp))
 
 (defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
 (defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")
