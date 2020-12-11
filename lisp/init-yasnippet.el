@@ -131,7 +131,7 @@
   (let
     ((all (jh/sql-colnames))
       (added (jh/java-source-colnames))
-      (ignored '("SIGNED_CODE" "DATETIME" "VALIDATION" "MYID")))
+      (ignored '("MYID" "SIGNED_CODE" "DATETIME" "DATETIME0" "VALIDATION")))
     (remove-if #'(lambda (x) (or (member x added) (member x ignored))) all)))
 
 (defun jh/java-type (coltype)
