@@ -32,9 +32,9 @@
       (forward-char)
       (setq beg (point))
       (forward-paragraph)
+      (backward-char)
       (setq end (point)))
     ;; execute commands
-
     ;; (shell-command-on-region beg end "sqlformat -s \"pl/sql\"" nil t)
     (shell-command-on-region beg end "sqlformat - -k upper -i upper -s --indent_width 2 -a" nil t)
     ;; goto previous place
