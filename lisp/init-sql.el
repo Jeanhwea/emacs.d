@@ -31,7 +31,8 @@
       (save-buffer)
       ;; format buffer
       (setq result
-        (shell-command-to-string (format "sqlformat -f \"%s\" -d \"  \"" file)))
+        (shell-command-to-string
+          (format "sqlformat -f \"%s\" -d \"  \" -m 120" file)))
       ;; delete all contents
       (kill-region (point-min) (point-max))
       ;; insert formatted text
