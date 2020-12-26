@@ -10,7 +10,7 @@
         (setq
           sqlformat-command 'sqlformat
           sqlformat-args
-          '("-k" "upper" "-i" "upper" "-s" "--indent_width" "2" "--wrap_after" "50"))
+          '("-k" "upper" "-i" "upper" "-s" "--indent_width" "2" "-a"))
         (setq
           sqlformat-command 'pgformatter
           sqlformat-args '("-u" "2" "-s" "2" "-w" "80")))
@@ -25,22 +25,20 @@
   "Format sql source code."
   (let
     ((file (or file (buffer-file-name)))
-      (current-point (point))
-      (result))
+      (current-point (point)) (beg) (end))
+    ;; get a paragraph
     (progn
-      (save-buffer)
-      ;; format buffer
-      (setq result
-        (shell-command-to-string
-          (format "sqlformat -f \"%s\" -d \"  \" -m 120" file)))
-      ;; delete all contents
-      (kill-region (point-min) (point-max))
-      ;; insert formatted text
-      (insert result)
-      ;; goto point if possiable
-      (when (<= current-point (point-max)) (goto-char current-point))
-      ;; leave a messge
-      (message (format "Formatted %s" file)))))
+      (backward-paragraph)
+      (forward-char)
+      (setq beg (point))
+      (forward-paragraph)
+      (setq end (point)))
+    ;; execute commands
+
+    ;; (shell-command-on-region beg end "sqlformat -s \"pl/sql\"" nil t)
+    (shell-command-on-region beg end "sqlformat - -k upper -i upper -s --indent_width 2 -a" nil t)
+    ;; goto previous place
+    (when (<= current-point (point-max)) (goto-char current-point))))
 
 ;; https://www.emacswiki.org/emacs/SqlMode
 (defun jh/sql-handle-prompt (output)
