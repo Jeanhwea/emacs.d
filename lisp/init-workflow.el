@@ -313,7 +313,7 @@
     ((eq major-mode 'web-mode) (jh/format-js-source))
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
-    ((eq major-mode 'sql-mode) (sqlformat-buffer))
+    ((eq major-mode 'sql-mode) (jh/format-sql-source))
     ;; ((member major-mode '(c++-mode cuda-mode)) (jh/format-cc-source))
     ((member major-mode '(c++-mode cuda-mode)) (jh/indent-current-buffer))
     ((member major-mode
