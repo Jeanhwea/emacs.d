@@ -29,7 +29,7 @@
     ;; get a paragraph
     (progn
       (backward-paragraph)
-      (forward-char)
+      (when (> (point) (point-min)) (forward-char))
       (setq beg (point))
       (forward-paragraph)
       (backward-char)
