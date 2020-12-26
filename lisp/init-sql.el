@@ -36,7 +36,8 @@
       (setq end (point)))
     ;; execute commands
     ;; (shell-command-on-region beg end "sqlformat -s \"pl/sql\"" nil t)
-    (shell-command-on-region beg end "sqlformat - -k upper -i upper -s --indent_width 2 -a" nil t)
+    (shell-command-on-region beg end
+      "sqlformat - -k upper -i upper -a --indent_width 2 --wrap_after 80" nil t)
     ;; goto previous place
     (when (<= current-point (point-max)) (goto-char current-point))))
 
