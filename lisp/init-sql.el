@@ -4,6 +4,7 @@
         show-trailing-whitespace t
         indent-tabs-mode nil
         tab-width 2)
+      (setq abbrev-mode nil)
       ;; for sqlformat
       ;; npm install --global poor-mans-t-sql-formatter-cli
       (if (jh/windows?)
