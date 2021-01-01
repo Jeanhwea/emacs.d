@@ -7,6 +7,7 @@
 (setq-default
   default-buffer-file-coding-system 'utf-8
   system-time-locale "C")
+(modify-coding-system-alist 'file "\\.bat\\'" 'chinese-gbk)
 
 ;; -----------------------------------------------------------------------------
 ;; setup system keyboard
