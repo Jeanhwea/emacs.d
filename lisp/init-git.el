@@ -12,7 +12,7 @@
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
   (add-to-list 'browse-at-remote-remote-type-domains '("192.168.0.202" . "gitlab2"))
-  (add-to-list 'browse-at-remote-remote-type-domains '("dev58.mti.avic.com" . "gitlab3"))
+  (add-to-list 'browse-at-remote-remote-type-domains '("mtiisl.cn" . "gitlab3"))
   (add-to-list 'browse-at-remote-remote-type-domains '("minix.jeanhwea.io" . "gitlab3"))
 
   (defun browse-at-remote--format-commit-url-as-gitlab2 (repo-url commithash)
