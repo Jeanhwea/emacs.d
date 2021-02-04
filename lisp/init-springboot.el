@@ -271,4 +271,13 @@
         (spt/compilation-start (spt/maven-test-command clzname method))
         (spt/compilation-start (spt/maven-test-command clzname))))))
 
+
+;; -----------------------------------------------------------------------------
+;;      _ ____   _
+;;     | |  _ \ / \
+;;  _  | | |_) / _ \
+;; | |_| |  __/ ___ \
+;;  \___/|_| /_/   \_\ for Spring Data JPA
+;; -----------------------------------------------------------------------------
+
 (provide 'init-springboot)
