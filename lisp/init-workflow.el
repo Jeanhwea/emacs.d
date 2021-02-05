@@ -576,10 +576,15 @@
     (jh/iterm2-send-string (thing-at-point 'line))))
 
 (defun workflow-copy-jpa-sql ()
-  "Copy jpa sql to kill ring."
+  "Copy jpa SQL to kill ring."
   (interactive)
   (if (spt/jpa-query-start-point)
-    (kill-new (spt/jpa-value-str))
+    (kill-new (spt/jpa-query-value-string))
     (user-error "No @Query(...) annotation found!")))
+
+(defun workflow-trans-jpa-sql ()
+  "Trans SQL to kill ring."
+  (interactive)
+  (kill-new (spt/jpa-sql-value-string)))
 
 (provide 'init-workflow)
