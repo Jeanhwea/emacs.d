@@ -279,5 +279,23 @@
 ;; | |_| |  __/ ___ \
 ;;  \___/|_| /_/   \_\ for Spring Data JPA
 ;; -----------------------------------------------------------------------------
+(defun spt/jpa-query-start-point ()
+  "Get JPA query start point."
+  (save-excursion
+    (and (re-search-backward "@Query(" nil t)
+      (re-search-forward "value *=" nil t)
+      (re-search-forward "\"" nil t) (point))))
+
+(defun spt/jpa-query-end-point ()
+  "Get JPA query end point."
+  (save-excursion
+    (and (re-search-forward ")$" nil t)
+      (re-search-backward "\"" nil t) (point))))
+
+(defun spt/jpa-value-str ()
+  "Get the value as a string."
+  (let ((sp (spt/jpa-query-start-point))
+         (op (spt/jpa-query-end-point)))
+    (and sp op (buffer-substring-no-properties sp op))))
 
 (provide 'init-springboot)
