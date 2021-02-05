@@ -292,10 +292,16 @@
     (and (re-search-forward ")$" nil t)
       (re-search-backward "\"" nil t) (point))))
 
+(defun spt/jpa-decode-query (str)
+  "Decode query string."
+  (jh/re-replace "\\\\\"" "\"" (jh/re-replace "\\\"[\n ]*\\+ *\\\"" "\n" str)))
+
 (defun spt/jpa-value-str ()
   "Get the value as a string."
   (let ((sp (spt/jpa-query-start-point))
          (op (spt/jpa-query-end-point)))
-    (and sp op (buffer-substring-no-properties sp op))))
+    (and sp op
+      (spt/jpa-decode-query
+        (buffer-substring-no-properties sp op)))))
 
 (provide 'init-springboot)
