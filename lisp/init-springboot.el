@@ -281,7 +281,9 @@
 ;; -----------------------------------------------------------------------------
 (defun spt/jpa-decode-query (str)
   "Decode query string."
-  (jh/re-replace "\\\\\"" "\"" (jh/re-replace "\\\"[\n ]*\\+ *\\\"" "\n" str)))
+  (concat
+    (jh/re-replace "\\\\\"" "\""
+      (jh/re-replace "\\\"[\n ]*\\+ *\\\"" "\n" str)) ";"))
 
 (defun spt/jpa-query-start-point ()
   "Get JPA query start point."
@@ -306,8 +308,10 @@
 
 (defun spt/jpa-encode-query (str)
   "Encode query string."
-  (concat "\""
-    (jh/re-replace "\n" "\"\n+ \"" (jh/re-replace "\"" "\\\\\"" str)) "\""))
+  (concat "@Query(nativeQuery = true, value =\""
+    (jh/re-replace ";$" ""
+      (jh/re-replace "\n" "\"\n+ \""
+        (jh/re-replace "\"" "\\\\\"" str)) ) "\")"))
 
 (defun spt/jpa-yank-sql-str ()
   "Yank current SQL as string."
