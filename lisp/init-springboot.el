@@ -306,7 +306,8 @@
 
 (defun spt/jpa-encode-query (str)
   "Encode query string."
-  (jh/re-replace "\n" "\"\n+ \"" (jh/re-replace "\"" "\\\\\"" str)))
+  (concat "\""
+    (jh/re-replace "\n" "\"\n+ \"" (jh/re-replace "\"" "\\\\\"" str)) "\""))
 
 (defun spt/jpa-yank-sql-str ()
   "Yank current SQL as string."
