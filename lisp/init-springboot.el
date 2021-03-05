@@ -332,16 +332,16 @@
 (defun spt/jpa-decode-formula (str)
   "Decode formula string."
   (concat
-    (jh/re-replace "\\(^(\\|)$\\)" ""
+    (substring
       (jh/re-replace "\\\\\"" "\""
-        (jh/re-replace "\\\"[\n ]*\\+ *\\\"" "\n" str))) ";"))
+        (jh/re-replace "\\\"[\n ]*\\+ *\\\"" "\n" str)) 1 -1) ";"))
 
 (defun spt/jpa-encode-formula (str)
   "Encode formula string."
   (concat "@Formula(\"("
-    (jh/re-replace ";$" ")"
+    (jh/re-replace ";$" ""
       (jh/re-replace "\n" "\"\n+ \""
-        (jh/re-replace "\"" "\\\\\"" str))) "\")"))
+        (jh/re-replace "\"" "\\\\\"" str))) ")\")"))
 
 (defun spt/jpa-formula-start-point ()
   "Get JPA formula start point."
