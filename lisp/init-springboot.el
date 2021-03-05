@@ -279,6 +279,19 @@
 ;; | |_| |  __/ ___ \
 ;;  \___/|_| /_/   \_\ for Spring Data JPA
 ;; -----------------------------------------------------------------------------
+(defun spt/jpa-yank-sql-str ()
+  "Yank current SQL as string."
+  (let ((beg) (end))
+    (save-excursion
+      (backward-paragraph)
+      (progn
+        (when (> (point) (point-min)) (forward-char))
+        (setq beg (point))
+        (forward-paragraph)
+        (backward-char)
+        (setq end (point))))
+    (buffer-substring-no-properties beg end)))
+
 (defun spt/jpa-decode-query (str)
   "Decode query string."
   (concat
@@ -305,29 +318,10 @@
     (and (re-search-forward ")$" nil t)
       (re-search-backward "\"" nil t) (point))))
 
-(defun spt/jpa-query-value-string ()
+(defun spt/jpa-yank-query-str ()
   "Get the value as a string."
   (let ((sp (spt/jpa-query-start-point))
          (ep (spt/jpa-query-end-point)))
-    (and sp ep
-      (spt/jpa-decode-query
-        (buffer-substring-no-properties sp ep)))))
-
-(defun spt/jpa-yank-sql-str ()
-  "Yank current SQL as string."
-  (let ((beg) (end))
-    (save-excursion
-      (backward-paragraph)
-      (progn
-        (when (> (point) (point-min)) (forward-char))
-        (setq beg (point))
-        (forward-paragraph)
-        (backward-char)
-        (setq end (point))))
-    (buffer-substring-no-properties beg end)))
-
-(defun spt/jpa-sql-query-value-string ()
-  "Get the SQL value as string."
-  (spt/jpa-encode-query (spt/jpa-yank-sql-str)))
+    (and sp ep (buffer-substring-no-properties sp ep))))
 
 (provide 'init-springboot)
