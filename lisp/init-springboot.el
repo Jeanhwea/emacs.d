@@ -292,6 +292,7 @@
         (setq end (point))))
     (buffer-substring-no-properties beg end)))
 
+;; @Query(...) annotation
 (defun spt/jpa-decode-query (str)
   "Decode query string."
   (concat
@@ -308,20 +309,59 @@
 (defun spt/jpa-query-start-point ()
   "Get JPA query start point."
   (save-excursion
-    (and (re-search-backward "@Query(" nil t)
+    (and
+      (re-search-backward "@Query(" nil t)
       (re-search-forward "value *=" nil t)
       (re-search-forward "\"" nil t) (point))))
 
 (defun spt/jpa-query-end-point ()
   "Get JPA query end point."
   (save-excursion
-    (and (re-search-forward ")$" nil t)
+    (and
+      (re-search-backward "@Query(" nil t)
+      (re-search-forward ")$" nil t)
       (re-search-backward "\"" nil t) (point))))
 
 (defun spt/jpa-yank-query-str ()
   "Get the value as a string."
   (let ((sp (spt/jpa-query-start-point))
          (ep (spt/jpa-query-end-point)))
+    (and sp ep (buffer-substring-no-properties sp ep))))
+
+;; @Formula(...) annotation
+(defun spt/jpa-decode-formula (str)
+  "Decode formula string."
+  (concat
+    (jh/re-replace "\\(^(\\|)$\\)" ""
+      (jh/re-replace "\\\\\"" "\""
+        (jh/re-replace "\\\"[\n ]*\\+ *\\\"" "\n" str)) ) ";"))
+
+(defun spt/jpa-encode-formula (str)
+  "Encode formula string."
+  (concat "@Formula(\"("
+    (jh/re-replace ";$" ")"
+      (jh/re-replace "\n" "\"\n+ \""
+        (jh/re-replace "\"" "\\\\\"" str)) ) "\")"))
+
+(defun spt/jpa-formula-start-point ()
+  "Get JPA formula start point."
+  (save-excursion
+    (and
+      (re-search-backward "@Formula(" nil t)
+      (re-search-forward "\"" nil t) (point))))
+
+(defun spt/jpa-formula-end-point ()
+  "Get JPA formula end point."
+  (save-excursion
+    (and
+      (re-search-backward "@Formula(" nil t)
+      (re-search-forward ")$" nil t)
+      (re-search-backward "\"" nil t) (point))))
+
+(defun spt/jpa-yank-formula-str ()
+  "Get the value as a string."
+  (let ((sp (spt/jpa-formula-start-point))
+         (ep (spt/jpa-formula-end-point)))
     (and sp ep (buffer-substring-no-properties sp ep))))
 
 (provide 'init-springboot)
