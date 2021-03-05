@@ -582,9 +582,9 @@
     (kill-new (spt/jpa-query-value-string))
     (user-error "No @Query(...) annotation found!")))
 
-(defun workflow-trans-jpa-sql ()
+(defun workflow-trans-jpa-sql-to-query ()
   "Trans SQL to kill ring."
   (interactive)
-  (kill-new (spt/jpa-sql-value-string)))
+  (kill-new (spt/jpa-sql-query-value-string)))
 
 (provide 'init-workflow)

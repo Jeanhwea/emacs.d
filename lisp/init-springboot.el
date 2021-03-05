@@ -285,6 +285,13 @@
     (jh/re-replace "\\\\\"" "\""
       (jh/re-replace "\\\"[\n ]*\\+ *\\\"" "\n" str)) ";"))
 
+(defun spt/jpa-encode-query (str)
+  "Encode query string."
+  (concat "@Query(nativeQuery = true, value =\""
+    (jh/re-replace ";$" ""
+      (jh/re-replace "\n" "\"\n+ \""
+        (jh/re-replace "\"" "\\\\\"" str)) ) "\")"))
+
 (defun spt/jpa-query-start-point ()
   "Get JPA query start point."
   (save-excursion
@@ -306,13 +313,6 @@
       (spt/jpa-decode-query
         (buffer-substring-no-properties sp ep)))))
 
-(defun spt/jpa-encode-query (str)
-  "Encode query string."
-  (concat "@Query(nativeQuery = true, value =\""
-    (jh/re-replace ";$" ""
-      (jh/re-replace "\n" "\"\n+ \""
-        (jh/re-replace "\"" "\\\\\"" str)) ) "\")"))
-
 (defun spt/jpa-yank-sql-str ()
   "Yank current SQL as string."
   (let ((beg) (end))
@@ -326,7 +326,7 @@
         (setq end (point))))
     (buffer-substring-no-properties beg end)))
 
-(defun spt/jpa-sql-value-string ()
+(defun spt/jpa-sql-query-value-string ()
   "Get the SQL value as string."
   (spt/jpa-encode-query (spt/jpa-yank-sql-str)))
 
