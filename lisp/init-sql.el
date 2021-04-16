@@ -5,16 +5,6 @@
         indent-tabs-mode nil
         tab-width 2)
       (setq abbrev-mode nil)
-      ;; for sqlformat
-      ;; npm install --global poor-mans-t-sql-formatter-cli
-      (if (jh/windows?)
-        (setq
-          sqlformat-command 'sqlformat
-          sqlformat-args
-          '("-k" "upper" "-i" "upper" "-s" "--indent_width" "2" "-a"))
-        (setq
-          sqlformat-command 'pgformatter
-          sqlformat-args '("-u" "2" "-s" "2" "-w" "80")))
       (sqlind-minor-mode 1)
       (hl-line-mode 1)))
 
@@ -24,6 +14,19 @@
 
 (defconst pgformat-name "C:/Local/pgFormatter-5.0/pg_format"
   "Location of pg_format program")
+
+(defconst pgformat-func-dict
+  (expand-file-name "lang/oracle-func-name.txt" user-emacs-directory)
+  "Location of pg_format extra function names.")
+
+(defconst pgformat-command
+  (format "perl pg_format -f 2 -u 2 -U 2 -s 2 -w 80 --extra-function %s -" pgformat-func-dict)
+  "pg_format command on windows.")
+
+;; pip install sqlparse
+(defconst sqlformat-command
+  "sqlformat - -k upper -i upper -s -a --indent_width 2 --wrap_after 80"
+  "sqlformat command.")
 
 (defun jh/format-sql-source (&optional file)
   "Format sql source code."
@@ -41,9 +44,8 @@
     ;; execute commands
     (if (file-exists-p pgformat-name)
       (let ((default-directory (file-name-directory pgformat-name)))
-        (shell-command-on-region beg end "perl pg_format -f 2 -u 2 -U 2 -s 2 -w 80 -" nil t))
-      (shell-command-on-region beg end
-        "sqlformat - -k upper -i upper -s -a --indent_width 2 --wrap_after 80" nil t))
+        (shell-command-on-region beg end pgformat-command nil t))
+      (shell-command-on-region beg end sqlformat-command nil t))
     ;; goto previous place
     (when (<= current-point (point-max)) (goto-char current-point))))
 
