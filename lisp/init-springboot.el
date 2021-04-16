@@ -303,7 +303,7 @@
   "Encode query string."
   (concat "@Query(nativeQuery = true, value =\""
     (jh/re-replace ";$" ""
-      (jh/re-replace "\n" "\"\n+ \""
+      (jh/re-replace "\n" " \"\n+ \""
         (jh/re-replace "\"" "\\\\\"" str))) "\")"))
 
 (defun spt/jpa-query-start-point ()
