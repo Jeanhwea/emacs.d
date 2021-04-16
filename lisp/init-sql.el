@@ -22,6 +22,9 @@
   (setq sql-mysql-program "mysql")
   (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4")))
 
+(defconst pgformat-name "C:/Local/pgFormatter-5.0/pg_format"
+  "Location of pg_format program")
+
 (defun jh/format-sql-source (&optional file)
   "Format sql source code."
   (let
@@ -36,9 +39,11 @@
       (backward-char)
       (setq end (point)))
     ;; execute commands
-    ;; (shell-command-on-region beg end "sqlformat -s \"pl/sql\"" nil t)
-    (shell-command-on-region beg end
-      "sqlformat - -k upper -i upper -s -a --indent_width 2 --wrap_after 80" nil t)
+    (if (file-exists-p pgformat-name)
+      (let ((default-directory (file-name-directory pgformat-name)))
+        (shell-command-on-region beg end "perl pg_format -f 2 -u 2 -U 2 -s 2 -w 80 -" nil t))
+      (shell-command-on-region beg end
+        "sqlformat - -k upper -i upper -s -a --indent_width 2 --wrap_after 80" nil t))
     ;; goto previous place
     (when (<= current-point (point-max)) (goto-char current-point))))
 
