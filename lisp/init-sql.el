@@ -12,8 +12,12 @@
   (setq sql-mysql-program "mysql")
   (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4")))
 
-(defconst pgformat-name "C:/Local/pgFormatter-5.0/pg_format"
+(defconst pgformat-name
+  (if (jh/windows?)  "C:/Local/pgFormatter-5.0/pg_format" (executable-find "pg_format"))
   "Location of pg_format program")
+
+(defconst pgformat-prog (if (jh/windows?) "perl pg_format" "LC_ALL=C pg_format")
+  "pg_format command.")
 
 (defconst pgformat-func-dict
   (expand-file-name "lang/oracle-func-name.txt" user-emacs-directory)
@@ -21,8 +25,8 @@
 
 (defconst pgformat-command
   (format
-    "perl pg_format -p '\\?[0-9]+' -f 2 -u 2 -U 2 -s 2 -w 80 --extra-function \"%s\" -"
-    pgformat-func-dict)
+    "%s -p '\\?[0-9]+' -f 2 -u 2 -U 2 -s 2 -w 80 --extra-function \"%s\" -"
+    pgformat-prog pgformat-func-dict)
   "pg_format command on windows.")
 
 ;; pip install sqlparse
