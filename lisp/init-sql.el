@@ -20,7 +20,9 @@
   "Location of pg_format extra function names.")
 
 (defconst pgformat-command
-  (format "perl pg_format -p '\\?.*' -L -f 2 -u 2 -U 2 -s 2 -w 80 -W 80 --extra-function %s -" pgformat-func-dict)
+  (format
+    "perl pg_format -p \"\\?[0-9]+\" -f 2 -u 2 -U 2 -s 2 -w 80 -W 80 --extra-function \"%s\" -"
+    pgformat-func-dict)
   "pg_format command on windows.")
 
 ;; pip install sqlparse
