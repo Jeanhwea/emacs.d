@@ -575,17 +575,38 @@
     (jh/iterm2-send-region)
     (jh/iterm2-send-string (thing-at-point 'line))))
 
-(defun workflow-copy-jpa-query-sql ()
-  "Copy jpa SQL to kill ring."
+(defun workflow-copy-jpa-query-from-sql ()
+  "Copy jpa query from SQL, and yank to kill ring."
   (interactive)
   (if (spt/jpa-query-start-point)
     (kill-new (spt/jpa-decode-query (spt/jpa-yank-query-str)))
     (user-error "No @Query(...) annotation found!")))
 
 (defun workflow-trans-jpa-sql-to-query ()
-  "Trans SQL to kill ring."
+  "Trans SQL to query, and yank to kill ring."
   (interactive)
   (kill-new (spt/jpa-encode-query (spt/jpa-yank-sql-str))))
+
+(defun workflow-format-jpa-query ()
+  "Format SQL inside @Query(...) string."
+  (interactive)
+  (if (spt/jpa-query-start-point)
+    (let ((sql-str (spt/jpa-decode-query (spt/jpa-yank-query-str)))
+           (beg) (end))
+      (with-temp-buffer
+        (progn
+          (insert sql-str)
+          (jh/format-sql-source)
+          (setq sql-str (jh/current-buffer))))
+      (message sql-str)
+      (progn
+        (search-backward "@Query(")
+        (setq beg (point))
+        (search-forward ")$")
+        (setq end (point))
+        (delete-region beg end)
+        (insert (spt/jpa-encode-query sql-str))))
+    (user-error "No @Query(...) annotation found!")))
 
 (defun workflow-copy-jpa-formula-sql ()
   "Copy jpa SQL to kill ring."
