@@ -597,12 +597,12 @@
         (progn
           (insert sql-str)
           (jh/format-sql-source)
-          (setq sql-str (jh/current-buffer))))
+          (setq sql-str (jh/re-replace "[ ]*\n;$" ";" (jh/current-buffer)))))
       (message sql-str)
       (progn
         (search-backward "@Query(")
         (setq beg (point))
-        (search-forward ")$")
+        (re-search-forward ")$")
         (setq end (point))
         (delete-region beg end)
         (insert (spt/jpa-encode-query sql-str))))
