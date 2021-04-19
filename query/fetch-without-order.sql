@@ -1,10 +1,10 @@
-select
-  t.*
-from (
-  select
-    t1.myid,
-    rownum as rowidx
-  from
-    '&tablename' t1
-  where
-    1 = 1) t;
+SELECT
+  T.*
+FROM (
+  SELECT
+    T1.MYID,
+    ROWNUM AS ROWIDX
+  FROM
+    '&tablename' T1
+  WHERE
+    1 = 1) T;

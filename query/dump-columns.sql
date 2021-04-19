@@ -1,47 +1,46 @@
-select
-  '&lpre' || t.ispk || '&fsep' || t.isuniq || '&fsep' || t.isnul || '&fsep' ||
-    t.colname || '&fsep' || t.coltype || '&fsep' || t.collen || '&fsep' ||
-    t.colpcs || '&fsep' || substr(t.colcmt, 1, 40) as rowdata
-from (
-  select
-    t1.column_id as colid, --> Column Id
+SELECT
+  '&lpre' || T.ISPK || '&fsep' || T.ISUNIQ || '&fsep' || T.ISNUL ||
+    '&fsep' || T.COLNAME || '&fsep' || T.COLTYPE || '&fsep' ||
+    T.COLLEN || '&fsep' || T.COLPCS || '&fsep' || SUBSTR(T.COLCMT, 1, 40)
+    AS ROWDATA
+FROM (
+  SELECT
+    T1.COLUMN_ID AS COLID, --> Column Id
     (
-      select
-        'p' from user_cons_columns t2, user_constraints t3
-      where
-        t3.constraint_name = t2.constraint_name
-        and t1.column_name = t2.column_name
-        and t1.table_name = t2.table_name
-        and lower(t3.constraint_type) = 'p'
-        and rownum <= 1) as ispk, --> Is Primary Key?
+      SELECT
+        'p' FROM USER_CONS_COLUMNS T2, USER_CONSTRAINTS T3
+      WHERE
+        T3.CONSTRAINT_NAME = T2.CONSTRAINT_NAME
+        AND T1.COLUMN_NAME = T2.COLUMN_NAME
+        AND T1.TABLE_NAME = T2.TABLE_NAME
+        AND LOWER(T3.CONSTRAINT_TYPE) = 'p'
+        AND rownum <= 1) AS ISPK, --> Is Primary Key?
     (
-      select
-        'u' from user_cons_columns t4, user_constraints t5
-      where
-        t5.constraint_name = t4.constraint_name
-        and t1.column_name = t4.column_name
-        and t1.table_name = t4.table_name
-        and lower(t5.constraint_type) = 'u'
-      group by
-        t5.constraint_name
-      having
-        count(1) = 1) as isuniq, --> Is Unique Key?
-    decode(lower(t1.nullable), 'n', '*', '') as isnul, --> Nullable?
-    t1.column_name as colname, --> Column Name
-    t1.data_type as coltype, --> Column Type
-    t1.data_length as collen, --> Column Length
-    t1.data_precision as colpcs, --> Column Precision
+      SELECT
+        'u' FROM USER_CONS_COLUMNS T4, USER_CONSTRAINTS T5
+      WHERE
+        T5.CONSTRAINT_NAME = T4.CONSTRAINT_NAME
+        AND T1.COLUMN_NAME = T4.COLUMN_NAME
+        AND T1.TABLE_NAME = T4.TABLE_NAME
+        AND LOWER(T5.CONSTRAINT_TYPE) = 'u' GROUP BY T5.CONSTRAINT_NAME
+      HAVING
+        COUNT(1) = 1) AS ISUNIQ, --> Is Unique Key?
+    DECODE(LOWER(T1.NULLABLE), 'n', '*', '') AS ISNUL, --> Nullable?
+    T1.COLUMN_NAME AS COLNAME, --> Column Name
+    T1.DATA_TYPE AS COLTYPE, --> Column Type
+    T1.DATA_LENGTH AS COLLEN, --> Column Length
+    T1.DATA_PRECISION AS COLPCS, --> Column Precision
     (
-      select
-        replace(replace(t6.comments, chr(13), ''), chr(10), '&lsep')
-        from user_col_comments t6
-      where
-        t6.column_name = t1.column_name
-        and t6.table_name = t1.table_name
-        and rownum <= 1) as colcmt --> Column Comments
-  from
-    user_tab_columns t1
-  where
-    lower(t1.table_name) = lower('&tablename')) t
-order by
-  t.colid;
+      SELECT
+        REPLACE(REPLACE(T6.COMMENTS, CHR(13), ''), CHR(10), '&lsep')
+        FROM USER_COL_COMMENTS T6
+      WHERE
+        T6.COLUMN_NAME = T1.COLUMN_NAME
+        AND T6.TABLE_NAME = T1.TABLE_NAME
+        AND rownum <= 1) AS COLCMT --> Column Comments
+  FROM
+    USER_TAB_COLUMNS T1
+  WHERE
+    LOWER(T1.TABLE_NAME) = LOWER('&tablename')) T
+ORDER BY
+  T.COLID;
