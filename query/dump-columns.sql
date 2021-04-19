@@ -17,7 +17,7 @@ FROM (
         AND T1.COLUMN_NAME = T2.COLUMN_NAME
         AND T1.TABLE_NAME = T2.TABLE_NAME
         AND LOWER(T3.CONSTRAINT_TYPE) = 'p'
-        AND rownum <= 1) AS ISPK,
+        AND ROWNUM <= 1) AS ISPK,
       (
         SELECT
           'u'
@@ -46,7 +46,7 @@ FROM (
           WHERE
             T6.COLUMN_NAME = T1.COLUMN_NAME
             AND T6.TABLE_NAME = T1.TABLE_NAME
-            AND rownum <= 1) AS COLCMT
+            AND ROWNUM <= 1) AS COLCMT
         FROM
           USER_TAB_COLUMNS T1
         WHERE
