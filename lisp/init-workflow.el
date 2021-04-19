@@ -597,7 +597,7 @@
         (progn
           (insert sql-str)
           (jh/format-sql-source)
-          (setq sql-str (jh/re-replace "[ ]*\n;$" ";" (jh/current-buffer)))))
+          (setq sql-str (jh/re-replace ";\n*" "" (jh/current-buffer)))))
       ;; (message sql-str)
       (progn
         (search-backward "@Query(")
