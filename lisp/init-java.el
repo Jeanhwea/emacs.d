@@ -53,15 +53,17 @@
 (defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")
 ;; (defconst jh/gjf-file "google-java-format-1.7-120-all-deps.jar")
 
+(defconst gjf-prog (format "java -jar \"%s\"" (expand-file-name jh/gjf-file jh/gjf-dir))
+  "Google Java Formatter Program.")
+
 (defun jh/format-java-source (&optional file)
   "Format java source code."
   (let
-    ((file (or file (buffer-file-name)))
-      (jarfile (expand-file-name jh/gjf-file jh/gjf-dir)))
+    ((file (or file (buffer-file-name))))
     (progn
       (save-buffer)
       ;; format buffer
-      (shell-command (format "java -jar \"%s\" --replace \"%s\"" jarfile file))
+      (shell-command (format "%s --replace \"%s\"" gjf-prog file))
       ;; reload buffer
       (revert-buffer nil t)
       ;; leave a messge
