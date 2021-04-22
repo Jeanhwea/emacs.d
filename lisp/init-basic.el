@@ -9,6 +9,11 @@
   system-time-locale "C")
 (modify-coding-system-alist 'file "\\.bat\\'" 'chinese-gbk)
 
+;; to fix python encoding
+(setenv "LC_CTYPE" "UTF-8")
+(setenv "LC_ALL" "en_US.UTF-8")
+(setenv "LANG" "en_US.UTF-8")
+
 ;; -----------------------------------------------------------------------------
 ;; setup system keyboard
 ;; -----------------------------------------------------------------------------

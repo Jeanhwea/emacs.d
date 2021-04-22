@@ -12,6 +12,10 @@
   (setq sql-mysql-program "mysql")
   (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4")))
 
+;; oracle sqlplus environments
+(setenv "NLS_LANG" "AMERICAN_AMERICA.AL32UTF8")
+(setenv "NLS_DATE_FORMAT" "YYYY-MM-DD HH24:MI:SS")
+
 (defconst pgformat-name
   (if (jh/windows?)  "C:/Local/pgFormatter-5.0/pg_format" (executable-find "pg_format"))
   "Location of pg_format program")
