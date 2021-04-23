@@ -65,6 +65,28 @@
     ;; goto previous place
     (when (<= current-point (point-max)) (goto-char current-point))))
 
+(defun jh/format-sql-file (&optional file)
+  "Format sql file code."
+  (let
+    ((file (or file (buffer-file-name)))
+      (current-point (point)) (beg) (end))
+    ;; get a paragraph
+    (progn
+      (beginning-of-buffer)
+      (next-line)
+      (when (> (point) (point-min)) (forward-char))
+      (setq beg (point))
+      (end-of-buffer)
+      ;; (when (< (point) (point-max)) (backward-char))
+      (setq end (point)))
+    ;; execute commands
+    (if (file-exists-p pgformat-name)
+      (let ((default-directory (file-name-directory pgformat-name)))
+        (shell-command-on-region beg end (concat sql-format-command " -N") nil t))
+      (shell-command-on-region beg end sqlformat-command nil t))
+    ;; goto previous place
+    (when (<= current-point (point-max)) (goto-char current-point))))
+
 ;; https://www.emacswiki.org/emacs/SqlMode
 (defun jh/sql-handle-prompt (output)
   "Handle prompt on windows."

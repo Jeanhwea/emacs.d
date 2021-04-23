@@ -620,4 +620,9 @@
   (interactive)
   (kill-new (spt/jpa-encode-formula (spt/jpa-yank-sql-str))))
 
+(defun workflow-prettify-sql-file ()
+  "Format all sql file."
+  (interactive)
+  (jh/format-sql-file))
+
 (provide 'init-workflow)
