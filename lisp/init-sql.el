@@ -73,6 +73,8 @@
     ;; get a paragraph
     (progn
       (beginning-of-buffer)
+      (flush-lines "^# Statement")
+      (beginning-of-buffer)
       (next-line)
       (when (> (point) (point-min)) (forward-char))
       (setq beg (point))
