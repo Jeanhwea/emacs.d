@@ -340,7 +340,7 @@
   "Encode formula string."
   (concat "@Formula(\"("
     (jh/re-replace ";$" ""
-      (jh/re-replace "\n" "\"\n+ \""
+      (jh/re-replace "\n" " \"\n+ \""
         (jh/re-replace "\"" "\\\\\"" str))) ")\")"))
 
 (defun spt/jpa-formula-start-point ()

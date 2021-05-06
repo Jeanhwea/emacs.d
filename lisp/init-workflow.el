@@ -608,14 +608,14 @@
         (insert (spt/jpa-encode-query sql-str))))
     (user-error "No @Query(...) annotation found!")))
 
-(defun workflow-copy-jpa-formula-sql ()
+(defun workflow-copy-sql-from-jpa-formula ()
   "Copy jpa SQL to kill ring."
   (interactive)
   (if (spt/jpa-formula-start-point)
     (kill-new (spt/jpa-decode-formula (spt/jpa-yank-formula-str)))
     (user-error "No @Formula(...) annotation found!")))
 
-(defun workflow-trans-jpa-sql-to-formula ()
+(defun workflow-trans-sql-to-jpa-formula ()
   "Trans SQL to kill ring."
   (interactive)
   (kill-new (spt/jpa-encode-formula (spt/jpa-yank-sql-str))))
