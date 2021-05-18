@@ -2,4 +2,4 @@
 # name: @SuppressWarnings(...)
 # key: sw
 # --
-@SuppressWarnings("${1:unchecked}")$0
+@SuppressWarnings("${1:$$(yas-choose-value '(all unchecked rawtypes serial))}")$0
