@@ -302,7 +302,7 @@
 (defun spt/jpa-encode-query (str)
   "Encode query string."
   (concat "@Query(nativeQuery = true, value =\""
-    (jh/re-replace ";$" ""
+    (jh/re-replace "\\(;\\|\\\\G\\)$" ""
       (jh/re-replace "\n" " \"\n+ \""
         (jh/re-replace "\"" "\\\\\"" str))) "\")"))
 
@@ -339,7 +339,7 @@
 (defun spt/jpa-encode-formula (str)
   "Encode formula string."
   (concat "@Formula(\"("
-    (jh/re-replace ";$" ""
+    (jh/re-replace "\\(;\\|\\\\G\\)$" ""
       (jh/re-replace "\n" " \"\n+ \""
         (jh/re-replace "\"" "\\\\\"" str))) ")\")"))
 
