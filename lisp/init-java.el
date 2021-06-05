@@ -69,6 +69,20 @@
       ;; leave a messge
       (message (format "Formatted %s" file)))))
 
+(defun jh/run-java-scratch (&optional file)
+  "Run java scratch source code."
+  (let*
+    ((file (or file (buffer-file-name)))
+      (filename (file-name-nondirectory file))
+      (clsname (file-name-sans-extension filename))
+      (default-directory (file-name-directory file)))
+    (if (string-match-p "Scratch.*\\.java$" filename)
+      (progn
+        (setq sbuf (generate-new-buffer "*java-scratch-buffer*"))
+        (shell-command (format "javac %s && java %s" filename clsname) sbuf)
+        (display-buffer sbuf))
+      (user-error (format "Not a valid java sratch file: %s" file)))))
+
 ;; -----------------------------------------------------------------------------
 ;; meghanada
 ;;

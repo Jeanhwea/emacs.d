@@ -620,6 +620,12 @@
   (interactive)
   (kill-new (spt/jpa-encode-formula (spt/jpa-yank-sql-str))))
 
+
+(defun workflow-run-java-scratch ()
+  "Build and Run Java scratch codes."
+  (interactive)
+  (jh/run-java-scratch))
+
 (defun workflow-prettify-sql-file ()
   "Format all sql file."
   (interactive)
