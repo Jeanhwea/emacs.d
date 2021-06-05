@@ -77,7 +77,7 @@
       (filename (file-name-nondirectory file))
       (clsname (file-name-sans-extension filename))
       (default-directory (file-name-directory file)))
-    (if (string-match-p "Scratch.*\\.java$" filename)
+    (if (string-match-p "Solution.*\\.java$" filename)
       (progn
         (save-buffer)
         (if (get-buffer sbufname)
