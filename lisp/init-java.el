@@ -79,6 +79,7 @@
       (default-directory (file-name-directory file)))
     (if (string-match-p "Scratch.*\\.java$" filename)
       (progn
+        (save-buffer)
         (if (get-buffer sbufname)
           (setq sbuf (get-buffer sbufname))
           (setq sbuf (generate-new-buffer sbufname)))
