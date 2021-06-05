@@ -82,7 +82,7 @@
         (if (get-buffer sbufname)
           (setq sbuf (get-buffer sbufname))
           (setq sbuf (generate-new-buffer sbufname)))
-        (shell-command (format "javac %s && java %s" filename clsname) sbuf sbuf)
+        (shell-command (format "javac %s && java %s && rm %s.class" filename clsname clsname) sbuf sbuf)
         (display-buffer sbuf)
         (message (format "Run %s" file)))
       (user-error (format "Not a valid java sratch file: %s" file)))))
