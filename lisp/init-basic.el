@@ -49,7 +49,7 @@
 ;; (when (require 'fill-column-indicator)
 ;;  (add-hook 'after-change-major-mode-hook 'fci-mode))
 ;; (global-hl-line-mode 1)
-(global-prettify-symbols-mode 1)
+;; (global-prettify-symbols-mode 1)
 
 ;; -----------------------------------------------------------------------------
 ;; hideshow mode

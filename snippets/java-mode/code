@@ -3,6 +3,8 @@
 # key: code
 # --
 
+import java.util.*;
+
 public class `(jh/java-class-name)` {
 
 $>public static void main(String args[]) {
