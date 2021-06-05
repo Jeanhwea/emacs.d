@@ -72,15 +72,19 @@
 (defun jh/run-java-scratch (&optional file)
   "Run java scratch source code."
   (let*
-    ((file (or file (buffer-file-name)))
+    ((sbufname "*java-scratch-buffer*")
+      (file (or file (buffer-file-name)))
       (filename (file-name-nondirectory file))
       (clsname (file-name-sans-extension filename))
       (default-directory (file-name-directory file)))
     (if (string-match-p "Scratch.*\\.java$" filename)
       (progn
-        (setq sbuf (generate-new-buffer "*java-scratch-buffer*"))
-        (shell-command (format "javac %s && java %s" filename clsname) sbuf)
-        (display-buffer sbuf))
+        (if (get-buffer sbufname)
+          (setq sbuf (get-buffer sbufname))
+          (setq sbuf (generate-new-buffer sbufname)))
+        (shell-command (format "javac %s && java %s" filename clsname) sbuf sbuf)
+        (display-buffer sbuf)
+        (message (format "Run %s" file)))
       (user-error (format "Not a valid java sratch file: %s" file)))))
 
 ;; -----------------------------------------------------------------------------
