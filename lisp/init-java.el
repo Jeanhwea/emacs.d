@@ -86,7 +86,7 @@
     (setq cmd2 (format "rm %s" clsrexp))
     (setq cmd (concat cmd0 " && " cmd1 " && " cmd2))
     ;; (message cmd)
-    (if (string-match-p "Solution.*\\.java$" filename)
+    (if (string-match-p ".*\\.java$" filename)
       (progn
         (save-buffer)
         (if (get-buffer sbufname)
