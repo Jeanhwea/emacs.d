@@ -2,13 +2,13 @@
 # name: Quick coding as Scratch
 # key: code
 # --
+package `(jh/java-package-name)`;
 
 import java.util.*;
 
 public class `(jh/java-class-name)` {
 
-$>public static void main(String args[]) {
-$>$>${0:// coding}
+$>public static void main(String args[]) {$0
 $>}
 
 }
