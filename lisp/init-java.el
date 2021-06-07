@@ -80,7 +80,7 @@
       (filename (jh/relative-path file workdir))
       (clsrexp (jh/re-replace ".java" "*.class" filename))
       (clsname (jh/re-replace "/" "." (file-name-sans-extension filename)))
-      (default-directory workdir)
+      (default-directory workdir))
     (setq cmd0 (format "javac -encoding UTF-8 %s" filename))
     (setq cmd1 (format "java %s" clsname))
     (setq cmd2 (format "rm %s" clsrexp))
