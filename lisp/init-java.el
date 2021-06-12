@@ -78,7 +78,7 @@
       (pkgname (jh/java-package-name))
       (rltpath (jh/re-replace "." "/" pkgname))
       (filename (jh/relative-path file workdir))
-      (clsrexp (jh/re-replace ".java" "*.class" filename))
+      (clsrexp (jh/re-replace "/[^/]*.java" "/*.class" filename))
       (clsname (jh/re-replace "/" "." (file-name-sans-extension filename)))
       (default-directory workdir))
     (setq cmd0 (format "javac -encoding UTF-8 %s" filename))
