@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: String.out.printf(...)
+# key: pf
+# --
+System.out.printf("$1\n", $0);
