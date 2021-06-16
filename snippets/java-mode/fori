@@ -2,7 +2,6 @@
 # name: for (Iterator ...) { ... }
 # key: fori
 # --
-for (Iterator<${1:ClassName}> ${2:it} = $3.iterator(); $2.hasNext(); ) {
-$>$1 ${4:${1:$(jh/camelcase yas-text)}} = $2.next();
+for (int ${1:i} = 0; $1 < ${2:n}; $1++) {
 $>$0
 }
