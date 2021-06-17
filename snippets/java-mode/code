@@ -14,7 +14,7 @@ import java.util.*;
  */$0
 public class `(jh/java-class-name)` {
 
-$>public static void main(String args[]) {$0
+$>public static void main(String[] args) {$0
 $>}
 
 }
