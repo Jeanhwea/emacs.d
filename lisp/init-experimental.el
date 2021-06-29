@@ -30,6 +30,10 @@
     "https://www.npmjs.com/search?q=%s"
     :keybinding "n")
 
+  (defengine leetcode
+    "https://leetcode-cn.com/problemset/all/?search=%s"
+    :keybinding "l")
+
   (engine-mode t))
 
 ;; -----------------------------------------------------------------------------

@@ -12,6 +12,7 @@ import java.util.*;
  * @author Jinghui Hu
  * @since `(format-time-string "%Y-%m-%d")`, JDK1.8
  */
+@SuppressWarnings("all")
 public class `(jh/java-class-name)` {
 
 $>public static void main(String[] args) {
