@@ -12,6 +12,10 @@
   (setq sql-mysql-program "mysql")
   (setq sql-mysql-options '("-C" "-f" "-t" "-n" "--default-character-set=utf8mb4")))
 
+(when (jh/mac?)
+  (setq sql-mysql-program "mysql")
+  (setq sql-mysql-options '("-C" "-f" "-t" "-n")))
+
 ;; oracle sqlplus environments
 (setenv "NLS_LANG" "AMERICAN_AMERICA.AL32UTF8")
 (setenv "NLS_DATE_FORMAT" "YYYY-MM-DD HH24:MI:SS")
