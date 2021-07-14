@@ -27,7 +27,7 @@
      (worker . "service/impl/{}ServiceImpl.java")
      (controller . "controller/{}Controller.java")
      (implement . "impl/{}Impl.java")
-     (test . "{}Test.java"))
+     (test . "{}Tests.java"))
   "A Maven or Spring MVC related file alist, use `{}' represent TOPIC.")
 
 (defun spt/files-match (file pattern)
@@ -65,10 +65,10 @@
     (if (eq (car from) 'test)
       ;; test -> subject
       (jh/re-replace testdir srcdir
-        (jh/re-replace "Test.java$" ".java" file))
+        (jh/re-replace "Tests.java$" ".java" file))
       ;; subject -> test
       (jh/re-replace srcdir testdir
-        (jh/re-replace ".java$" "Test.java" file)))))
+        (jh/re-replace ".java$" "Tests.java" file)))))
 
 (defun spt/swap-implement-and-service-file (file from to)
   "Switch implement and service file."
