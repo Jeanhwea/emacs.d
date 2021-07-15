@@ -317,7 +317,7 @@
     ;; ((member major-mode '(c++-mode cuda-mode)) (jh/format-cc-source))
     ((member major-mode '(c++-mode cuda-mode)) (jh/indent-current-buffer))
     ((member major-mode
-       '(emacs-lisp-mode less-css-mode mhtml-mode nxml-mode sh-mode ymal-mode))
+       '(emacs-lisp-mode less-css-mode sgml-mode mhtml-mode nxml-mode sh-mode ymal-mode))
       (jh/indent-current-buffer))
     (t (user-error "Ops, no format backend!"))))
 
