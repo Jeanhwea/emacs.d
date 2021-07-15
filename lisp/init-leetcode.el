@@ -34,7 +34,7 @@
 (defun lc/make-url-string (qid slug name)
   "Make url link string."
   (let ((base "https://leetcode-cn.com/problems"))
-    (format "[[%s/%s/][LC%s]] %s" base slug qid name)))
+    (format "[[%s/%s/][LC%03d]] %s" base slug (string-to-number qid) name)))
 
 (defun leetcode-trans ()
   "Trans to leetcode url"
