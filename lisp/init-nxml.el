@@ -1,5 +1,6 @@
 (add-hook 'nxml-mode-hook
   #'(lambda ()
+      (sgml-mode)
       (hl-line-mode 1)
       (add-to-list 'hs-special-modes-alist
         (list 'nxml-mode
