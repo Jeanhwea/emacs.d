@@ -67,6 +67,7 @@
 ;; misc
 ;; -----------------------------------------------------------------------------
 (require 'init-ffmpeg)
+(require 'init-leetcode)
 (require 'init-experimental)
 (require 'init-keymate)
 
