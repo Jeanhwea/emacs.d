@@ -68,6 +68,7 @@
 ;; -----------------------------------------------------------------------------
 (require 'init-ffmpeg)
 (require 'init-leetcode)
+(require 'init-apidocs)
 (require 'init-experimental)
 (require 'init-keymate)
 
