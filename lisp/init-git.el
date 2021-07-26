@@ -12,12 +12,16 @@
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
 
-  (add-to-list 'browse-at-remote-remote-type-regexps
-    '("^mtiisl\\.cn/gitlab$" . "gitlab"))
+  (add-to-list 'browse-at-remote-remote-type-regexps '("^mtiisl\\.cn/gitlab$" . "gitlab"))
+  (add-to-list 'browse-at-remote-remote-type-regexps '("^192\\.168\\.0\\.202$" . "gitlab"))
 
   (defadvice browse-at-remote--get-url-from-remote
     (after mtiisl-gitlab activate)
     (let ((domain (car ad-return-value)) (url (cdr ad-return-value)))
+      ;; force use http for 202
+      (when (string-match-p ".*192.168.0.202.*" url)
+        (setq url (jh/re-replace "^https" "http" url)))
+      ;; force add '/gitlab' sub-path for dev58
       (setq ad-return-value
         (cons
           (jh/re-replace "mtiisl.cn" "mtiisl.cn/gitlab" domain)
