@@ -138,6 +138,7 @@
 
 ** TODOs
    1. add *clipit*, intergrate with clipboard
+   2. add Javadoc searcher
 ** Link
    1. [[https://mirrors.tuna.tsinghua.edu.cn/gnu/emacs/windows/][emacs-windows-download tuna tsinghua]]
    2. [[http://mirrors.ustc.edu.cn/gnu/emacs/windows/][emacs-windows-download ustc]]
