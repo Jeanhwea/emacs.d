@@ -176,6 +176,8 @@
     (list
       'sanityinc-solarized-dark
       'zenburn
+      'spacemacs-light
+      'spacemacs-dark
       'sanityinc-solarized-light
       'sanityinc-tomorrow-bright
       'sanityinc-tomorrow-day
