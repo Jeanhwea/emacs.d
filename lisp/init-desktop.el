@@ -66,6 +66,7 @@
   recentf-exclude
   '(
      "/.emacs.d/elfeed/*"
+     "/.emacs.d/javadoc-cache/*"
      "/.emacs.d/elpa/*"
      "/.emacs.d/ido.last"
      "/.emacs.d/bookmarks"
