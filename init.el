@@ -129,7 +129,6 @@
          groovy-mode
          haskell-mode
          htmlize
-         java-imports
          javadoc-lookup
          jetbrains
          js-comint

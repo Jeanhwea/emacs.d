@@ -97,6 +97,10 @@
         (message (format "Run %s" file)))
       (user-error (format "Not a valid java sratch file: %s" file)))))
 
+(when (require 'javadoc-lookup)
+  (setq javadoc-dir "~/Code/apidocs/javadoc/jdk-8u301-docs/api")
+  (when (file-directory-p javadoc-dir) (javadoc-add-roots javadoc-dir)))
+
 ;; -----------------------------------------------------------------------------
 ;; meghanada
 ;;
