@@ -27,6 +27,7 @@
 .lsp-session-*
 workspace
 eclipse.jdt.ls
+/javadoc-cache/*
 
 
 # Created by https://www.gitignore.io/api/emacs
