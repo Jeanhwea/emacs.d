@@ -129,6 +129,8 @@
          groovy-mode
          haskell-mode
          htmlize
+         javadoc-lookup
+         jetbrains
          js-comint
          keyfreq
          leetcode
