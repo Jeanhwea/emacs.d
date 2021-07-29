@@ -130,6 +130,7 @@
          haskell-mode
          htmlize
          javadoc-lookup
+         java-imports
          jetbrains
          js-comint
          keyfreq
