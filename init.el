@@ -129,8 +129,8 @@
          groovy-mode
          haskell-mode
          htmlize
-         javadoc-lookup
          java-imports
+         javadoc-lookup
          jetbrains
          js-comint
          keyfreq
