@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: StringBuilder
+# name: StringBuffer
 # key: sb
 # --
-StringBuilder ${1:sb} = new StringBuilder(${2:length});$0
+StringBuffer ${1:sb} = new StringBuffer(${2:length});$0
