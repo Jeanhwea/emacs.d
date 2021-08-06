@@ -125,6 +125,7 @@
          flycheck
          flyspell-correct
          ggtags
+         go-mode
          graphviz-dot-mode
          groovy-mode
          haskell-mode
