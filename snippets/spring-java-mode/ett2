@@ -4,7 +4,7 @@
 # --
 package `(jh/java-package-name)`;
 
-import com.avic.mti.`(spt/proj)`.common.domain.entity.MesEntity;
+import com.avic.mti.common.domain.entity.MesEntity;
 import javax.persistence.*;
 
 
