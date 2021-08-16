@@ -109,6 +109,7 @@
          dashboard
          docker
          dockerfile-mode
+         dracula-theme
          edit-indirect
          editorconfig
          elfeed
