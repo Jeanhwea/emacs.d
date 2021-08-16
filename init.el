@@ -132,6 +132,7 @@
          haskell-mode
          htmlize
          javadoc-lookup
+         jetbrains-darcula-theme
          js-comint
          keyfreq
          leetcode
