@@ -464,7 +464,7 @@
   "open a eshell as a temporary shell, and rename the buffer to `*shrimp*'."
   (interactive)
   (let*
-    ((project (jh/project-name))
+    ((project (jh/shrimp-shell-name))
       (name (if project (format "*shrimp[%s]*" project) "*shrimp*")))
     (if (get-buffer name)
       (switch-to-buffer name) (let ((eshell-buffer-name name)) (eshell)))))

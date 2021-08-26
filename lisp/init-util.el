@@ -222,6 +222,15 @@
       (parent (regexp-quote (jh/parent-dir root))))
     (jh/re-replace parent "" root nil 'literal)))
 
+(defun jh/shrimp-shell-name ()
+  "Return the project name for shrimp shell name."
+  (let*
+    ((dir default-directory)
+      (root (directory-file-name (or (jh/git-root dir) dir)))
+      (parent (jh/parent-dir root))
+      (parent2 (regexp-quote (jh/parent-dir parent))))
+    (jh/re-replace parent2 "" root nil 'literal)))
+
 ;; -----------------------------------------------------------------------------
 ;; setup timer
 ;; -----------------------------------------------------------------------------
