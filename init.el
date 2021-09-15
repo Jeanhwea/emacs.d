@@ -56,6 +56,7 @@
 (require 'init-groovy)
 (require 'init-html)
 (require 'init-nxml)
+(require 'init-go)
 (require 'init-java)
 (require 'init-javascript)
 (require 'init-lisp)
