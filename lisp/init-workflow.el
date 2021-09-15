@@ -310,6 +310,7 @@
   (interactive)
   (cond
     ((eq major-mode 'java-mode) (jh/format-java-source))
+    ((eq major-mode 'go-mode) (gofmt))
     ((eq major-mode 'web-mode) (jh/format-js-source))
     ((eq major-mode 'python-mode) (elpy-format-code))
     ((eq major-mode 'typescript-mode) (tide-format))
@@ -625,6 +626,12 @@
   "Build and Run Java scratch codes."
   (interactive)
   (jh/run-java-scratch))
+
+(defun workflow-run-go-scratch ()
+  "Build and Run Go scratch codes."
+  (interactive)
+  (jh/run-go-scratch))
+
 
 (defun workflow-prettify-sql-file ()
   "Format all sql file."
