@@ -119,6 +119,7 @@
          emmet-mode
          engine-mode
          evil
+         evil-collection
          evil-leader
          exec-path-from-shell
          expand-region
