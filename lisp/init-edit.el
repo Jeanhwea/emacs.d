@@ -101,8 +101,14 @@
 ;; -----------------------------------------------------------------------------
 ;; evil-mode
 ;; -----------------------------------------------------------------------------
-(when (and (require 'evil) (require 'evil-leader))
-  (evil-mode 1)
+;; This should set before loading evil-mode, which is needed by evil-collection
+(setq evil-want-integration t)
+(setq evil-want-keybinding nil)
+
+(when (require 'evil)
+  (evil-mode 1))
+
+(when (require 'evil-leader)
   (global-evil-leader-mode)
   (evil-leader/set-leader ",")
   ;; (evil-leader/set-key
@@ -110,5 +116,8 @@
   ;;   "b" 'workflow-switch-to-buffer
   ;;   "k" 'kill-buffer)
   )
+
+(when (require 'evil-collection nil t)
+  (evil-collection-init))
 
 (provide 'init-edit)
