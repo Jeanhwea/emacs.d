@@ -126,6 +126,9 @@
 (when (file-directory-p (expand-file-name "site-lisp/howdoi" user-emacs-directory))
   (require 'howdoi))
 
+(when (require 'which-key)
+  (which-key-mode))
+
 ;; -----------------------------------------------------------------------------
 ;; chinese pinyin input method
 ;; git clone https://github.com/tumashu/pyim

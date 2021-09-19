@@ -167,8 +167,9 @@
          tide
          verb
          web-mode
+         which-key
          yaml-mode
-         zenburn-theme
          yasnippet
+         zenburn-theme
          ;; --------------------------------------------------------------------
          ))))
