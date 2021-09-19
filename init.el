@@ -108,6 +108,7 @@
          csv-mode
          cuda-mode
          dashboard
+         dired-k
          docker
          dockerfile-mode
          dracula-theme
