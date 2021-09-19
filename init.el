@@ -144,6 +144,8 @@
          lsp-ui
          lua-mode
          magit
+         magit-lfs
+         magit-todo
          markdown-mode
          monokai-theme
          multiple-cursors
