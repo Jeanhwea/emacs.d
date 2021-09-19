@@ -80,6 +80,9 @@
     ;; hunspell, aspell
     ispell-program-name "aspell"))
 
+;; edit inside grep buffer, which C-c C-p to toggle readonly mode
+(when (require 'wgrep))
+
 ;; -----------------------------------------------------------------------------
 ;; hungry-delete
 ;; -----------------------------------------------------------------------------

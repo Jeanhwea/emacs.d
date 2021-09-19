@@ -143,6 +143,7 @@
          lsp-mode
          lsp-ui
          lua-mode
+         wgrep
          magit
          magit-lfs
          magit-todo
