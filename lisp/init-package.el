@@ -11,6 +11,7 @@
   (when (version< emacs-version "27.0")
     (package-initialize)))
 
+(setq byte-compile-warnings '(cl-functions))
 (eval-when-compile (require 'cl))
 
 ;; load all the path in ~/.emacs.d/site-lisp
