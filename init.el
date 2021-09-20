@@ -137,13 +137,13 @@
          javadoc-lookup
          jetbrains-darcula-theme
          js-comint
+         keycast
          keyfreq
          leetcode
          lsp-java
          lsp-mode
          lsp-ui
          lua-mode
-         wgrep
          magit
          magit-lfs
          magit-todo
@@ -170,6 +170,7 @@
          tide
          verb
          web-mode
+         wgrep
          which-key
          yaml-mode
          yasnippet
