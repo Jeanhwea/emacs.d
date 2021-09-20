@@ -1,6 +1,9 @@
 ;; -----------------------------------------------------------------------------
 ;; initialize emacs package system
 ;; -----------------------------------------------------------------------------
+(setq byte-compile-warnings '(cl-functions))
+(require 'cl-lib)
+
 (when (require 'package)
   ;; using tsinghua mirror as default source
   (setq package-archives
@@ -11,8 +14,7 @@
   (when (version< emacs-version "27.0")
     (package-initialize)))
 
-(setq byte-compile-warnings '(cl-functions))
-(eval-when-compile (require 'cl))
+;; (eval-when-compile (require 'cl))
 
 ;; load all the path in ~/.emacs.d/site-lisp
 (defun jh/add-subdirs-to-load-path (parent-dir)
@@ -21,7 +23,7 @@
     (progn
       (setq load-path
         (append
-          (remove-if-not
+          (cl-remove-if-not
             (lambda (dir) (file-directory-p dir))
             (directory-files (expand-file-name parent-dir) t "^[^\\.]"))
           load-path)))))

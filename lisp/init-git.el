@@ -1,10 +1,11 @@
-(when (and (require 'magit) (require 'magit-lfs))
+(when (and (require 'magit))
   ;; repositories for magit-list-repositories
   (setq
     magit-repository-directories `((,user-emacs-directory . 0)))
   (if (jh/windows?)
     (add-to-list 'magit-repository-directories '("e:/Code" . 3))
     (add-to-list 'magit-repository-directories '("~/Code" . 3)))
+  ;; (require 'magit-lfs)
   (global-set-key (kbd "C-x g") 'magit-status))
 
 
