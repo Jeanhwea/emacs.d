@@ -1,13 +1,17 @@
+;; go get -u -v github.com/rogpeppe/godef
+;; go get -u -v golang.org/x/tools/cmd/goimports
+;; go get -u -v github.com/nsf/gocode
+
 (add-hook 'go-mode-hook
   #'(lambda()
       (setq
-        ;; go get -u -v golang.org/x/tools/cmd/goimports
         gofmt-command "goimports"
         show-trailing-whitespace t
         indent-tabs-mode nil)
       ;; (flyspell-mode 1)
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)))
+
 
 (defun jh/run-go-scratch (&optional file)
   "Run go scratch source code."
