@@ -621,17 +621,23 @@
   (interactive)
   (kill-new (spt/jpa-encode-formula (spt/jpa-yank-sql-str))))
 
-
-(defun workflow-run-java-scratch ()
-  "Build and Run Java scratch codes."
+(defun workflow-run-scratch ()
+  "Run scratch file according to file suffix."
   (interactive)
-  (jh/run-java-scratch))
+  (cond
+    ((eq major-mode 'go-mode) (jh/run-go-scratch))
+    ((eq major-mode 'java-mode) (jh/run-java-scratch))
+    (t (user-error "Ops: unknown scratch file type."))))
 
-(defun workflow-run-go-scratch ()
-  "Build and Run Go scratch codes."
-  (interactive)
-  (jh/run-go-scratch))
+;; (defun workflow-run-java-scratch ()
+;;   "Build and Run Java scratch codes."
+;;   (interactive)
+;;   (jh/run-java-scratch))
 
+;; (defun workflow-run-go-scratch ()
+;;   "Build and Run Go scratch codes."
+;;   (interactive)
+;;   (jh/run-go-scratch))
 
 (defun workflow-prettify-sql-file ()
   "Format all sql file."
