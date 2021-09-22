@@ -1,6 +1,13 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; go get -u -v github.com/rogpeppe/godef
 ;; go get -u -v golang.org/x/tools/cmd/goimports
-;; go get -u -v github.com/nsf/gocode
+;; go get -u -v github.com/mdempsky/gocode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when (require 'company-go)
+  (setq company-tooltip-limit 20
+    company-idle-delay .3
+    company-echo-delay 0
+    company-begin-commands '(self-insert-command)))
 
 (add-hook 'go-mode-hook
   #'(lambda()
@@ -8,10 +15,14 @@
         gofmt-command "goimports"
         show-trailing-whitespace t
         indent-tabs-mode nil)
+
+      ;; only use company-go in go-mode
+      ;; (set (make-local-variable 'company-backends) '(company-go))
+      ;; (company-mode)
+
       ;; (flyspell-mode 1)
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)))
-
 
 (defun jh/run-go-scratch (&optional file)
   "Run go scratch source code."
@@ -30,6 +41,5 @@
         (display-buffer sbuf)
         (message (format "Run %s" file)))
       (user-error (format "Not a valid go sratch file: %s" file)))))
-
 
 (provide 'init-go)

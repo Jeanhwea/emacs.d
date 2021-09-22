@@ -102,6 +102,7 @@
          color-theme-sanityinc-solarized
          color-theme-sanityinc-tomorrow
          company
+         company-go
          company-fuzzy
          counsel
          csharp-mode
