@@ -4,6 +4,7 @@
 ;; go get -u -v github.com/mdempsky/gocode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when (require 'company-go)
+  ;; see https://github.com/mdempsky/gocode
   (setq company-tooltip-limit 20
     company-idle-delay .3
     company-echo-delay 0
