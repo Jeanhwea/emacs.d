@@ -19,8 +19,9 @@
   #'(lambda()
       (setq
         gofmt-command "goimports"
-        show-trailing-whitespace t
-        indent-tabs-mode nil)
+        ;; indent-tabs-mode nil
+        tab-width 4
+        show-trailing-whitespace t)
 
       ;; lsp-mode for golang
       (lsp-deferred)
