@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: fmt.Sprintf(...) function
+# key: sp
+# --
+fmt.Sprintf($1)$0

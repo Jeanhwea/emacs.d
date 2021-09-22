@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: for k, v := range object { ... }
+# key: fore
+# --
+for ${1:_}, ${2:_} := range ${3:object} {
+$>$0
+}

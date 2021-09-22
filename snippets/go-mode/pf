@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: fmt.Printf(...) function
+# key: pf
+# --
+fmt.Printf($1)$0
