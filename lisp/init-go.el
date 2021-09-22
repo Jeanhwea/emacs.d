@@ -3,12 +3,17 @@
 ;; go get -u -v golang.org/x/tools/cmd/goimports
 ;; go get -u -v github.com/mdempsky/gocode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(when (require 'company-go)
-  ;; see https://github.com/mdempsky/gocode
-  (setq company-tooltip-limit 20
-    company-idle-delay .3
-    company-echo-delay 0
-    company-begin-commands '(self-insert-command)))
+
+;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
+
+(when (require 'lsp-mode)
+  ;; Set up before-save hooks to format buffer and add/delete imports.
+  ;; Make sure you don't have other gofmt/goimports hooks enabled.
+  ;; (defun lsp-go-install-save-hooks ()
+  ;;   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  ;;   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  ;; (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+  )
 
 (add-hook 'go-mode-hook
   #'(lambda()
@@ -17,9 +22,8 @@
         show-trailing-whitespace t
         indent-tabs-mode nil)
 
-      ;; only use company-go in go-mode
-      ;; (set (make-local-variable 'company-backends) '(company-go))
-      ;; (company-mode)
+      ;; lsp-mode for golang
+      (lsp-deferred)
 
       ;; (flyspell-mode 1)
       (hl-line-mode 1)
