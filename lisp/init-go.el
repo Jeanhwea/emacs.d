@@ -2,6 +2,7 @@
 ;; go get -u -v github.com/rogpeppe/godef
 ;; go get -u -v golang.org/x/tools/cmd/goimports
 ;; go get -u -v github.com/mdempsky/gocode
+;; go get -u -v golang.org/x/tools/gopls
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
