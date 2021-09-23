@@ -30,6 +30,7 @@
 
       ;; https://evil.readthedocs.io/en/latest/keymaps.html
       (define-key evil-normal-state-local-map (kbd "gd") 'lsp-find-definition)
+      (define-key evil-normal-state-local-map (kbd "gr") 'lsp-rename)
 
       ;; (flyspell-mode 1)
       (hl-line-mode 1)
