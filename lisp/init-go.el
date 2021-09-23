@@ -26,6 +26,10 @@
 
       ;; lsp-mode for golang
       (lsp-deferred)
+      ;; (local-set-key (kbd "gd") 'lsp-find-definition)
+
+      ;; https://evil.readthedocs.io/en/latest/keymaps.html
+      (define-key evil-normal-state-local-map (kbd "gd") 'lsp-find-definition)
 
       ;; (flyspell-mode 1)
       (hl-line-mode 1)
