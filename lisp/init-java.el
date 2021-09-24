@@ -33,6 +33,10 @@
              ;; ("for" . 8704)             ; ∀
              ;; ----------------------------------------------------------------
              )))
+
+      ;; Install jdtls: 1. download & 2. put it into CLASSPATH
+      ;; https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/
+
       ;; (flyspell-mode 1)
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)))
