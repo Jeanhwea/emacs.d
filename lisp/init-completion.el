@@ -36,4 +36,10 @@
   (global-set-key (kbd "C-c r") 'counsel-recentf)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
+;; -----------------------------------------------------------------------------
+;; eglot
+;; -----------------------------------------------------------------------------
+(when (require 'eglot))
+
+
 (provide 'init-completion)
