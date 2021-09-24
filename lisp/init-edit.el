@@ -114,11 +114,13 @@
 (when (require 'evil-leader)
   (global-evil-leader-mode)
   (evil-leader/set-leader ",")
-  ;; (evil-leader/set-key
-  ;;   "e" 'find-file
-  ;;   "b" 'workflow-switch-to-buffer
-  ;;   "k" 'kill-buffer)
-  )
+  (evil-leader/set-key-for-mode 'java-mode "r" 'eglot-rename)
+  (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
+  (evil-leader/set-key
+    "c" 'workflow-git-commit-changes
+    "x" 'kill-buffer
+    "s" 'counsel-M-x
+    "f" 'workflow-format-current-source))
 
 (when (require 'evil-collection nil t)
   (evil-collection-init))
