@@ -93,6 +93,9 @@
      (quote
        (
          ;; --------------------------------------------------------------------
+         ;; lsp-java
+         ;; lsp-mode
+         ;; lsp-ui
          ace-jump-mode
          adoc-mode
          ag
@@ -114,6 +117,7 @@
          dracula-theme
          edit-indirect
          editorconfig
+         eglot
          elfeed
          elm-mode
          elpy
@@ -140,10 +144,6 @@
          keycast
          keyfreq
          leetcode
-         eglot
-         ;; lsp-java
-         ;; lsp-mode
-         ;; lsp-ui
          lua-mode
          magit
          magit-lfs
