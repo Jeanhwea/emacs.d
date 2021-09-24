@@ -140,9 +140,10 @@
          keycast
          keyfreq
          leetcode
-         lsp-java
-         lsp-mode
-         lsp-ui
+         eglot
+         ;; lsp-java
+         ;; lsp-mode
+         ;; lsp-ui
          lua-mode
          magit
          magit-lfs
