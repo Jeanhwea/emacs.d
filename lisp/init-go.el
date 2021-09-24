@@ -20,6 +20,7 @@
   #'(lambda()
       (setq
         gofmt-command "goimports"
+        lsp-headerline-breadcrumb-enable nil
         ;; indent-tabs-mode nil
         tab-width 4
         show-trailing-whitespace t)
