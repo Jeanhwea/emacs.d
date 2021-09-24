@@ -1,20 +1,26 @@
 # personal added items
+/.lsp-session-*
+/.cache
 /.dap-breakpoints
 /.mc-lists.el
 /bookmarks
+/eclipse.jdt.ls/*
+/eglot-eclipse-jdt-cache/*
+/elfeed/
 /elpa*
 /elpy/*
-/elfeed/
-/pyim/*
 /games/
 /ido.last
 /image-dired/
+/javadoc-cache/*
 /jdee-server/
+/lsp-cache
 /meghanada/
 /newsticker/
 /places
 /projectile-bookmarks.eld
 /projectile.cache
+/pyim/*
 /recentf
 /site-lisp/
 /smex-items
@@ -22,12 +28,7 @@
 /undo/
 /url/
 /var/
-/.cache
-/lsp-cache
-.lsp-session-*
-workspace
-eclipse.jdt.ls
-/javadoc-cache/*
+/workspace/*
 
 
 # Created by https://www.gitignore.io/api/emacs
