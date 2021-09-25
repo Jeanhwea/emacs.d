@@ -37,7 +37,7 @@
       ;; Install jdtls
       ;; Step1. Download from https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/
       ;; Step2. put it into CLASSPATH
-      ;; (setenv "CLASSPATH" "/Users/hujinghui/.local/classpath/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.6.300.v20210813-1054.jar")
+      ;; (setenv "CLASSPATH" ".:/Users/hujinghui/.local/classpath/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.6.300.v20210813-1054.jar")
       ;; start jdtls server by M-x eglot
 
       ;; (flyspell-mode 1)
