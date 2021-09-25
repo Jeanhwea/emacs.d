@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Define class with type ... struct {}
+# key: cl
+# --
+
+type ${1:ClassName} struct {
+$>$0
+}
