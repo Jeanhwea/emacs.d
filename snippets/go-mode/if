@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Define interface with type ... interface {}
+# key: if
+# --
+
+type ${1:InterfaceName} interface {
+$>$0
+}
