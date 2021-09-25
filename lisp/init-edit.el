@@ -120,6 +120,7 @@
     "c" 'workflow-git-commit-changes
     "x" 'kill-buffer
     "s" 'counsel-M-x
+    "t" 'workflow-buffer-or-recentf-open
     "f" 'workflow-format-current-source))
 
 (when (require 'evil-collection nil t)
