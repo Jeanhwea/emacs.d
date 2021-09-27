@@ -1,8 +1,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; go get -u -v github.com/rogpeppe/godef
-;; go get -u -v golang.org/x/tools/cmd/goimports
-;; go get -u -v github.com/mdempsky/gocode
-;; go get -u -v golang.org/x/tools/gopls
+;; go install github.com/rogpeppe/godef@latest
+;; go install golang.org/x/tools/cmd/goimports@latest
+;; go install github.com/mdempsky/gocode@latest
+;; go install golang.org/x/tools/gopls@latest
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
