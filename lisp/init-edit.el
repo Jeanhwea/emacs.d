@@ -114,11 +114,11 @@
 (when (require 'evil-leader)
   (global-evil-leader-mode)
   (evil-leader/set-leader ",")
-  (evil-leader/set-key-for-mode
-    'java-mode "<SPC>" 'eglot-code-actions
-    'java-mode "r" 'eglot-rename)
+  (evil-leader/set-key-for-mode 'java-mode "r" 'eglot-rename)
+  (evil-leader/set-key-for-mode 'java-mode "a" 'eglot-code-actions)
   (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
   (evil-leader/set-key
+    "g" 'workflow-git-popup
     "c" 'workflow-git-commit-changes
     "x" 'kill-buffer
     "s" 'counsel-M-x
