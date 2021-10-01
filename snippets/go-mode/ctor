@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: constructor
+# key: ctor
+# --
+func New${1:ClassName}($2) *$1 {
+$>return &$1{$0}
+}
