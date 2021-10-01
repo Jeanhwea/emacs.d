@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Define a variable with default value.
+# key: var
+# --
+${1:VARNAME}=\$\{$1:=$0\}
