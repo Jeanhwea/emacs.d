@@ -133,14 +133,14 @@
 ;; chinese pinyin input method
 ;; git clone https://github.com/tumashu/pyim
 ;; -----------------------------------------------------------------------------
-(when
-  (and (jh/linux?) (require 'pyim) (require 'pyim-basedict))
-  (pyim-basedict-enable)
-  (setq
-    pyim-dicts
-    `((:name "bigdict" :file ,(expand-file-name "pyim/bigdict.pyim" user-emacs-directory))
-       (:name "sougou" :file ,(expand-file-name "pyim/sougou.pyim" user-emacs-directory)))
-    pyim-page-tooltip 'posframe default-input-method "pyim"))
+;; (when
+;;   (and (jh/linux?) (require 'pyim) (require 'pyim-basedict))
+;;   (pyim-basedict-enable)
+;;   (setq
+;;     pyim-dicts
+;;     `((:name "bigdict" :file ,(expand-file-name "pyim/bigdict.pyim" user-emacs-directory))
+;;        (:name "sougou" :file ,(expand-file-name "pyim/sougou.pyim" user-emacs-directory)))
+;;     pyim-page-tooltip 'posframe default-input-method "pyim"))
 
 ;; -----------------------------------------------------------------------------
 ;; font
