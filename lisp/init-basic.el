@@ -41,8 +41,8 @@
 (editorconfig-mode 1)
 (show-paren-mode 1)
 (menu-bar-mode -1)
-(scroll-bar-mode -1)
 (tool-bar-mode -1)
+(when window-system (scroll-bar-mode -1))
 ;; (linum-mode 1)
 
 ;; (nyan-mode 1)
