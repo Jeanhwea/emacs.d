@@ -130,7 +130,7 @@
     "fb" 'workflow-buffer-or-recentf-open
     "fg" 'workflow-git-open-file
     "ff" 'workflow-format-current-source
-    "k" 'kill-buffer))
+    "kb" 'kill-buffer))
 
 (when (require 'evil-collection nil t)
   (evil-collection-init))
