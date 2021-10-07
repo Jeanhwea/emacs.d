@@ -126,6 +126,7 @@
          evil
          evil-collection
          evil-leader
+         evil-nerd-commenter
          exec-path-from-shell
          expand-region
          figlet

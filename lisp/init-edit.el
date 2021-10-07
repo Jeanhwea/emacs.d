@@ -118,12 +118,18 @@
   (evil-leader/set-key-for-mode 'java-mode "a" 'eglot-code-actions)
   (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
   (evil-leader/set-key
-    "g" 'workflow-git-popup
-    "c" 'workflow-git-commit-changes
-    "x" 'kill-buffer
-    "s" 'counsel-M-x
-    "t" 'workflow-buffer-or-recentf-open
-    "f" 'workflow-format-current-source))
+    "gg" 'workflow-git-popup
+    "gc" 'workflow-git-commit-changes
+    "ma" 'smerge-keep-all
+    "mc" 'smerge-keep-current
+    "mm" 'smerge-keep-mine
+    "mo" 'smerge-keep-other
+    "xx" 'counsel-M-x
+    "xw" 'workflow-M-x
+    "of" 'workflow-buffer-or-recentf-open
+    "cc" 'evilnc-comment-or-uncomment-lines
+    "f" 'workflow-format-current-source
+    "k" 'kill-buffer))
 
 (when (require 'evil-collection nil t)
   (evil-collection-init))
