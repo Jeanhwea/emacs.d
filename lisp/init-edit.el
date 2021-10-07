@@ -118,7 +118,6 @@
   (evil-leader/set-key-for-mode 'java-mode "a" 'eglot-code-actions)
   (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
 
-  (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
   (evilnc-default-hotkeys)
 
   (evil-leader/set-key
