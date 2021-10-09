@@ -5,8 +5,8 @@
       (setq
         show-trailing-whitespace t
         indent-tabs-mode nil
-        tab-width 2
-        python-indent-offset 2
+        tab-width 4
+        python-indent-offset 4
         prettify-symbols-alist
         (append prettify-symbols-alist
           '(
