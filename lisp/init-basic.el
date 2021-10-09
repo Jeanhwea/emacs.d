@@ -136,6 +136,6 @@
   (setq doc-view-ghostscript-program "gswin32c"))
 
 ;; Disable ask when local variable in .dir-locals.el
-(setq enable-local-variables :safe)
+(setq enable-local-variables :all)
 
 (provide 'init-basic)
