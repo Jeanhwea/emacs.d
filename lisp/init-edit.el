@@ -124,15 +124,17 @@
     "cc" 'evilnc-comment-or-uncomment-lines
     "gg" 'workflow-git-popup
     "gc" 'workflow-git-commit-changes
+    "gf" 'workflow-git-open-file
+    "ss" 'workflow-search-any-text
+    "sg" 'workflow-search-git
     "ma" 'smerge-keep-all
     "mc" 'smerge-keep-current
     "mm" 'smerge-keep-mine
     "mo" 'smerge-keep-other
     "xx" 'counsel-M-x
     "xw" 'workflow-M-x
-    "fb" 'workflow-buffer-or-recentf-open
-    "fg" 'workflow-git-open-file
-    "ff" 'workflow-format-current-source
+    "ff" 'workflow-buffer-or-recentf-open
+    "f=" 'workflow-format-current-source
     "kb" 'kill-buffer))
 
 (when (require 'evil-collection nil t)
