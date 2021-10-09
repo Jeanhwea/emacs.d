@@ -133,6 +133,9 @@
     "mo" 'smerge-keep-other
     "xx" 'counsel-M-x
     "xw" 'workflow-M-x
+    "wh" 'workflow-horizontal-split-window
+    "wv" 'workflow-vertical-split-window
+    "wo" 'other-window
     "ff" 'workflow-buffer-or-recentf-open
     "f=" 'workflow-format-current-source
     "kb" 'kill-buffer))
