@@ -75,7 +75,7 @@
     ((sbufname "*python-scratch-buffer*")
       (file (or file (buffer-file-name)))
       (filename file))
-    (setq cmd (format "python run %s" file))
+    (setq cmd (format "python %s" file))
     (if (string-match-p ".*\\.py$" filename)
       (progn
         (save-buffer)
