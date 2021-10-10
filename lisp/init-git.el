@@ -1,4 +1,4 @@
-(when (and (require 'magit))
+(when (and (require 'magit) (require 'magit-todos))
   ;; repositories for magit-list-repositories
   (setq
     magit-repository-directories `((,user-emacs-directory . 0)))
