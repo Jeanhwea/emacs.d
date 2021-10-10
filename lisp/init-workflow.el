@@ -312,7 +312,7 @@
     ((eq major-mode 'java-mode) (jh/format-java-source))
     ((eq major-mode 'go-mode) (gofmt))
     ((eq major-mode 'web-mode) (jh/format-js-source))
-    ((eq major-mode 'python-mode) (elpy-format-code))
+    ((eq major-mode 'python-mode) (eglot-format-buffer))
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (jh/format-sql-source))
     ;; ((member major-mode '(c++-mode cuda-mode)) (jh/format-cc-source))

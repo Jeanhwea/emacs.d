@@ -48,6 +48,11 @@
              ;; ----------------------------------------------------------------
              )))
       (hl-line-mode 1)
+
+      ;; https://github.com/python-lsp/python-lsp-server
+      ;; pip install 'python-lsp-server[all]'
+      (eglot-ensure)
+
       ;; (elpy-mode 1)
       (rainbow-delimiters-mode 1)))
 
