@@ -148,7 +148,7 @@
          lua-mode
          magit
          magit-lfs
-         magit-todo
+         magit-todos
          markdown-mode
          monokai-theme
          multiple-cursors
