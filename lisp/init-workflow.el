@@ -626,6 +626,7 @@
   (interactive)
   (cond
     ((eq major-mode 'go-mode) (jh/run-go-scratch))
+    ((eq major-mode 'python-mode) (jh/run-python-scratch))
     ((eq major-mode 'java-mode) (jh/run-java-scratch))
     (t (user-error "Ops: unknown scratch file type."))))
 

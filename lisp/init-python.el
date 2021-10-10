@@ -69,4 +69,22 @@
     python-shell-interpreter "python3"
     python-shell-interpreter-args "-i"))
 
+(defun jh/run-python-scratch (&optional file)
+  "Run python scratch source code."
+  (let*
+    ((sbufname "*python-scratch-buffer*")
+      (file (or file (buffer-file-name)))
+      (filename file))
+    (setq cmd (format "python run %s" file))
+    (if (string-match-p ".*\\.py$" filename)
+      (progn
+        (save-buffer)
+        (if (get-buffer sbufname)
+          (setq sbuf (get-buffer sbufname))
+          (setq sbuf (generate-new-buffer sbufname)))
+        (shell-command cmd sbuf sbuf)
+        (display-buffer sbuf)
+        (message (format "Run %s" file)))
+      (user-error (format "Not a valid go sratch file: %s" file)))))
+
 (provide 'init-python)
