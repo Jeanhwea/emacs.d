@@ -120,7 +120,7 @@
          eglot
          elfeed
          elm-mode
-         elpy
+         ;; elpy
          emmet-mode
          engine-mode
          evil

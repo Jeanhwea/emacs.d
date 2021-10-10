@@ -48,16 +48,16 @@
              ;; ----------------------------------------------------------------
              )))
       (hl-line-mode 1)
-      (elpy-mode 1)
+      ;; (elpy-mode 1)
       (rainbow-delimiters-mode 1)))
 
-(when (require 'elpy)
-  ;; pip install jedi flake8 autopep8 rope
-  (delete 'elpy-module-highlight-indentation elpy-modules)
-  (elpy-enable)
-  (when (executable-find "python3")
-    (setq elpy-rpc-python-command "python3"))
-  (local-set-key (kbd "M-.") 'elpy-goto-definition))
+;; (when (require 'elpy)
+;;   ;; pip install jedi flake8 autopep8 rope
+;;   (delete 'elpy-module-highlight-indentation elpy-modules)
+;;   (elpy-enable)
+;;   (when (executable-find "python3")
+;;     (setq elpy-rpc-python-command "python3"))
+;;   (local-set-key (kbd "M-.") 'elpy-goto-definition))
 
 (when (executable-find "python3")
   (setq
