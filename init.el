@@ -4,6 +4,8 @@
 (setq-default
   user-full-name "Jinghui Hu"
   user-mail-address "hujinghui@buaa.edu.cn"
+  user-init-file (expand-file-name "user-init.el" user-emacs-directory)
+  custom-file (expand-file-name "user-custom.el" user-emacs-directory)
   debug-on-error t)
 
 (let ((mini-version "26.1"))
