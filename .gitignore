@@ -1,7 +1,7 @@
 # personal added items
-/.lsp-session-*
 /.cache
 /.dap-breakpoints
+/.lsp-session-*
 /.mc-lists.el
 /bookmarks
 /eclipse.jdt.ls/*
@@ -29,6 +29,7 @@
 /url/
 /var/
 /workspace/*
+user-*.el
 
 
 # Created by https://www.gitignore.io/api/emacs
