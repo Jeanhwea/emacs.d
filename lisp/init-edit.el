@@ -92,8 +92,8 @@
 ;; -----------------------------------------------------------------------------
 ;; multiple-cursors
 ;; -----------------------------------------------------------------------------
-(when (require 'multiple-cursors)
-  (global-set-key (kbd "C-c C-l") 'mc/edit-lines))
+;; (when (require 'multiple-cursors)
+;;   (global-set-key (kbd "C-c C-l") 'mc/edit-lines))
 
 ;; -----------------------------------------------------------------------------
 ;; expand-region

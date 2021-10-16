@@ -98,6 +98,7 @@
          ;; lsp-java
          ;; lsp-mode
          ;; lsp-ui
+         ;; multiple-cursors
          ace-jump-mode
          adoc-mode
          ag
@@ -153,7 +154,6 @@
          magit-todos
          markdown-mode
          monokai-theme
-         multiple-cursors
          nyan-mode
          org-bullets
          pangu-spacing
