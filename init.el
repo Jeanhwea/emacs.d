@@ -8,11 +8,15 @@
 
 
 ;; setup local file
-(defconst jh/init-file (expand-file-name "user-init.el" user-emacs-directory))
-(defconst jh/cust-file (expand-file-name "user-custom.el" user-emacs-directory))
+(defconst jh/init-file
+  (expand-file-name "user-init.el" user-emacs-directory))
+(defconst jh/cust-file
+  (expand-file-name "user-custom.el" user-emacs-directory))
 
-(when (file-exists-p jh/init-file) (setq-default user-init-file jh/init-file))
-(when (file-exists-p jh/cust-file) (setq-default custom-file jh/cust-file))
+(when (file-exists-p jh/init-file)
+  (setq-default user-init-file jh/init-file))
+(when (file-exists-p jh/cust-file)
+  (setq-default custom-file jh/cust-file))
 
 
 (let ((mini-version "26.1"))
