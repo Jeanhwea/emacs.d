@@ -140,6 +140,7 @@
     "wv" 'workflow-vertical-split-window
     "wo" 'other-window
     "ff" 'workflow-buffer-or-recentf-open
+    "fs" 'workflow-switch-to-buffer
     "f=" 'workflow-format-current-source
     "kb" 'kill-buffer))
 
