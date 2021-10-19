@@ -139,6 +139,11 @@
   (let ((path (jh/absolute-path dir)))
     (string= path (jh/parent-dir path))))
 
+(defun jh/list-files-in-directory (dir)
+  "List all file in current directory."
+  (remove-if #'file-directory-p
+    (mapcar #'(lambda (f) (expand-file-name f dir)) (directory-files dir))))
+
 (defun jh/directory-sequence-recursively (dirs)
   "Return a list of dir, dir's parent, dir's great parent and more, which dir is the head of dirs."
   (let ((dir (car dirs)))
