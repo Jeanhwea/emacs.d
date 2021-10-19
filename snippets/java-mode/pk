@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: package
+# key: pk
+# --
+package `(jh/java-package-name)`;$0
