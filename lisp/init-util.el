@@ -160,6 +160,18 @@
   "Return the file name without extension."
   (file-name-nondirectory (file-name-sans-extension file)))
 
+(defun jh/cycle-next-file (prev files)
+  "Cycle to next file"
+  (let ((curr (car files)))
+    (if (string= prev curr) curr
+      (jh/cycle-next-file curr (cdr files)))))
+
+(defun jh/cycle-buffer-next-file ()
+  "Cycle to next file related current buffer."
+  (let ((curr (buffer-file-name))
+         (files (jh/list-files-in-directory default-directory)))
+    (message (jh/cycle-next-file curr files))))
+
 ;; -----------------------------------------------------------------------------
 ;; File related helper
 ;; -----------------------------------------------------------------------------
