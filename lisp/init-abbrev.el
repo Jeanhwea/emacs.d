@@ -19,6 +19,7 @@
      ("thsi" "this")
      ("tshi" "this")
      ("tabel" "table")
+     ("udpate" "update")
      ;; abbr
      ("re" "return")
      ("ev" "environment")
