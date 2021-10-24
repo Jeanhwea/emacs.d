@@ -117,8 +117,8 @@
   (evil-leader/set-leader ",")
   (evilnc-default-hotkeys)
 
-  (evil-leader/set-key-for-mode 'java-mode "r" 'eglot-rename)
   (evil-leader/set-key-for-mode 'java-mode "a" 'eglot-code-actions)
+  (evil-leader/set-key-for-mode 'java-mode "r" 'eglot-rename)
   (evil-leader/set-key-for-mode 'python-mode "r" 'eglot-rename)
   (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
 
@@ -134,6 +134,7 @@
     "mc" 'smerge-keep-current
     "mm" 'smerge-keep-mine
     "mo" 'smerge-keep-other
+    "hh" 'hs-toggle-hiding
     "xx" 'counsel-M-x
     "xw" 'workflow-M-x
     "wh" 'workflow-horizontal-split-window
