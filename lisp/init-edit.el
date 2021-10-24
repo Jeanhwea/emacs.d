@@ -124,6 +124,7 @@
 
   (evil-leader/set-key
     "cc" 'evilnc-comment-or-uncomment-lines
+    "ee" 'workflow-alternative-buffer
     "ew" 'workflow-dot-open-file
     "gg" 'workflow-git-popup
     "gc" 'workflow-git-commit-changes
