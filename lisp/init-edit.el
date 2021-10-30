@@ -142,6 +142,7 @@
     "xw" 'workflow-M-x
     "wh" 'workflow-horizontal-split-window
     "wv" 'workflow-vertical-split-window
+    "wx" 'workflow-close-current-window
     "wo" 'other-window
     "ff" 'workflow-buffer-or-recentf-open
     "fs" 'workflow-switch-to-buffer
