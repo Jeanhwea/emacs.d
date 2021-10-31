@@ -147,6 +147,7 @@
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
     "wv" 'workflow-vertical-split-window
+    "ww" 'workflow-delete-other-windows
     "wx" 'workflow-close-current-window
     "xw" 'workflow-M-x
     "xx" 'counsel-M-x))
