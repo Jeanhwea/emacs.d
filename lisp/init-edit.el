@@ -127,27 +127,29 @@
   (evil-leader/set-key
     "cc" 'evilnc-comment-or-uncomment-lines
     "ee" 'workflow-alternative-buffer
+    "es" 'workflow-eshell-open-from-here
     "ew" 'workflow-dot-open-file
-    "gg" 'workflow-git-popup
+    "f=" 'workflow-format-current-source
+    "ff" 'workflow-buffer-or-recentf-open
+    "fs" 'workflow-switch-to-buffer
     "gc" 'workflow-git-commit-changes
     "gf" 'workflow-git-open-file
-    "ss" 'workflow-search-any-text
-    "sg" 'workflow-search-git
+    "gg" 'workflow-git-popup
+    "hh" 'hs-toggle-hiding
+    "kb" 'kill-buffer
     "ma" 'smerge-keep-all
     "mc" 'smerge-keep-current
     "mm" 'smerge-keep-mine
     "mo" 'smerge-keep-other
-    "hh" 'hs-toggle-hiding
-    "xx" 'counsel-M-x
-    "xw" 'workflow-M-x
+    "sa" 'workflow-save-all-buffers
+    "sg" 'workflow-search-git
+    "ss" 'workflow-search-any-text
     "wh" 'workflow-horizontal-split-window
+    "wo" 'other-window
     "wv" 'workflow-vertical-split-window
     "wx" 'workflow-close-current-window
-    "wo" 'other-window
-    "ff" 'workflow-buffer-or-recentf-open
-    "fs" 'workflow-switch-to-buffer
-    "f=" 'workflow-format-current-source
-    "kb" 'kill-buffer))
+    "xw" 'workflow-M-x
+    "xx" 'counsel-M-x))
 
 (when (require 'evil-collection nil t)
   (evil-collection-init))
