@@ -34,6 +34,8 @@
              ;; ----------------------------------------------------------------
              )))
 
+      (define-key evil-normal-state-local-map (kbd "gi") 'eglot-find-implementation)
+
       ;; Install jdtls
       ;; Step1. Download from https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/
       ;; Step2. put it into CLASSPATH
