@@ -6,6 +6,11 @@
   user-mail-address "hujinghui@buaa.edu.cn"
   debug-on-error t)
 
+;; -----------------------------------------------------------------------------
+;; local settings
+;; -----------------------------------------------------------------------------
+(let ((pre-local-settings "~/.emacs.pre.el"))
+  (when (file-exists-p pre-local-settings) (load-file pre-local-settings)))
 
 ;; setup local file
 (defconst jh/init-file
