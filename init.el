@@ -106,6 +106,7 @@
      (quote
        (
          ;; --------------------------------------------------------------------
+         ;; elpy
          ;; lsp-java
          ;; lsp-mode
          ;; lsp-ui
@@ -134,7 +135,6 @@
          eglot
          elfeed
          elm-mode
-         ;; elpy
          emmet-mode
          engine-mode
          evil
@@ -182,6 +182,7 @@
          sqlformat
          string-inflection
          swiper
+         thrift
          tide
          verb
          web-mode
