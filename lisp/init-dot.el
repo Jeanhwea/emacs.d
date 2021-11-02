@@ -3,7 +3,7 @@
       (setq
         show-trailing-whitespace t
         indent-tabs-mode nil
-        tab-width 2
+        tab-width 4
         graphviz-dot-auto-indent-on-semi nil
         graphviz-dot-indent-width 2)
       (hl-line-mode 1)

@@ -3,8 +3,8 @@
       (setq
         show-trailing-whitespace t
         indent-tabs-mode nil
-        c-basic-offset 2
-        tab-width 2
+        c-basic-offset 4
+        tab-width 4
         prettify-symbols-alist
         (append prettify-symbols-alist
           '(

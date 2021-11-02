@@ -3,7 +3,7 @@
       (setq
         show-trailing-whitespace t
         indent-tabs-mode nil
-        tab-width 2
+        tab-width 4
         js-indent-level 2
         typescript-indent-level 2
         ;; tide-format-options

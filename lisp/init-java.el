@@ -3,8 +3,8 @@
       (setq
         show-trailing-whitespace t
         indent-tabs-mode nil
-        c-basic-offset 2
-        tab-width 2
+        c-basic-offset 4
+        tab-width 4
         compilation-scroll-output t
         compilation-ask-about-save nil
         compilation-error-regexp-alist '(java maven)
@@ -122,7 +122,7 @@
 ;;         ;; meghanada-mode on
 ;;         (meghanada-mode t)
 ;;         (flycheck-mode +1)
-;;         (setq c-basic-offset 2)
+;;         (setq c-basic-offset 4)
 ;;         ;; use code format
 ;;         ;; (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)
 ;;         ))

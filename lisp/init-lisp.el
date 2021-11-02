@@ -4,7 +4,7 @@
         show-trailing-whitespace t
         indent-tabs-mode nil
         lisp-indent-offset 2
-        tab-width 2
+        tab-width 4
         prettify-symbols-alist
         (append prettify-symbols-alist
           '(

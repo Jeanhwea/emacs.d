@@ -3,7 +3,7 @@
       (setq
         show-trailing-whitespace t
         indent-tabs-mode nil
-        tab-width 2)
+        tab-width 4)
       (setq abbrev-mode nil)
       (sqlind-minor-mode 1)
       (hl-line-mode 1)))
