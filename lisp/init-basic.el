@@ -88,6 +88,7 @@
   size-indication-mode t
   indent-tabs-mode nil
   fill-column 80
+  c-basic-offset 4
   tab-width 4)
 
 ;; -----------------------------------------------------------------------------
