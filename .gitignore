@@ -31,6 +31,8 @@
 /workspace/*
 user-*.el
 
+/snippets/dancer-mode/*
+
 
 # Created by https://www.gitignore.io/api/emacs
 
