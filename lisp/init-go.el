@@ -31,6 +31,9 @@
       (hl-line-mode 1)
       (rainbow-delimiters-mode 1)))
 
+(add-hook 'thrift-mode-hook
+  #'(lambda() (setq thrift-indent-level 4)))
+
 (defun jh/run-go-scratch (&optional file)
   "Run go scratch source code."
   (let*
