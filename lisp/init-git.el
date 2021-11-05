@@ -1,7 +1,7 @@
 (when (and (require 'magit) (require 'magit-todos))
   ;; repositories for magit-list-repositories
-  (setq
-    magit-repository-directories `((,user-emacs-directory . 0)))
+  ;; (setq
+  ;;   magit-repository-directories `((,user-emacs-directory . 0)))
   (if (jh/windows?)
     (add-to-list 'magit-repository-directories '("e:/Code" . 3))
     (add-to-list 'magit-repository-directories '("~/Code" . 3)))
