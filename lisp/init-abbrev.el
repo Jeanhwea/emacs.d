@@ -21,7 +21,7 @@
      ("tabel" "table")
      ("udpate" "update")
      ;; abbr
-     ("re" "return")
+     ;; ("re" "return")
      ("ev" "environment")
      ;; ------------------------------------------------------------------------
      ))
