@@ -125,8 +125,7 @@
   (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
 
   (evil-leader/set-key
-    "cc" 'evilnc-comment-or-uncomment-lines
-    "cr" 'comment-or-uncomment-region
+    "cc" 'workflow-comment-source-code
     "cw" 'workflow-replace
     "ee" 'workflow-alternative-buffer
     "es" 'workflow-eshell-open-from-here
