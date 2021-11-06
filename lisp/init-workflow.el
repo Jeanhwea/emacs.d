@@ -328,7 +328,7 @@
   (if
     (use-region-p)
     (comment-or-uncomment-region (region-beginning) (region-end))
-    (evilnc-comment-or-uncomment-lines)))
+    (comment-line 1)))
 
 (defun workflow-emmet-expand ()
   "Expand emmet line."
