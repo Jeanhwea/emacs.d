@@ -126,6 +126,7 @@
 
   (evil-leader/set-key
     "cc" 'evilnc-comment-or-uncomment-lines
+    "cr" 'comment-or-uncomment-region
     "cw" 'workflow-replace
     "ee" 'workflow-alternative-buffer
     "es" 'workflow-eshell-open-from-here
