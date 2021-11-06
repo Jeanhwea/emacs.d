@@ -154,6 +154,7 @@
          flyspell-correct
          ggtags
          go-mode
+         go-dlv
          graphviz-dot-mode
          groovy-mode
          haskell-mode
