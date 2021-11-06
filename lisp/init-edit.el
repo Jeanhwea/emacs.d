@@ -131,9 +131,9 @@
     "ee" 'workflow-alternative-buffer
     "es" 'workflow-eshell-open-from-here
     "ew" 'workflow-dot-open-file
-    "f=" 'workflow-format-current-source
+    "fb" 'workflow-switch-to-buffer
     "ff" 'workflow-buffer-or-recentf-open
-    "fs" 'workflow-switch-to-buffer
+    "fs" 'workflow-format-current-source
     "gc" 'workflow-git-commit-changes
     "gf" 'workflow-git-open-file
     "gg" 'workflow-git-popup
