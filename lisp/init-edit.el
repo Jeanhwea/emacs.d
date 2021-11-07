@@ -131,6 +131,8 @@
   (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
 
   (evil-leader/set-key
+    "bb" 'list-bookmarks
+    "bB" 'workflow-bookmark-current-file
     "cc" 'workflow-comment-source-code
     "cw" 'workflow-replace
     "ee" 'workflow-alternative-buffer
