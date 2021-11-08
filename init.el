@@ -153,8 +153,9 @@
          flycheck
          flyspell-correct
          ggtags
-         go-mode
          go-dlv
+         go-mode
+         go-tag
          graphviz-dot-mode
          groovy-mode
          haskell-mode
