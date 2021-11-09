@@ -153,6 +153,7 @@
          flycheck
          flyspell-correct
          ggtags
+         git-auto-commit-mode
          go-dlv
          go-mode
          go-tag
