@@ -138,6 +138,7 @@
     "db" 'gud-break
     "dc" 'gud-cont
     "dn" 'gud-next
+    "dp" 'gud-print
     "ds" 'gud-step
     "dw" 'gud-watch
     "ee" 'workflow-alternative-buffer
