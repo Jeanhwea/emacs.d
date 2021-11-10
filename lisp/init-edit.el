@@ -135,6 +135,11 @@
     "bB" 'workflow-bookmark-current-file
     "cc" 'workflow-comment-source-code
     "cw" 'workflow-replace
+    "db" 'gud-break
+    "dc" 'gud-cont
+    "dn" 'gud-next
+    "ds" 'gud-step
+    "dw" 'gud-watch
     "ee" 'workflow-alternative-buffer
     "es" 'workflow-eshell-open-from-here
     "ew" 'workflow-dot-open-file
