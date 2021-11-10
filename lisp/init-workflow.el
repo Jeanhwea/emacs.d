@@ -315,6 +315,7 @@
     ((eq major-mode 'python-mode) (eglot-format-buffer))
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (jh/format-sql-source))
+    ((eq major-mode 'thrift-mode) (jh/format-thrift-source))
     ;; ((member major-mode '(c++-mode cuda-mode)) (jh/format-cc-source))
     ((member major-mode '(c++-mode cuda-mode)) (jh/indent-current-buffer))
     ((member major-mode
