@@ -41,7 +41,7 @@
 
 ;; pip install sqlparse
 (defconst sqlformat-command
-  "sqlformat - -k upper -i upper -s -a --indent_width 2 --wrap_after 80"
+  "sqlformat - -k lower -i lower -s -a --indent_width 2 --wrap_after 80"
   "sqlformat command.")
 
 (defconst sql-format-command
