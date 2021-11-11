@@ -2,6 +2,9 @@
 ;; engine-mode
 ;; -----------------------------------------------------------------------------
 (when (require 'engine-mode)
+
+  (setq engine/keybinding-prefix "C-x /")
+
   (defengine allacronyms
     "https://www.allacronyms.com/%s/abbreviated"
     :keybinding "a")
