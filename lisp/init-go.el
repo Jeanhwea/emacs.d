@@ -15,7 +15,7 @@
   #'(lambda()
       (setq
         gofmt-command "goimports"
-        indent-tabs-mode nil
+        ;; indent-tabs-mode nil
         tab-width 4
         show-trailing-whitespace t)
 
