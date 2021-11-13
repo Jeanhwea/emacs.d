@@ -58,7 +58,7 @@
              ;; ----------------------------------------------------------------
              )))
       ;; highlight current line
-      (hl-line-mode 1)
+      (highlight-current-line)
       (rainbow-delimiters-mode 1)
       ;; setup js-comint keybindings
 

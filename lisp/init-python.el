@@ -47,7 +47,7 @@
              ("issubset" . 8834)        ; ⊂
              ;; ----------------------------------------------------------------
              )))
-      (hl-line-mode 1)
+      (highlight-current-line)
 
       ;; https://github.com/python-lsp/python-lsp-server
       ;; pip install --user 'python-lsp-server[all]'

@@ -6,7 +6,7 @@
         tab-width 4)
       (setq abbrev-mode nil)
       (sqlind-minor-mode 1)
-      (hl-line-mode 1)))
+      (highlight-current-line)))
 
 (when (jh/windows?)
   (setq sql-mysql-program "mysql")

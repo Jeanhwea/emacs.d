@@ -50,7 +50,9 @@
 ;;  (add-hook 'after-change-major-mode-hook 'fci-mode))
 ;; (global-hl-line-mode 1)
 ;; (global-prettify-symbols-mode 1)
-
+(defun highlight-current-line ()
+  "Highlight current line if "
+  (when window-system (hl-line-mode 1)))
 ;; -----------------------------------------------------------------------------
 ;; hideshow mode
 ;; -----------------------------------------------------------------------------

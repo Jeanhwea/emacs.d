@@ -36,7 +36,7 @@
              ("!=" . 8800)              ; ≠
              ;; ----------------------------------------------------------------
              )))
-      (hl-line-mode 1)
+      (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 
 (provide 'init-csharp)

@@ -22,7 +22,7 @@
              ("or" . 8744)              ; ∨
              ;; ----------------------------------------------------------------
              )))
-      (hl-line-mode 1)
+      (highlight-current-line)
       (company-fuzzy-mode 1)
       (rainbow-delimiters-mode)))
 

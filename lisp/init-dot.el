@@ -6,7 +6,7 @@
         tab-width 4
         graphviz-dot-auto-indent-on-semi nil
         graphviz-dot-indent-width 2)
-      (hl-line-mode 1)
+      (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 
 (provide 'init-dot)

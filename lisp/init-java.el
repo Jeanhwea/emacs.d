@@ -43,7 +43,7 @@
       ;; start jdtls server by M-x eglot
 
       ;; (flyspell-mode 1)
-      (hl-line-mode 1)
+      (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 
 ;; (when

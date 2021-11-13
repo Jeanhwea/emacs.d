@@ -1,13 +1,13 @@
 (add-hook 'nxml-mode-hook
   #'(lambda ()
       (sgml-mode)
-      (hl-line-mode 1)
+      (highlight-current-line)
       (add-to-list 'hs-special-modes-alist
         (list 'nxml-mode
           "<!--\\|<[^/>]*[^/]>"
           "-->\\|</[^/>]*[^/]>"
           "<!--"
           'nxml-forward-element nil))
-      (hl-line-mode 1)))
+      (highlight-current-line)))
 
 (provide 'init-nxml)
