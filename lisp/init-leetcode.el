@@ -49,7 +49,7 @@
     (insert (lc/make-url-string qid slug name))))
 
 (when (require 'leetcode)
-  (setq leetcode-prefer-language "java")
+  (setq leetcode-prefer-language "golang")
   (setq leetcode-prefer-sql "mysql"))
 
 (provide 'init-leetcode)
