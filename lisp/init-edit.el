@@ -166,6 +166,7 @@
     "wx" 'workflow-close-current-window
     "xw" 'workflow-M-x
     "xx" 'counsel-M-x
+    "," 'other-window
     "<SPC>" 'other-window))
 
 (when (require 'evil-collection nil t)
