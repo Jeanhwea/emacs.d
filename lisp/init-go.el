@@ -66,4 +66,15 @@
         (message (format "Run %s" file)))
       (user-error (format "Not a valid go sratch file: %s" file)))))
 
+(defun jh/go-current-func ()
+  "Search function name backward."
+  (setq func "function")
+  (save-excursion
+    (progn
+      (re-search-backward "^func [[:alnum:]]+" nil t)
+      (forward-word)
+      (forward-word)
+      (setq func (thing-at-point 'word t))))
+  func)
+
 (provide 'init-go)

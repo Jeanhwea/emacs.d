@@ -144,6 +144,8 @@
     "ee" 'workflow-alternative-buffer
     "es" 'workflow-eshell-open-from-here
     "ew" 'workflow-dot-open-file
+    "eb" 'eval-buffer
+    "ev" 'eval-expression
     "fb" 'workflow-switch-to-buffer
     "ff" 'workflow-buffer-or-recentf-open
     "fs" 'workflow-format-current-source
