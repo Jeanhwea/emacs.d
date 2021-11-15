@@ -284,12 +284,4 @@
   "Now as date string."
   (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
 
-;; -----------------------------------------------------------------------------
-;; misc
-;; -----------------------------------------------------------------------------
-(defun jh/start-server ()
-  "Start a server-mode if server has not started."
-  (unless (server-running-p)
-    (server-mode 1)))
-
 (provide 'init-util)
