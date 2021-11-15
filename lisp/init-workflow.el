@@ -646,4 +646,9 @@
   (interactive)
   (jh/format-sql-file))
 
+(defun workflow-start-server ()
+  "Start server-mode."
+  (interactive)
+  (jh/start-server))
+
 (provide 'init-workflow)
