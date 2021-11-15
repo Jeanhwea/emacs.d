@@ -5,7 +5,7 @@
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
-(global-set-key (kbd "M-r") 'workflow-buffer-or-recentf-open)
+;; (global-set-key (kbd "M-r") 'workflow-buffer-or-recentf-open)
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (global-set-key (kbd "C-j") 'workflow-emmet-expand)
 ;; (global-set-key (kbd "M-<return>") 'ace-jump-mode)
