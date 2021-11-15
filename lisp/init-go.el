@@ -66,6 +66,9 @@
         (message (format "Run %s" file)))
       (user-error (format "Not a valid go sratch file: %s" file)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; snippet utils
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun jh/go-current-func ()
   "Search function name backward."
   (setq func "function")
