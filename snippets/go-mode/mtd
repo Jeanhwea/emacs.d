@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: method
+# key: mtd
+# --
+func (`(jh/go-receiver-name)` *${1:`(jh/go-class-name)`}) ${2:MethodName}($3) $4 {
+$>$0
+}

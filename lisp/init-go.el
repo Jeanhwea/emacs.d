@@ -88,4 +88,9 @@
   "Read golang inter name."
   (jh/pascalcase (jh/file-base-name (buffer-file-name))))
 
+(defun jh/go-receiver-name ()
+  "Get receiver short name."
+  (let ((clzname (jh/go-class-name)))
+    (jh/camelcase (substring clzname 0 1))))
+
 (provide 'init-go)
