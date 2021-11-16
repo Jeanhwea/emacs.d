@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Define class with type ... struct {}
-# key: cl
+# key: cls
 # --
 
 type ${1:ClassName} struct {

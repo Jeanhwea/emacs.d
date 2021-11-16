@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Define interface with type ... interface {}
-# key: i
+# key: itf
 # --
 
 type ${1:InterfaceName} interface {
