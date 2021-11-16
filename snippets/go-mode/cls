@@ -3,6 +3,6 @@
 # key: cls
 # --
 
-type ${1:ClassName} struct {
+type ${1:`(jh/go-class-name)`} struct {
 $>$0
 }

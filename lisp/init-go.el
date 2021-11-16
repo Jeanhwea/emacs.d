@@ -80,4 +80,12 @@
       (setq func (thing-at-point 'word t))))
   func)
 
+(defun jh/go-class-name ()
+  "Read golang class name."
+  (jh/pascalcase (jh/file-base-name (buffer-file-name))))
+
+(defun jh/go-inter-name ()
+  "Read golang inter name."
+  (jh/pascalcase (jh/file-base-name (buffer-file-name))))
+
 (provide 'init-go)

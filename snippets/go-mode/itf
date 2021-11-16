@@ -3,6 +3,6 @@
 # key: itf
 # --
 
-type ${1:InterfaceName} interface {
+type ${1:`(jh/go-class-name)`} interface {
 $>$0
 }
