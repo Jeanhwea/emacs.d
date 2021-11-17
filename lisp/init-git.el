@@ -2,9 +2,11 @@
   ;; repositories for magit-list-repositories
   ;; (setq
   ;;   magit-repository-directories `((,user-emacs-directory . 0)))
-  (if (jh/windows?)
-    (add-to-list 'magit-repository-directories '("e:/Code" . 3))
-    (add-to-list 'magit-repository-directories '("~/Code" . 3)))
+  (add-to-list 'magit-repository-directories '("~/work" . 2))
+  (cond
+    ((jh/mac?) (add-to-list 'magit-repository-directories '("~/Code" . 3)))
+    ((jh/linux?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
+    ((jh/windows?) (add-to-list 'magit-repository-directories '("e:/Code" . 3))))
   ;; (require 'magit-lfs)
   (defalias 'list-repositories 'magit-list-repositories)
   (magit-todos-mode)
