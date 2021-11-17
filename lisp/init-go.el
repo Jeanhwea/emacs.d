@@ -74,7 +74,13 @@
   (setq func "function")
   (save-excursion
     (progn
-      (re-search-backward "^func [[:alnum:]]+" nil t)
+      (re-search-backward "^func" nil t)
+      (setq line (thing-at-point 'line t))
+      (setq method-flag (substring line 5 6))
+      (when (string= method-flag "(")
+        (progn
+          (forward-word)
+          (forward-word)))
       (forward-word)
       (forward-word)
       (setq func (thing-at-point 'word t))))
