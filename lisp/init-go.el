@@ -31,6 +31,8 @@
       (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 
+(setq go-tag-args '("-transform" "pascalcase"))
+
 (add-hook 'thrift-mode-hook
   #'(lambda() (setq thrift-indent-level 4)))
 
