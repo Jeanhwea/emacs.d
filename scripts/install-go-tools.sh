@@ -1,3 +1,4 @@
+go install github.com/fatih/gomodifytags@latest
 go install github.com/go-delve/delve/cmd/dlv@latest
 go install github.com/mdempsky/gocode@latest
 go install github.com/minodisk/thriftfmt@latest
