@@ -68,6 +68,17 @@
         (message (format "Run %s" file)))
       (user-error (format "Not a valid go sratch file: %s" file)))))
 
+(defun go-mod-tidy ()
+  "Run go mod tidy."
+  (interactive)
+  (let
+    ((file  (buffer-name))
+      (default-directory (jh/git-root (buffer-file-name))))
+    (message file)
+    (unless (string= file "go.mod")
+      (user-error "Please open go.mod and try again!"))
+    (shell-command "go mod tidy")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; snippet utils
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
