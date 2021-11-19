@@ -4,5 +4,5 @@
 # --
 
 type ${1:`(jh/go-class-name)`} struct {
-$>$0
+$>ctx context.Context$0
 }
