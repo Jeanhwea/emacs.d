@@ -88,6 +88,12 @@
       (setq func (thing-at-point 'word t))))
   func)
 
+(defun jh/go-package-name (&optional file)
+  "Return the package name for golang."
+  (let*
+    ((file (or file (buffer-file-name))))
+    (jh/file-base-name (directory-file-name (jh/parent-dir file)))))
+
 (defun jh/go-class-name ()
   "Read golang class name."
   (jh/pascalcase (jh/file-base-name (buffer-file-name))))
