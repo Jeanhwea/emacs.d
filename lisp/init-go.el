@@ -72,7 +72,7 @@
   "Run go mod tidy."
   (interactive)
   (let
-    ((file  (buffer-name))
+    ((file (buffer-name))
       (default-directory (jh/git-root (buffer-file-name))))
     (message file)
     (unless (string= file "go.mod")
