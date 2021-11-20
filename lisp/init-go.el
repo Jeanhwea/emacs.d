@@ -73,11 +73,12 @@
   (interactive)
   (let
     ((file (buffer-name))
-      (default-directory (jh/git-root (buffer-file-name))))
-    (message file)
-    (unless (string= file "go.mod")
-      (user-error "Please open go.mod and try again!"))
-    (shell-command "go mod tidy")))
+      (default-directory (jh/git-root (buffer-file-name)))
+      (cmd "go mod tidy"))
+    ;; (unless (string= file "go.mod")
+    ;;   (user-error "Please open go.mod and try again!"))
+    (message (format "Run %s" cmd))
+    (shell-command cmd)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; snippet utils
