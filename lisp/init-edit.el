@@ -143,6 +143,7 @@
     "dw" 'gud-watch
     "ee" 'workflow-alternative-buffer
     "es" 'workflow-eshell-open-from-here
+    "et" 'go/swap-test-and-subject
     "ew" 'workflow-dot-open-file
     "eb" 'eval-buffer
     "ev" 'eval-expression
