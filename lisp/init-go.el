@@ -123,6 +123,11 @@
   "Read golang class name."
   (jh/pascalcase (jh/file-base-name (buffer-file-name))))
 
+(defun jh/go-test-name ()
+  "Read golang test class name."
+  (jh/re-replace "Test$" ""
+    (jh/pascalcase (jh/file-base-name (buffer-file-name)))))
+
 (defun jh/go-inter-name ()
   "Read golang inter name."
   (jh/pascalcase (jh/file-base-name (buffer-file-name))))
