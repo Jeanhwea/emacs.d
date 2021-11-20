@@ -81,6 +81,19 @@
     (shell-command cmd)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; project management
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun go/swap-test-and-subject ()
+  "Do swap test file and subject file."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (if (string-match-p "_test.go$" file)
+      ;; test -> subject
+      (find-file (jh/re-replace "_test.go$" ".go" file))
+      ;; subject -> test
+      (find-file (jh/re-replace ".go$" "_test.go" file)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; snippet utils
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun jh/go-current-func ()
