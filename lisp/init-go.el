@@ -123,6 +123,10 @@
   "Read golang class name."
   (jh/pascalcase (jh/file-base-name (buffer-file-name))))
 
+(defun jh/go-impl-name ()
+  "Read golang implement name."
+  (jh/camelcase (format "%sImpl" (jh/go-class-name))))
+
 (defun jh/go-test-name ()
   "Read golang test class name."
   (jh/re-replace "Test$" ""
