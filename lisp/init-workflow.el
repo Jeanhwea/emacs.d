@@ -448,6 +448,7 @@
   (interactive)
   (cond
     ((eq major-mode 'java-mode) (call-interactively #'lsp-goto-implementation))
+    ((eq major-mode 'go-mode) (xref-goto-xref))
     (t (user-error "Ops, no implementation found."))))
 
 ;; Part 2-5: Test

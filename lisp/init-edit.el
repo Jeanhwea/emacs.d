@@ -121,6 +121,7 @@
   (global-evil-leader-mode)
 
   (define-key evil-normal-state-map (kbd "<SPC>") 'evil-scroll-down)
+  (define-key evil-normal-state-map (kbd "gr") 'workflow-goto-implementation)
 
   (evil-leader/set-leader ",")
   (evilnc-default-hotkeys)
