@@ -441,6 +441,7 @@
   (interactive)
   (cond
     ((eq major-mode 'java-mode) (call-interactively #'lsp-find-references))
+    ((eq major-mode 'go-mode) (xref-goto-xref))
     (t (user-error "Ops, no reference found."))))
 
 (defun workflow-goto-implementation ()
@@ -448,7 +449,7 @@
   (interactive)
   (cond
     ((eq major-mode 'java-mode) (call-interactively #'lsp-goto-implementation))
-    ((eq major-mode 'go-mode) (xref-goto-xref))
+    ((eq major-mode 'go-mode) (eglot-find-implementation))
     (t (user-error "Ops, no implementation found."))))
 
 ;; Part 2-5: Test
