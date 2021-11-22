@@ -441,8 +441,8 @@
   (interactive)
   (cond
     ;; ((eq major-mode 'java-mode) (call-interactively #'lsp-find-references))
-    ((eq major-mode 'java-mode) (xref-find-references))
-    ((eq major-mode 'go-mode) (xref-find-references))
+    ((eq major-mode 'java-mode) (call-interactively #'xref-find-references))
+    ((eq major-mode 'go-mode) (call-interactively #'xref-find-references))
     (t (user-error "Ops, no reference found."))))
 
 (defun workflow-goto-implementation ()
