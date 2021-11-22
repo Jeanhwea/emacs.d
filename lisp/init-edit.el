@@ -121,7 +121,7 @@
   (global-evil-leader-mode)
 
   (define-key evil-normal-state-map (kbd "<SPC>") 'evil-scroll-down)
-  (define-key evil-normal-state-map (kbd "gb") 'xref-pop)
+  (define-key evil-normal-state-map (kbd "gb") 'xref-pop-marker-stack)
   (define-key evil-normal-state-map (kbd "gr") 'workflow-find-references)
   (define-key evil-normal-state-map (kbd "gi") 'workflow-goto-implementation)
 
