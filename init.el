@@ -144,8 +144,8 @@
          engine-mode
          evil
          evil-collection
-         evil-leader
          evil-commentary
+         evil-leader
          exec-path-from-shell
          expand-region
          figlet
@@ -157,6 +157,7 @@
          go-dlv
          go-mode
          go-tag
+         gotest
          graphviz-dot-mode
          groovy-mode
          haskell-mode
