@@ -62,6 +62,7 @@
   (add-hook 'sh-mode-hook 'hs-minor-mode)
   (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
   (add-hook 'lisp-mode-hook 'hs-minor-mode)
+  (add-hook 'go-mode-hook 'hs-minor-mode)
   ;; working
   (add-hook 'java-mode-hook 'hs-minor-mode)
   (add-hook 'python-mode-hook 'hs-minor-mode)
