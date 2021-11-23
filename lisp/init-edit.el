@@ -130,10 +130,10 @@
   (evil-leader/set-leader ",")
   (evilnc-default-hotkeys)
 
-  (evil-leader/set-key-for-mode 'java-mode "a" 'eglot-code-actions)
-  (evil-leader/set-key-for-mode 'java-mode "r" 'eglot-rename)
-  (evil-leader/set-key-for-mode 'python-mode "r" 'eglot-rename)
-  (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
+  ;; (evil-leader/set-key-for-mode 'java-mode "a" 'eglot-code-actions)
+  ;; (evil-leader/set-key-for-mode 'java-mode "r" 'eglot-rename)
+  ;; (evil-leader/set-key-for-mode 'python-mode "r" 'eglot-rename)
+  ;; (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
 
   (evil-leader/set-key
     "bb" 'list-bookmarks
@@ -166,6 +166,7 @@
     "sa" 'workflow-save-all-buffers
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
+    "rn" 'eglot-rename
     "rr" 'workflow-run-scratch
     "rt" 'workflow-run-testcase
     "wh" 'workflow-horizontal-split-window
