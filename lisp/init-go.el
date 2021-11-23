@@ -26,11 +26,25 @@
       ;; (lsp-deferred)
       ;; (define-key evil-normal-state-local-map (kbd "gd") 'lsp-find-definition)
       ;; (define-key evil-normal-state-local-map (kbd "gr") 'lsp-rename)
+      (define-key evil-normal-state-local-map (kbd "<tab>") 'go-tab-action)
 
       ;; (flyspell-mode 1)
       (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 
+;; use tab to toggle hide & show
+(defun go-tab-action ()
+  "Default <tab> key action."
+  (interactive)
+  (let ((line (string-trim (thing-at-point 'line t))))
+    (when (string-match-p ".*[{(]$" line)
+      (progn
+        (if (hs-already-hidden-p)
+          (beginning-of-line)
+          (end-of-line))
+        (hs-toggle-hiding)))))
+
+;; setup for go-tags
 (setq go-tag-args '("-transform" "pascalcase"))
 
 (add-hook 'thrift-mode-hook
