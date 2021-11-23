@@ -26,7 +26,8 @@
       ;; (lsp-deferred)
       ;; (define-key evil-normal-state-local-map (kbd "gd") 'lsp-find-definition)
       ;; (define-key evil-normal-state-local-map (kbd "gr") 'lsp-rename)
-      (define-key evil-normal-state-local-map (kbd "<tab>") 'go-tab-action)
+      ;; (define-key evil-normal-state-local-map (kbd "<tab>") 'go-tab-action)
+      (define-key evil-normal-state-local-map (kbd "TAB") 'go-tab-action)
 
       ;; (flyspell-mode 1)
       (highlight-current-line)
