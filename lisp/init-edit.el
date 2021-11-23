@@ -166,6 +166,8 @@
     "sa" 'workflow-save-all-buffers
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
+    "rr" 'workflow-run-scratch
+    "rt" 'workflow-run-testcase
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
     "wv" 'workflow-vertical-split-window
