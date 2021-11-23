@@ -115,7 +115,8 @@
 (setq evil-want-keybinding nil)
 
 (when (require 'evil)
-  (evil-mode 1))
+  (evil-mode 1)
+  (evil-commentary-mode))
 
 (when (require 'evil-leader)
   (global-evil-leader-mode)
@@ -137,7 +138,6 @@
   (evil-leader/set-key
     "bb" 'list-bookmarks
     "bB" 'workflow-bookmark-current-file
-    "cc" 'workflow-comment-source-code
     "cw" 'workflow-replace
     "db" 'gud-break
     "dc" 'gud-cont

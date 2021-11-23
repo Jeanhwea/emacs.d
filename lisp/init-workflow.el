@@ -328,7 +328,7 @@
   (interactive)
   (if
     (use-region-p)
-    (comment-or-uncomment-region (region-beginning) (region-end))
+    (call-interactively #'comment-dwim)
     (comment-line 1)))
 
 (defun workflow-emmet-expand ()
