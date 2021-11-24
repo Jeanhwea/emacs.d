@@ -2,7 +2,7 @@
 ;; Most common used commands first
 ;; -----------------------------------------------------------------------------
 (global-set-key (kbd "M-w") 'workflow-M-x)
-(global-set-key (kbd "M-o") 'other-window)
+;; (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-i") 'workflow-inflect-string)
 ;; (global-set-key (kbd "M-r") 'workflow-buffer-or-recentf-open)
