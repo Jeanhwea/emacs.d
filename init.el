@@ -154,6 +154,7 @@
          flyspell-correct
          ggtags
          git-auto-commit-mode
+         git-msg-prefix
          go-dlv
          go-mode
          go-tag
