@@ -166,8 +166,10 @@
     "sa" 'workflow-save-all-buffers
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
+    "sr" 'projectile-ripgrep
+    "rr" 'projectile-run-async-shell-command-in-root
     "rn" 'eglot-rename
-    "rr" 'workflow-run-scratch
+    "rs" 'workflow-run-scratch
     "rt" 'workflow-run-testcase
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
