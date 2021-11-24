@@ -53,6 +53,7 @@
 (defun highlight-current-line ()
   "Highlight current line if "
   (when window-system (hl-line-mode 1)))
+
 ;; -----------------------------------------------------------------------------
 ;; hideshow mode
 ;; -----------------------------------------------------------------------------
@@ -71,6 +72,14 @@
   (add-hook 'typescript-mode-hook 'hs-minor-mode)
   (add-hook 'css-mode-hook 'hs-minor-mode)
   (add-hook 'mhtml-mode-hook 'hs-minor-mode))
+
+(defun jh/hideshow-dwim ()
+  "Automatic do hideshow according to context."
+  (let ((line (string-trim (thing-at-point 'line t))))
+    (when (string-match-p ".*[{(]$" line)
+      (progn
+        (if (hs-already-hidden-p) (beginning-of-line) (end-of-line))
+        (hs-toggle-hiding)))))
 
 ;; -----------------------------------------------------------------------------
 ;; misc option

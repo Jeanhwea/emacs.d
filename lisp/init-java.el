@@ -1,3 +1,9 @@
+;; Install jdtls
+;; Step1. Download from https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/
+;; Step2. put it into CLASSPATH
+;; (setenv "CLASSPATH" ".:/Users/hujinghui/.local/classpath/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.6.300.v20210813-1054.jar")
+;; start jdtls server by M-x eglot
+
 (add-hook 'java-mode-hook
   #'(lambda()
       (setq
@@ -35,34 +41,22 @@
              )))
 
       (define-key evil-normal-state-local-map (kbd "gi") 'eglot-find-implementation)
-
-      ;; Install jdtls
-      ;; Step1. Download from https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/
-      ;; Step2. put it into CLASSPATH
-      ;; (setenv "CLASSPATH" ".:/Users/hujinghui/.local/classpath/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.6.300.v20210813-1054.jar")
-      ;; start jdtls server by M-x eglot
+      (define-key evil-normal-state-local-map (kbd "TAB") 'java-tab-action)
 
       ;; (flyspell-mode 1)
       (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 
-;; (when
-;;   (and (require 'lsp-mode) (require 'lsp-ui) (require 'lsp-java))
-;;   (setq
-;;     lsp-server-install-dir (expand-file-name "lsp-cache" user-emacs-directory)
-;;     lsp-java-server-install-dir (expand-file-name "jdtls" lsp-server-install-dir)
-;;     lsp-ui-sideline-show-code-actions nil
-;;     lsp-ui-doc-enable nil
-;;     lsp-java-completion-import-order
-;;     ["com.avic" "org.springframework" "java" "javax" "com" "org"])
+(defun java-tab-action ()
+  "Default <tab> key action for Java."
+  (interactive)
+  (jh/hideshow-dwim))
 
-;;   (add-hook 'java-mode-hook 'lsp))
 
 (defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
 (defconst jh/gjf-file "google-java-format-1.7-all-deps.jar")
-;; (defconst jh/gjf-file "google-java-format-1.7-120-all-deps.jar")
-
-(defconst gjf-prog (format "java -jar \"%s\"" (expand-file-name jh/gjf-file jh/gjf-dir))
+(defconst gjf-prog
+  (format "java -jar \"%s\"" (expand-file-name jh/gjf-file jh/gjf-dir))
   "Google Java Formatter Program.")
 
 (defun jh/format-java-source (&optional file)

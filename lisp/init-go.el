@@ -32,17 +32,10 @@
       (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 
-;; use tab to toggle hide & show
 (defun go-tab-action ()
-  "Default <tab> key action."
+  "Default <tab> key action for golang."
   (interactive)
-  (let ((line (string-trim (thing-at-point 'line t))))
-    (when (string-match-p ".*[{(]$" line)
-      (progn
-        (if (hs-already-hidden-p)
-          (beginning-of-line)
-          (end-of-line))
-        (hs-toggle-hiding)))))
+  (jh/hideshow-dwim))
 
 ;; setup for go-tags
 (setq go-tag-args '("-transform" "pascalcase"))
