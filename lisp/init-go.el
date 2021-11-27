@@ -22,6 +22,8 @@
       (eglot-ensure)
       ;; (define-key evil-normal-state-local-map (kbd "gr") 'eglot-rename)
 
+      (go-fold-import)
+
       ;; ;; lsp-mode for golang
       ;; (lsp-deferred)
       ;; (define-key evil-normal-state-local-map (kbd "gd") 'lsp-find-definition)
@@ -37,25 +39,16 @@
   (interactive)
   (jh/hideshow-dwim))
 
+(defun go-fold-import ()
+  "Automatic fold import(...)"
+  (save-excursion
+    (beginning-of-buffer)
+    (when (re-search-forward "^import" nil t)
+      (end-of-line)
+      (hs-toggle-hiding))))
+
 ;; setup for go-tags
 (setq go-tag-args '("-transform" "pascalcase"))
-
-(add-hook 'thrift-mode-hook
-  #'(lambda() (setq thrift-indent-level 4)))
-
-(defun jh/format-thrift-source (&optional file)
-  "Format thrift source code."
-  (let
-    ((file (or file (buffer-file-name))))
-    (progn
-      (save-buffer)
-      ;; format buffer
-      (shell-command (format "sed -i 's/  */ /g;s/  *,/,/g' \"%s\"" file))
-      ;; reload buffer
-      (revert-buffer nil t)
-      (jh/indent-current-buffer)
-      ;; leave a messge
-      (message (format "Formatted t %s" file)))))
 
 (defun jh/run-go-scratch (&optional file)
   "Run go scratch source code."
