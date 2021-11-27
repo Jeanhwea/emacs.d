@@ -123,7 +123,8 @@
 
   (define-key evil-normal-state-map (kbd "<SPC>") 'evil-scroll-down)
   (define-key evil-normal-state-map (kbd "gp") 'xref-pop-marker-stack)
-  (define-key evil-normal-state-map (kbd "go") 'xref-find-definitions-other-window)
+  (define-key evil-normal-state-map (kbd "go") 'workflow-find-definitions-other-window)
+  (define-key evil-normal-state-map (kbd "gl") 'workflow-find-definitions-lookup)
   (define-key evil-normal-state-map (kbd "gr") 'workflow-find-references)
   (define-key evil-normal-state-map (kbd "gi") 'workflow-goto-implementation)
 

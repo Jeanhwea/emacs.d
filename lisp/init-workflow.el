@@ -459,6 +459,18 @@
   (interactive)
   (verb-send-request-on-point-other-window-stay))
 
+;; Part 2-6: Jump
+(defun workflow-find-definitions-other-window ()
+  "Open other window."
+  (interactive)
+  (call-interactively #'xref-find-definitions-other-window))
+
+(defun workflow-find-definitions-lookup ()
+  "Open other window for definition and jump back."
+  (interactive)
+  (call-interactively #'xref-find-definitions-other-window)
+  (call-interactively #'other-window))
+
 ;; Part 2-9: Misc
 (defun workflow-codetta-expand-command ()
   "Codetta expand command."
