@@ -121,7 +121,7 @@
 (when (require 'evil-leader)
   (global-evil-leader-mode)
 
-  (define-key evil-normal-state-map (kbd "<SPC>") 'evil-scroll-down)
+  (define-key evil-normal-state-map (kbd "<SPC>") 'other-window)
   (define-key evil-normal-state-map (kbd "gp") 'xref-pop-marker-stack)
   (define-key evil-normal-state-map (kbd "go") 'workflow-find-definitions-other-window)
   (define-key evil-normal-state-map (kbd "gl") 'workflow-find-definitions-lookup)
