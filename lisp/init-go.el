@@ -22,8 +22,6 @@
       (eglot-ensure)
       ;; (define-key evil-normal-state-local-map (kbd "gr") 'eglot-rename)
 
-      (go-fold-import)
-
       ;; ;; lsp-mode for golang
       ;; (lsp-deferred)
       ;; (define-key evil-normal-state-local-map (kbd "gd") 'lsp-find-definition)
@@ -43,9 +41,8 @@
   "Automatic fold import(...)"
   (save-excursion
     (beginning-of-buffer)
-    (when (re-search-forward "^import" nil t)
-      (end-of-line)
-      (hs-toggle-hiding))))
+    (when (re-search-forward "^import (" nil t)
+      (end-of-line) (hs-toggle-hiding))))
 
 ;; setup for go-tags
 (setq go-tag-args '("-transform" "pascalcase"))
