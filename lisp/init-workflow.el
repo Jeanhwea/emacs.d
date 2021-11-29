@@ -658,9 +658,9 @@
   "Default bind to SPC action."
   (interactive)
   (let ((wincount (length (window-list))))
-    (if (<= 1 wincount)
-      (call-interactively #'evil-scroll-down)
-      (call-interactively #'other-window))))
+    (if (> wincount 1)
+      (call-interactively #'other-window)
+      (call-interactively #'evil-scroll-down))))
 
 ;; (defun workflow-run-java-scratch ()
 ;;   "Build and Run Java scratch codes."
