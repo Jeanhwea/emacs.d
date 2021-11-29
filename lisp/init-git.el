@@ -40,8 +40,8 @@
 (when (require 'git-auto-commit-mode)
   (setq-default gac-automatically-push-p t))
 
-(when (require 'git-msg-prefix)
-  (add-hook 'git-commit-mode-hook 'git-msg-prefix))
+;; (when (require 'git-msg-prefix)
+;;   (add-hook 'git-commit-mode-hook 'git-msg-prefix))
 
 ;; -----------------------------------------------------------------------------
 ;; some helper function with git repository
