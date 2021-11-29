@@ -653,6 +653,15 @@
     ((eq major-mode 'go-mode) (call-interactively #'go-test-current-file))
     (t (user-error "Ops: unknown scratch file type."))))
 
+
+(defun workflow-space-action ()
+  "Default bind to SPC action."
+  (interactive)
+  (let ((wincount (length (window-list))))
+    (if (<= 1 wincount)
+      (call-interactively #'evil-scroll-down)
+      (call-interactively #'other-window))))
+
 ;; (defun workflow-run-java-scratch ()
 ;;   "Build and Run Java scratch codes."
 ;;   (interactive)
