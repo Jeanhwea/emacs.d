@@ -539,10 +539,9 @@
   "Inflect string or word cases."
   (interactive)
   (cond
-    ((eq major-mode 'java-mode)
-      (string-inflection-java-style-cycle))
-    ((eq major-mode 'python-mode)
-      (string-inflection-python-style-cycle))
+    ((eq major-mode 'java-mode) (string-inflection-java-style-cycle))
+    ((eq major-mode 'go-mode) (string-inflection-java-style-cycle))
+    ((eq major-mode 'python-mode) (string-inflection-python-style-cycle))
     (t (string-inflection-all-cycle))))
 
 (defun workflow-M-x ()
