@@ -127,6 +127,7 @@
   (define-key evil-normal-state-map (kbd "gl") 'workflow-find-definitions-lookup)
   (define-key evil-normal-state-map (kbd "gr") 'workflow-find-references)
   (define-key evil-normal-state-map (kbd "gi") 'workflow-goto-implementation)
+  (define-key evil-normal-state-map (kbd "gs") 'workflow-search-rg)
 
   (evil-leader/set-leader ",")
   (evilnc-default-hotkeys)

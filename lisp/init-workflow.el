@@ -264,6 +264,11 @@
   ;; (call-interactively #'ag)
   (counsel-ag))
 
+(defun workflow-search-rg ()
+  "Search by rg"
+  (interactive)
+  (call-interactively #'rg))
+
 ;; Part 2-2: Replace & Regular eXpression Replace
 (defun workflow-replace ()
   "Better workflow for query-replace."
