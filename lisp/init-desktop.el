@@ -55,8 +55,9 @@
 ;; exec-path-from-shell, read the $PATH
 ;; -----------------------------------------------------------------------------
 (when (require 'exec-path-from-shell)
-  (unless (jh/windows?)
-    (exec-path-from-shell-initialize)))
+  (unless (jh/windows?) (exec-path-from-shell-initialize)))
+
+(setq-default max-mini-window-height 0.05)
 
 ;; -----------------------------------------------------------------------------
 ;; recentf
