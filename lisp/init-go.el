@@ -35,7 +35,7 @@
 (defun go-tab-action ()
   "Default <tab> key action for golang."
   (interactive)
-  (jh/hideshow-dwim))
+  (jh/tab-dwim))
 
 (defun go-fold-import ()
   "Automatic fold import(...)"

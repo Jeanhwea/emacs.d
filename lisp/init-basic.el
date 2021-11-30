@@ -73,13 +73,14 @@
   (add-hook 'css-mode-hook 'hs-minor-mode)
   (add-hook 'mhtml-mode-hook 'hs-minor-mode))
 
-(defun jh/hideshow-dwim ()
+(defun jh/tab-dwim ()
   "Automatic do hideshow according to context."
   (let ((line (string-trim (thing-at-point 'line t))))
-    (when (string-match-p ".*[{(]$" line)
+    (if (string-match-p ".*[{(]$" line)
       (progn
         (if (hs-already-hidden-p) (beginning-of-line) (end-of-line))
-        (hs-toggle-hiding)))))
+        (hs-toggle-hiding))
+      (workflow-inflect-string))))
 
 ;; -----------------------------------------------------------------------------
 ;; misc option

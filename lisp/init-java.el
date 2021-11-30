@@ -50,7 +50,7 @@
 (defun java-tab-action ()
   "Default <tab> key action for Java."
   (interactive)
-  (jh/hideshow-dwim))
+  (jh/tab-dwim))
 
 
 (defconst jh/gjf-dir (expand-file-name "resource" user-emacs-directory))
