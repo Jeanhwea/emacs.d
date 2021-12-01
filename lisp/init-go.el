@@ -68,9 +68,10 @@
 (defun go-implement-method ()
   "Implement a method."
   (interactive)
-  (let ((line (string-trim (thing-at-point 'line t)))
-         (impl-name (jh/go-impl-name))
-         (recv-name (jh/go-receiver-name)))
+  (let
+    ((line (string-trim (thing-at-point 'line t)))
+      (impl-name (jh/go-impl-name))
+      (recv-name (jh/go-receiver-name)))
     (setq sign
       (format "func (%s *%s) %s {\n\tpanic(\"not implement yet\")\n}"
         recv-name impl-name line))
@@ -82,8 +83,8 @@
 (defun go-get-current ()
   "Run go get to upgrade package under line."
   (interactive)
-  (let
-    ((pkg (string-trim (car (split-string (thing-at-point 'line t) " "))))
+  (let*
+    ((pkg (car (split-string (string-trim (thing-at-point 'line t)) " ")))
       (default-directory (jh/git-root (buffer-file-name)))
       (cmd (format "go get %s" pkg)))
     (message (format "Run %s" cmd))
