@@ -87,8 +87,8 @@
     ((pkg (car (split-string (string-trim (thing-at-point 'line t)) " ")))
       (default-directory (jh/git-root (buffer-file-name)))
       (cmd (format "go get %s" pkg)))
-    (message (format "Run %s" cmd))
-    (shell-command cmd)))
+    (shell-command cmd)
+    (message (format "Run %s" cmd))))
 
 (defun go-mod-tidy ()
   "Run go mod tidy."
@@ -99,8 +99,8 @@
       (cmd "go mod tidy"))
     ;; (unless (string= file "go.mod")
     ;;   (user-error "Please open go.mod and try again!"))
-    (message (format "Run %s" cmd))
-    (shell-command cmd)))
+    (shell-command cmd)
+    (message (format "Run %s" cmd))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; project management
