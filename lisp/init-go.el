@@ -79,6 +79,16 @@
       (newline)
       (insert sign))))
 
+(defun go-get-current ()
+  "Run go get to upgrade package under line."
+  (interactive)
+  (let
+    ((pkg (string-trim (car (split-string (thing-at-point 'line t) " "))))
+      (default-directory (jh/git-root (buffer-file-name)))
+      (cmd (format "go get %s" pkg)))
+    (message (format "Run %s" cmd))
+    (shell-command cmd)))
+
 (defun go-mod-tidy ()
   "Run go mod tidy."
   (interactive)
