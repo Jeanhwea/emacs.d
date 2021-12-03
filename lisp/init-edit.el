@@ -130,7 +130,6 @@
   (define-key evil-normal-state-map (kbd "gs") 'workflow-search-rg)
 
   (evil-leader/set-leader ",")
-  (evilnc-default-hotkeys)
 
   ;; (evil-leader/set-key-for-mode 'java-mode "a" 'eglot-code-actions)
   ;; (evil-leader/set-key-for-mode 'java-mode "r" 'eglot-rename)
