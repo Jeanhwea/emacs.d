@@ -86,7 +86,7 @@
   (let*
     ((pkg (car (split-string (string-trim (thing-at-point 'line t)) " ")))
       (default-directory (jh/git-root (buffer-file-name)))
-      (cmd (format "go get %s" pkg)))
+      (cmd (format "go get %s && go mod tidy" pkg)))
     (shell-command cmd)
     (message (format "Run %s" cmd))))
 
