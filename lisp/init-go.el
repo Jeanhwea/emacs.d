@@ -87,7 +87,7 @@
     ((pkg (car (split-string (string-trim (thing-at-point 'line t)) " ")))
       (default-directory (jh/git-root (buffer-file-name)))
       (cmd (format "go get %s && go mod tidy" pkg)))
-    (shell-command cmd)
+    (async-shell-command cmd)
     (message (format "Run %s" cmd))))
 
 (defun go-mod-tidy ()
@@ -99,7 +99,7 @@
       (cmd "go mod tidy"))
     ;; (unless (string= file "go.mod")
     ;;   (user-error "Please open go.mod and try again!"))
-    (shell-command cmd)
+    (async-shell-command cmd)
     (message (format "Run %s" cmd))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
