@@ -19,7 +19,7 @@
         tab-width 4
         show-trailing-whitespace t)
 
-      (eglot-ensure)
+      ;; (eglot-ensure)
       ;; (define-key evil-normal-state-local-map (kbd "gr") 'eglot-rename)
 
       ;; ;; lsp-mode for golang
