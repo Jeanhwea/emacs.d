@@ -115,6 +115,16 @@
       ;; subject -> test
       (find-file (jh/re-replace ".go$" "_test.go" file)))))
 
+(defun go/swap-impl-and-subject ()
+  "Do swap impl file and subject file."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (if (string-match-p "_impl.go$" file)
+      ;; impl -> subject
+      (find-file (jh/re-replace "_impl.go$" ".go" file))
+      ;; subject -> impl
+      (find-file (jh/re-replace ".go$" "_impl.go" file)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; snippet utils
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

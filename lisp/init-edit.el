@@ -149,6 +149,7 @@
     "ee" 'workflow-alternative-buffer
     "es" 'workflow-eshell-open-from-here
     "et" 'go/swap-test-and-subject
+    "ei" 'go/swap-impl-and-subject
     "ew" 'workflow-dot-open-file
     "eb" 'eval-buffer
     "ev" 'eval-expression
