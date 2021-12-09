@@ -110,7 +110,7 @@
 (defun go/swap-test-and-subject ()
   "Do swap test file and subject file."
   (interactive)
-  (let ((file (buffer-file-name)))
+  (let ((file (jh/re-replace "_impl.go$" ".go" (buffer-file-name))))
     (if (string-match-p "_test.go$" file)
       ;; test -> subject
       (find-file (jh/re-replace "_test.go$" ".go" file))
