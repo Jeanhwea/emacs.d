@@ -69,13 +69,15 @@
   "Implement a method."
   (interactive)
   (let
-    ((line (string-trim (thing-at-point 'line t)))
-      (impl-name (jh/go-impl-name))
+    ((srvfile (buffer-file-name))
+      (line (string-trim (thing-at-point 'line t)))
+      (impl-name (jh/go-class-name))
       (recv-name (jh/go-receiver-name)))
     (setq sign
       (format "func (%s *%s) %s {\n\tpanic(\"not implement yet\")\n}"
         recv-name impl-name line))
     (progn
+      (find-file (jh/re-replace ".go$" "_impl.go" srvfile))
       (end-of-buffer)
       (newline)
       (insert sign))))
