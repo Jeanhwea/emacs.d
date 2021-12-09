@@ -153,7 +153,10 @@
 
 (defun jh/go-class-name ()
   "Read golang class name."
-  (jh/pascalcase (jh/file-base-name (buffer-file-name))))
+  (let ((basename (jh/file-base-name (buffer-file-name))))
+    (if (string-match-p ".*_impl" basename)
+      (jh/camelcase basename)
+      (jh/pascalcase basename))))
 
 (defun jh/go-impl-name ()
   "Read golang implement name."
