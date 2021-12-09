@@ -71,7 +71,7 @@
   (let
     ((srvfile (buffer-file-name))
       (line (string-trim (thing-at-point 'line t)))
-      (impl-name (jh/go-class-name))
+      (impl-name (jh/go-impl-name))
       (recv-name (jh/go-receiver-name)))
     (setq sign
       (format "func (%s *%s) %s {\n\tpanic(\"not implement yet\")\n}"
