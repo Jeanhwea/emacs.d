@@ -118,7 +118,7 @@
   (evil-mode 1)
   (evil-commentary-mode))
 
-(when (require 'evil-leader)
+(when (and (require 'evil-leader) (require 'evil-numbers))
   (global-evil-leader-mode)
 
   (evil-define-key '(normal visual) 'global (kbd "<SPC>") 'workflow-space-action)
@@ -165,6 +165,8 @@
     "mc" 'smerge-keep-current
     "mm" 'smerge-keep-mine
     "mo" 'smerge-keep-other
+    "ni" 'evil-numbers/inc-at-pt
+    "nd" 'evil-numbers/dec-at-pt
     "sa" 'workflow-save-all-buffers
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
@@ -185,11 +187,5 @@
 
 (when (require 'evil-collection nil t)
   (evil-collection-init))
-
-(when (require 'evil-numbers)
-  (evil-define-key '(normal visual) 'global (kbd "C-c +") 'evil-numbers/inc-at-pt)
-  (evil-define-key '(normal visual) 'global (kbd "C-c -") 'evil-numbers/dec-at-pt)
-  (evil-define-key '(normal visual) 'global (kbd "C-c C-+") 'evil-numbers/inc-at-pt-incremental)
-  (evil-define-key '(normal visual) 'global (kbd "C-c C--") 'evil-numbers/dec-at-pt-incremental))
 
 (provide 'init-edit)
