@@ -126,14 +126,26 @@
         line
         "\"' ")))
 
-  (defun jh/iterm2-osascript (lines)
+  (defun jh/iterm2-osascript-first (lines)
     "Generate osascript for STR."
     (concat "osascript "
       "-e 'tell app \"iTerm2\"' "
       "-e 'tell current window' "
+      "-e 'tell first tab' "
+      "-e 'select' "
+      "-e 'end tell' "
       "-e 'tell current session' "
       (mapconcat #'jh/iterm2-write-line lines " ")
       "-e 'end tell' "
+      "-e 'end tell' "
+      "-e 'end tell' "))
+
+  (defun jh/iterm2-osascript (lines)
+    "Generate osascript for STR."
+    (concat "osascript "
+      "-e 'tell app \"iTerm2\"' "
+      "-e 'tell current session of current window' "
+      (mapconcat #'jh/iterm2-write-line lines " ")
       "-e 'end tell' "
       "-e 'end tell' "))
 
@@ -141,9 +153,10 @@
     "Send CMD to a running iTerm instance."
     (interactive)
     (setq cmd (or cmd (read-from-minibuffer "CMD > ")))
-    (let* ((lines (split-string cmd "\n"))
-            ;; (lines (jh/iterm2-maybe-remove-blank-lines lines))
-            (script (jh/iterm2-osascript lines)))
+    (let*
+      ((lines (split-string cmd "\n"))
+        ;; (lines (jh/iterm2-maybe-remove-blank-lines lines))
+        (script (jh/iterm2-osascript lines)))
       (shell-command script)))
 
   (defun jh/iterm2-cd (&optional dir)
