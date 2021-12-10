@@ -121,13 +121,13 @@
 (when (require 'evil-leader)
   (global-evil-leader-mode)
 
-  (define-key evil-normal-state-map (kbd "<SPC>") 'workflow-space-action)
-  (define-key evil-normal-state-map (kbd "gp") 'xref-pop-marker-stack)
-  (define-key evil-normal-state-map (kbd "go") 'workflow-find-definitions-other-window)
-  (define-key evil-normal-state-map (kbd "gl") 'workflow-find-definitions-lookup)
-  (define-key evil-normal-state-map (kbd "gr") 'workflow-find-references)
-  (define-key evil-normal-state-map (kbd "gi") 'workflow-goto-implementation)
-  (define-key evil-normal-state-map (kbd "gs") 'workflow-search-rg)
+  (evil-define-key '(normal visual) 'global (kbd "<SPC>") 'workflow-space-action)
+  (evil-define-key '(normal visual) 'global (kbd "gp") 'xref-pop-marker-stack)
+  (evil-define-key '(normal visual) 'global (kbd "go") 'workflow-find-definitions-other-window)
+  (evil-define-key '(normal visual) 'global (kbd "gl") 'workflow-find-definitions-lookup)
+  (evil-define-key '(normal visual) 'global (kbd "gr") 'workflow-find-references)
+  (evil-define-key '(normal visual) 'global (kbd "gi") 'workflow-goto-implementation)
+  (evil-define-key '(normal visual) 'global (kbd "gs") 'workflow-search-rg)
 
   (evil-leader/set-leader ",")
 
@@ -185,5 +185,11 @@
 
 (when (require 'evil-collection nil t)
   (evil-collection-init))
+
+(when (require 'evil-numbers)
+  (evil-define-key '(normal visual) 'global (kbd "C-c +") 'evil-numbers/inc-at-pt)
+  (evil-define-key '(normal visual) 'global (kbd "C-c -") 'evil-numbers/dec-at-pt)
+  (evil-define-key '(normal visual) 'global (kbd "C-c C-+") 'evil-numbers/inc-at-pt-incremental)
+  (evil-define-key '(normal visual) 'global (kbd "C-c C--") 'evil-numbers/dec-at-pt-incremental))
 
 (provide 'init-edit)

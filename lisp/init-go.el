@@ -20,13 +20,13 @@
         show-trailing-whitespace t)
 
       (eglot-ensure)
-      ;; (define-key evil-normal-state-local-map (kbd "gr") 'eglot-rename)
+      ;; (evil-define-key '(normal visual) 'local (kbd "gr") 'eglot-rename)
 
       ;; ;; lsp-mode for golang
       ;; (lsp-deferred)
-      ;; (define-key evil-normal-state-local-map (kbd "gd") 'lsp-find-definition)
-      ;; (define-key evil-normal-state-local-map (kbd "gr") 'lsp-rename)
-      (define-key evil-normal-state-local-map (kbd "TAB") 'go-tab-action)
+      ;; (evil-define-key '(normal visual) 'local (kbd "gd") 'lsp-find-definition)
+      ;; (evil-define-key '(normal visual) 'local (kbd "gr") 'lsp-rename)
+      (evil-define-key '(normal visual) 'local (kbd "TAB") 'go-tab-action)
 
       ;; (flyspell-mode 1)
       (highlight-current-line)

@@ -40,8 +40,8 @@
              ;; ----------------------------------------------------------------
              )))
 
-      (define-key evil-normal-state-local-map (kbd "gi") 'eglot-find-implementation)
-      (define-key evil-normal-state-local-map (kbd "TAB") 'java-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "gi") 'eglot-find-implementation)
+      (evil-define-key '(normal visual) 'local (kbd "TAB") 'java-tab-action)
 
       ;; (flyspell-mode 1)
       (highlight-current-line)
