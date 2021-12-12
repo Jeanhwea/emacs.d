@@ -82,6 +82,16 @@
       (newline)
       (insert sign))))
 
+(defun go-get-master ()
+  "Run go upgrade to master branch."
+  (interactive)
+  (let*
+    ((pkg (car (split-string (string-trim (thing-at-point 'line t)) " ")))
+      (default-directory (jh/git-root (buffer-file-name)))
+      (cmd (format "go get %s@master && go mod tidy" pkg)))
+    (async-shell-command cmd)
+    (message (format "Run %s" cmd))))
+
 (defun go-get-current ()
   "Run go get to upgrade package under line."
   (interactive)
