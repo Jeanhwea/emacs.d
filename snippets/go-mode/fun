@@ -2,6 +2,6 @@
 # name: function
 # key: fun
 # --
-func ${1:FuncName}($2) $3 {
-$>$0
+func ${1:FuncName}($0) {
+$>// coding
 }
