@@ -2,6 +2,6 @@
 # name: function
 # key: fun
 # --
-func ${1:FuncName}($0) {
-$>// coding
+func ${1:FuncName}($0) error {
+$>return nil
 }
