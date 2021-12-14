@@ -30,26 +30,19 @@
       (entries #'(lambda (e) (goal/get-file-topic file (cdr e)))))
     (car (remove-if-not entries goal/topics))))
 
-(defun goal/get-related-topic-file (file from to)
-  "Goto related topic file."
-  (let*
-    ((entry (goal/get-file-entry file))
-      (topic (car (remove-if #'null (mapcar entry goal/topics))))
-      (suffix (jh/re-replace "{}" topic (cdr to)))
-      (prefix (jh/re-replace (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file)))
-    (concat prefix suffix)))
-
 (defun goal/find-the-new-place (where &optional file)
   "Return the destination filename."
   (let*
     ((file (or file (buffer-file-name)))
       (from (goal/get-file-entry file))
-      (to (assoc where goal/topics)))
+      (to (assoc (intern where) goal/topics))
+      (topic (car (remove-if #'null (mapcar entry goal/topics))))
+      (dir (file-name-directory file))
+      (dest (jh/re-replace "{}" topic (cdr to))))
     (or (string-match-p ".go$" file)
       from (user-error "Ops: Cannot get any information about this file."))
     (or to (user-error "Ops: Missing place to go."))
-    ;; do the find work
-    (goal/get-related-topic-file file from to)))
+    (concat dir dest)))
 
 (defun goal/switch-to (&optional where file)
   "Switch to a new type file based on file."
@@ -57,7 +50,7 @@
   (let*
     ((file (or file (buffer-file-name)))
       (where (completing-read "Switch to >> " goal/topics nil t "^"))
-      (dest (goal/find-the-new-place (intern where) file)))
+      (dest (goal/find-the-new-place where file)))
     (progn
       (find-file dest)
       (message "Switched to `%s'" dest))))
