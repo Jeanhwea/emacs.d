@@ -32,7 +32,7 @@
       (pred #'(lambda (e) (ng/files-match file (cdr e)))))
     (car (remove-if-not pred ng/files))))
 
-(defun ng/goto-related-topic-file (file from to)
+(defun ng/get-related-topic-file (file from to)
   "Goto related topic file."
   (let*
     ((pred #'(lambda (e) (ng/files-match file (cdr e))))

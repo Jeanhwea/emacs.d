@@ -1,36 +1,36 @@
 (defconst goal/files
   '((class . "{}.go")
+     (helper . "{}_helper.go")
      (implement . "{}_impl.go")
      (test . "{}_test.go"))
   "A goland related file alist, use `{}' represent TOPIC.")
 
-(defun goal/files-match (file pattern)
-  "Test if the file matches pattern."
+(defun goal/get-file-topic (file pattern)
+  "Test if the file matches pattern, and return topic if found."
   (let*
-    ((idgrp "\\\\([_a-zA-Z0-9]+\\\\)" )
-      (regexp (concat "^.*/" (jh/re-replace "{}" idgrp pattern) "$"))
-      (topic))
+    ((topic)
+      (topic-regexp "\\\\([_a-zA-Z0-9]+\\\\)")
+      (regexp (concat "^.*/" (jh/re-replace "{}" topic-regexp pattern) "$")))
     (or file (user-error "Ops: Test file is nil."))
     (save-match-data
-      (and (string-match regexp file) (setq topic (match-string 1 file))))
+      (and (string-match regexp file)
+        (setq topic (match-string 1 file))))
     topic))
 
 (defun goal/files-get (&optional file)
   "Get the first element that matches goal/files."
   (let
     ((file (or file (buffer-file-name)))
-      (pred #'(lambda (e) (goal/files-match file (cdr e)))))
+      (pred #'(lambda (e) (goal/get-file-topic file (cdr e)))))
     (car (remove-if-not pred goal/files))))
 
-(defun goal/goto-related-topic-file (file from to)
+(defun goal/get-related-topic-file (file from to)
   "Goto related topic file."
   (let*
-    ((pred #'(lambda (e) (goal/files-match file (cdr e))))
+    ((pred #'(lambda (e) (goal/get-file-topic file (cdr e))))
       (topic (car (remove-if #'null (mapcar pred goal/files))))
       (suffix (jh/re-replace "{}" topic (cdr to)))
-      (prefix
-        (jh/re-replace
-          (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file)))
+      (prefix (jh/re-replace (concat (jh/re-replace "{}" topic (cdr from)) "$") "" file)))
     (concat prefix suffix)))
 
 (defun goal/find-the-new-place (where &optional file)
@@ -43,7 +43,7 @@
       from (user-error "Ops: Cannot get any information about this file."))
     (or to (user-error "Ops: Missing place to go."))
     ;; do the find work
-    (goal/goto-related-topic-file file from to)))
+    (goal/get-related-topic-file file from to)))
 
 (defun goal/switch-to (&optional where file)
   "Switch to a new type file based on file."

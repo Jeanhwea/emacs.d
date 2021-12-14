@@ -48,7 +48,7 @@
       (pred #'(lambda (e) (spt/files-match file (cdr e)))))
     (car (remove-if-not pred spt/files))))
 
-(defun spt/goto-related-topic-file (file from to)
+(defun spt/get-related-topic-file (file from to)
   "Goto related topic file."
   (let*
     ((pred #'(lambda (e) (spt/files-match file (cdr e))))
@@ -99,7 +99,7 @@
         (spt/swap-test-and-subject-file file from to))
       ((eq where 'implement)
         (spt/swap-implement-and-service-file file from to))
-      (t (spt/goto-related-topic-file file from to)))))
+      (t (spt/get-related-topic-file file from to)))))
 
 (defun spt/switch-to (&optional where file)
   "Switch to a new type file based on file."
