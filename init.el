@@ -75,6 +75,7 @@
 (require 'init-html)
 (require 'init-nxml)
 (require 'init-go)
+(require 'init-goal)
 (require 'init-thrift)
 (require 'init-java)
 (require 'init-javascript)
