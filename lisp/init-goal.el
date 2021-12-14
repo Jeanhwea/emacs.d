@@ -28,7 +28,7 @@
   (let
     ((file (or file (buffer-file-name)))
       (entries #'(lambda (e) (goal/get-file-topic file (cdr e)))))
-    (car (remove-if-not entries goal/topics))))
+    (car (last (remove-if-not entries goal/topics)))))
 
 (defun goal/find-the-new-place (where &optional file)
   "Return the destination filename."
@@ -36,7 +36,7 @@
     ((file (or file (buffer-file-name)))
       (from (goal/get-file-entry file))
       (to (assoc (intern where) goal/topics))
-      (topic (car (remove-if #'null (mapcar entry goal/topics))))
+      (topic (goal/get-file-topic file (cdr from)))
       (dir (file-name-directory file))
       (dest (jh/re-replace "{}" topic (cdr to))))
     (or (string-match-p ".go$" file)
