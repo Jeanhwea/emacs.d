@@ -6,7 +6,7 @@
      (helper . "{}_helper.go")
      (implement . "{}_impl.go")
      (test . "{}_test.go"))
-  "A goland related file alist, use `{}' represent TOPIC.")
+  "A golang related file alist, use `{}' represent TOPIC.")
 
 (defun goal/get-file-topic (file pattern)
   "Test if the file matches pattern, and return topic if found."
