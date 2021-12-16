@@ -653,6 +653,7 @@
 (defun workflow-run-testcase ()
   "Run scratch file according to file suffix."
   (interactive)
+  (save-buffer)
   (cond
     ((eq major-mode 'go-mode) (call-interactively #'go-test-current-file))
     (t (user-error "Ops: unknown scratch file type."))))
