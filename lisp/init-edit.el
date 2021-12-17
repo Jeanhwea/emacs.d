@@ -172,10 +172,11 @@
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
     "sr" 'projectile-ripgrep
-    "rr" 'projectile-run-async-shell-command-in-root
+    "ra" 'projectile-run-async-shell-command-in-root
     "rn" 'eglot-rename
     "rs" 'workflow-run-scratch
-    "rt" 'workflow-run-testcase
+    "rr" 'workflow-test-func
+    "rt" 'workflow-test-file
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
     "wv" 'workflow-vertical-split-window

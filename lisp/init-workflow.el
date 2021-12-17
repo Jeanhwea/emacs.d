@@ -650,12 +650,20 @@
     ((eq major-mode 'java-mode) (jh/run-java-scratch))
     (t (user-error "Ops: unknown scratch file type."))))
 
-(defun workflow-run-testcase ()
+(defun workflow-test-file ()
   "Run scratch file according to file suffix."
   (interactive)
   (save-buffer)
   (cond
     ((eq major-mode 'go-mode) (call-interactively #'go-test-current-file))
+    (t (user-error "Ops: unknown scratch file type."))))
+
+(defun workflow-test-func ()
+  "Run scratch file according to file suffix."
+  (interactive)
+  (save-buffer)
+  (cond
+    ((eq major-mode 'go-mode) (call-interactively #'go-test-current-test))
     (t (user-error "Ops: unknown scratch file type."))))
 
 
