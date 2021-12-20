@@ -152,6 +152,7 @@
     "et" 'go/swap-test-and-subject
     "ei" 'go/swap-impl-and-subject
     "ew" 'workflow-dot-open-file
+    "er" 'go-show-cover-report
     "eb" 'eval-buffer
     "ev" 'eval-expression
     "fb" 'workflow-switch-to-buffer
