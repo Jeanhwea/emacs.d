@@ -114,6 +114,14 @@
     (async-shell-command cmd)
     (message (format "Run %s" cmd))))
 
+(defun go-show-cover-report()
+  "Open cover test file"
+  (interactive)
+  (let ((report (expand-file-name "cover.out" (jh/git-root (buffer-file-name)))))
+    (unless (file-exists-p report)
+      (user-error "report file is not exist: %s" report))
+    (go-coverage report)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; project management
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
