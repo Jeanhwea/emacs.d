@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Deprecated
+# key: dep
+# --
+
+// Deprecated: Use ${0:NewFunc} instead.
