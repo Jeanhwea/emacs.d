@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: async function define
+# key: gx
+# --
+
+go func() {
+$>$0
+}()
