@@ -121,7 +121,7 @@
 (when (and (require 'evil-leader) (require 'evil-numbers))
   (global-evil-leader-mode)
 
-  (evil-define-key '(normal visual) 'global (kbd "<SPC>") 'workflow-space-action)
+  (evil-define-key '(normal visual) 'global (kbd "<SPC>") 'evil-scroll-down)
   (evil-define-key '(normal visual) 'global (kbd "gp") 'xref-pop-marker-stack)
   (evil-define-key '(normal visual) 'global (kbd "go") 'workflow-find-definitions-other-window)
   (evil-define-key '(normal visual) 'global (kbd "gl") 'workflow-find-definitions-lookup)
