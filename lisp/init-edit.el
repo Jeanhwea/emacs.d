@@ -162,6 +162,7 @@
     "gf" 'workflow-git-open-file
     "gg" 'workflow-git-popup
     "hh" 'hs-toggle-hiding
+    "hs" 'workflow-highlight-symbol
     "kb" 'kill-buffer
     "ma" 'smerge-keep-all
     "mc" 'smerge-keep-current
@@ -169,6 +170,7 @@
     "mo" 'smerge-keep-other
     "ni" 'evil-numbers/inc-at-pt
     "nd" 'evil-numbers/dec-at-pt
+    "nb" 'workflow-new-buffer
     "sa" 'workflow-save-all-buffers
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
