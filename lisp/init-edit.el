@@ -149,8 +149,8 @@
     "ee" 'workflow-alternative-buffer
     "eg" 'goal/switch-to
     "es" 'workflow-eshell-open-from-here
-    "et" 'go/swap-test-and-subject
-    "ei" 'go/swap-impl-and-subject
+    ;; "et" 'go/swap-test-and-subject
+    ;; "ei" 'go/swap-impl-and-subject
     "ew" 'workflow-dot-open-file
     "er" 'go-show-cover-report
     "eb" 'eval-buffer
