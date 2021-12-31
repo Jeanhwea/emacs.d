@@ -74,6 +74,7 @@
 (require 'init-groovy)
 (require 'init-html)
 (require 'init-nxml)
+(require 'init-json)
 (require 'init-go)
 (require 'init-goal)
 (require 'init-thrift)

@@ -41,7 +41,8 @@
              )))
 
       (evil-define-key '(normal visual) 'local (kbd "gi") 'eglot-find-implementation)
-      (evil-define-key '(normal visual) 'local (kbd "TAB") 'java-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "<tab>") 'java-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "S-<tab>") 'workflow-inflect-string)
 
       ;; (flyspell-mode 1)
       (highlight-current-line)

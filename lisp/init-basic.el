@@ -70,6 +70,7 @@
   ;; frontend
   (add-hook 'js2-mode-hook 'hs-minor-mode)
   (add-hook 'typescript-mode-hook 'hs-minor-mode)
+  (add-hook 'json-mode-hook 'hs-minor-mode)
   (add-hook 'css-mode-hook 'hs-minor-mode)
   (add-hook 'mhtml-mode-hook 'hs-minor-mode))
 
@@ -77,10 +78,13 @@
   "Automatic do hideshow according to context."
   (let ((line (string-trim (thing-at-point 'line t))))
     (if (string-match-p ".*[{(]$" line)
-      (progn
-        (if (hs-already-hidden-p) (beginning-of-line) (end-of-line))
-        (hs-toggle-hiding))
-      (workflow-inflect-string))))
+      (jh/hs-toggle-hideshow) (workflow-inflect-string))))
+
+(defun jh/hs-toggle-hideshow ()
+  "Toggle hide and show status."
+  (progn
+    (if (hs-already-hidden-p) (beginning-of-line) (end-of-line))
+    (hs-toggle-hiding)))
 
 ;; -----------------------------------------------------------------------------
 ;; misc option
