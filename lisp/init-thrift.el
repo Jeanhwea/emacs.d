@@ -3,7 +3,9 @@
       (setq thrift-indent-level 4)
       ;; thrift tab action
       (evil-define-key '(normal visual) 'local (kbd "<tab>") 'thrift-tab-action)
-      (evil-define-key '(normal visual) 'local (kbd "S-<tab>") 'workflow-inflect-string)))
+      (evil-define-key '(normal visual) 'local (kbd "S-<tab>") 'workflow-inflect-string)
+      (evil-define-key '(normal visual) 'local (kbd "TAB") 'thrift-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "<backtab>") 'workflow-inflect-string)))
 
 (defun jh/format-thrift-source (&optional file)
   "Format thrift source code."

@@ -2,6 +2,8 @@
   #'(lambda()
       (evil-define-key '(normal visual) 'local (kbd "<tab>") 'json-tab-action)
       (evil-define-key '(normal visual) 'local (kbd "S-<tab>") 'json-shift-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "TAB") 'json-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "<backtab>") 'json-shift-tab-action)
       (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 

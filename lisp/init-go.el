@@ -27,7 +27,9 @@
       ;; (evil-define-key '(normal visual) 'local (kbd "gd") 'lsp-find-definition)
       ;; (evil-define-key '(normal visual) 'local (kbd "gr") 'lsp-rename)
       (evil-define-key '(normal visual) 'local (kbd "<tab>") 'go-tab-action)
-      (evil-define-key '(normal visual) 'local (kbd "S-<tab>") 'workflow-inflect-string)
+      (evil-define-key '(normal visual) 'local (kbd "TAB") 'go-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "<S-tab>") 'workflow-inflect-string)
+      (evil-define-key '(normal visual) 'local (kbd "<backtab>") 'workflow-inflect-string)
 
       ;; (flyspell-mode 1)
       (highlight-current-line)
