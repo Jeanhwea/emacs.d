@@ -161,6 +161,7 @@
     "gc" 'workflow-git-commit-changes
     "gf" 'workflow-git-open-file
     "gg" 'workflow-git-popup
+    "hl" 'hs-hide-level
     "hh" 'hs-toggle-hiding
     "hs" 'workflow-highlight-symbol
     "kb" 'kill-buffer
