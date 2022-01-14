@@ -314,6 +314,7 @@
   "Format codes."
   (interactive)
   (cond
+    ((eq major-mode 'json-mode) (json-pretty-print-buffer))
     ((eq major-mode 'java-mode) (jh/format-java-source))
     ((eq major-mode 'go-mode) (gofmt))
     ((eq major-mode 'web-mode) (jh/format-js-source))
