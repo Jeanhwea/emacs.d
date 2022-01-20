@@ -48,8 +48,8 @@
       (end-of-line) (hs-toggle-hiding))))
 
 ;; setup for go-tags
-;; (setq go-tag-args '("-transform" "pascalcase"))
-(setq go-tag-args '("-transform" "camelcase"))
+(setq go-tag-args '("-transform" "pascalcase"))
+;; (setq go-tag-args '("-transform" "camelcase"))
 
 (defun jh/run-go-scratch (&optional file)
   "Run go scratch source code."
