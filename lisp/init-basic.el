@@ -52,7 +52,8 @@
 ;; (global-prettify-symbols-mode 1)
 (defun highlight-current-line ()
   "Highlight current line if "
-  (when window-system (hl-line-mode 1)))
+  ;; (when window-system (hl-line-mode 1))
+  (hl-line-mode 1))
 
 ;; -----------------------------------------------------------------------------
 ;; hideshow mode
