@@ -188,8 +188,11 @@
 
 (defun jh/go-test-name ()
   "Read golang test class name."
-  (jh/re-replace "Test$" ""
-    (jh/pascalcase (jh/file-base-name (buffer-file-name)))))
+  (let ((fn (buffer-file-name)))
+    (if (string-match-p "lc.*_test.go$" fn)
+      (jh/re-replace "^" "_"
+        (jh/re-replace "Test$" "" (jh/upcase (jh/file-base-name fn))))
+      (jh/re-replace "Test$" "" (jh/pascalcase (jh/file-base-name fn))))))
 
 (defun jh/go-inter-name ()
   "Read golang inter name."
