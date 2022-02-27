@@ -127,6 +127,18 @@
       (user-error "report file is not exist: %s" report))
     (go-coverage report)))
 
+(defun go-prettify-json ()
+  "Prettify JSON string inside back slash quote."
+  (interactive)
+  (let ((beg) (end))
+    (save-excursion
+      (when (re-search-backward "`{")
+        (setq beg (+ (point) 1)))
+      (when (re-search-forward "}`")
+        (setq end (- (point) 1)))
+      (when (and beg end)
+        (json-pretty-print beg end)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; project management
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
