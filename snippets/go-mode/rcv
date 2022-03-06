@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: recover function
+# key: rcv
+# --
+
+defer func() {
+$>if r := recover(); r != nil {
+$>$>$0
+$>}
+}()
