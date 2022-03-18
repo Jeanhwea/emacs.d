@@ -110,6 +110,13 @@
   tab-width 4)
 
 ;; -----------------------------------------------------------------------------
+;; ediff
+;; -----------------------------------------------------------------------------
+(setq-default
+  ediff-window-setup-function 'ediff-setup-windows-plain
+  ediff-split-window-function 'split-window-horizontally)
+
+;; -----------------------------------------------------------------------------
 ;; enable narrow, downcase and upcase
 ;; -----------------------------------------------------------------------------
 (put 'narrow-to-region 'disabled nil)     ; C-c n
