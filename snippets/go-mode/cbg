@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ctx := context.Background()
+# key: cbg
+# --
+
+ctx := context.Background()$0

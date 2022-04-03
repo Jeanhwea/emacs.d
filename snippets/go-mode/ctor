@@ -2,6 +2,7 @@
 # name: constructor
 # key: ctor
 # --
+
 func New${1:`(jh/go-class-name)`}($2) *$1 {
 $>return &$1{$0}
 }
