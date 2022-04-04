@@ -171,6 +171,8 @@
     "mc" 'smerge-keep-current
     "mm" 'smerge-keep-mine
     "mo" 'smerge-keep-other
+    "mp" 'smerge-prev
+    "mn" 'smerge-next
     "ni" 'evil-numbers/inc-at-pt
     "nd" 'evil-numbers/dec-at-pt
     "nb" 'workflow-new-buffer
