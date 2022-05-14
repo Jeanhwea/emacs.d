@@ -93,6 +93,7 @@
 (require 'init-apidocs)
 (require 'init-experimental)
 (require 'init-keymate)
+(require 'init-debug)
 
 ;; -----------------------------------------------------------------------------
 ;; local settings
