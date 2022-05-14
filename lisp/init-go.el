@@ -16,6 +16,8 @@
       (setq
         gofmt-command "goimports"
         ;; indent-tabs-mode nil
+        compilation-scroll-output t
+        compilation-ask-about-save nil
         tab-width 4
         show-trailing-whitespace t)
 
