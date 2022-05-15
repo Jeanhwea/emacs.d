@@ -15,4 +15,22 @@
   (interactive)
   (jh/tab-dwim))
 
+(defun jh/run-shell-scratch (&optional file)
+  "Run shell scratch source code."
+  (let*
+    ((sbufname "*shell-scratch-buffer*")
+      (file (or file (buffer-file-name)))
+      (filename file))
+    (setq cmd (format "sh %s" file))
+    (if (string-match-p ".*\\.sh$" filename)
+      (progn
+        (save-buffer)
+        (if (get-buffer sbufname)
+          (setq sbuf (get-buffer sbufname))
+          (setq sbuf (generate-new-buffer sbufname)))
+        (shell-command cmd sbuf sbuf)
+        (display-buffer sbuf)
+        (message (format "Run %s" file)))
+      (user-error (format "Not a valid shell sratch file: %s" file)))))
+
 (provide 'init-sh)

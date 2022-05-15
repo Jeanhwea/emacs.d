@@ -649,6 +649,7 @@
     ((eq major-mode 'go-mode) (jh/run-go-scratch))
     ((eq major-mode 'python-mode) (jh/run-python-scratch))
     ((eq major-mode 'java-mode) (jh/run-java-scratch))
+    ((eq major-mode 'sh-mode) (jh/run-shell-scratch))
     (t (user-error "Ops: unknown scratch file type."))))
 
 (defun workflow-test-file ()
