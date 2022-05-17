@@ -4,7 +4,7 @@
   ;;   magit-repository-directories `((,user-emacs-directory . 0)))
   (add-to-list 'magit-repository-directories '("~/work" . 2))
   (cond
-    ((jh/mac?) (add-to-list 'magit-repository-directories '("~/Code" . 3)))
+    ((jh/mac?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
     ((jh/linux?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
     ((jh/windows?) (add-to-list 'magit-repository-directories '("e:/Code" . 3))))
   ;; (require 'magit-lfs)
