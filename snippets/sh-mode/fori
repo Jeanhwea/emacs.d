@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: for $i in array ...
+# key: fori
+# --
+for ${1:e} in \$\{${2:array}[@]\}; do
+$>$0
+done
