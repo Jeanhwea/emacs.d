@@ -54,6 +54,20 @@
 ;; (setq go-tag-args '("-transform" "pascalcase"))
 ;; (setq go-tag-args '("-transform" "camelcase"))
 
+(defun jh/format-golang-source (&optional file)
+  "Format golang source code."
+  (let
+    ((file (or file (buffer-file-name))))
+    (progn
+      (save-buffer)
+      ;; format buffer
+      (shell-command (format "sed -i '/^import/,/^\s*)/ { /^\s*$/ d; }' \"%s\"" file))
+      ;; reload buffer
+      (revert-buffer nil t)
+      (gofmt)
+      ;; leave a messge
+      (message (format "Formatted t %s" file)))))
+
 (defun jh/run-go-scratch (&optional file)
   "Run go scratch source code."
   (let*
