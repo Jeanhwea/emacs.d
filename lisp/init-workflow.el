@@ -665,7 +665,13 @@
   (interactive)
   (save-buffer)
   (cond
-    ((eq major-mode 'go-mode) (call-interactively #'go-test-current-test))
+    ((eq major-mode 'go-mode)
+      (if (string-match-p "_test.go$" (buffer-file-name))
+        (call-interactively #'go-test-current-test)
+        (jh/run-go-scratch)))
+    ((eq major-mode 'go-mode) (jh/run-go-scratch))
+    ((eq major-mode 'python-mode) (jh/run-python-scratch))
+    ((eq major-mode 'java-mode) (jh/run-java-scratch))
     ((eq major-mode 'sh-mode) (jh/run-shell-scratch))
     (t (user-error "Ops: unknown scratch file type."))))
 
