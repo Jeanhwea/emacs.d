@@ -28,7 +28,7 @@
         (if (get-buffer sbufname)
           (setq sbuf (get-buffer sbufname))
           (setq sbuf (generate-new-buffer sbufname)))
-        (async-shell-command cmd sbuf sbuf)
+        (shell-command cmd sbuf sbuf)
         (display-buffer sbuf)
         (message (format "Run %s" file)))
       (user-error (format "Not a valid shell sratch file: %s" file)))))
