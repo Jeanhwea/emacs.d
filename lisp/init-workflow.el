@@ -666,6 +666,7 @@
   (save-buffer)
   (cond
     ((eq major-mode 'go-mode) (call-interactively #'go-test-current-test))
+    ((eq major-mode 'sh-mode) (jh/run-shell-scratch))
     (t (user-error "Ops: unknown scratch file type."))))
 
 
