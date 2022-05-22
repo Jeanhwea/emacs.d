@@ -61,7 +61,7 @@
     (progn
       (save-buffer)
       ;; format buffer
-      (shell-command (format "sed -i '/^import/,/^\s*)/ { /^\s*$/ d; }' \"%s\"" file))
+      (shell-command (format "sed -i '/^import (/,/^\s*)/ { /^\s*$/ d; }' \"%s\"" file))
       ;; reload buffer
       (revert-buffer nil t)
       (gofmt)
