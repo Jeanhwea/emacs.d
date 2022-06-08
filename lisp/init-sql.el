@@ -54,8 +54,12 @@
   "sqlformat - -k upper -i upper -s -a --indent_width 2 --wrap_after 80"
   "sqlformat command.")
 
+;; (defconst sql-format-command
+;;   (format "%s | %s" sqlformat-command-lower pgformat-command-lower)
+;;   "format sql command.")
+
 (defconst sql-format-command
-  (format "%s | %s" sqlformat-command-lower pgformat-command-lower)
+  (format "%s" sqlformat-command-lower)
   "format sql command.")
 
 (defun jh/format-sql-source (&optional file)
