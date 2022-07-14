@@ -74,7 +74,7 @@
       (setq beg (point))
       (forward-paragraph)
       ;; (when (< (point) (point-max)) (backward-char))
-      (setq end (point)))
+      (setq end (- (point) 1)))
     ;; execute commands
     (if (file-exists-p pgformat-name)
       (let ((default-directory (file-name-directory pgformat-name)))
