@@ -28,20 +28,20 @@
   "pg_format command.")
 
 (defconst pgformat-func-dict
-  (expand-file-name "lang/oracle-func-name.txt" user-emacs-directory)
+  (expand-file-name "lang/sql-func-name.txt" user-emacs-directory)
   "Location of pg_format extra function names.")
 
 ;; http://sqlformat.darold.net/
 ;; https://github.com/darold/pgFormatter
 (defconst pgformat-command-lower
   (format
-    "%s -p '\\$\\{[_0-9a-zA-Z:]+\\}' -f 1 -u 1 -U 1 -s 2 -w 80 --extra-function \"%s\" -"
+    "%s -p '\\$\\{[_0-9a-zA-Z:]+\\}' --no-extra-line -f 1 -u 1 -U 1 -s 2 -w 80 --extra-function \"%s\" -"
     pgformat-prog pgformat-func-dict)
   "pg_format command.")
 
 (defconst pgformat-command-upper
   (format
-    "%s -p '\\$\\{[_0-9a-zA-Z:]+\\}' -f 2 -u 2 -U 2 -s 2 -w 80 --extra-function \"%s\" -"
+    "%s -p '\\$\\{[_0-9a-zA-Z:]+\\}' --no-extra-line -f 2 -u 2 -U 2 -s 2 -w 80 --extra-function \"%s\" -"
     pgformat-prog pgformat-func-dict)
   "pg_format command.")
 

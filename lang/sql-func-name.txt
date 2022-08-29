@@ -927,3 +927,5 @@ XML_PASS
 XML_TABL
 XML_TYPE
 YM_ISO_F
+get_json_object
+isnotnull
