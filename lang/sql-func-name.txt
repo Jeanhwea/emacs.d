@@ -927,5 +927,10 @@ XML_PASS
 XML_TABL
 XML_TYPE
 YM_ISO_F
+collect_list
 get_json_object
 isnotnull
+max
+min
+row_number
+to_json
