@@ -930,6 +930,7 @@ YM_ISO_F
 collect_list
 get_json_object
 isnotnull
+isnull
 max
 min
 row_number
