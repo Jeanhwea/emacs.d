@@ -171,6 +171,7 @@
          javadoc-lookup
          jetbrains-darcula-theme
          js-comint
+         json-mode
          keycast
          keyfreq
          leetcode
