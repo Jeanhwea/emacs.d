@@ -3,7 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defconst goal/topics
   '((class . "{}.go")
-     (helper . "{}_helper.go")
+     ;; (helper . "{}_helper.go")
      (implement . "{}_impl.go")
      (test . "{}_test.go"))
   "A golang related file alist, use `{}' represent TOPIC.")
