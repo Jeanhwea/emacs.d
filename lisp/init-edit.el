@@ -173,6 +173,7 @@
     "mo" 'smerge-keep-other
     "mp" 'smerge-prev
     "mn" 'smerge-next
+    "nc" 'create-new-component
     "ni" 'evil-numbers/inc-at-pt
     "nd" 'evil-numbers/dec-at-pt
     "nb" 'workflow-new-buffer
