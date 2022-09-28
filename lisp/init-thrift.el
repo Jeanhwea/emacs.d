@@ -14,7 +14,8 @@
     (progn
       (save-buffer)
       ;; format buffer
-      (shell-command (format "sed -i 's/  */ /g;s/  *,/,/g' \"%s\"" file))
+      ;; (shell-command (format "sed -i 's/  */ /g;s/  *,/,/g' \"%s\"" file))
+      (shell-command (format "pangu format thrift \"%s\"" file))
       ;; reload buffer
       (revert-buffer nil t)
       (jh/indent-current-buffer)
