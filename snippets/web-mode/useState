@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: useState(...)
+# key: us
+# --
+
+const [${1:data}, set${1:$(jh/pascalcase yas-text)}] = useState<any>(${2:{}}$0);

@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name: console.log
+# name: console.log(...)
 # key: log
 # --
-console.log('${1:`(jh/ts-console-prefix)`}', $0);
+
+console.log($0);
