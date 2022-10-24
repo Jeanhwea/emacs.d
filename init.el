@@ -134,6 +134,7 @@
          counsel
          csharp-mode
          csv-mode
+         cmake-mode
          cuda-mode
          dashboard
          dired-k
