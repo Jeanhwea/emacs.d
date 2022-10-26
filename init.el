@@ -191,6 +191,8 @@
          protobuf-mode
          pyim
          rainbow-delimiters
+         realgud
+         realgud-lldb
          restclient
          rg
          sicp
