@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: console.log('var', var)
-# key: l
+# key: cl
 # --
 
 console.log('$1', ${1:data});$0
