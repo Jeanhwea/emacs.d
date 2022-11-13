@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: package.function
+# key: sc
+# --
+
+`(jh/go-package-name)`.`(jh/go-current-func)`$0
