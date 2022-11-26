@@ -144,8 +144,10 @@
     "bB" 'workflow-bookmark-current-file
     "cw" 'workflow-replace
     "db" 'gud-break
+    "dD" 'gud-remove
     "dc" 'gud-cont
     "dd" 'gud-down
+    "df" 'gud-finish
     "dn" 'gud-next
     "dp" 'gud-print
     "dr" 'gud-run
