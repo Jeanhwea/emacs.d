@@ -125,6 +125,7 @@
 
   (evil-define-key '(normal visual) 'global (kbd "<SPC>") 'evil-scroll-down)
   (evil-define-key '(normal visual) 'global (kbd "gp") 'xref-pop-marker-stack)
+  (evil-define-key '(normal visual) 'global (kbd "gf") 'evil-find-file-at-point-with-line)
   (evil-define-key '(normal visual) 'global (kbd "go") 'workflow-find-definitions-other-window)
   (evil-define-key '(normal visual) 'global (kbd "gl") 'workflow-find-definitions-lookup)
   (evil-define-key '(normal visual) 'global (kbd "gr") 'workflow-find-references)
