@@ -145,9 +145,12 @@
     "cw" 'workflow-replace
     "db" 'gud-break
     "dc" 'gud-cont
+    "dd" 'gud-down
     "dn" 'gud-next
     "dp" 'gud-print
+    "dr" 'gud-run
     "ds" 'gud-step
+    "du" 'gud-up
     "dw" 'gud-watch
     "ee" 'workflow-alternative-buffer
     "eg" 'goal/switch-to
