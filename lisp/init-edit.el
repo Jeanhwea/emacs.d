@@ -144,7 +144,6 @@
     "bB" 'workflow-bookmark-current-file
     "cw" 'workflow-replace
     "db" 'gud-break
-    "dD" 'gud-remove
     "dc" 'gud-cont
     "dd" 'gud-down
     "df" 'gud-finish
@@ -152,8 +151,10 @@
     "dp" 'gud-print
     "dr" 'gud-run
     "ds" 'gud-step
+    "dt" 'gud-until
     "du" 'gud-up
     "dw" 'gud-watch
+    "dx" 'gud-remove
     "ee" 'workflow-alternative-buffer
     "eg" 'goal/switch-to
     "es" 'workflow-eshell-open-from-here
