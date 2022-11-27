@@ -27,8 +27,18 @@
              ("!=" . 8800)              ; ≠
              ;; ----------------------------------------------------------------
              )))
+
+
+      (evil-define-key '(normal visual) 'local (kbd "<tab>") 'cc-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "TAB") 'cc-tab-action)
+
       (highlight-current-line)
       (rainbow-delimiters-mode 1)))
+
+(defun cc-tab-action ()
+  "Default <tab> key action for golang."
+  (interactive)
+  (jh/tab-dwim))
 
 (defun jh/format-cc-source (&optional file)
   "Format cc source code."
