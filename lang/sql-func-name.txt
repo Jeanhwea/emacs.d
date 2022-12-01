@@ -1,5 +1,11 @@
 collect_list
 get_json_object
+from_unixtime
+unix_timestamp
+date
+date_add
+date_sub
+to_date
 isnotnull
 isnull
 max
