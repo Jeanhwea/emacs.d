@@ -10,6 +10,9 @@ isnotnull
 isnull
 max
 min
+sum
+count
+avg
 row_number
 to_json
 if
