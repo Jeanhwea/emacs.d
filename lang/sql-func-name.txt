@@ -19,3 +19,4 @@ if
 subdate
 json_extract
 json_arrayagg
+date_format
