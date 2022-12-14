@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Define context
+# key: cx
+# --
+
+ctx context.Context

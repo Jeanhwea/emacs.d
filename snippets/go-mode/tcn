@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Test Case new
+# key: tcn
+# --
+
+func Test`(jh/go-test-name)`${1:01}(t *testing.T) {
+$>ctx := context.Background()$0
+}

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Define err
+# key: vee
+# --
+
+var err error
