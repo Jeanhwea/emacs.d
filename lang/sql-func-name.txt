@@ -1,6 +1,7 @@
 collect_list
 get_json_object
 size
+map
 from_unixtime
 unix_timestamp
 date
