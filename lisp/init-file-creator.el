@@ -1,6 +1,7 @@
 (defconst project/golang
   '((repository . "biz/repository/{}_repo/{}_repo.go")
      (helper . "biz/helper/{}_helper/{}_helper.go")
+     (infrastructure . "biz/infrastructure/{}_infra/{}_infra.go")
      (service . "biz/service/{}_service/{}_service.go")
      (controller . "biz/controller/{}_controller/{}_controller.go")))
 
