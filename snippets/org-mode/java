@@ -4,7 +4,7 @@
 # key: java
 # --
 #+HEADER: :classname ${1:MainClass}
-#+BEGIN_SRC java :exports code
+#+begin_src java :exports code
   import java.util.*;
 
   class $1 {
@@ -12,4 +12,4 @@
       System.out.println("${0:Hello World}");
     }
   }
-#+END_SRC
+#+end_src

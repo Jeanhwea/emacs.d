@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Insert Shell
+# key: !
+# --
+#+begin_src sh :exports both :results output
+  $0
+#+end_src

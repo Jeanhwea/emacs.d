@@ -4,8 +4,8 @@
 # key: jv
 # --
 #+HEADER: :classname ${1:$$(format "App%d" (line-number-at-pos))}
-#+BEGIN_SRC java :exports both :results output
+#+begin_src java :exports both :results output
 $>class $1 {
 $>$0
 $>}
-#+END_SRC
+#+end_src
