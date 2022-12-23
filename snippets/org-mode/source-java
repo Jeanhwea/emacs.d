@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: Insert Java
+# name: Insert Java Source
 # expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 't))
-# key: jv
+# key: /j
 # --
 #+HEADER: :classname ${1:$$(format "App%d" (line-number-at-pos))}
 #+begin_src java :exports both :results output
