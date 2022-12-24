@@ -19,6 +19,7 @@ row_number
 to_json
 if
 subdate
+group_concat
 json_extract
 json_arrayagg
 date_format
