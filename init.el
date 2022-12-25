@@ -193,6 +193,7 @@
          rainbow-delimiters
          realgud
          realgud-lldb
+         request
          restclient
          rg
          sicp
