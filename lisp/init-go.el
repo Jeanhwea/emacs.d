@@ -54,6 +54,11 @@
 ;; (setq go-tag-args '("-transform" "pascalcase"))
 ;; (setq go-tag-args '("-transform" "camelcase"))
 
+(defun gen-struct-from-sql ()
+  "Generate gorm struct from sql."
+  (interactive)
+  (insert (shell-command-to-string "dm golang-gen-struct-from-create-table")))
+
 (defun jh/format-golang-source (&optional file)
   "Format golang source code."
   (let
