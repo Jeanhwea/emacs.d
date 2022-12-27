@@ -3,8 +3,7 @@
 # expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 't))
 # key: /j
 # --
-#+HEADER: :classname ${1:$$(format "App%d" (line-number-at-pos))}
-#+begin_src java :exports both :results output
+#+begin_src java
 $>class $1 {
 $>$0
 $>}

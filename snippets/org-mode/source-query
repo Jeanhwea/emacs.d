@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Insert Source Code
+# key: /q
+# --
+#+begin_src ${1:sql}
+  $0
+#+end_src
