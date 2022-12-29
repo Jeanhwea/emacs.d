@@ -492,6 +492,15 @@
     (if (get-buffer name)
       (switch-to-buffer name) (let ((eshell-buffer-name name)) (eshell)))))
 
+(defun workflow-zsh-open-from-here ()
+  "open a zsh as a temporary shell, and rename the buffer to `*zsh*'."
+  (interactive)
+  (let*
+    ((project (jh/shrimp-shell-name))
+      (name (if project (format "*zsh[%s]*" project) "*zsh*")))
+    (if (get-buffer name)
+      (switch-to-buffer name) (shell (get-buffer-create name)))))
+
 (defun workflow-working-directory-send ()
   "Send current working directory to terminal."
   (interactive)
