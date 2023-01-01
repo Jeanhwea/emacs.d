@@ -73,7 +73,8 @@
   (add-hook 'org-mode-hook
     #'(lambda ()
         (setq
-          org-babel-python-command (or local-python-file "python3")
+          org-babel-python-command
+          (if (file-exists-p local-python-file) local-python-file "python3")
           pangu-spacing-real-insert-separtor t)
         (pangu-spacing-mode 1)
         (org-babel-do-load-languages
