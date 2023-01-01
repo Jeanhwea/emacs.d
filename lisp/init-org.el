@@ -71,7 +71,7 @@
   (add-hook 'org-mode-hook
     #'(lambda ()
         (setq
-          ;; org-babel-python-command "python"
+          org-babel-python-command "python3"
           pangu-spacing-real-insert-separtor t)
         (pangu-spacing-mode 1)
         (org-babel-do-load-languages
