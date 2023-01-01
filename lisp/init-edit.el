@@ -174,6 +174,7 @@
     "hl" 'hs-hide-level
     "hh" 'hs-toggle-hiding
     "hs" 'workflow-highlight-symbol
+    "ii" 'workflow-inflect-string
     "kb" 'kill-buffer
     "ma" 'smerge-keep-all
     "mc" 'smerge-keep-current
@@ -185,6 +186,8 @@
     "ni" 'evil-numbers/inc-at-pt
     "nd" 'evil-numbers/dec-at-pt
     "nb" 'workflow-new-buffer
+    "oo" 'org-insert-link
+    "om" 'org-store-link
     "sa" 'workflow-save-all-buffers
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
