@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: function name
+# key: fn
+# --
+
+`(jh/go-current-func)`$0
