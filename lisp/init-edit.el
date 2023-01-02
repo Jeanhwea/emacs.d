@@ -186,9 +186,9 @@
     "ni" 'evil-numbers/inc-at-pt
     "nd" 'evil-numbers/dec-at-pt
     "nb" 'workflow-new-buffer
-    "om" 'org-store-link
-    "oo" 'org-insert-link
-    "ox" 'org-open-at-point
+    "oi" 'org-insert-link
+    "oo" 'org-open-at-point
+    "os" 'org-store-link
     "sa" 'workflow-save-all-buffers
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
