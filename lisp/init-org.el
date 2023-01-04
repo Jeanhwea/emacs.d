@@ -17,7 +17,7 @@
     org-agenda-files (and (file-directory-p jesenia-dir) (list jesenia-dir))
     org-todo-keywords
     ;; '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
-    '((sequence "TODO" "DONE"))
+    '((sequence "TODO" "DOING" "WAITING" "DONE"))
     org-todo-keyword-faces
     '(("TODO" :foreground "#d33682" :weight bold)
        ("DOING" :foreground "#dc322f" :weight bold)
