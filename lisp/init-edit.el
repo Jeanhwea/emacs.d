@@ -115,6 +115,8 @@
 ;; This should set before loading evil-mode, which is needed by evil-collection
 (setq evil-want-integration t)
 (setq evil-want-keybinding nil)
+;; reserve <tab> for org-mode
+(setq evil-want-C-i-jump nil)
 
 (when (require 'evil)
   (evil-mode 1)
