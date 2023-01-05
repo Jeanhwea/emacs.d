@@ -90,7 +90,7 @@
              (verb . t)
              ;; ------------------------------------------------------------------
              ))
-        ;; (unless (jh/windows?) (org-bullets-mode 1))
+        (unless (jh/windows?) (org-bullets-mode 1))
         (add-to-list 'org-babel-default-header-args:python '(:preamble  . "# -*- coding: utf-8 -*-"))
         (add-to-list 'org-babel-default-header-args '(:eval . "never-export")))))
 
