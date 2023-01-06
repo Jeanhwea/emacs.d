@@ -4,17 +4,15 @@
 (when (require 'org)
 
   ;; git clone  https://github.com/fniessen/org-html-themes.git ~/.emacs.d/site-lisp/org-html-themes
-  (defvar jesenia-dir
-    (if (jh/windows?)
-      "e:/Code/avic/notifly"
-      "~/Documents/archive/dropbox/jesenia"))
+  (defvar agenda-dir
+    (if (jh/windows?) "e:/Code/avic/notifly" "~/agenda"))
 
   (setq
     org-link-file-path-type 'relative
     org-html-validation-link nil
     org-startup-with-inline-images t
-    org-directory (and (file-directory-p jesenia-dir) jesenia-dir)
-    org-agenda-files (and (file-directory-p jesenia-dir) (list jesenia-dir))
+    org-directory (and (file-directory-p agenda-dir) agenda-dir)
+    org-agenda-files (and (file-directory-p agenda-dir) (list agenda-dir))
     org-todo-keywords
     ;; '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
     '((sequence "TODO" "DOING" "WAITING" "DONE"))
