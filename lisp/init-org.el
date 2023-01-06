@@ -13,6 +13,7 @@
     org-startup-with-inline-images t
     org-directory (and (file-directory-p agenda-dir) agenda-dir)
     org-agenda-files (and (file-directory-p agenda-dir) (list agenda-dir))
+    org-agenda-start-with-log-mode t
     org-todo-keywords
     ;; '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
     '((sequence "TODO" "DOING" "WAITING" "DONE"))
