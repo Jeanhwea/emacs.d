@@ -144,6 +144,7 @@
   (evil-leader/set-key
     "bb" 'list-bookmarks
     "bB" 'workflow-bookmark-current-file
+    "bv" 'workflow-git-browse-remote
     "cw" 'workflow-replace
     "db" 'gud-break
     "dc" 'gud-cont
