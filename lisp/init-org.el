@@ -16,10 +16,9 @@
     org-agenda-start-with-log-mode t
     org-todo-keywords
     ;; '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
-    '((sequence "TODO" "DOING" "WAITING" "DONE"))
+    '((sequence "TODO" "WAITING" "|" "CANCELED" "DONE"))
     org-todo-keyword-faces
     '(("TODO" :foreground "#d33682" :weight bold)
-       ("DOING" :foreground "#dc322f" :weight bold)
        ("WAITING" :foreground "#d33682")
        ("DONE" :foreground "#859900" :weight bold)
        ("CANCELED" :foreground "#2aa198"))
