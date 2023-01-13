@@ -1,6 +1,9 @@
-[submodule "site-lisp/org-html-themes"]
-	path = site-lisp/org-html-themes
-	url = https://github.com/fniessen/org-html-themes.git
-[submodule "site-lisp/undo-tree"]
-	path = site-lisp/undo-tree
-	url = https://github.com/Jeanhwea/undo-tree.git
+[submodule "org-html-themes"]
+    path = site-lisp/org-html-themes
+    url = https://github.com/fniessen/org-html-themes.git
+[submodule "undo-tree"]
+    path = site-lisp/undo-tree
+    url = https://github.com/Jeanhwea/undo-tree.git
+[submodule "gud-lldb"]
+    path = site-lisp/gud-lldb
+    url = https://github.com/Jeanhwea/gud-lldb.git
