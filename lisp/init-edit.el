@@ -189,6 +189,7 @@
     "nd" 'evil-numbers/dec-at-pt
     "nb" 'workflow-new-buffer
     "oa" 'org-agenda
+    "oe" 'org-edit-special
     "oi" 'org-insert-link
     "oo" 'org-open-at-point
     "os" 'org-store-link
