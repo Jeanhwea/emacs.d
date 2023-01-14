@@ -184,6 +184,8 @@
          markdown-mode
          monokai-theme
          nyan-mode
+         ob-go
+         ob-tmux
          org-bullets
          pangu-spacing
          posframe

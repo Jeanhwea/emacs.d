@@ -82,6 +82,8 @@
              (emacs-lisp . t)
              (java . t)
              (js . t)
+             (go . t)
+             (tmux . t)
              (python . t)
              (shell . t)
              (sql . t)
