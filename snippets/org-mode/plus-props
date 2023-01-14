@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Insert properties
+# key: +props
+# --
+
+:properties:
+:header-args:sql: :dbhost 127.0.0.1 :database information_schema :engine mysql :dbuser root :exports both
+:end:
