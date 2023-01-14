@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Plus Call
+# key: +c
+# --
+
+#+call: ${0:func}(var=3)

@@ -80,11 +80,13 @@
           '(
              ;; ------------------------------------------------------------------
              (emacs-lisp . t)
+             (C . t)
              (java . t)
              (js . t)
              (go . t)
              (tmux . t)
              (python . t)
+             (ruby . t)
              (shell . t)
              (sql . t)
              (verb . t)

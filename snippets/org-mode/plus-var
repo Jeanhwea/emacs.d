@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Plus Var
+# key: +v
+# --
+
+#+header: :var ${0:x=1}
