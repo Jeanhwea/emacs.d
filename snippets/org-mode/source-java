@@ -1,8 +1,8 @@
 # -*- mode: snippet -*-
 # name: Insert Java Source
-# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 't))
 # key: /j
 # --
+
 #+begin_src java
 $>class Startup {
 $>$0
