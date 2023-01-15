@@ -500,7 +500,7 @@
       (name (if project (format "*zsh[%s]*" project) "*zsh*")))
     (if (get-buffer name)
       (switch-to-buffer name)
-      ;; TODO: comint-process-echoes setq-local => to avoid echo command
+      ;; TODO comint-process-echoes setq-local => to avoid echo command
       (shell (get-buffer-create name)))))
 
 (defun workflow-working-directory-send ()
