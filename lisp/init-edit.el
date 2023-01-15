@@ -161,7 +161,8 @@
     "ee" 'workflow-alternative-buffer
     "eg" 'goal/switch-to
     "es" 'workflow-eshell-open-from-here
-    "ez" 'workflow-zsh-open-from-here
+    ;; "ez" 'workflow-zsh-open-from-here
+    "ez" 'projectile-run-term
     ;; "et" 'go/swap-test-and-subject
     ;; "ei" 'go/swap-impl-and-subject
     "ew" 'workflow-dot-open-file
