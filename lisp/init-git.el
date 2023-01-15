@@ -1,4 +1,4 @@
-(when (and (require 'magit) (require 'magit-todos))
+(when (require 'magit)
   ;; repositories for magit-list-repositories
   ;; (setq
   ;;   magit-repository-directories `((,user-emacs-directory . 0)))
@@ -9,8 +9,10 @@
     ((jh/windows?) (add-to-list 'magit-repository-directories '("e:/Code" . 3))))
   ;; (require 'magit-lfs)
   (defalias 'list-repositories 'magit-list-repositories)
-  (magit-todos-mode)
   (global-set-key (kbd "C-x g") 'magit-status))
+
+(when (require 'magit-todos)
+  (magit-todos-mode))
 
 
 ;; -----------------------------------------------------------------------------
