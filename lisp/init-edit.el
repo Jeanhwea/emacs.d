@@ -191,6 +191,8 @@
     "nd" 'evil-numbers/dec-at-pt
     "nb" 'workflow-new-buffer
     "oa" 'org-agenda
+    "od" 'org-deadline
+    "ot" 'org-schedule
     "oe" 'org-edit-special
     "oi" 'org-insert-link
     "oo" 'org-open-at-point
