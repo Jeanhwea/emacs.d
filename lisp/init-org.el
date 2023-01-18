@@ -12,6 +12,9 @@
     org-html-validation-link nil
     org-startup-with-inline-images t
     org-directory (and (file-directory-p agenda-dir) agenda-dir)
+    ;; org-agenda-start-day "-5d"
+    ;; 周报从周四开始
+    org-agenda-start-on-weekday 4
     org-agenda-files (and (file-directory-p agenda-dir) (list agenda-dir))
     org-agenda-start-with-log-mode t
     org-todo-keywords
