@@ -23,3 +23,4 @@ group_concat
 json_extract
 json_arrayagg
 date_format
+pdg_collect_sensitive_fields
