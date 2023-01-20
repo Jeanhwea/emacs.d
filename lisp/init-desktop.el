@@ -73,6 +73,7 @@
      "/.emacs.d/bookmarks"
      "/agenda/"
      "/tmp/"
+     "/*/go/pkg/mod/*"
      "/ssh:"))
 (recentf-mode 1)
 
