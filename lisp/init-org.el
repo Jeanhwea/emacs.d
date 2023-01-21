@@ -56,6 +56,8 @@
          ("\\paragraph{%s}" . "\\paragraph*{%s}")
          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
+  (require 'ox-beamer)
+
   (defun jh/org-capture-task ()
     "Capture a task with default template in org-mode"
     (interactive)
