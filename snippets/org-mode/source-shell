@@ -2,6 +2,6 @@
 # name: Insert Shell Codes
 # key: /s
 # --
-#+begin_src sh
+#+BEGIN_SRC sh
   $0
-#+end_src
+#+END_SRC

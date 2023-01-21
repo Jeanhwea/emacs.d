@@ -3,4 +3,4 @@
 # key: +n
 # --
 
-#+name: ${0:name}
+#+NAME: ${0:name}

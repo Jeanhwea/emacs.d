@@ -3,6 +3,6 @@
 # key: +props
 # --
 
-:properties:
+:PROPERTIES:
 :header-args:sql: :dbhost 127.0.0.1 :database information_schema :engine mysql :dbuser root :exports both
-:end:
+:END:

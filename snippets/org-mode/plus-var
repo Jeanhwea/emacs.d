@@ -3,4 +3,4 @@
 # key: +v
 # --
 
-#+header: :var ${0:x=1}
+#+HEADER: :var ${0:x=1}

@@ -3,4 +3,4 @@
 # key: +c
 # --
 
-#+call: ${0:func}(var=3)
+#+CALL: ${0:func}(var=3)

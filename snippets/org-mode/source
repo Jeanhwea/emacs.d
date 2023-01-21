@@ -2,6 +2,6 @@
 # name: Insert Source Code
 # key: /
 # --
-#+begin_src ${1:sh}
+#+BEGIN_SRC ${1:sh}
   $0
-#+end_src
+#+END_SRC
