@@ -45,8 +45,16 @@
     org-html-postamble-format
     '(("en" "<p class=\"author\">Last Updated %T. Created by %a at %d.</p>")))
 
-
-  (define-key global-map (kbd "C-c l") 'org-store-link)
+  ;; export latex by xelatex
+  (with-eval-after-load 'ox-latex
+    (add-to-list 'org-latex-classes
+      '("ctexart"
+         "\\documentclass[11pt]{ctexart}"
+         ("\\section{%s}" . "\\section*{%s}")
+         ("\\subsection{%s}" . "\\subsection*{%s}")
+         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+         ("\\paragraph{%s}" . "\\paragraph*{%s}")
+         ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
   (defun jh/org-capture-task ()
     "Capture a task with default template in org-mode"
