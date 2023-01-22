@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Define interface with type ... interface {}
-# key: itf
+# key: iface
 # --
 
 type ${1:`(jh/go-class-name)`} interface {

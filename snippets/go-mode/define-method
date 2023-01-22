@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: method
+# name: Define Method
 # key: mtd
 # --
 func (`(jh/go-receiver-name)` *${1:`(jh/go-class-name)`}) ${2:MethodName}($3) $4 {

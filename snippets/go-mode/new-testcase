@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Test Case new
-# key: tcn
+# name: new Test Case
+# key: ntc
 # --
 
 func Test`(jh/go-test-name)`${1:01}(t *testing.T) {

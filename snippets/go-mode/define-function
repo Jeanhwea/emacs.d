@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: define a function
+# key: fun
+# --
+
+func ${1:FuncName}($0) (err error) {
+$>return nil
+}

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Benchmark new
-# key: bmn
+# name: new Benchmark
+# key: nbm
 # --
 
 func Benchmark`(jh/go-test-name)`${1:01}(b *testing.B) {
