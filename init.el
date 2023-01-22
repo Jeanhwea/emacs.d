@@ -139,6 +139,7 @@
          dashboard
          dired-k
          docker
+         docker-tramp
          dockerfile-mode
          dracula-theme
          edit-indirect
