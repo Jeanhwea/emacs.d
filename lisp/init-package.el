@@ -34,6 +34,7 @@
   "Install all packages from ELPA."
   (interactive)
   (package-refresh-contents)
-  (package-install-selected-packages))
+  (package-install-selected-packages)
+  (byte-force-recompile "~/.emacs.d/"))
 
 (provide 'init-package)
