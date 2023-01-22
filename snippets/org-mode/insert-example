@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Insert Example Block
+# key: >e
+# --
+#+BEGIN_EXAMPLE
+  $0
+#+END_EXAMPLE
