@@ -87,4 +87,13 @@
         (message (format "Run %s" file)))
       (user-error (format "Not a valid go sratch file: %s" file)))))
 
+(defun jh/format-python-source (&optional file)
+  "Format python source code."
+  (let ((pt1) (pt2)
+         (command "yapf"))
+    (if (use-region-p)
+      (and (setq pt1 (region-beginning)) (setq pt2 (region-end)))
+      (and (setq pt1 (point-min)) (setq pt2 (point-max))))
+    (shell-command-on-region pt1 pt2 command "*format-python-output*" t)))
+
 (provide 'init-python)

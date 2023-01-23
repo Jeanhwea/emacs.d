@@ -318,7 +318,7 @@
     ((eq major-mode 'java-mode) (jh/format-java-source))
     ((eq major-mode 'go-mode) (jh/format-golang-source))
     ((eq major-mode 'web-mode) (jh/format-js-source))
-    ((eq major-mode 'python-mode) (eglot-format-buffer))
+    ((eq major-mode 'python-mode) (jh/format-python-source))
     ((eq major-mode 'typescript-mode) (tide-format))
     ((eq major-mode 'sql-mode) (jh/format-sql-source))
     ((eq major-mode 'thrift-mode) (jh/format-thrift-source))
