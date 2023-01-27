@@ -89,11 +89,13 @@
 
 (defun jh/format-python-source (&optional file)
   "Format python source code."
-  (let ((pt1) (pt2)
+  (let ((pt1) (pt2) (curr-point (point))
          (command "yapf"))
     (if (use-region-p)
       (and (setq pt1 (region-beginning)) (setq pt2 (region-end)))
       (and (setq pt1 (point-min)) (setq pt2 (point-max))))
-    (shell-command-on-region pt1 pt2 command "*format-python-output*" t)))
+    (progn
+      (shell-command-on-region pt1 pt2 command "*format-python-output*" t)
+      (goto-char (min curr-point (point-max))))))
 
 (provide 'init-python)
