@@ -19,12 +19,12 @@
     org-agenda-start-with-log-mode t
     org-todo-keywords
     ;; '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
-    '((sequence "TODO" "WAITING" "|" "DONE" "CANCELED"))
+    '((sequence "TODO" "WAIT" "|" "DONE" "DROP"))
     org-todo-keyword-faces
     '(("TODO" :foreground "#d33682" :weight bold)
-       ("WAITING" :foreground "#d33682")
+       ("WAIT" :foreground "#d33682")
        ("DONE" :foreground "#859900" :weight bold)
-       ("CANCELED" :foreground "#2aa198"))
+       ("DROP" :foreground "#2aa198"))
     org-default-priority ?C
     org-highest-priority ?A
     org-lowest-priority ?D
