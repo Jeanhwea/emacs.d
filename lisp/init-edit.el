@@ -191,6 +191,7 @@
     "nd" 'evil-numbers/dec-at-pt
     "nb" 'workflow-new-buffer
     "oa" 'org-agenda
+    "oc" 'jh/org-capture-task
     "od" 'org-deadline
     "ot" 'org-schedule
     "oe" 'org-edit-special
