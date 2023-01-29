@@ -188,6 +188,7 @@
          ob-go
          ob-tmux
          org-bullets
+         org-table-comment
          pangu-spacing
          posframe
          projectile
