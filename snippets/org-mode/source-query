@@ -2,6 +2,7 @@
 # name: Insert SQL Code - Query
 # key: /q
 # --
+
 #+BEGIN_SRC ${1:sql}
   $0
 #+END_SRC

@@ -99,6 +99,7 @@
              (go . t)
              (tmux . t)
              (python . t)
+             (perl . t)
              (ruby . t)
              (shell . t)
              (sql . t)

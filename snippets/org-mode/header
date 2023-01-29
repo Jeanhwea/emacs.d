@@ -2,6 +2,7 @@
 # name: Basic Header
 # key: header
 # --
+
 #+TITLE: ${1:Title}
 #+AUTHOR: Jinghui Hu
 #+EMAIL: hujinghui@buaa.edu.cn
