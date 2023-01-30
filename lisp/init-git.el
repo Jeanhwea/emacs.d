@@ -19,7 +19,7 @@
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
-  ;; (add-to-list 'browse-at-remote-remote-type-regexps '("^192\\.168\\.0\\.202$" . "gitlab"))
+  ;; (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.202$" :type "gitlab"))
   )
 
 ;; -----------------------------------------------------------------------------
