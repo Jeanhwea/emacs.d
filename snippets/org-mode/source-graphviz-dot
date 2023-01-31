@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Insert Graphviz Dot
+# key: /dot
+# --
+
+#+BEGIN_SRC dot :exports results :file `(format-time-string "../static/image/%Y/%m%d/%H%M%S.png" (current-time))`
+$>$0
+#+END_SRC
