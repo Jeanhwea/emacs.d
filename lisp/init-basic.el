@@ -45,6 +45,9 @@
 (when window-system (scroll-bar-mode -1))
 ;; (linum-mode 1)
 
+;; 关闭自动折行, see also =>  toggle-truncate-lines
+(set-default 'truncate-lines t)
+
 ;; (nyan-mode 1)
 ;; (when (require 'fill-column-indicator)
 ;;  (add-hook 'after-change-major-mode-hook 'fci-mode))
