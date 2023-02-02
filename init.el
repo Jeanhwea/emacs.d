@@ -210,6 +210,7 @@
          thrift
          tide
          verb
+         vterm
          web-mode
          wgrep
          which-key
