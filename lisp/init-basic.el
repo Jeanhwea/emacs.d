@@ -45,7 +45,8 @@
 (when window-system (scroll-bar-mode -1))
 ;; (linum-mode 1)
 
-;; 关闭自动折行, see also =>  toggle-truncate-lines
+;; 关闭自动折行, toggle-truncate-lines
+;; visual-line-mode
 (set-default 'truncate-lines t)
 
 ;; (nyan-mode 1)
