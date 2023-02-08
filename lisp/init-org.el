@@ -12,11 +12,11 @@
     org-html-validation-link nil
     org-startup-with-inline-images t
     org-directory (and (file-directory-p agenda-dir) agenda-dir)
-    ;; org-agenda-start-day "-5d"
-    ;; 周报从周四开始
-    org-agenda-start-on-weekday 3
-    org-agenda-files (and (file-directory-p agenda-dir) (list agenda-dir))
     org-agenda-start-with-log-mode t
+    ;; 双周报格式, 其实时间当前往前推 7 天
+    org-agenda-span 'fortnight
+    org-agenda-start-day "-7d"
+    org-agenda-files (and (file-directory-p agenda-dir) (list agenda-dir))
     org-todo-keywords
     ;; '((sequence "TODO" "DOING" "|" "WAITING" "DONE" "CANCELED"))
     '((sequence "TODO" "WAIT" "|" "DONE" "DROP"))
