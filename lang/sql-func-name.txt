@@ -19,6 +19,7 @@ isnotnull
 isnull
 json_arrayagg
 json_extract
+array
 map
 max
 min
