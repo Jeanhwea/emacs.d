@@ -32,3 +32,4 @@ subdate
 substring_index
 avg
 sum
+http_path_format
