@@ -26,6 +26,7 @@ max
 min
 pdg_collect_sensitive_fields
 pdg_is_psm
+pdg_norm_path
 row_number
 size
 subdate
