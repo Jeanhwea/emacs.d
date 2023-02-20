@@ -25,6 +25,7 @@ map
 max
 min
 pdg_collect_sensitive_fields
+pdg_is_psm
 row_number
 size
 subdate
