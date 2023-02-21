@@ -705,9 +705,4 @@
 ;;   (interactive)
 ;;   (jh/run-go-scratch))
 
-(defun workflow-prettify-sql-file ()
-  "Format all sql file."
-  (interactive)
-  (jh/format-sql-file))
-
 (provide 'init-workflow)

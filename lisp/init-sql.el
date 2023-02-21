@@ -66,47 +66,23 @@
   "Format sql source code."
   (let
     ((file (or file (buffer-file-name)))
-      (current-point (point)) (beg) (end))
-    ;; get a paragraph
-    (progn
-      (backward-paragraph)
-      (when (> (point) (point-min)) (forward-char))
-      (setq beg (point))
-      (forward-paragraph)
-      (backward-char)
-      (end-of-line)
-      (setq end (point)))
+      (current-point (point)) (pt1) (pt2))
+    ;; setup begin and end
+    (if (use-region-p)
+      (and (setq pt1 (region-beginning)) (setq pt2 (region-end)))
+      ;; get a paragraph
+      (progn
+        (backward-paragraph)
+        (when (> (point) (point-min)) (forward-char))
+        (setq pt1 (point))
+        (forward-paragraph)
+        (backward-char)
+        (end-of-line)
+        (setq pt2 (point))))
     ;; execute commands
-    (if (file-exists-p pgformat-name)
-      (let ((default-directory (file-name-directory pgformat-name)))
-        (shell-command-on-region beg end sql-format-command nil t))
-      (shell-command-on-region beg end sqlformat-command-lower nil t))
-    ;; goto previous place
-    (when (<= current-point (point-max)) (goto-char current-point))))
-
-(defun jh/format-sql-file (&optional file)
-  "Format sql file code."
-  (let
-    ((file (or file (buffer-file-name)))
-      (current-point (point)) (beg) (end))
-    ;; get a paragraph
     (progn
-      (beginning-of-buffer)
-      (flush-lines "^-- Statement")
-      (beginning-of-buffer)
-      (next-line)
-      (when (> (point) (point-min)) (forward-char))
-      (setq beg (point))
-      (end-of-buffer)
-      ;; (when (< (point) (point-max)) (backward-char))
-      (setq end (point)))
-    ;; execute commands
-    (if (file-exists-p pgformat-name)
-      (let ((default-directory (file-name-directory pgformat-name)))
-        (shell-command-on-region beg end (concat sql-format-command " -N") nil t))
-      (shell-command-on-region beg end sqlformat-command-lower nil t))
-    ;; goto previous place
-    (when (<= current-point (point-max)) (goto-char current-point))))
+      (shell-command-on-region pt1 pt2 pgformat-command-lower nil t)
+      (goto-char (min current-point (point-max))))))
 
 ;; https://www.emacswiki.org/emacs/SqlMode
 (defun jh/sql-handle-prompt (output)
