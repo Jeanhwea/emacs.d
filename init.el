@@ -102,6 +102,111 @@
 (let ((local-settings "~/.emacs.local.el"))
   (when (file-exists-p local-settings) (load-file local-settings)))
 
+(setq my-packages
+  '(
+     ;; elpy
+     ;; lsp-java
+     ;; lsp-mode
+     ;; lsp-ui
+     ;; multiple-cursors
+     ace-jump-mode
+     adoc-mode
+     ag
+     auctex
+     bison-mode
+     browse-at-remote
+     browse-kill-ring
+     color-theme-sanityinc-solarized
+     color-theme-sanityinc-tomorrow
+     company
+     company-fuzzy
+     counsel
+     csharp-mode
+     csv-mode
+     cmake-mode
+     cuda-mode
+     dashboard
+     dired-k
+     docker
+     docker-tramp
+     dockerfile-mode
+     dracula-theme
+     edit-indirect
+     editorconfig
+     eglot
+     elfeed
+     elm-mode
+     emmet-mode
+     engine-mode
+     evil
+     evil-collection
+     evil-commentary
+     evil-leader
+     evil-numbers
+     exec-path-from-shell
+     expand-region
+     figlet
+     fill-column-indicator
+     flycheck
+     flyspell-correct
+     ggtags
+     git-auto-commit-mode
+     git-msg-prefix
+     go-dlv
+     go-mode
+     go-tag
+     gotest
+     graphviz-dot-mode
+     groovy-mode
+     haskell-mode
+     htmlize
+     javadoc-lookup
+     jetbrains-darcula-theme
+     js-comint
+     json-mode
+     keycast
+     keyfreq
+     leetcode
+     lua-mode
+     magit
+     magit-lfs
+     magit-todos
+     markdown-mode
+     monokai-theme
+     nyan-mode
+     ob-go
+     ob-tmux
+     org-bullets
+     org-table-comment
+     pangu-spacing
+     posframe
+     projectile
+     protobuf-mode
+     pyim
+     rainbow-delimiters
+     realgud
+     realgud-lldb
+     request
+     restclient
+     rg
+     sicp
+     smex
+     spacemacs-theme
+     sql-indent
+     sqlformat
+     string-inflection
+     swiper
+     thrift
+     tide
+     verb
+     vterm
+     web-mode
+     wgrep
+     which-key
+     yaml-mode
+     yasnippet
+     zenburn-theme))
+
 (provide 'init)
 
 ;; -----------------------------------------------------------------------------
@@ -112,111 +217,4 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
-  '(package-selected-packages
-     (quote
-       (
-         ;; --------------------------------------------------------------------
-         ;; elpy
-         ;; lsp-java
-         ;; lsp-mode
-         ;; lsp-ui
-         ;; multiple-cursors
-         ace-jump-mode
-         adoc-mode
-         ag
-         auctex
-         bison-mode
-         browse-at-remote
-         browse-kill-ring
-         color-theme-sanityinc-solarized
-         color-theme-sanityinc-tomorrow
-         company
-         company-fuzzy
-         counsel
-         csharp-mode
-         csv-mode
-         cmake-mode
-         cuda-mode
-         dashboard
-         dired-k
-         docker
-         docker-tramp
-         dockerfile-mode
-         dracula-theme
-         edit-indirect
-         editorconfig
-         eglot
-         elfeed
-         elm-mode
-         emmet-mode
-         engine-mode
-         evil
-         evil-collection
-         evil-commentary
-         evil-leader
-         evil-numbers
-         exec-path-from-shell
-         expand-region
-         figlet
-         fill-column-indicator
-         flycheck
-         flyspell-correct
-         ggtags
-         git-auto-commit-mode
-         git-msg-prefix
-         go-dlv
-         go-mode
-         go-tag
-         gotest
-         graphviz-dot-mode
-         groovy-mode
-         haskell-mode
-         htmlize
-         javadoc-lookup
-         jetbrains-darcula-theme
-         js-comint
-         json-mode
-         keycast
-         keyfreq
-         leetcode
-         lua-mode
-         magit
-         magit-lfs
-         magit-todos
-         markdown-mode
-         monokai-theme
-         nyan-mode
-         ob-go
-         ob-tmux
-         org-bullets
-         org-table-comment
-         pangu-spacing
-         posframe
-         projectile
-         protobuf-mode
-         pyim
-         rainbow-delimiters
-         realgud
-         realgud-lldb
-         request
-         restclient
-         rg
-         sicp
-         smex
-         spacemacs-theme
-         sql-indent
-         sqlformat
-         string-inflection
-         swiper
-         thrift
-         tide
-         verb
-         vterm
-         web-mode
-         wgrep
-         which-key
-         yaml-mode
-         yasnippet
-         zenburn-theme
-         ;; --------------------------------------------------------------------
-         ))))
+  '(package-selected-packages my-packages))

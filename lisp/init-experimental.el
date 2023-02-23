@@ -188,4 +188,9 @@
       (shell-command (format "tilix --working-directory='%s'" wd))
       (message (format "tilix switch to %s" wd)))))
 
+;; -----------------------------------------------------------------------------
+;; bison
+;; -----------------------------------------------------------------------------
+(add-to-list 'auto-mode-alist '("\\.yy\\'" . bison-mode))
+
 (provide 'init-experimental)
