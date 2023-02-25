@@ -33,8 +33,8 @@
 /workspace/*
 user-*.el
 
+/custom.el
 /snippets/dancer-mode/*
-
 
 # Created by https://www.gitignore.io/api/emacs
 
@@ -84,6 +84,5 @@ flycheck_*.el
 
 # directory configuration
 .dir-locals.el
-
 
 # End of https://www.gitignore.io/api/emacs
