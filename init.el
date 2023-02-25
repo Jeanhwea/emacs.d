@@ -207,6 +207,8 @@
      yasnippet
      zenburn-theme))
 
+(setq package-selected-packages my-packages)
+
 (provide 'init)
 
 ;; -----------------------------------------------------------------------------
