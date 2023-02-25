@@ -221,4 +221,7 @@
 (when (require 'evil-collection nil t)
   (evil-collection-init))
 
+(when (require 'evil-pinyin nil t)
+  (global-evil-pinyin-mode))
+
 (provide 'init-edit)
