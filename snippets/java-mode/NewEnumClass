@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Enumeration Class
-# key: en
+# name: New Enumeration Class
+# key: nec
 # --
 package `(jh/java-package-name)`;
 

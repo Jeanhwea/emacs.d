@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: jUnit Test Case
-# key: jtc
+# name: New Test
+# key: nt
 # --
 package `(jh/java-package-name)`;
 

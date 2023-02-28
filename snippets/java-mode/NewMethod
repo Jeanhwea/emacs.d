@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Define Public Method
-# key: m
+# name: New Public Method
+# key: nm
 # --
 public void ${1:methodName}($2) {
 $>$0

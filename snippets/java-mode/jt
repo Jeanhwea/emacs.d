@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: jUnit Test Method
-# key: jt
-# --
-@Test
-public void ${1:$$(yas-choose-value (jh/java-test-subjects))}() throws Exception {
-$>$0
-}

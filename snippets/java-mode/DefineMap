@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: Map
-# key: map
+# key: dm
 # --
 Map<${1:String}, ${2:Object}> $0

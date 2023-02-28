@@ -1,8 +1,8 @@
 # -*- mode: snippet -*-
-# name: jUnit Test Method with IllegalArgumentException
-# key: jti
+# name: New Test Case: jUnit Test Method
+# key: ntc
 # --
-@Test(expected = IllegalArgumentException.class)
+@Test
 public void ${1:$$(yas-choose-value (jh/java-test-subjects))}() throws Exception {
 $>$0
 }

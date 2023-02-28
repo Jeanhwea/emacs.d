@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: private logger variable
+# key: log
+# --
+public static final Logger LOG = LoggerFactory.getLogger(`(jh/java-class-name)`.class);

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Define Static Public Method
-# key: sm
+# name: New Static Method
+# key: nsm
 # --
 public static void ${1:methodName}($2) {
 $>$0
