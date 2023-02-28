@@ -27,7 +27,7 @@
   "Return the class name for java."
   (let*
     ((file (or file (buffer-file-name))))
-    (jh/pascalcase (jh/file-base-name file))))
+    (jh/re-replace "Udf$" "UDF" (jh/pascalcase (jh/file-base-name file)))))
 
 (defun jh/java-test-subjects (&optional file)
   "Genearate test subject names."
