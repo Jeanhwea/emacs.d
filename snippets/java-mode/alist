@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: ArrayList
-# key: alist
+# name: Define ArrayList
+# key: dl
 # --
 List<String> ${0:name} = new ArrayList<>();

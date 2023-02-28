@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: class with Singleton Partten (non-lazy version)
-# key: cls1
+# name: New Class with Singleton Pattern (non-lazy version)
+# key: nsc
 # --
 package `(jh/java-package-name)`;
 

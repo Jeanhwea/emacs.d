@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: class
-# key: cls
+# name: New Class
+# key: nc
 # --
 package `(jh/java-package-name)`;
 
