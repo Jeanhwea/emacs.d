@@ -9,11 +9,11 @@ import org.apache.hadoop.hive.ql.exec.UDF;
 import org.apache.hadoop.hive.ql.metadata.HiveException;
 
 @Description(
-    name = "pdg_func_name",
-    value = "功能描述",
-    extended = "`(jh/java-package-name)`.`(jh/java-class-name)`")
-public class `(jh/java-class-name)` {
-$>public boolean evaluate(String str) throws HiveException {
+$>name = "pdg_func_name",
+$>value = "功能描述",
+$>extended = "`(jh/java-package-name)`.`(jh/java-class-name)`")
+public class `(jh/java-class-name)` extends UDF {
+$>public String evaluate(String str) throws HiveException {
 $>$>return str;
 $>}
 }
