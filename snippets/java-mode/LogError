@@ -2,4 +2,5 @@
 # name: logger.error()
 # key: le
 # --
-logger.error($0);
+
+LOG.error($0);

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: HashMap
-# key: hmap
+# name: Define HashMap
+# key: dhm
 # --
 Map<String, Object> ${0:name} = new HashMap<>();

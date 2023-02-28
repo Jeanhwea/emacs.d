@@ -2,4 +2,5 @@
 # name: logger.debug()
 # key: ld
 # --
-logger.debug($0);
+
+LOG.debug($0);

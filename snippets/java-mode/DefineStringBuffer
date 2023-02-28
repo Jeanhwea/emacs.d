@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: StringBuffer
-# key: sb
+# name: Define StringBuffer
+# key: dsb
 # --
 StringBuffer ${1:sb} = new StringBuffer(${2:length});$0

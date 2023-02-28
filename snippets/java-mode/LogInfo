@@ -2,4 +2,5 @@
 # name: logger.info()
 # key: li
 # --
-logger.info($0);
+
+LOG.info($0);

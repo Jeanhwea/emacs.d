@@ -2,4 +2,5 @@
 # name: logger.warn()
 # key: lw
 # --
-logger.warn($0);
+
+LOG.warn($0);

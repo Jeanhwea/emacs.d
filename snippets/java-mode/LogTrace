@@ -2,4 +2,5 @@
 # name: logger.trace()
 # key: lt
 # --
-logger.trace($0);
+
+LOG.trace($0);
