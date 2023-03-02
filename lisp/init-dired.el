@@ -4,10 +4,12 @@
   #'(lambda ()
       (setq dired-recursive-deletes 'top)
 
-      ;; 忽略一些不需要关注的文件
-      (dired-omit-mode 1)
 
       (define-key dired-mode-map (kbd "C-c w") 'wdired-change-to-wdired-mode)))
+
+;; 忽略一些不需要关注的文件
+(add-hook 'dired-mode-hook (lambda () (dired-omit-mode)))
+
 
 ;; (when (require 'dired-k)
 ;;   (setq dired-k-style 'git)
