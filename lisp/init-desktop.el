@@ -20,7 +20,12 @@
 (setq-default
   create-lockfiles nil
   auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/" t))
-  backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
+  backup-by-copying t
+  backup-directory-alist '((".*" . "~/.emacs.d/backups/"))
+  delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
 (save-place-mode 1)
 (auto-save-visited-mode 1)
 ;; auto delete trailing whitespace before saving
