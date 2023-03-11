@@ -8,106 +8,111 @@
 ;; (global-set-key (kbd "M-r") 'workflow-buffer-or-recentf-open)
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (global-set-key (kbd "C-j") 'workflow-emmet-expand)
-;; (global-set-key (kbd "M-<return>") 'ace-jump-mode)
+
+(global-set-key (kbd "<f7>") 'gud-finish)
+(global-set-key (kbd "<f8>") 'gud-step)
+(global-set-key (kbd "<f9>") 'gud-next)
+(global-set-key (kbd "<f10>") 'gud-break)
+(global-set-key (kbd "<f12>") 'gud-cont)
 
 ;; -----------------------------------------------------------------------------
 ;; F11: UI & Basic Operations
 ;; -----------------------------------------------------------------------------
-(progn
-  ;; Leader Key
-  (define-prefix-command 'leader/f11)
-  ;; Window
-  (define-key leader/f11 (kbd "<SPC>") #'workflow-delete-other-windows)
-  (define-key leader/f11 (kbd "x") #'workflow-close-current-window)
-  (define-key leader/f11 (kbd "h") #'workflow-horizontal-split-window)
-  (define-key leader/f11 (kbd "v") #'workflow-vertical-split-window)
-  (define-key leader/f11 (kbd "q") #'workflow-quit-emacs-application)
-  (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
-  ;; File access
-  (define-key leader/f11 (kbd "m") #'workflow-open-in-file-manager)
-  (define-key leader/f11 (kbd "i") #'workflow-inspect-file)
-  (define-key leader/f11 (kbd "r") #'workflow-recentf-open)
-  (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
-  (define-key leader/f11 (kbd "g") #'workflow-git-open-file)
-  (define-key leader/f11 (kbd ".") #'workflow-dot-open-file)
-  (define-key leader/f11 (kbd "j") #'workflow-jump-to-relative-file)
-  (define-key leader/f11 (kbd "b") #'workflow-bookmark-open-file)
-  (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
-  ;; Buffer operation
-  (define-key leader/f11 (kbd ",") #'workflow-switch-to-buffer)
-  (define-key leader/f11 (kbd "a") #'workflow-alternative-buffer)
-  (define-key leader/f11 (kbd "k") #'workflow-kill-buffer)
-  (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
-  (define-key leader/f11 (kbd "s") #'workflow-save-all-buffers) ;; M-s => save current buffer
-  (define-key leader/f11 (kbd "R") #'workflow-rename-current-file)
-  (define-key leader/f11 (kbd "d") #'workflow-delete-current-file)
-  ;; Hide & Show
-  (define-key leader/f11 (kbd "<tab>") #'workflow-hideshow-toggle)
-  (define-key leader/f11 (kbd "=") #'workflow-cycle-hide-level)
-  (define-key leader/f11 (kbd "<") #'workflow-hide-all-level)
-  (define-key leader/f11 (kbd ">") #'workflow-show-all-level)
-  ;; Highlight symbol & Colortheme, Transparency
-  (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
-  (define-key leader/f11 (kbd "w") #'workflow-wipeout-all-highlights)
-  (define-key leader/f11 (kbd "C") #'workflow-colortheme-cycling)
-  (define-key leader/f11 (kbd "T") #'workflow-transparency-cycling)
-  ;; Git & Version Control
-  (define-key leader/f11 (kbd "/") #'workflow-git-popup)
-  (define-key leader/f11 (kbd "c") #'workflow-git-commit-changes)
-  (define-key leader/f11 (kbd "p") #'workflow-git-push)
-  (define-key leader/f11 (kbd "l") #'workflow-git-pull)
-  (define-key leader/f11 (kbd "o") #'workflow-git-browse-remote)
-  (define-key leader/f11 (kbd "<return>") #'workflow-git-keep-current)
-  ;; Undotree
-  (define-key leader/f11 (kbd "U") #'undo-tree-visualize)
-  ;; Frame
-  ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
-  ;; (define-key leader/f11 (kbd "6") #'delete-frame)
-  ;; File create & save
-  ;; (define-key leader/f11 (kbd "l") #'toggle-read-only)
-  ;; Ace jump
-  (define-key leader/f11 (kbd "[") #'ace-jump-mode))
-(global-set-key (kbd "<f11>") 'leader/f11)
-(global-set-key (kbd "M-[") 'leader/f11)
+;; (progn
+;;   ;; Leader Key
+;;   (define-prefix-command 'leader/f11)
+;;   ;; Window
+;;   (define-key leader/f11 (kbd "<SPC>") #'workflow-delete-other-windows)
+;;   (define-key leader/f11 (kbd "x") #'workflow-close-current-window)
+;;   (define-key leader/f11 (kbd "h") #'workflow-horizontal-split-window)
+;;   (define-key leader/f11 (kbd "v") #'workflow-vertical-split-window)
+;;   (define-key leader/f11 (kbd "q") #'workflow-quit-emacs-application)
+;;   (define-key leader/f11 (kbd "e") #'workflow-expand-fullscreen)
+;;   ;; File access
+;;   (define-key leader/f11 (kbd "m") #'workflow-open-in-file-manager)
+;;   (define-key leader/f11 (kbd "i") #'workflow-inspect-file)
+;;   (define-key leader/f11 (kbd "r") #'workflow-recentf-open)
+;;   (define-key leader/f11 (kbd "f") #'workflow-fuzzy-open-file)
+;;   (define-key leader/f11 (kbd "g") #'workflow-git-open-file)
+;;   (define-key leader/f11 (kbd ".") #'workflow-dot-open-file)
+;;   (define-key leader/f11 (kbd "j") #'workflow-jump-to-relative-file)
+;;   (define-key leader/f11 (kbd "b") #'workflow-bookmark-open-file)
+;;   (define-key leader/f11 (kbd "B") #'workflow-bookmark-current-file)
+;;   ;; Buffer operation
+;;   (define-key leader/f11 (kbd ",") #'workflow-switch-to-buffer)
+;;   (define-key leader/f11 (kbd "a") #'workflow-alternative-buffer)
+;;   (define-key leader/f11 (kbd "k") #'workflow-kill-buffer)
+;;   (define-key leader/f11 (kbd "n") #'workflow-new-buffer)
+;;   (define-key leader/f11 (kbd "s") #'workflow-save-all-buffers) ;; M-s => save current buffer
+;;   (define-key leader/f11 (kbd "R") #'workflow-rename-current-file)
+;;   (define-key leader/f11 (kbd "d") #'workflow-delete-current-file)
+;;   ;; Hide & Show
+;;   (define-key leader/f11 (kbd "<tab>") #'workflow-hideshow-toggle)
+;;   (define-key leader/f11 (kbd "=") #'workflow-cycle-hide-level)
+;;   (define-key leader/f11 (kbd "<") #'workflow-hide-all-level)
+;;   (define-key leader/f11 (kbd ">") #'workflow-show-all-level)
+;;   ;; Highlight symbol & Colortheme, Transparency
+;;   (define-key leader/f11 (kbd ";") #'workflow-highlight-symbol)
+;;   (define-key leader/f11 (kbd "w") #'workflow-wipeout-all-highlights)
+;;   (define-key leader/f11 (kbd "C") #'workflow-colortheme-cycling)
+;;   (define-key leader/f11 (kbd "T") #'workflow-transparency-cycling)
+;;   ;; Git & Version Control
+;;   (define-key leader/f11 (kbd "/") #'workflow-git-popup)
+;;   (define-key leader/f11 (kbd "c") #'workflow-git-commit-changes)
+;;   (define-key leader/f11 (kbd "p") #'workflow-git-push)
+;;   (define-key leader/f11 (kbd "l") #'workflow-git-pull)
+;;   (define-key leader/f11 (kbd "o") #'workflow-git-browse-remote)
+;;   (define-key leader/f11 (kbd "<return>") #'workflow-git-keep-current)
+;;   ;; Undotree
+;;   (define-key leader/f11 (kbd "U") #'undo-tree-visualize)
+;;   ;; Frame
+;;   ;; (define-key leader/f11 (kbd "5") #'make-frame-command)
+;;   ;; (define-key leader/f11 (kbd "6") #'delete-frame)
+;;   ;; File create & save
+;;   ;; (define-key leader/f11 (kbd "l") #'toggle-read-only)
+;;   ;; Ace jump
+;;   (define-key leader/f11 (kbd "[") #'ace-jump-mode))
+;; (global-set-key (kbd "<f11>") 'leader/f11)
+;; (global-set-key (kbd "M-[") 'leader/f11)
 
 ;; -----------------------------------------------------------------------------
 ;; F12: Editing & Source Code Editing
 ;; -----------------------------------------------------------------------------
-(progn
-  ;; Leader Key
-  (define-prefix-command 'leader/f12)
-  ;; Search any thing
-  (define-key leader/f12 (kbd "s") #'workflow-search-any-text)
-  (define-key leader/f12 (kbd "g") #'workflow-search-git)
-  (define-key leader/f12 (kbd "a") #'workflow-search-ag)
-  ;; Replace, regular eXpression replace
-  (define-key leader/f12 (kbd "r") #'workflow-replace)
-  (define-key leader/f12 (kbd "R") #'workflow-replace-projectile)
-  (define-key leader/f12 (kbd "x") #'workflow-regexp-replace)
-  (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
-  (define-key leader/f12 (kbd "b") #'workflow-browse-kill-ring)
-  ;; Source code related, refactoring
-  (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
-  (define-key leader/f12 (kbd "3") #'workflow-comment-source-code)
-  (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
-  (define-key leader/f12 (kbd "!") #'workflow-execute-code-action)
-  (define-key leader/f12 (kbd "c") #'workflow-rename-symbol-here)
-  ;; Codes Navigation
-  (define-key leader/f12 (kbd ";") #'workflow-goto-definition)
-  (define-key leader/f12 (kbd "i") #'workflow-goto-implementation)
-  ;; Unit Test & Starter
-  ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
-  ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
-  ;; (define-key leader/f12 (kbd "c") #'projectile-compile-project)
-  ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
-  (define-key leader/f12 (kbd "P") #'workflow-post-http-request)
-  ;; Misc
-  (define-key leader/f12 (kbd "j") 'ace-jump-mode)
-  (define-key leader/f12 (kbd "C") #'workflow-codetta-expand-command)
-  (define-key leader/f12 (kbd "e") #'workflow-eshell-open-from-here)
-  (define-key leader/f12 (kbd "w") #'workflow-working-directory-send))
-(global-set-key (kbd "<f12>") 'leader/f12)
-(global-set-key (kbd "M-]") 'leader/f12)
+;; (progn
+;;   ;; Leader Key
+;;   (define-prefix-command 'leader/f12)
+;;   ;; Search any thing
+;;   (define-key leader/f12 (kbd "s") #'workflow-search-any-text)
+;;   (define-key leader/f12 (kbd "g") #'workflow-search-git)
+;;   (define-key leader/f12 (kbd "a") #'workflow-search-ag)
+;;   ;; Replace, regular eXpression replace
+;;   (define-key leader/f12 (kbd "r") #'workflow-replace)
+;;   (define-key leader/f12 (kbd "R") #'workflow-replace-projectile)
+;;   (define-key leader/f12 (kbd "x") #'workflow-regexp-replace)
+;;   (define-key leader/f12 (kbd "X") #'workflow-regexp-replace-projectile)
+;;   (define-key leader/f12 (kbd "b") #'workflow-browse-kill-ring)
+;;   ;; Source code related, refactoring
+;;   (define-key leader/f12 (kbd "f") #'workflow-format-current-source)
+;;   (define-key leader/f12 (kbd "3") #'workflow-comment-source-code)
+;;   (define-key leader/f12 (kbd "/") #'workflow-comment-source-code)
+;;   (define-key leader/f12 (kbd "!") #'workflow-execute-code-action)
+;;   (define-key leader/f12 (kbd "c") #'workflow-rename-symbol-here)
+;;   ;; Codes Navigation
+;;   (define-key leader/f12 (kbd ";") #'workflow-goto-definition)
+;;   (define-key leader/f12 (kbd "i") #'workflow-goto-implementation)
+;;   ;; Unit Test & Starter
+;;   ;; (define-key leader/f12 (kbd "u") 'spt/run-test-method-command)
+;;   ;; (define-key leader/f12 (kbd "M-u") 'spt/run-test-class-command)
+;;   ;; (define-key leader/f12 (kbd "c") #'projectile-compile-project)
+;;   ;; (define-key leader/f12 (kbd "r") #'projectile-run-project)
+;;   (define-key leader/f12 (kbd "P") #'workflow-post-http-request)
+;;   ;; Misc
+;;   (define-key leader/f12 (kbd "j") 'ace-jump-mode)
+;;   (define-key leader/f12 (kbd "C") #'workflow-codetta-expand-command)
+;;   (define-key leader/f12 (kbd "e") #'workflow-eshell-open-from-here)
+;;   (define-key leader/f12 (kbd "w") #'workflow-working-directory-send))
+;; (global-set-key (kbd "<f12>") 'leader/f12)
+;; (global-set-key (kbd "M-]") 'leader/f12)
 
 ;; -----------------------------------------------------------------------------
 ;;  _   _               _   __  __           _
