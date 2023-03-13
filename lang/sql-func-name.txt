@@ -27,6 +27,7 @@ min
 pdg_collect_sensitive_fields
 pdg_is_psm
 pdg_norm_path
+pdg_objs_from_str
 row_number
 size
 subdate
@@ -34,3 +35,4 @@ substring_index
 avg
 sum
 http_path_format
+explode
