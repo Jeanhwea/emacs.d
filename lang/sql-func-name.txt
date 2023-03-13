@@ -36,3 +36,5 @@ avg
 sum
 http_path_format
 explode
+lcase
+ucase
