@@ -190,6 +190,7 @@
      request
      restclient
      rg
+     rust-mode
      sicp
      smex
      spacemacs-theme
