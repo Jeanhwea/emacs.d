@@ -83,6 +83,7 @@
 (require 'init-thrift)
 (require 'init-lisp)
 (require 'init-python)
+(require 'init-rust)
 (require 'init-sh)
 (require 'init-sql)
 
