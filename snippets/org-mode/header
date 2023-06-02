@@ -7,6 +7,7 @@
 #+AUTHOR: Jinghui Hu
 #+EMAIL: hujinghui@buaa.edu.cn
 #+DATE: <`(format-time-string "%Y-%m-%d %a %H:%M:%S")`>
+#+STARTUP: overview num indent
 #+HTML_LINK_UP: ../readme.html
 #+HTML_LINK_HOME: ../index.html
 #+SETUPFILE: ~/.emacs.d/site-lisp/org-html-themes/setup/theme-readtheorg-local.setup
