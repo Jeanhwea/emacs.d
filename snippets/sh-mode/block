@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Define a variable with default value.
+# key: >b
+# --
+:<<${1:BLOCK}
+$0
+$1
