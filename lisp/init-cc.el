@@ -2,7 +2,7 @@
   #'(lambda()
       (setq
         show-trailing-whitespace t
-        ;; indent-tabs-mode nil
+        indent-tabs-mode nil
         c-basic-offset 4
         tab-width 4
         prettify-symbols-alist
