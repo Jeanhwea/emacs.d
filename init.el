@@ -45,6 +45,7 @@
 (require 'init-basic)
 (require 'init-desktop)
 (require 'init-edit)
+(require 'init-wsl)
 
 ;; -----------------------------------------------------------------------------
 ;; plugin
