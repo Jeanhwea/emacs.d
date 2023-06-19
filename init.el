@@ -177,6 +177,7 @@
      markdown-mode
      monokai-theme
      nyan-mode
+     nasm-mode
      ob-go
      ob-tmux
      org-bullets
