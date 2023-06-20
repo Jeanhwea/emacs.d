@@ -1,9 +1,9 @@
 (defconst project/golang
-  '((repository . "biz/repository/{}_repo/{}_repo.go")
-     (helper . "biz/helper/{}_helper/{}_helper.go")
-     (infrastructure . "biz/infrastructure/{}_infra/{}_infra.go")
-     (service . "biz/service/{}_service/{}_service.go")
-     (controller . "biz/controller/{}_controller/{}_controller.go")))
+  '((repository . "app/repository/{}_repo/{}_repo.go")
+     (helper . "app/helper/{}_helper/{}_helper.go")
+     (infrastructure . "app/infrastructure/{}_infra/{}_infra.go")
+     (service . "app/service/{}_service/{}_service.go")
+     (controller . "app/controller/{}_controller/{}_controller.go")))
 
 (defun create-new-component ()
   "Create new project component."
