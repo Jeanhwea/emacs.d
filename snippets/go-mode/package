@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: pkg
+# key: pkg
+# --
+
+package `(jh/go-package-name)`
+$0
