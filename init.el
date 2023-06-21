@@ -208,6 +208,7 @@
      web-mode
      wgrep
      which-key
+     xclip
      yaml-mode
      yasnippet
      zenburn-theme))
