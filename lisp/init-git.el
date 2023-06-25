@@ -19,7 +19,7 @@
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
-  ;; (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.202$" :type "gitlab"))
+  (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.202$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^mtiisl\\.cn$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitana\\.jeanhwea\\.io$" :type "gitlab"))
 
@@ -32,6 +32,8 @@
     ;; 修改返回值
     (setq ad-return-value
       (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" ad-return-value))
+    (setq ad-return-value
+      (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" ad-return-value))
     (setq ad-return-value
       (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" ad-return-value)))
 
