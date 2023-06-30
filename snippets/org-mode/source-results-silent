@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: results silent
+# key: :rs
+# --
+
+:results silent
