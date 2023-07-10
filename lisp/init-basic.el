@@ -48,6 +48,7 @@
 ;; 关闭自动折行, toggle-truncate-lines
 ;; visual-line-mode
 (set-default 'truncate-lines t)
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
 ;; (nyan-mode 1)
 ;; (when (require 'fill-column-indicator)
