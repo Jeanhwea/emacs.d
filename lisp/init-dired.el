@@ -1,4 +1,6 @@
-(setq-default dired-dwim-target t)
+(setq-default
+  dired-listing-switches "-al --group-directories-first"
+  dired-dwim-target t)
 
 (add-hook 'after-init-hook
   #'(lambda ()
