@@ -6,6 +6,8 @@
         c-basic-offset 4
         tab-width 4
         prettify-symbols-alist
+        comment-start "// "
+        comment-end ""
         (append prettify-symbols-alist
           '(
              ;; ----------------------------------------------------------------
