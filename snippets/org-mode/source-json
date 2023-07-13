@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Insert JSON Source
+# key: /json
+# --
+
+#+BEGIN_SRC json
+  $0
+#+END_SRC
