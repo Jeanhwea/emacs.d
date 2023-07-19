@@ -11,8 +11,8 @@
   (defalias 'list-repositories 'magit-list-repositories)
   (global-set-key (kbd "C-x g") 'magit-status))
 
-(when (require 'magit-todos)
-  (magit-todos-mode))
+;; (when (require 'magit-todos)
+;;   (magit-todos-mode))
 
 
 ;; -----------------------------------------------------------------------------
