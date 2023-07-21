@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: New Interface
-# key: ni
+# key: nif
 # --
 package `(jh/java-package-name)`;
 
