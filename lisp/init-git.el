@@ -38,7 +38,7 @@
 
   ;; 增强 gitana 远端调用
   (defadvice browse-at-remote--format-commit-url-as-gitlab
-    (around browse-at-remote--format-region-url-as-gitlab-around activate)
+    (around browse-at-remote--format-commit-url-as-gitlab-around activate)
     ;; 调用函数
     ad-do-it
     ;; 修改返回值
