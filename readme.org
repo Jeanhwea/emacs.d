@@ -101,14 +101,12 @@
     #+END_SRC
 
 *** Letter-like Symbol
-
     #+BEGIN_SRC text
       ℀ ℁ ℂ ℃ ℄ ℅ ℆ ℇ ℈ ℉ ℊ ℋ ℌ ℍ ℎ ℏ ℐ ℑ ℒ ℓ ℔ ℕ № ℗ ℘ ℙ ℚ ℛ ℜ ℝ ℞ ℟ ℠ ℡ ™ ℣ ℤ ℥ ω ℧
       ℨ ℩ k å ℬ ℭ ℮ ℯ ℰ ℱ ⅎ ℳ ℴ ℵ ℶ ℷ ℸ ℹ ℺ ℻ ℼ ℽ ℾ ℿ ⅀ ⅁ ⅂ ⅃ ⅄ ⅅ ⅆ ⅇ ⅈ ⅉ ⅊ ⅋ ⅌ ⅍ ⅎ
     #+END_SRC
 
 *** Musical Symbol
-
     #+BEGIN_SRC text
       ♪ ♩ ♫ ♬ ¶ ‖ ♭ ♯ § ∮
     #+END_SRC
