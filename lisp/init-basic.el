@@ -109,10 +109,10 @@
   line-number-mode t
   column-number-mode t
   size-indication-mode t
-  indent-tabs-mode nil
-  fill-column 80
-  c-basic-offset 4
-  tab-width 4)
+  ;; indent-tabs-mode nil
+  c-basic-offset 8
+  tab-width 8
+  fill-column 80)
 
 ;; -----------------------------------------------------------------------------
 ;; ediff
