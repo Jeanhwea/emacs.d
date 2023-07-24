@@ -26,7 +26,19 @@
   ;; 增强 gitana 远端调用
   (defadvice browse-at-remote--format-region-url-as-gitlab
     (around browse-at-remote--format-region-url-as-gitlab-around activate)
+    ;; 调用函数
+    ad-do-it
+    ;; 修改返回值
+    (setq ad-return-value
+      (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" ad-return-value))
+    (setq ad-return-value
+      (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" ad-return-value))
+    (setq ad-return-value
+      (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" ad-return-value)))
 
+  ;; 增强 gitana 远端调用
+  (defadvice browse-at-remote--format-commit-url-as-gitlab
+    (around browse-at-remote--format-commit-url-as-gitlab-around activate)
     ;; 调用函数
     ad-do-it
     ;; 修改返回值
