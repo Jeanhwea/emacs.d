@@ -109,7 +109,7 @@
   line-number-mode t
   column-number-mode t
   size-indication-mode t
-  ;; indent-tabs-mode nil
+  indent-tabs-mode nil
   c-basic-offset 8
   tab-width 8
   fill-column 80)
