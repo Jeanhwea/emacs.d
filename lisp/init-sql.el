@@ -81,7 +81,7 @@
         (setq pt2 (point))))
     ;; execute commands
     (progn
-      (shell-command-on-region pt1 pt2 pgformat-command-upper nil t)
+      (shell-command-on-region pt1 pt2 pgformat-command-lower nil t)
       (goto-char (min current-point (point-max))))))
 
 ;; https://www.emacswiki.org/emacs/SqlMode
