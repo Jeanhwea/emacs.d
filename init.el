@@ -124,14 +124,14 @@
      company
      company-fuzzy
      counsel
-     csharp-mode
+     ;; csharp-mode
      csv-mode
      cmake-mode
      cuda-mode
      dashboard
      dired-k
      docker
-     docker-tramp
+     ;; docker-tramp
      dockerfile-mode
      dracula-theme
      edit-indirect
