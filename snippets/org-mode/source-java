@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Insert Java Source
-# key: /j
-# --
-
-#+BEGIN_SRC java
-  $0
-#+END_SRC

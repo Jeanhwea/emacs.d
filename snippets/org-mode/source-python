@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Insert Python Source
-# key: /p
-# --
-#+BEGIN_SRC python
-  $0
-#+END_SRC

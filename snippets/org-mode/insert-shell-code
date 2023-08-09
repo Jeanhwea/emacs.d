@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Insert Shell Codes
-# key: >s
+# key: /s
 # --
 #+BEGIN_SRC sh
 $>$0
