@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Insert Properties for MySQL
+# key: mysql
+# --
+
+:PROPERTIES:
+:header-args:sql: :engine mysql :dbhost 127.0.0.1 :dbport 3306 :database information_schema :dbuser root :dbpassword xxx
+:END:
