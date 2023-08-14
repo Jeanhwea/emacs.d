@@ -151,7 +151,6 @@
      expand-region
      figlet
      fill-column-indicator
-     flycheck
      flyspell-correct
      ggtags
      git-auto-commit-mode
