@@ -133,7 +133,7 @@
      docker
      ;; docker-tramp
      dockerfile-mode
-     dracula-theme
+     doom-themes
      edit-indirect
      editorconfig
      eglot
@@ -165,7 +165,6 @@
      haskell-mode
      htmlize
      javadoc-lookup
-     jetbrains-darcula-theme
      js-comint
      json-mode
      keycast
@@ -176,7 +175,6 @@
      magit-lfs
      magit-todos
      markdown-mode
-     monokai-theme
      nyan-mode
      nasm-mode
      ob-go
@@ -211,8 +209,7 @@
      which-key
      xclip
      yaml-mode
-     yasnippet
-     zenburn-theme))
+     yasnippet))
 
 (setq package-selected-packages my-packages)
 

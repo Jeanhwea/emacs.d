@@ -188,8 +188,12 @@
     (require 'color-theme-sanityinc-tomorrow nil t))
   (defvar jh/themes
     (list
+      'doom-dracula
+      'doom-monokai
+      'doom-nord
+      'doom-one
+      'doom-zenburn
       'sanityinc-solarized-dark
-      'zenburn
       'spacemacs-light
       'spacemacs-dark
       'sanityinc-solarized-light
@@ -199,6 +203,7 @@
       'sanityinc-tomorrow-blue
       'sanityinc-tomorrow-eighties)
     "My favirate color themes list")
+
   (defun jh/cycle-color-theme ()
     "Cycle through all prefered color theme."
     (interactive)
@@ -207,9 +212,14 @@
         (next-theme (cadr (member current-theme jh/themes))))
       (if next-theme
         (load-theme next-theme t) (load-theme (car jh/themes) t))))
+
+  ;; setup doom-themes
+  (setq
+    doom-themes-enable-bold t    ; if nil, bold is universally disabled
+    doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
   ;; default theme
-  ;; (load-theme 'zenburn t)
-  (load-theme 'sanityinc-solarized-light t))
+  (load-theme 'doom-one t))
 
 ;; -----------------------------------------------------------------------------
 ;; console mouse enabled
