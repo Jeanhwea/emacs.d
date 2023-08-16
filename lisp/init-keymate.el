@@ -100,10 +100,10 @@
     "ss" 'workflow-search-any-text
     "sr" 'projectile-ripgrep
     "ra" 'projectile-run-async-shell-command-in-root
-    "rn" 'eglot-rename
     "rs" 'workflow-run-scratch
-    "rr" 'workflow-test-func
-    "rt" 'emamux:send-command
+    "rt" 'workflow-test-func
+    "rn" 'eglot-rename
+    "rr" 'emamux:send-command
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
     "wv" 'workflow-vertical-split-window
