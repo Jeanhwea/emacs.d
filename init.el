@@ -139,6 +139,7 @@
      eglot
      elfeed
      elm-mode
+     emamux
      emmet-mode
      engine-mode
      evil
