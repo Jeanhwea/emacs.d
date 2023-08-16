@@ -103,7 +103,7 @@
     "rs" 'workflow-run-scratch
     "rt" 'workflow-test-func
     "rn" 'eglot-rename
-    "rr" 'emamux:send-command
+    "rr" 'emamux:run-command
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
     "wv" 'workflow-vertical-split-window
