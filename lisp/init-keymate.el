@@ -103,7 +103,7 @@
     "rn" 'eglot-rename
     "rs" 'workflow-run-scratch
     "rr" 'workflow-test-func
-    "rt" 'workflow-test-file
+    "rt" 'emamux:send-command
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
     "wv" 'workflow-vertical-split-window
@@ -113,6 +113,7 @@
     "xx" 'counsel-M-x
     "," 'other-window
     "<SPC>" 'other-window))
+
 ;; -----------------------------------------------------------------------------
 ;;  _   _               _   __  __           _
 ;; | | | | __ _ _ __ __| | |  \/  | ___   __| | ___
