@@ -3,6 +3,6 @@
 # key: st
 # --
 
-struct ${1:Name}<'a> {
-$>var: &'a str,
+struct ${1:Person}<'a> {
+$>name: &'a str,
 }
