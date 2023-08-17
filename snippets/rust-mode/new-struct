@@ -4,5 +4,5 @@
 # --
 
 struct ${1:Person}<'a> {
-$>name: &'a str,
+$>name: &'a str
 }
