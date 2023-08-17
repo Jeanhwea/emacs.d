@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: define a struct
+# key: st
+# --
+
+struct ${1:Name}<'a> {
+$>var: &'a str,
+}
