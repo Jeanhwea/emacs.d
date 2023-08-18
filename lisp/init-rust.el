@@ -8,9 +8,10 @@
       (dir (file-name-directory file))
       (name (file-name-nondirectory file)))
     (setq cmd0 (format "cd %s" dir))
+    (emamux:run-command cmd0)
     (setq cmd1 (format "rustc %s -o debug.run" name))
     (setq cmd2 "./debug.run")
-    (setq cmd (concat cmd0 " && " cmd1 " && " cmd2))
+    (setq cmd (concat cmd1 " && " cmd2))
     (emamux:run-command cmd)))
 
 (provide 'init-rust)
