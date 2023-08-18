@@ -9,6 +9,7 @@
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (global-set-key (kbd "C-j") 'workflow-emmet-expand)
 
+(global-set-key (kbd "<f5>") 'workflow-run-scratch)
 (global-set-key (kbd "<f7>") 'gud-finish)
 (global-set-key (kbd "<f8>") 'gud-step)
 (global-set-key (kbd "<f9>") 'gud-next)
