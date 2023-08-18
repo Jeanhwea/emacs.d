@@ -7,8 +7,10 @@
     ((file (or file (buffer-file-name)))
       (dir (file-name-directory file))
       (name (file-name-nondirectory file)))
-    (setq cmd0 (format "cd %s" dir))
-    (emamux:run-command cmd0)
+
+    (emamux:run-command (format "cd %s" dir))
+    (emamux:run-command "clear")
+
     (setq cmd1 (format "rustc %s -o debug.run" name))
     (setq cmd2 "./debug.run")
     (setq cmd (concat cmd1 " && " cmd2))
