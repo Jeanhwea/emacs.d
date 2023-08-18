@@ -688,6 +688,18 @@
       (call-interactively #'other-window)
       (call-interactively #'evil-scroll-down))))
 
+(defun workflow-cd-workdir ()
+  "change current dir to workdir"
+  (interactive)
+  (let ((dir (file-name-directory (buffer-file-name))))
+    (emamux:run-command (format "cd %s" dir))))
+
+(defun workflow-cd-projdir ()
+  "change current dir to project root dir."
+  (interactive)
+  (let ((dir (jh/git-root (buffer-file-name))))
+    (emamux:run-command (format "cd %s" dir))))
+
 ;; (defun workflow-run-java-scratch ()
 ;;   "Build and Run Java scratch codes."
 ;;   (interactive)

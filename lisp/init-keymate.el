@@ -43,6 +43,8 @@
     "bB" 'workflow-bookmark-current-file
     "bv" 'workflow-git-browse-remote
     "cw" 'workflow-replace
+    "cd" 'workflow-cd-workdir
+    "cg" 'workflow-cd-projdir
     "db" 'gud-break
     "dc" 'gud-cont
     "dd" 'gud-down
