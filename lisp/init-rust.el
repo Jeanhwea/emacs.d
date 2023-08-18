@@ -8,6 +8,8 @@
       (dir (file-name-directory file))
       (name (file-name-nondirectory file)))
 
+    (save-buffer)
+
     (emamux:run-command (format "cd %s" dir))
     (emamux:run-command "clear")
 
