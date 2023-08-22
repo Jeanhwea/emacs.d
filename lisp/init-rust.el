@@ -9,10 +9,10 @@
       (name (file-name-nondirectory file)))
     (save-buffer)
     (if (not window-system)
-      (jh/run-rust-scratch-in-tmux dir name)
-      (jh/run-rust-scratch-gui dir name))))
+      (jh/run-rust-scratch-in-tmux file dir name)
+      (jh/run-rust-scratch-gui file dir name))))
 
-(defun jh/run-rust-scratch-gui (dir name)
+(defun jh/run-rust-scratch-gui (file dir name)
   (let
     ((sbufname "*rust-scratch-buffer*") (default-directory dir))
 
@@ -26,9 +26,9 @@
         (setq sbuf (generate-new-buffer sbufname)))
       (shell-command cmd sbuf sbuf)
       (display-buffer sbuf)
-      (message (format "Run %s" name)))))
+      (message (format "Run %s" file)))))
 
-(defun jh/run-rust-scratch-in-tmux (dir name)
+(defun jh/run-rust-scratch-in-tmux (file dir name)
   "Run rust scratch in tmux."
   (emamux:run-command (format "cd %s" dir))
   (emamux:run-command "clear")
@@ -36,6 +36,6 @@
   (setq cmd2 "./debug.run")
   (setq cmd (concat cmd1 " && " cmd2))
   (emamux:run-command cmd)
-  (message (format "Run %s" name)))
+  (message (format "Run %s" file)))
 
 (provide 'init-rust)
