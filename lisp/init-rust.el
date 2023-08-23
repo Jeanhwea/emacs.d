@@ -38,4 +38,7 @@
   (emamux:run-command cmd)
   (message (format "Run %s" file)))
 
+(when (require 'rustic)
+  (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
+
 (provide 'init-rust)

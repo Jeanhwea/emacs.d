@@ -193,6 +193,7 @@
      restclient
      rg
      rust-mode
+     rustic
      sicp
      smex
      spacemacs-theme
