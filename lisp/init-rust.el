@@ -39,6 +39,7 @@
   (message (format "Run %s" file)))
 
 (when (require 'rustic)
+  (setq rustic-lsp-client 'eglot)
   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
 
 (provide 'init-rust)
