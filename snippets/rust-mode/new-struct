@@ -3,6 +3,7 @@
 # key: st
 # --
 
+#[derive(Debug)]
 struct ${1:Person}<'a> {
 $>name: &'a str,
 $>age: u8
