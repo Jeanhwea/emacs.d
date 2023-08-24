@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Define class with type ... struct {}
-# key: cls
+# name: Define struct
+# key: st
 # --
 
 type ${1:`(jh/go-class-name)`} struct {
