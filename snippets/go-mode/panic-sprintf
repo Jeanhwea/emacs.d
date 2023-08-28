@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: panic format printer
+# key: pf
+# --
+
+panic(fmt.Sprintf("err = %v", err))

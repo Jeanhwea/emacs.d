@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: logrus.Error(...)
+# key: le
+# --
+
+logrus.WithFields(logrus.Fields{"count": 1}).Error("$0")

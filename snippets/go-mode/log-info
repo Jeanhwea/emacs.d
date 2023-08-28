@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: logrus.Info(...)
+# key: li
+# --
+
+logrus.WithFields(logrus.Fields{"count": 1}).Info("$0")
