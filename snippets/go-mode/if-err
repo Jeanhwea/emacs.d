@@ -3,5 +3,5 @@
 # key: ife
 # --
 if err != nil {
-$>$0
+$>return$0
 }
