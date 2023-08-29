@@ -237,6 +237,10 @@
   (let ((clzname (jh/go-class-name)))
     (jh/camelcase (substring clzname 0 1))))
 
+(defun jh/first-letter (str)
+  "Get first letter of STR."
+  (jh/camelcase (substring str 0 1)))
+
 (require 'go-projectile)
 
 (provide 'init-go)

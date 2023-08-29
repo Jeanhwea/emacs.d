@@ -3,6 +3,6 @@
 # key: tstr
 # --
 
-func (`(jh/go-receiver-name)` *${1:`(jh/go-class-name)`}) String() string {
-$>return ""
+func (${1:$(jh/first-letter yas-text)} *${1:`(jh/go-class-name)`}) String() string {
+$>return "$1"
 }
