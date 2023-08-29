@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: String() method
+# key: tstr
+# --
+
+func (`(jh/go-receiver-name)` *${1:`(jh/go-class-name)`}) String() string {
+$>return ""
+}
