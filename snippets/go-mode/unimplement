@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: unimplement
+# key: un
+# --
+panic("unimplement")
