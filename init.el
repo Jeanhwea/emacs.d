@@ -158,6 +158,7 @@
      git-msg-prefix
      go-dlv
      go-mode
+     go-projectile
      go-tag
      gotest
      graphviz-dot-mode
