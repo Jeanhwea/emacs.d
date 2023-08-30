@@ -11,6 +11,8 @@
 ;; (when (require 'lsp-mode)
 ;;   (setq lsp-headerline-breadcrumb-enable nil))
 
+(setq go-test-args "-v -count=1")
+
 (add-hook 'go-mode-hook
   #'(lambda()
       (setq
@@ -22,7 +24,6 @@
         show-trailing-whitespace t)
 
       (setq go-test-args "-v -count=1")
-
       (eglot-ensure)
       ;; (evil-define-key '(normal visual) 'local (kbd "gr") 'eglot-rename)
 
