@@ -32,6 +32,8 @@
     ad-do-it
     ;; 修改返回值
     (setq ad-return-value
+      (jh/re-replace "^https://github.com" "https://githubfast.com" ad-return-value))
+    (setq ad-return-value
       (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" ad-return-value))
     (setq ad-return-value
       (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" ad-return-value))
