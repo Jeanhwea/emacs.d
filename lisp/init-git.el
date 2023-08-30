@@ -25,14 +25,22 @@
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^mtiisl\\.cn$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitana\\.jeanhwea\\.io$" :type "gitlab"))
 
-  ;; 增强 gitana 远端调用
+
+  ;; 增强 github 远端调用
+  (defadvice browse-at-remote--format-region-url-as-github
+    (around browse-at-remote--format-region-url-as-github-around activate)
+    ;; 调用函数
+    ad-do-it
+    ;; 修改返回值
+    (setq ad-return-value
+      (jh/re-replace "^https://github.com" "http://githubfast.com" ad-return-value)))
+
+  ;; 增强 gitlab 远端调用
   (defadvice browse-at-remote--format-region-url-as-gitlab
     (around browse-at-remote--format-region-url-as-gitlab-around activate)
     ;; 调用函数
     ad-do-it
     ;; 修改返回值
-    (setq ad-return-value
-      (jh/re-replace "^https://github.com" "https://githubfast.com" ad-return-value))
     (setq ad-return-value
       (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" ad-return-value))
     (setq ad-return-value
@@ -40,7 +48,7 @@
     (setq ad-return-value
       (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" ad-return-value)))
 
-  ;; 增强 gitana 远端调用
+  ;; 增强 gitlab 远端调用
   (defadvice browse-at-remote--format-commit-url-as-gitlab
     (around browse-at-remote--format-commit-url-as-gitlab-around activate)
     ;; 调用函数
