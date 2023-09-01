@@ -94,7 +94,7 @@
     (progn
       (save-buffer)
       ;; format buffer
-      (shell-command (format "black \"%s\"" file))
+      (shell-command (format "black --quiet \"%s\"" file))
       ;; reload buffer
       (revert-buffer nil t)
       ;; leave a messge
