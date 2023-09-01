@@ -89,6 +89,19 @@
 
 (defun jh/format-python-source (&optional file)
   "Format python source code."
+  (let
+    ((file (or file (buffer-file-name))))
+    (progn
+      (save-buffer)
+      ;; format buffer
+      (shell-command (format "black \"%s\"" file))
+      ;; reload buffer
+      (revert-buffer nil t)
+      ;; leave a messge
+      (message (format "Formatted %s" file)))))
+
+(defun jh/format-python-source-2 (&optional file)
+  "Format python source code."
   (let ((pt1) (pt2) (curr-point (point))
          (command "yapf"))
     (if (use-region-p)
