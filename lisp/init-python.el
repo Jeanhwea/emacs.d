@@ -94,6 +94,8 @@
     (progn
       (save-buffer)
       ;; format buffer
+      ;; https://pycqa.github.io/isort/docs/configuration/black_compatibility.html
+      ;; (shell-command (format "isort --profile black --quiet \"%s\"" file))
       (shell-command (format "black --quiet \"%s\"" file))
       ;; reload buffer
       (revert-buffer nil t)
