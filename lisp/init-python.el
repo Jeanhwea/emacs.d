@@ -73,9 +73,11 @@
   "Run python scratch source code."
   (let*
     ((sbufname "*python-scratch-buffer*")
-      (file (or file (buffer-file-name)))
-      (filename file))
-    (setq cmd (format "python %s" file))
+      (file (or file (expand-file-name (buffer-file-name))))
+      (root (jh/git-root (buffer-file-name)))
+      (filename (jh/re-replace root "./" file))
+      (default-directory root))
+    (setq cmd (format "PYTHONPATH=. python3 %s" filename))
     (if (string-match-p ".*\\.py$" filename)
       (progn
         (save-buffer)

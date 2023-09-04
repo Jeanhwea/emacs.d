@@ -1,6 +1,6 @@
 (setq-default
-  dired-listing-switches "-al -X --group-directories-first"
-  ;; dired-listing-switches "-al -X -v --group-directories-first"
+  ;; dired-listing-switches "-al -X --group-directories-first"
+  dired-listing-switches "-al -v --group-directories-first"
   dired-dwim-target t)
 
 (add-hook 'after-init-hook
