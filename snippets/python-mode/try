@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: try ... expect ...
+# key: try
+# --
+
+try:
+$>$0
+except Exception as e:
+$>raise logger.warning(f"got an exception: {e}")
