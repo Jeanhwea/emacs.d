@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Header for python
-# key: header
+# name: Package Header for python
+# key: pkg
 # --
 
 #!/usr/bin/env python3
