@@ -4,6 +4,6 @@
 # --
 
 try:
-$>$0
+$>pass$0
 except Exception as e:
-$>raise logger.warning(f"got an exception: {e}")
+$>logger.warning(f"got an exception: {e}")
