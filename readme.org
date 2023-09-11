@@ -14,20 +14,13 @@
     - [[https://github.com/joaotavora/yasnippet][yasnippet]]: Aha, meet the snippet system.
     - [[https://github.com/bbatsov/projectile][projectile]]: a project interaction library for Emacs.
     - [[https://magit.vc/][magit]]: powerful git manager
-    - [[https://github.com/abo-abo/swiper][swiper]]: flexible, simple tools for minibuffer completion in Emacs
-    - [[https://github.com/ananthakumaran/tide][tide]]: TypeScript Interactive Development Environment for Emacs.
-    - [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]: Multiple cursors for Emacs.
     - [[https://github.com/skeeto/elfeed][elfeed]]: an extensible web feed reader for Emacs, supporting both Atom and RSS.
     - [[https://github.com/smihica/emmet-mode][emmet-mode]]: a minor mode providing support for Zen Coding by producing
       HTML from CSS-like selectors.
-    - browses-at-remote: open github url on browser
-    - company: auto complete words according context
     - evil: vim-style text editing
     - exec-path-from-shell: load PATH from system
     - expand-region: expand region increases the selected region by semantic
       units. Just keep pressing the key until it selects what you want. [[http://emacsrocks.com/e09.html][video]]
-    - js-comint: let run interactive nodejs console with "M-x run-js"
-    - nyan-mode: change your progress display in status bar into a cute animal
     - undo-tree: visualize the editing history by a tree view
 
 ** Local settings
