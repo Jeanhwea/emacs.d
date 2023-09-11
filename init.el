@@ -204,6 +204,7 @@
      swiper
      thrift
      tide
+     tldr
      verb
      vterm
      web-mode

@@ -33,6 +33,7 @@
 /workspace/*
 user-*.el
 /eln-cache
+/tldr
 
 /custom.el
 /snippets/dancer-mode/*
