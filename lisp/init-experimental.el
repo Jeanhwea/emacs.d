@@ -208,4 +208,6 @@
 ;; -----------------------------------------------------------------------------
 (setq-default tags-revert-without-query t)
 
+(require 'sudo-edit)
+
 (provide 'init-experimental)

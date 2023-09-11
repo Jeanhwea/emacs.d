@@ -201,6 +201,7 @@
      sql-indent
      sqlformat
      string-inflection
+     sudo-edit
      swiper
      thrift
      tide
