@@ -33,6 +33,7 @@
 /workspace/*
 user-*.el
 /eln-cache
+/autosaves
 /tldr
 
 /custom.el
