@@ -24,7 +24,7 @@
         show-trailing-whitespace t)
 
       (setq go-test-args "-v -count=1")
-      (eglot-ensure)
+      ;; (eglot-ensure)
       ;; (evil-define-key '(normal visual) 'local (kbd "gr") 'eglot-rename)
 
       ;; ;; lsp-mode for golang
