@@ -21,4 +21,21 @@
     (setq clipboard (substring clipboard 0 -1))
     (insert clipboard)))
 
+;; 适配 evil
+(evil-define-operator evil-yank-wsl (beg end type register yank-handler)
+  "Save the characters in motion into the kill-ring."
+  :move-point nil
+  :repeat nil
+  (interactive "<R><x><y>")
+  (wsl-copy beg end)
+  (evil-yank beg end type register yank-handler))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Add Those line to ~/.emacs.local.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; (define-key evil-normal-state-map "y" 'evil-yank-wsl)
+;; (define-key evil-motion-state-map "y" 'evil-yank-wsl)
+;; (define-key evil-visual-state-map "y" 'evil-yank-wsl)
+
 (provide 'init-wsl)
