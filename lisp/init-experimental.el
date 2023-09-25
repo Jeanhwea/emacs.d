@@ -208,6 +208,17 @@
 ;; -----------------------------------------------------------------------------
 (setq-default tags-revert-without-query t)
 
+(defun jh/echo-timestamp ()
+  "Echo Timestamp as Human Readable String."
+  (interactive)
+  (let*
+    ((ts0 (number-at-point))
+      (ts (or ts0 (time-to-seconds (current-time))))
+      (str (format-time-string "%Y-%m-%d %H:%M:%S" (seconds-to-time ts))))
+    (if ts0
+      (message "Timestamp %d => %s" ts str)
+      (message "Now %d => %s" ts str))))
+
 (require 'sudo-edit)
 
 (provide 'init-experimental)

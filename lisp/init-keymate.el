@@ -107,6 +107,7 @@
     "rt" 'workflow-test-func
     "rn" 'eglot-rename
     "rr" 'emamux:run-command
+    "tt" 'jh/echo-timestamp
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
     "wv" 'workflow-vertical-split-window
