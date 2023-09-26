@@ -221,4 +221,6 @@
 
 (require 'sudo-edit)
 
+(require 'xcscope)
+
 (provide 'init-experimental)

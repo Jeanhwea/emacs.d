@@ -212,6 +212,7 @@
      wgrep
      which-key
      xclip
+     xcscope
      yaml-mode
      yasnippet))
 
