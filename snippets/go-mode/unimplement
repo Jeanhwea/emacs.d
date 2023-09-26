@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: unimplement
-# key: un
+# name: panic TODO
+# key: todo
 # --
-panic("unimplement")
+panic("TODO at `(buffer-file-name)`")
