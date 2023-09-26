@@ -221,6 +221,8 @@
 
 (require 'sudo-edit)
 
-(require 'xcscope)
+;; cscope
+(when (require 'xcscope)
+  (cscope-setup))
 
 (provide 'init-experimental)
