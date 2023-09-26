@@ -2,4 +2,4 @@
 # name: panic TODO
 # key: todo
 # --
-panic("TODO at `(buffer-file-name)`")
+panic("TODO at `(jh/project-relative-filepath)`")

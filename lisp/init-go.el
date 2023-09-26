@@ -163,6 +163,10 @@
       (when (and beg end)
         (json-pretty-print beg end)))))
 
+(defun jh/project-relative-filepath ()
+  "Return relative path to project root."
+  (jh/re-replace (jh/git-root (buffer-file-name)) "" (buffer-file-name)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; project management
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
