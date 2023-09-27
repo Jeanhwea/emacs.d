@@ -40,7 +40,11 @@
 ;; eglot
 ;; -----------------------------------------------------------------------------
 (when (require 'eglot)
-  (setq eglot-stay-out-of '(company)))
+  (setq eglot-stay-out-of '(company))
+
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+      '(web-mode . ("typescript-language-server" "--stdio")))))
 
 
 (provide 'init-completion)
