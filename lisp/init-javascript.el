@@ -85,7 +85,7 @@
 
 (when (require 'tide)
   ;; formats the buffer before saving
-  ;; (add-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'before-save-hook 'tide-format-before-save)
 
   ;; add hook for tide-mode
   (add-hook 'typescript-mode-hook
@@ -94,7 +94,13 @@
         (setq flycheck-check-syntax-automatically '(save mode-enabled))
         (flycheck-mode 1)
         (eldoc-mode 1)
-        (tide-hl-identifier-mode 1))))
+        (tide-hl-identifier-mode 1)))
+  (add-hook 'web-mode-hook
+    #'(lambda()
+        (when (string-equal "tsx" (file-name-extension buffer-file-name))
+          (tide-setup))))
+  ;; END of tide
+  )
 
 ;; (add-to-list 'auto-mode-alist '("\\.ts?\\'" . javascript-mode))
 (provide 'init-javascript)
