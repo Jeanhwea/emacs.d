@@ -5,14 +5,14 @@
 (require 'cl-lib)
 
 (when (require 'package)
-  ;; setup melpa
+  ;; Add MELPA
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
-  ;; using tsinghua mirror as default source
+  ;; Use TUNA mirror
   ;;(setq package-archives
-  ;;  '(("gnu"    . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-  ;;     ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-  ;;     ("melpa"  . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+  ;;  '(("gnu-tuna"    . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+  ;;     ("nongnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+  ;;     ("melpa-tuna"  . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
 
   ;; must initialize package first
