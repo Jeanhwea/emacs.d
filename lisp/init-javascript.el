@@ -3,7 +3,7 @@
       (setq
         show-trailing-whitespace t
         indent-tabs-mode nil
-        tab-width 4
+        tab-width 2
         js-indent-level 2
         typescript-indent-level 2
         ;; tide-format-options
@@ -97,6 +97,15 @@
         (tide-hl-identifier-mode 1)))
   (add-hook 'web-mode-hook
     #'(lambda()
+        (setq
+          show-trailing-whitespace t
+          indent-tabs-mode nil
+          tab-width 2
+          js-indent-level 2
+          typescript-indent-level 2)
+        (setq tide-format-options
+          '(:indentSize 2 :tabSize 2 :insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
+
         (when (string-equal "tsx" (file-name-extension buffer-file-name))
           (tide-setup))))
   ;; END of tide
