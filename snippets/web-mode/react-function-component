@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: React Function Component
+# key: fc
+# --
+import React from 'react';
+
+const ${1:FuncComp}: React.FC<any> = (props) => {
+$>return (
+$>$><p>todo</p>
+$>);
+};
+
+export default $1;
