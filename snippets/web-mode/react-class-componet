@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: React Class Component
+# key: cc
+# --
+import React from 'react';
+
+class ${1:ClassComp} extends React.Component<Props, State> {
+$>render() {
+$>$>return (
+$>$>$><p>todo</p>
+$>$>);
+$>};
+};
+
+export default $1;

@@ -4,7 +4,7 @@
 # --
 import React from 'react';
 
-const ${1:FuncComp}: React.FC<any> = (props) => {
+const ${1:FuncComp}: React.FC<Props> = (props) => {
 $>return (
 $>$><p>todo</p>
 $>);
