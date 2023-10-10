@@ -95,6 +95,8 @@
         (flycheck-mode 1)
         (eldoc-mode 1)
         (tide-hl-identifier-mode 1)))
+
+  ;; add hook for web-mode
   (add-hook 'web-mode-hook
     #'(lambda()
         (setq
@@ -106,7 +108,10 @@
         (setq tide-format-options
           '(:indentSize 2 :tabSize 2 :insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
 
-        (when (string-equal "tsx" (file-name-extension buffer-file-name))
+        (when
+          (or
+            (string-equal "ts" (file-name-extension buffer-file-name))
+            (string-equal "tsx" (file-name-extension buffer-file-name)))
           (tide-setup))))
   ;; END of tide
   )
