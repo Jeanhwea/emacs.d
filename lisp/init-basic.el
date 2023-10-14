@@ -78,7 +78,8 @@
   (add-hook 'typescript-mode-hook 'hs-minor-mode)
   (add-hook 'json-mode-hook 'hs-minor-mode)
   (add-hook 'css-mode-hook 'hs-minor-mode)
-  (add-hook 'mhtml-mode-hook 'hs-minor-mode))
+  (add-hook 'mhtml-mode-hook 'hs-minor-mode)
+  (add-hook 'web-mode-hook 'hs-minor-mode))
 
 (defun jh/tab-dwim ()
   "Automatic do hideshow according to context."
