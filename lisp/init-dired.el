@@ -7,7 +7,6 @@
   #'(lambda ()
       (setq dired-recursive-deletes 'top)
 
-
       (define-key dired-mode-map (kbd "C-c w") 'wdired-change-to-wdired-mode)))
 
 ;; 忽略一些不需要关注的文件
