@@ -97,6 +97,7 @@
 ;; misc option
 ;; -----------------------------------------------------------------------------
 (setq-default
+  large-file-warning-threshold 800000000
   inhibit-startup-message t
   blink-cursor-mode t
   ;; cursor-type 'bar
