@@ -2,4 +2,5 @@
 # name: Print
 # key: pr
 # --
-printf("${1:text}");$0
+
+printf("$0");

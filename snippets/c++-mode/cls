@@ -2,6 +2,7 @@
 # name: Define Class
 # key: cls
 # --
+
 class ${1:Name}
 {
 public:

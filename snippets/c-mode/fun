@@ -2,7 +2,8 @@
 # name: Define Function
 # key: fun
 # --
-${1:void} ${2:function} ($3)
+
+${1:void} ${2:function}($0)
 {
-$>$0
+$>return;
 }
