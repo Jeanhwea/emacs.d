@@ -28,8 +28,9 @@
   version-control t)
 (save-place-mode 1)
 (auto-save-visited-mode 1)
+
 ;; auto delete trailing whitespace before saving
-(add-hook 'before-save-hook 'whitespace-cleanup)
+;; (add-hook 'before-save-hook 'whitespace-cleanup)
 
 ;; (when (require 'dashboard)
 ;;   (dashboard-setup-startup-hook)
