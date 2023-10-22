@@ -109,7 +109,7 @@
              ;; ------------------------------------------------------------------
              ))
         (when (jh/mac?) (org-bullets-mode 1))
-        (add-hook 'before-save-hook 'whitespace-cleanup)
+        (add-hook 'before-save-hook 'whitespace-cleanup 0 t)
         (add-to-list 'org-babel-default-header-args:python '(:preamble  . "# -*- coding: utf-8 -*-"))
         (add-to-list 'org-babel-default-header-args '(:eval . "never-export")))))
 
