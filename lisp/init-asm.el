@@ -1,6 +1,7 @@
 (defun asm-hook-func ()
   (setq
     show-trailing-whitespace t
+    comment-start "#"
     indent-tabs-mode t))
 
 (add-hook 'asm-mode-hook 'asm-hook-func)
@@ -10,6 +11,7 @@
 ;; nasm
 ;; -----------------------------------------------------------------------------
 (add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode))
+(add-to-list 'auto-mode-alist '("\\.S\\'" . asm-mode))
 
 ;; -----------------------------------------------------------------------------
 ;; bochs
