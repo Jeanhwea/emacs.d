@@ -2,6 +2,7 @@
   (setq
     show-trailing-whitespace t
     comment-start "#"
+    asm-comment-char "#"
     indent-tabs-mode t))
 
 (add-hook 'asm-mode-hook 'asm-hook-func)
