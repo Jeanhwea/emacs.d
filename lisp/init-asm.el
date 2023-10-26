@@ -22,4 +22,6 @@
 ;; -----------------------------------------------------------------------------
 (add-to-list 'auto-mode-alist '("\\.bxrc\\'" . conf-mode))
 
+(add-to-list 'auto-mode-alist '("\\.img\\'" . hexl-mode))
+
 (provide 'init-asm)
