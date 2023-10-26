@@ -25,4 +25,8 @@
 (add-to-list 'auto-mode-alist '("\\.img\\'" . hexl-mode))
 (add-to-list 'auto-mode-alist '("\\.bin\\'" . hexl-mode))
 
+
+(eval-after-load 'hexl-mode
+  (evil-define-key 'normal hexl-mode-map (kbd "x") 'hexl-insert-hex-char))
+
 (provide 'init-asm)
