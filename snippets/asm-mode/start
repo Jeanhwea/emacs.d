@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: Start Function for AT&T
+# key: start
+# --
+
+.global _start
+
+.text
+_start:
+        $0
+
+loop:
+        jmp	loop
