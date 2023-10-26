@@ -3,11 +3,11 @@
 # key: start
 # --
 
-.global _start
+$>.global _start
 
-.text
+$>.text
 _start:
-        $0
+$>$0
 
 loop:
-        jmp	loop
+$>jmp   loop
