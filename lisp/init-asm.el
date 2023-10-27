@@ -3,14 +3,17 @@
     show-trailing-whitespace t
     comment-start "#"
     comment-end ""
-    indent-tabs-mode t)
+    asm-comment-char ?\#
+    indent-tabs-mode t))
 
-  ;; 注释 gas 风格汇编, # 表示注释, 注意这里字符的写法
-  (setq asm-comment-char ?\#))
+(defun nasm-hook-func ()
+  (setq
+    show-trailing-whitespace t
+    indent-tabs-mode t))
 
 
 (add-hook 'asm-mode-hook 'asm-hook-func)
-(add-hook 'nasm-mode-hook 'asm-hook-func)
+(add-hook 'nasm-mode-hook 'nasm-hook-func)
 
 ;; -----------------------------------------------------------------------------
 ;; nasm
