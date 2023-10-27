@@ -1,15 +1,17 @@
 (defun asm-hook-func ()
-  (setq
+  (setq-local
     show-trailing-whitespace t
     comment-start "#"
     comment-end ""
-    asm-comment-char ?\#
     indent-tabs-mode t))
 
 (defun nasm-hook-func ()
   (setq
     show-trailing-whitespace t
+    asm-comment-char ?\;
     indent-tabs-mode t))
+
+(setq asm-comment-char ?\#)
 
 
 (add-hook 'asm-mode-hook 'asm-hook-func)
