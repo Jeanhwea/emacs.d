@@ -1,0 +1,5 @@
+;; Auto-generated file; don't edit -*- mode: lisp-data -*-
+((:url "https://mirrors.ustc.edu.cn/" :title "USTC Open Source Software Mirror" :time "Sun Oct 29 21:52:01 2023")
+  (:url "https://files.osdev.org/mirrors/geezer/os/pm.htm" :title "Protected Mode tutorial" :time "Sun Oct 29 12:38:35 2023")
+  (:url "https://stanislavs.org/helppc/gdt.html" :title "GDT" :time "Sun Oct 29 00:15:20 2023")
+  (:url "https://stanislavs.org/helppc/idx_interrupt.html" :title "Interrupt Services DOS/BIOS/EMS/Mouse" :time "Sun Oct 29 00:11:18 2023"))
