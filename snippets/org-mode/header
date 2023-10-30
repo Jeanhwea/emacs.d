@@ -6,7 +6,7 @@
 #+TITLE: ${1:Title}
 #+AUTHOR: Jinghui Hu
 #+EMAIL: hujinghui@buaa.edu.cn
-#+DATE: <`(format-time-string "%Y-%m-%d %a %H:%M:%S")`>
+#+DATE: <`(format-time-string "%Y-%m-%d %a")`>
 #+STARTUP: overview num indent
 #+HTML_LINK_UP: ../readme.html
 #+HTML_LINK_HOME: ../index.html
