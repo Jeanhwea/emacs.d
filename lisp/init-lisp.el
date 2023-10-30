@@ -26,4 +26,6 @@
       (company-fuzzy-mode 1)
       (rainbow-delimiters-mode)))
 
+(add-to-list 'auto-mode-alist '("\\.dir-locals.el\\'" . lisp-mode))
+
 (provide 'init-lisp)
