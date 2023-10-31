@@ -8,6 +8,7 @@
 #+EMAIL: hujinghui@buaa.edu.cn
 #+DATE: <`(format-time-string "%Y-%m-%d %a")`>
 #+STARTUP: overview num indent
+#+OPTIONS: ^:nil
 #+HTML_LINK_UP: ../readme.html
 #+HTML_LINK_HOME: ../index.html
 #+SETUPFILE: ~/.emacs.d/site-lisp/org-html-themes/setup/theme-readtheorg-local.setup
