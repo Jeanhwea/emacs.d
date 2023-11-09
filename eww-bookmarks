@@ -1,5 +1,7 @@
 ;; Auto-generated file; don't edit -*- mode: lisp-data -*-
-((:url "https://mirrors.edge.kernel.org/pub/" :title "Index of /pub/" :time "Mon Oct 30 13:17:50 2023")
+((:url "https://www.kernel.org/doc/gorman/html/understand/understand001.html" :title "Contents" :time "Tue Nov  7 20:26:30 2023")
+  (:url "https://tldp.org/LDP/tlk/tlk-toc.html" :title "The Linux Kernel: Table of Contents" :time "Thu Nov  2 09:14:09 2023")
+  (:url "https://mirrors.edge.kernel.org/pub/" :title "Index of /pub/" :time "Mon Oct 30 13:17:50 2023")
   (:url "https://www.kernel.org/doc/html/latest/" :title "The Linux Kernel documentation — The Linux Kernel documentation" :time "Mon Oct 30 09:29:45 2023")
   (:url "https://mirrors.tuna.tsinghua.edu.cn/legacy_index" :title "清华大学开源软件镜像站 | Tsinghua Open Source Mirror" :time "Sun Oct 29 21:57:01 2023")
   (:url "https://mirrors.ustc.edu.cn/" :title "USTC Open Source Software Mirror" :time "Sun Oct 29 21:52:01 2023")
