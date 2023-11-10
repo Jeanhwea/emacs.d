@@ -96,6 +96,7 @@
              (emacs-lisp . t)
              (C . t)
              (dot . t)
+             (ditaa . t)
              (java . t)
              (js . t)
              (go . t)
