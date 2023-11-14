@@ -225,4 +225,7 @@
 (when (require 'xcscope)
   (cscope-setup))
 
+;; info page
+(add-to-list 'Info-default-directory-list "/usr/share/info")
+
 (provide 'init-experimental)
