@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: using bash magic header
+# key: >h
+# --
+#!/usr/bin/env bash
+$0
