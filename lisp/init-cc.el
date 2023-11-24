@@ -55,7 +55,7 @@
       ;; leave a messge
       (message (format "Formatted %s" file)))))
 
-(add-to-list 'auto-mode-alist '("\\.ic\\'" . c++-mode)
+(add-to-list 'auto-mode-alist '("\\.ic\\'" . c++-mode))
 
 (when (require 'cuda-mode)
   (add-to-list 'auto-mode-alist '("\\.cu.cc\\'" . cuda-mode)))
