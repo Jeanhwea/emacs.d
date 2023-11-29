@@ -98,6 +98,9 @@
     "oo" 'org-open-at-point
     "os" 'org-store-link
     "ox" 'org-babel-execute-src-block
+    "pc" 'projectile-compile-project
+    "pd" 'projectile-run-gdb
+    "pr" 'projectile-run-project
     "sa" 'workflow-save-all-buffers
     "sg" 'workflow-search-git
     "ss" 'workflow-search-any-text
