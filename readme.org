@@ -8,7 +8,7 @@
 
 
 * Notes
-1. current using emacs-30
+1. Current Emacs Version: emacs30
 
 * Build from Source
 ** Dependencies
