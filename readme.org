@@ -2,132 +2,79 @@
 #+AUTHOR: Jinghui Hu
 #+EMAIL: hujinghui@buaa.edu.cn
 #+DATE: 2018-10-22
+#+DATE: <2023-12-05 Tue>
+#+STARTUP: indent cache num inlineimages
 #+TAGS: emacs configuration elisp
 
-** Packages
-*** Built-in
-    - eshell: unix style shell
-    - ielm: elisp REPL
-    - org-mode: Note, literature programming
 
-*** Popular
-    - [[https://github.com/joaotavora/yasnippet][yasnippet]]: Aha, meet the snippet system.
-    - [[https://github.com/bbatsov/projectile][projectile]]: a project interaction library for Emacs.
-    - [[https://magit.vc/][magit]]: powerful git manager
-    - [[https://github.com/skeeto/elfeed][elfeed]]: an extensible web feed reader for Emacs, supporting both Atom and RSS.
-    - [[https://github.com/smihica/emmet-mode][emmet-mode]]: a minor mode providing support for Zen Coding by producing
-      HTML from CSS-like selectors.
-    - evil: vim-style text editing
-    - exec-path-from-shell: load PATH from system
-    - expand-region: expand region increases the selected region by semantic
-      units. Just keep pressing the key until it selects what you want. [[http://emacsrocks.com/e09.html][video]]
-    - undo-tree: visualize the editing history by a tree view
+* Notes
+1. current using emacs-30
 
-** Local settings
-   Feel free to add private setting at *~/.emacs.local.el*, the following is an
-   example.
+* Build from Source
+** Dependencies
+Ubuntu
+#+BEGIN_SRC shell
+  sudo apt-get update && apt-get upgrade
+  sudo apt-get install build-essential libncurses-dev autoconf make gcc \
+       texinfo libgtk-3-dev libxpm-dev libjpeg-dev libgif-dev libtiff5-dev \
+       libncurses5-dev libxml2-dev libgnutls28-dev
+#+END_SRC
 
-   #+BEGIN_SRC elisp
-     ;; -----------------------------------------------------------------------------
-     ;; startup initial frame
-     ;; -----------------------------------------------------------------------------
-     (setq initial-frame-alist
-       '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
-     (setq default-frame-alist
-       '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
-   #+END_SRC
+CentOS
+#+BEGIN_SRC sh
+  yum install -y libXpm-devel libtiff-devel gnutls-devel giflib-devel \
+      libjpeg-turbo-devel ncurses-devel libpng-devel libXaw-devel texinfo
+#+END_SRC
 
-** Symbol
-*** Chinese Tones
-    #+BEGIN_SRC text
-      ā ē ī ō ū á é í ó ú ě à è ì ò ù
-    #+END_SRC
+** Build and Install
+#+BEGIN_SRC sh
+  ./autogen.sh
+  ./configure --prefix=/opt/emacs
 
-*** Greek Alphabet
+  make -j 4
+  make docs
 
-    #+BEGIN_SRC text
-      Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
-      α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-    #+END_SRC
+  sudo make install && make install-doc
+#+END_SRC
 
-*** Hebrew Alphabet
+* Local Config
+Feel free to add private setting at *~/.emacs.local.el*, the following is an
+example.
 
-    read from right to left
-    #+BEGIN_SRC text
-      א בּ ב ג ד ה ו ז ח ט י כּ כ ךּ ך ל מ ם נ ן ס ע פּ פ ף צ ץ ק ר שׁ שׂ תּ ת
-    #+END_SRC
+#+BEGIN_SRC sh :results none
+  touch ~/.emacs.local.el
+#+END_SRC
 
-*** Russian Alphabet
+#+BEGIN_SRC elisp
+  ;; -----------------------------------------------------------------------------
+  ;; startup initial frame
+  ;; -----------------------------------------------------------------------------
+  (setq initial-frame-alist
+    '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
+  (setq default-frame-alist
+    '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
+#+END_SRC
 
-    #+BEGIN_SRC text
-      А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я
-      а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я
-    #+END_SRC
+* Color Test
+** Natural Colors
+#+BEGIN_SRC css
+  #320001 #333301 #333333 #670001
+  #653332 #346667 #cccccc #656600
+  #999999 #67999a #986665 #000000
+#+END_SRC
 
-*** Turkey Alphabet
-    #+BEGIN_SRC text
-      A B C Ç D E F G Ğ H I İ J K L M N O Ö P R S Ş T U Ü V Y Z
-      a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z
-    #+END_SRC
+** D3 Categorial
+*** d3.schemeCategory10
+#+BEGIN_SRC css
+  #1776b6 #ff7f00 #24a222 #d8241f #9564bf #8d5649 #e574c3 #7f7f7f #bcbf00 #00bed1
+#+END_SRC
 
-*** Korean Alphabet
-    #+BEGIN_SRC text
-      ㅏ ㅑ ㅓ ㅕ ㅗ ㅛ ㅜ ㅠ ㅡ ㅣ ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
-      ㅐ ㅒ ㅔ ㅖ ㅘ ㅙ ㅚ ㅝ ㅞ ㅟ ㅢ ㄲ ㄸ ㅃ ㅆ ㅉ
-    #+END_SRC
+*** d3.schemeAccent
+#+BEGIN_SRC css
+  #7fc97f #beaed4 #fdc086 #ffff99 #386cb0 #f0027f #bf5b17 #666666
+#+END_SRC
 
-*** Math Basic
-    #+BEGIN_SRC text
-      ∀ ∁ ∂ ∃ ∄ ∅ ∆ ∇ ∈ ∉ ∊ ∋ ∌ ∍ ∎ ∏ ∐ ∑ − ∓ ∔ ∕ ∖ ∗ ∘ ∙ √ ∛ ∜ ∝ ∞ ∟ ∠ ∡ ∢ ∣ ∤ ∥ ∦ ∧
-      ∨ ∩ ∪ ∫ ∬ ∭ ∮ ∯ ∰ ∱ ∲ ∳ ∴ ∵ ∶ ∷ ∸ ∹ ∺ ∻ ∼ ∽ ∾ ∿ ≀ ≁ ≂ ≃ ≄ ≅ ≆ ≇ ≈ ≉ ≊ ≋ ≌ ≍ ≎ ≏
-      ≐ ≑ ≒ ≓ ≔ ≕ ≖ ≗ ≘ ≙ ≚ ≛ ≜ ≝ ≞ ≟ ≠ ≡ ≢ ≣ ≤ ≥ ≦ ≧ ≨ ≩ ≪ ≫ ≬ ≭ ≮ ≯ ≰ ≱ ≲ ≳ ≴ ≵ ≶ ≷
-      ≸ ≹ ≺ ≻ ≼ ≽ ≾ ≿ ⊀ ⊁ ⊂ ⊃ ⊄ ⊅ ⊆ ⊇ ⊈ ⊉ ⊊ ⊋ ⊌ ⊍ ⊎ ⊏ ⊐ ⊑ ⊒ ⊓ ⊔ ⊕ ⊖ ⊗ ⊘ ⊙ ⊚ ⊛ ⊜ ⊝ ⊞ ⊟
-      ⊠ ⊡ ⊢ ⊣ ⊤ ⊥ ⊦ ⊧ ⊨ ⊩ ⊪ ⊫ ⊬ ⊭ ⊮ ⊯ ⊰ ⊱ ⊲ ⊳ ⊴ ⊵ ⊶ ⊷ ⊸ ⊹ ⊺ ⊻ ⊼ ⊽ ⊾ ⊿ ⋀ ⋁ ⋂ ⋃ ⋄ ⋅ ⋆ ⋇
-      ⋈ ⋉ ⋊ ⋋ ⋌ ⋍ ⋎ ⋏ ⋐ ⋑ ⋒ ⋓ ⋔ ⋕ ⋖ ⋗ ⋘ ⋙ ⋚ ⋛ ⋜ ⋝ ⋞ ⋟ ⋠ ⋡ ⋢ ⋣ ⋤ ⋥ ⋦ ⋧ ⋨ ⋩ ⋪ ⋫ ⋬ ⋭ ⋮ ⋯
-      ⋰ ⋱ ⋲ ⋳ ⋴ ⋵ ⋶ ⋷ ⋸ ⋹ ⋺ ⋻ ⋼ ⋽ ⋾ ⋿ ⨀ ⨁ ⨂ ⨃ ⨄ ⨅ ⨆ ⨇ ⨈ ⨉ ⨊ ⨋ ⨌ ⨍ ⨎ ⨏ ⨐ ⨑ ⨒ ⨓ ⨔ ⨕ ⨖ ⨗
-      ⨘ ⨙ ⨚ ⨛ ⨜ ⨝ ⨞ ⨟ ⨠ ⨡ ⨢ ⨣ ⨤ ⨥ ⨦ ⨧ ⨨ ⨩ ⨪ ⨫ ⨬ ⨭ ⨮ ⨯ ⨰ ⨱ ⨲ ⨳ ⨴ ⨵ ⨶ ⨷ ⨸ ⨹ ⨺ ⨻ ⨼ ⨽ ⨾ ⨿
-      ⩀ ⩁ ⩂ ⩃ ⩄ ⩅ ⩆ ⩇ ⩈ ⩉ ⩊ ⩋ ⩌ ⩍ ⩎ ⩏ ⩐ ⩑ ⩒ ⩓ ⩔ ⩕ ⩖ ⩗ ⩘ ⩙ ⩚ ⩛ ⩜ ⩝ ⩞ ⩟ ⩠ ⩡ ⩢ ⩣ ⩤ ⩥ ⩦ ⩧
-      ⩨ ⩩ ⩪ ⩫ ⩬ ⩭ ⩮ ⩯ ⩰ ⩱ ⩲ ⩳ ⩴ ⩵ ⩶ ⩷ ⩸ ⩹ ⩺ ⩻ ⩼ ⩽ ⩾ ⩿ ⪀ ⪁ ⪂ ⪃ ⪄ ⪅ ⪆ ⪇ ⪈ ⪉ ⪊ ⪋ ⪌ ⪍ ⪎ ⪏
-      ⪐ ⪑ ⪒ ⪓ ⪔ ⪕ ⪖ ⪗ ⪘ ⪙ ⪚ ⪛ ⪜ ⪝ ⪞ ⪟ ⪠ ⪡ ⪢ ⪣ ⪤ ⪥ ⪦ ⪧ ⪨ ⪩ ⪪ ⪫ ⪬ ⪭ ⪮ ⪯ ⪰ ⪱ ⪲ ⪳ ⪴ ⪵ ⪶ ⪷
-      ⪸ ⪹ ⪺ ⪻ ⪼ ⪽ ⪾ ⪿ ⫀ ⫁ ⫂ ⫃ ⫄ ⫅ ⫆ ⫇ ⫈ ⫉ ⫊ ⫋ ⫌ ⫍ ⫎ ⫏ ⫐ ⫑ ⫒ ⫓ ⫔ ⫕ ⫖ ⫗ ⫘ ⫙ ⫚ ⫛ ⫝̸ ⫝ ⫞ ⫟
-      ⫠ ⫡ ⫢ ⫣ ⫤ ⫥ ⫦ ⫧ ⫨ ⫩ ⫪ ⫫ ⫬ ⫭ ⫮ ⫯ ⫰ ⫱ ⫲ ⫳ ⫴ ⫵ ⫶ ⫷ ⫸ ⫹ ⫺ ⫻ ⫼ ⫽ ⫾ ⫿
-    #+END_SRC
-
-*** Letter-like Symbol
-    #+BEGIN_SRC text
-      ℀ ℁ ℂ ℃ ℄ ℅ ℆ ℇ ℈ ℉ ℊ ℋ ℌ ℍ ℎ ℏ ℐ ℑ ℒ ℓ ℔ ℕ № ℗ ℘ ℙ ℚ ℛ ℜ ℝ ℞ ℟ ℠ ℡ ™ ℣ ℤ ℥ ω ℧
-      ℨ ℩ k å ℬ ℭ ℮ ℯ ℰ ℱ ⅎ ℳ ℴ ℵ ℶ ℷ ℸ ℹ ℺ ℻ ℼ ℽ ℾ ℿ ⅀ ⅁ ⅂ ⅃ ⅄ ⅅ ⅆ ⅇ ⅈ ⅉ ⅊ ⅋ ⅌ ⅍ ⅎ
-    #+END_SRC
-
-*** Musical Symbol
-    #+BEGIN_SRC text
-      ♪ ♩ ♫ ♬ ¶ ‖ ♭ ♯ § ∮
-    #+END_SRC
-
-** Colors
-*** Natural Colors
-
-    #+BEGIN_SRC css
-      #320001 #333301 #333333 #670001
-      #653332 #346667 #cccccc #656600
-      #999999 #67999a #986665 #000000
-    #+END_SRC
-
-*** D3 Categorial
-
-**** d3.schemeCategory10
-
-     #+BEGIN_SRC css
-       #1776b6 #ff7f00 #24a222 #d8241f #9564bf #8d5649 #e574c3 #7f7f7f #bcbf00 #00bed1
-     #+END_SRC
-
-**** d3.schemeAccent
-
-     #+BEGIN_SRC css
-       #7fc97f #beaed4 #fdc086 #ffff99 #386cb0 #f0027f #bf5b17 #666666
-     #+END_SRC
-
-** Link
+* Link
    1. [[https://mirrors.tuna.tsinghua.edu.cn/gnu/emacs/windows/][emacs-windows-download tuna tsinghua]]
    2. [[http://mirrors.ustc.edu.cn/gnu/emacs/windows/][emacs-windows-download ustc]]
    3. [[http://mirror.hust.edu.cn/gnu/emacs/windows/][emacs-windows-download hust]]
