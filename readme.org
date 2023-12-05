@@ -1,4 +1,4 @@
-#+TITLE: Jinghui's emacs configuration
+#+TITLE: Jinghui's emacs.d
 #+AUTHOR: Jinghui Hu
 #+EMAIL: hujinghui@buaa.edu.cn
 #+DATE: 2018-10-22
