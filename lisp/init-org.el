@@ -45,6 +45,9 @@
     org-html-postamble-format
     '(("en" "<p class=\"author\">Last Updated %T. Created by %a at %d.</p>")))
 
+  ;; add inline image extension
+  (add-to-list 'image-file-name-extensions "pdf")
+
   ;; export latex by xelatex
   (with-eval-after-load 'ox-latex
     (add-to-list 'org-latex-classes
