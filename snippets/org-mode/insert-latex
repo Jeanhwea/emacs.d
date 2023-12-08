@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Insert Latex Export
+# key: >l
+# --
+
+#+BEGIN_EXPORT latex
+$>$0
+#+END_EXPORT
