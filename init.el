@@ -180,6 +180,7 @@
      nasm-mode
      ob-go
      ob-tmux
+     org-ref
      org-bullets
      org-table-comment
      pangu-spacing
