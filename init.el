@@ -84,6 +84,7 @@
 (require 'init-nxml)
 (require 'init-thrift)
 (require 'init-lisp)
+(require 'init-pascal)
 (require 'init-python)
 (require 'init-rust)
 (require 'init-sh)
