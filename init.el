@@ -172,7 +172,7 @@
      keycast
      keyfreq
      leetcode
-     llvm-ts-mode
+     ;; llvm-ts-mode
      lua-mode
      magit
      magit-lfs
