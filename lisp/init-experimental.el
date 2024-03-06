@@ -225,6 +225,12 @@
 (when (require 'xcscope)
   (cscope-setup))
 
+;; treesit is buildin in emacs 29
+(require 'treesit)
+
+;; llvm
+(require 'llvm-ts-mode)
+
 ;; info page
 (add-to-list 'Info-default-directory-list "/usr/share/info")
 

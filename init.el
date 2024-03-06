@@ -172,17 +172,18 @@
      keycast
      keyfreq
      leetcode
+     llvm-ts-mode
      lua-mode
      magit
      magit-lfs
      magit-todos
      markdown-mode
-     nyan-mode
      nasm-mode
+     nyan-mode
      ob-go
      ob-tmux
-     org-ref
      org-bullets
+     org-ref
      org-table-comment
      pangu-spacing
      posframe
