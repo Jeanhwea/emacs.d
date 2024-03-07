@@ -3,6 +3,9 @@
   dired-listing-switches "-al -v --group-directories-first"
   dired-dwim-target t)
 
+(when (jh/bsd?)
+  (setq dired-listing-switches "-al -v"))
+
 (add-hook 'after-init-hook
   #'(lambda ()
       (setq dired-recursive-deletes 'top)

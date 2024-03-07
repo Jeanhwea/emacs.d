@@ -13,6 +13,10 @@
   "test if system-type is linux?"
   (equal 'gnu/linux system-type))
 
+(defun jh/bsd? ()
+  "test if system-type is berkeley-unix?"
+  (equal 'berkeley-unix system-type))
+
 ;; -----------------------------------------------------------------------------
 ;; String, convert shape
 ;; -----------------------------------------------------------------------------
