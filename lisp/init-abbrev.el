@@ -5,7 +5,7 @@
      ;; ------------------------------------------------------------------------
      ("abz" "abcdefghijklmnopqrstuvwxyz")
      ("aqf" "A quick brown fox jumps over the lazy dog")
-     ("jhh" "hujinghui@buaa.edu.cn")
+     ("eml" "hujinghui@buaa.edu.cn")
      ;; miss spelling
      ("atfer" "after")
      ("enviroment" "environment")
