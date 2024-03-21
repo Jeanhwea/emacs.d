@@ -33,7 +33,7 @@
     ad-do-it
     ;; 修改返回值
     (setq ad-return-value
-      (jh/re-replace "^https://github.com" "http://githubfast.com" ad-return-value)))
+      (jh/re-replace "^https://githubfast.com" "https://github.com" ad-return-value)))
 
   ;; 增强 gitlab 远端调用
   (defadvice browse-at-remote--format-region-url-as-gitlab
