@@ -120,6 +120,7 @@
      bison-mode
      browse-at-remote
      browse-kill-ring
+     cargo
      color-theme-sanityinc-solarized
      color-theme-sanityinc-tomorrow
      company

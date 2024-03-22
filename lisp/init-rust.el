@@ -46,4 +46,7 @@
   (setq rustic-lsp-client 'eglot)
   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
 
+(when (require 'cargo)
+  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
 (provide 'init-rust)
