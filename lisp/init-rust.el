@@ -30,15 +30,16 @@
 
 (defun jh/run-rust-scratch-in-tmux (file dir name)
   "Run rust scratch in tmux."
-  ;; (emamux:run-command (format "cd %s" dir))
+  (emamux:run-command (format "cd %s" dir))
   (emamux:run-command "clear")
 
   ;; (setq cmd1 (format "rustc %s -o debug.run" name))
   ;; (setq cmd2 "./debug.run")
   ;; (setq cmd (concat cmd1 " && " cmd2))
-  (setq cmd "cargo run --quiet")
+  (setq cmd "cargo run -q")
 
   (emamux:run-command cmd)
+
   (message (format "Run %s" file)))
 
 (when (require 'rustic)
