@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Insert Rust Scratch code
+# key: /r
+# --
+
+#+BEGIN_SRC rust :exports both
+$>$0
+#+END_SRC
