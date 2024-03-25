@@ -96,7 +96,6 @@
              (awk . t)
              (emacs-lisp . t)
              (C . t)
-             (cpp . t)
              (dot . t)
              (ditaa . t)
              (java . t)
