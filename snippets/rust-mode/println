@@ -3,4 +3,4 @@
 # key: pl
 # --
 
-println!("{}", $0);
+println!("{:?}", $0);
