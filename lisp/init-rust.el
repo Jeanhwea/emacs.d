@@ -1,5 +1,21 @@
 (setq rust-format-on-save t)
 
+(add-hook 'rustic-mode-hook
+  #'(lambda()
+
+      (evil-define-key '(normal visual) 'local (kbd "<tab>") 'rust-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "TAB") 'rust-tab-action)
+      (evil-define-key '(normal visual) 'local (kbd "<S-tab>") 'workflow-inflect-string)
+      (evil-define-key '(normal visual) 'local (kbd "<backtab>") 'workflow-inflect-string)
+
+      (highlight-current-line)
+      (rainbow-delimiters-mode 1)))
+
+(defun rust-tab-action ()
+  "Default <tab> key action for golang."
+  (interactive)
+  (jh/tab-dwim))
+
 (defun jh/run-rust-scratch (&optional file)
   "Run rust scratch file."
   (interactive)
