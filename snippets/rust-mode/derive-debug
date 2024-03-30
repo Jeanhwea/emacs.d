@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: derive Debug trait
+# key: dbg
+# --
+
+#[derive(Debug)]
