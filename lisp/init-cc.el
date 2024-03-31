@@ -3,8 +3,8 @@
       (setq
         show-trailing-whitespace t
         indent-tabs-mode t
-        c-basic-offset 8
-        tab-width 8
+        c-basic-offset 4
+        tab-width 4
         comment-start "// "
         comment-end ""
         prettify-symbols-alist
