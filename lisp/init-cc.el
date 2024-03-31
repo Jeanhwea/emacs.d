@@ -2,7 +2,8 @@
   #'(lambda()
       (setq
         show-trailing-whitespace t
-        indent-tabs-mode t
+        ;; indent-tabs-mode t
+        indent-tabs-mode nil
         c-basic-offset 4
         tab-width 4
         comment-start "// "
