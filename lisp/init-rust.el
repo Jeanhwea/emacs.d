@@ -19,6 +19,11 @@
 (defun jh/run-rust-scratch (&optional file)
   "Run rust scratch file."
   (interactive)
+  (cargo-process-run))
+
+(defun jh/run-rust-scratch-0 (&optional file)
+  "Run rust scratch file."
+  (interactive)
   (let*
     ((file (or file (buffer-file-name)))
       (dir (file-name-directory file))
