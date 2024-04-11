@@ -10,7 +10,7 @@
 * Notes
 1. Current Emacs Version: emacs30
 
-* Build from Source
+* Build EMACS from source
 ** Dependencies
 Ubuntu
 #+BEGIN_SRC shell
@@ -37,7 +37,7 @@ CentOS
   sudo make install && make install-doc
 #+END_SRC
 
-* Local Config
+* Customize local config
 Feel free to add private setting at *~/.emacs.local.el*, the following is an
 example.
 
@@ -55,7 +55,7 @@ example.
     '((tool-bar-lines . 0) (width . 120) (height . 36) (left . 800) (top . 350)))
 #+END_SRC
 
-* Color Test
+* Color display test
 ** Natural Colors
 #+BEGIN_SRC css
   #320001 #333301 #333333 #670001
@@ -74,7 +74,7 @@ example.
   #7fc97f #beaed4 #fdc086 #ffff99 #386cb0 #f0027f #bf5b17 #666666
 #+END_SRC
 
-* Link
+* Download link for EMACS on Windows
    1. [[https://mirrors.tuna.tsinghua.edu.cn/gnu/emacs/windows/][emacs-windows-download tuna tsinghua]]
    2. [[http://mirrors.ustc.edu.cn/gnu/emacs/windows/][emacs-windows-download ustc]]
    3. [[http://mirror.hust.edu.cn/gnu/emacs/windows/][emacs-windows-download hust]]
