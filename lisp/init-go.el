@@ -23,7 +23,7 @@
         tab-width 4
         show-trailing-whitespace t)
 
-      (setq go-test-args "-v -count=1")
+      ;; (setq go-test-args "-v -count=1")
       ;; (eglot-ensure)
       ;; (evil-define-key '(normal visual) 'local (kbd "gr") 'eglot-rename)
 
