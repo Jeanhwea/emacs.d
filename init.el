@@ -167,6 +167,7 @@
      groovy-mode
      haskell-mode
      htmlize
+     plantuml-mode
      javadoc-lookup
      js-comint
      json-mode
