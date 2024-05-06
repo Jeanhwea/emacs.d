@@ -56,7 +56,14 @@
 ;; plantuml-mode
 ;; -----------------------------------------------------------------------------
 (when (require 'plantuml-mode)
-  (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode)))
+  (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
+
+  (add-hook 'plantuml-mode-hook
+    #'(lambda()
+        (setq
+          show-trailing-whitespace t
+          comment-start "' "
+          comment-end ""))))
 
 ;; -----------------------------------------------------------------------------
 ;; grip
