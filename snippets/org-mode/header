@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Basic Header
-# key: header
+# key: >h
 # --
 
 #+TITLE: ${1:Title}
