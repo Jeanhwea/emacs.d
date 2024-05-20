@@ -51,7 +51,7 @@
 
       ;; https://github.com/python-lsp/python-lsp-server
       ;; pip install --user 'python-lsp-server[all]'
-      ;; (eglot-ensure)
+      (eglot-ensure)
 
       ;; (elpy-mode 1)
       (rainbow-delimiters-mode 1)))
