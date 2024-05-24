@@ -86,6 +86,7 @@
 (require 'init-lisp)
 (require 'init-pascal)
 (require 'init-python)
+(require 'init-puml)
 (require 'init-rust)
 (require 'init-sh)
 (require 'init-sql)
