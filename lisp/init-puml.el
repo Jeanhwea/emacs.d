@@ -8,7 +8,7 @@
         show-trailing-whitespace t
         indent-tabs-mode nil
         c-basic-offset 2
-        tab-width 3
+        tab-width 2
         comment-start "' "
         comment-end "")))
 
