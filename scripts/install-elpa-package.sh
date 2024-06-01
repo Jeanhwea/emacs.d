@@ -6,4 +6,4 @@ if [ X"$MACUNAME" != X"" ]; then
     EMACS="$HOME/Applications/Emacs.app/Contents/MacOS/Emacs"
 fi
 
-$EMACS --script instpkg.el
+$EMACS --script ~/.emacs.d/scripts/instpkg.el
