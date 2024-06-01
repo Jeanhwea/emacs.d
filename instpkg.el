@@ -1,0 +1,5 @@
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(require 'init-package)
+(setq package-selected-packages my-packages)
+(package-refresh-contents)
+(package-install-selected-packages)
