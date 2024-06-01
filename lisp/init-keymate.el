@@ -69,6 +69,7 @@
     "eb" 'eval-buffer
     "ev" 'eval-expression
     "fb" 'workflow-switch-to-buffer
+    "fd" 'workflow-duplicate-current-file
     "ff" 'workflow-buffer-or-recentf-open
     "fs" 'workflow-format-current-source
     "gc" 'workflow-git-commit-changes

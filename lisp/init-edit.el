@@ -123,7 +123,6 @@
   (evil-mode 1)
   (evil-commentary-mode))
 
-
 (when (require 'evil-collection nil t)
   (evil-collection-init))
 

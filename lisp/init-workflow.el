@@ -85,6 +85,16 @@
   (interactive)
   (counsel-bookmark))
 
+(defun workflow-duplicate-current-file ()
+  "Duplicate file"
+  (interactive)
+  (unless buffer-file-name (error "Cannot duplicate raw buffer"))
+  (let*
+    ((oldfile (buffer-file-name))
+      (newfile (read-string "NewFile: " oldfile)))
+    (copy-file oldfile newfile)
+    (message (format "Create File %s" newfile))))
+
 (defun workflow-bookmark-current-file ()
   "Add/Remove current file to bookmark"
   (interactive)
