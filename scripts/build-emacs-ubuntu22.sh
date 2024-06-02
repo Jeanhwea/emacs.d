@@ -22,7 +22,6 @@ cd emacs-${EMVER}
 ./configure --prefix=/opt/emacs
 
 make -j $(nproc)
-make docs
 
-sudo make install && make install-doc
+sudo make install 
 
