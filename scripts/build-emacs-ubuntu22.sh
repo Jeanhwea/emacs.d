@@ -15,7 +15,7 @@ fi
 
 cd $EMSRC
 wget -c https://mirrors.tuna.tsinghua.edu.cn/gnu/emacs/emacs-${EMVER}.tar.xz
-tar xjvf emacs-${EMVER}.tar.xz
+tar xJvf emacs-${EMVER}.tar.xz
 cd emacs-${EMVER}
 
 ./autogen.sh
