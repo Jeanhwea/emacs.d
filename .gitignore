@@ -91,4 +91,5 @@ flycheck_*.el
 multisession/*
 org-persist/*
 
+*.swp
 # End of https://www.gitignore.io/api/emacs
