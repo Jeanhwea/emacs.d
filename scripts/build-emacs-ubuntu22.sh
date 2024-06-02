@@ -4,7 +4,7 @@ EMVER="29.3"
 EMSRC="/opt"
 
 sudo apt-get update && apt-get upgrade
-sudo apt-get install build-essential libncurses-dev autoconf make gcc \
+sudo apt-get install -y build-essential libncurses-dev autoconf make gcc \
      texinfo libgtk-3-dev libxpm-dev libjpeg-dev libgif-dev libtiff5-dev \
      libncurses5-dev libxml2-dev libgnutls28-dev
 
