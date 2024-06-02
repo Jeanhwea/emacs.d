@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 EBASE=`cd $(dirname $0); cd ..; pwd`
 EMVER="29.3"
-EMSRC="/opt"
+EMSRC="/opt/src"
 
 sudo apt-get update && apt-get upgrade
 sudo apt-get install -y build-essential libncurses-dev autoconf make gcc \
