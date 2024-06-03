@@ -127,10 +127,10 @@
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
   ;; Use TUNA mirror
-  (setq package-archives
-    '(("melpa-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-       ("gnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-       ("nongnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")))
+  ;(setq package-archives
+  ;  '(("melpa-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+  ;     ("gnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+  ;     ("nongnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")))
 
 
   ;; must initialize package first
