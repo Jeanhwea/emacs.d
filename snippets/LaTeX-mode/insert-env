@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Insert Environment \begin{}/\end{}
+# key: /e
+# --
+
+\begin{${1:center}}
+$>$0
+\end{$1}
