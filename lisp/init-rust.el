@@ -8,6 +8,9 @@
       (evil-define-key '(normal visual) 'local (kbd "<S-tab>") 'workflow-inflect-string)
       (evil-define-key '(normal visual) 'local (kbd "<backtab>") 'workflow-inflect-string)
 
+      ;; setup rustfmt
+      (setq rustic-rustfmt-args "--edition 2021")
+
       (highlight-current-line)
       (rainbow-delimiters-mode 1)))
 
