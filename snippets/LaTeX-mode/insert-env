@@ -3,6 +3,6 @@
 # key: /e
 # --
 
-\begin{${1:center}}
+\begin{${1:env}}
 $>$0
 \end{$1}
