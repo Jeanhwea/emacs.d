@@ -334,7 +334,7 @@
     ((eq major-mode 'thrift-mode) (jh/format-thrift-source))
     ((eq major-mode 'rustic-mode) (rustic-format-file))
     ;; ((member major-mode '(c++-mode cuda-mode)) (jh/format-cc-source))
-    ((member major-mode '(c++-mode cuda-mode)) (jh/indent-current-buffer))
+    ((member major-mode '(c++-mode cuda-mode)) (jh/format-cc-source))
     ((member major-mode
        '(emacs-lisp-mode less-css-mode sgml-mode mhtml-mode nxml-mode sh-mode thrift-mode ymal-mode))
       (jh/indent-current-buffer))

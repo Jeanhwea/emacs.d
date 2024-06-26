@@ -46,6 +46,19 @@
 (defun jh/format-cc-source (&optional file)
   "Format cc source code."
   (let
+    ((server (eglot-current-server))
+      (file (or file (buffer-file-name))))
+    (if (null server)
+      (progn
+        (jh/indent-current-buffer)
+        (message (format "indent buffer only: %s" file)))
+      (progn
+        (eglot-format-buffer)
+        (message (format "format by eglot: %s" file))))))
+
+(defun jh/format-cc-source-cli (&optional file)
+  "Format cc source code using command line."
+  (let
     ((file (or file (buffer-file-name))))
     (progn
       (save-buffer)
