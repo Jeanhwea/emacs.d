@@ -476,6 +476,11 @@
   (interactive)
   (verb-send-request-on-point-other-window-stay))
 
+(defun workflow-copy-curl-cli ()
+  "Copy the curl command"
+  (interactive)
+  (verb-export-request-on-point-curl))
+
 ;; Part 2-6: Jump
 (defun workflow-find-definitions-other-window ()
   "Open other window."
