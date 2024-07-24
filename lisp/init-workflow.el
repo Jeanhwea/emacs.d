@@ -695,6 +695,7 @@
         (call-interactively #'go-test-current-test)
         (jh/run-go-scratch)))
     ((eq major-mode 'go-mode) (jh/run-go-scratch))
+    ((eq major-mode 'rust-mode) (cargo-process-current-test))
     ((eq major-mode 'python-mode) (jh/run-python-scratch))
     ((eq major-mode 'java-mode) (jh/run-java-scratch))
     ((eq major-mode 'sh-mode) (jh/run-shell-scratch))
