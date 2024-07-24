@@ -107,11 +107,11 @@
     "ss" 'workflow-search-any-text
     "sr" 'projectile-ripgrep
     "ra" 'projectile-run-async-shell-command-in-root
-    "rs" 'workflow-run-scratch
-    "rt" 'workflow-test-func
+    "re" 'emamux:run-command
     "rn" 'eglot-rename
-    "rr" 'emamux:run-command
-    "tt" 'jh/echo-timestamp
+    "rr" 'workflow-run-scratch
+    "tt" 'workflow-test-func
+    "tm" 'jh/echo-timestamp
     "wh" 'workflow-horizontal-split-window
     "wo" 'other-window
     "wv" 'workflow-vertical-split-window
