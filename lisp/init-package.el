@@ -19,7 +19,7 @@
      color-theme-sanityinc-solarized
      color-theme-sanityinc-tomorrow
      company
-     company-fuzzy
+     ;; company-fuzzy
      counsel
      ;; csharp-mode
      csv-mode

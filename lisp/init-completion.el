@@ -20,6 +20,9 @@
   (setq-default company-dabbrev-other-buffers 'all
     company-tooltip-align-annotations t))
 
+;; (when (require 'company-fuzzy)
+;;   (global-company-fuzzy-mode 1))
+
 ;; -----------------------------------------------------------------------------
 ;; ivy, counsel & swiper
 ;; -----------------------------------------------------------------------------

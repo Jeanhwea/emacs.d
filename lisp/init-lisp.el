@@ -23,7 +23,7 @@
              ;; ----------------------------------------------------------------
              )))
       (highlight-current-line)
-      (company-fuzzy-mode 1)
+      ;; (company-fuzzy-mode 1)
       (rainbow-delimiters-mode)))
 
 (add-to-list 'auto-mode-alist '(".dir-locals.el\\'" . emacs-lisp-mode))
