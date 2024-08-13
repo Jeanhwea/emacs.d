@@ -54,8 +54,8 @@
 ;;     (dashboard-refresh-buffer))
 ;;   (global-set-key (kbd "C-c d") 'jh/switch-to-dashboard))
 
-(when (require 'ace-jump-mode)
-  (autoload 'ace-jump-mode "ace-jump-mode" "Emacs quick move minor mode" t))
+;; (when (require 'ace-jump-mode)
+;;   (autoload 'ace-jump-mode "ace-jump-mode" "Emacs quick move minor mode" t))
 
 ;; -----------------------------------------------------------------------------
 ;; exec-path-from-shell, read the $PATH

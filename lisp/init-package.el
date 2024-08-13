@@ -8,7 +8,7 @@
      ;; lsp-mode
      ;; lsp-ui
      ;; multiple-cursors
-     ace-jump-mode
+     ;; ace-jump-mode
      adoc-mode
      ag
      auctex
