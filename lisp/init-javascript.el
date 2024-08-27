@@ -116,5 +116,7 @@
   ;; END of tide
   )
 
+(add-to-list 'auto-mode-alist '("\\.mjs?\\'" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.cjs?\\'" . javascript-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.ts?\\'" . javascript-mode))
 (provide 'init-javascript)
