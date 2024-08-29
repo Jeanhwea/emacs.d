@@ -3,4 +3,4 @@
 # key: us
 # --
 
-const [${1:data}, set${1:$(jh/pascalcase yas-text)}] = useState($0);
+const [${1:data}, set${1:$(jh/pascalcase yas-text)}] = React.useState($0);
