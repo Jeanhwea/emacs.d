@@ -85,7 +85,7 @@
 
 (when (require 'tide)
   ;; formats the buffer before saving
-  (add-hook 'before-save-hook 'tide-format-before-save)
+  ;; (add-hook 'before-save-hook 'tide-format-before-save)
 
   ;; add hook for tide-mode
   (add-hook 'typescript-mode-hook
