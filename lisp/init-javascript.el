@@ -105,8 +105,7 @@
           tab-width 2
           js-indent-level 2
           typescript-indent-level 2)
-        (setq tide-format-options
-          '(:indentSize 2 :tabSize 2 :insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
+        (setq tide-format-options '(:indentSize 2 :tabSize 2))
 
         (when
           (or
