@@ -71,6 +71,7 @@
   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
 
 (when (require 'cargo)
+  (setq cargo-process--command-test--additional-args "-- --nocapture --show-output")
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
 (provide 'init-rust)
