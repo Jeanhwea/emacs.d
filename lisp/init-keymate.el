@@ -30,7 +30,6 @@
   (evil-define-key '(normal visual) 'global (kbd "gr") 'workflow-find-references)
   (evil-define-key '(normal visual) 'global (kbd "gi") 'workflow-goto-implementation)
   (evil-define-key '(normal visual) 'global (kbd "gs") 'workflow-search-rg)
-  (evil-define-key '(normal visual) 'global (kbd "gu") 'workflow-find-usage)
 
   (evil-leader/set-leader ",")
 
@@ -76,6 +75,7 @@
     "gc" 'workflow-git-commit-changes
     "gf" 'workflow-git-open-file
     "gg" 'workflow-git-popup
+    "gu" 'workflow-find-usage
     "hl" 'hs-hide-level
     "hh" 'hs-toggle-hiding
     "hs" 'workflow-highlight-symbol

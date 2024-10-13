@@ -456,7 +456,7 @@
 (defun workflow-find-usage ()
   "find usage of current symbol."
   (interactive)
-  (cscope-find-functions-calling-this-function))
+  (call-interactively #'cscope-find-functions-calling-this-function))
 
 (defun workflow-find-references ()
   "Find references."
