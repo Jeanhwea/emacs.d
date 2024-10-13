@@ -453,6 +453,11 @@
   (interactive)
   (evil-jump-to-tag))
 
+(defun workflow-find-usage ()
+  "find usage of current symbol."
+  (interactive)
+  (cscope-find-functions-calling-this-function))
+
 (defun workflow-find-references ()
   "Find references."
   (interactive)
