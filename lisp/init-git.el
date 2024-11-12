@@ -22,6 +22,7 @@
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^githubfast\\.com$" :type "github"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitee\\.com$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.202$" :type "gitlab"))
+  (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.110$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^mtiisl\\.cn$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitana\\.jeanhwea\\.io$" :type "gitlab"))
 
