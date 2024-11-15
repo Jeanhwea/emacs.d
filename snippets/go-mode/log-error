@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: logrus.Error(...)
+# name: log.error
 # key: le
 # --
 
-logrus.WithFields(logrus.Fields{"count": 1}).Error("$0")
+hlog.CtxErrorf(ctx, "$0")

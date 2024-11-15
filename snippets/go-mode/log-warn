@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: log.warn
+# key: lw
+# --
+
+hlog.CtxWarnf(ctx, "$0")

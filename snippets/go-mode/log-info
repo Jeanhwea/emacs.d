@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: logrus.Info(...)
+# name: log.info
 # key: li
 # --
 
-logrus.WithFields(logrus.Fields{"count": 1}).Info("$0")
+hlog.CtxInfof(ctx, "$0")
