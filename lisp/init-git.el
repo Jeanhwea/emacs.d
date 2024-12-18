@@ -47,6 +47,8 @@
     (setq ad-return-value
       (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" ad-return-value))
     (setq ad-return-value
+      (jh/re-replace "^https://192.168.0.110" "http://192.168.0.110/gitlab" ad-return-value))
+    (setq ad-return-value
       (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" ad-return-value)))
 
   ;; 增强 gitlab 远端调用
@@ -59,6 +61,8 @@
       (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" ad-return-value))
     (setq ad-return-value
       (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" ad-return-value))
+    (setq ad-return-value
+      (jh/re-replace "^https://192.168.0.110" "http://192.168.0.110/gitlab" ad-return-value))
     (setq ad-return-value
       (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" ad-return-value)))
 
