@@ -77,7 +77,8 @@
       (root (jh/git-root (buffer-file-name)))
       (filename (jh/re-replace root "./" file))
       (default-directory root))
-    (setq cmd (format "PYTHONPATH=. python3 %s" filename))
+    ;; (setq cmd (format "PYTHONPATH=. python3 %s" filename))
+    (setq cmd (format "python %s" filename))
     (if (string-match-p ".*\\.py$" filename)
       (progn
         (save-buffer)
