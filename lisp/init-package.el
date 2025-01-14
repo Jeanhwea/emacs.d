@@ -75,6 +75,7 @@
      magit-lfs
      magit-todos
      markdown-mode
+     matlab-mode
      nasm-mode
      nyan-mode
      ob-go

@@ -90,6 +90,7 @@
 (require 'init-rust)
 (require 'init-sh)
 (require 'init-sql)
+(require 'init-matlab)
 
 ;; -----------------------------------------------------------------------------
 ;; misc
