@@ -64,9 +64,9 @@
 ;;     (setq elpy-rpc-python-command "python3"))
 ;;   (local-set-key (kbd "M-.") 'elpy-goto-definition))
 
-(when (executable-find "python3")
+(when (executable-find "python")
   (setq
-    python-shell-interpreter "python3"
+    python-shell-interpreter (executable-find "python")
     python-shell-interpreter-args "-i"))
 
 (defun jh/run-python-scratch (&optional file)
