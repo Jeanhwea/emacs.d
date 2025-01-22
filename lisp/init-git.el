@@ -6,7 +6,7 @@
   (cond
     ((jh/mac?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
     ((jh/linux?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
-    ((jh/windows?) (add-to-list 'magit-repository-directories '("X:/code" . 3))))
+    ((jh/windows?) (add-to-list 'magit-repository-directories '("d:/code" . 3))))
   ;; (require 'magit-lfs)
   (defalias 'list-repositories 'magit-list-repositories)
   (global-set-key (kbd "C-x g") 'magit-status))
