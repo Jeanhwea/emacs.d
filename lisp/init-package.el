@@ -21,6 +21,7 @@
      company
      ;; company-fuzzy
      counsel
+     chatgpt-shell
      ;; csharp-mode
      csv-mode
      cmake-mode
