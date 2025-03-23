@@ -79,7 +79,6 @@
 (require 'init-groovy)
 (require 'init-html)
 (require 'init-java)
-(require 'init-javascript)
 (require 'init-json)
 (require 'init-nxml)
 (require 'init-thrift)
@@ -91,6 +90,7 @@
 (require 'init-sh)
 (require 'init-sql)
 (require 'init-matlab)
+(require 'init-web)
 
 ;; -----------------------------------------------------------------------------
 ;; misc
