@@ -29,6 +29,7 @@
      dashboard
      dired-k
      docker
+     dot-env
      ;; docker-tramp
      dockerfile-mode
      doom-themes
