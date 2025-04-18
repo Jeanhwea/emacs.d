@@ -27,7 +27,7 @@
      cuda-mode
      dashboard
      dired-k
-     docker
+     ;; docker
      ;; docker-tramp
      dockerfile-mode
      doom-themes
