@@ -31,6 +31,7 @@
      ;; docker-tramp
      dockerfile-mode
      doom-themes
+     dotenv-mode
      edit-indirect
      editorconfig
      eglot
