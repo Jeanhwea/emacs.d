@@ -49,7 +49,7 @@
      expand-region
      figlet
      fill-column-indicator
-     flyspell-correct
+     ;; flyspell-correct
      ggtags
      git-auto-commit-mode
      git-msg-prefix
