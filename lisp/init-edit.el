@@ -74,11 +74,15 @@
 ;; -----------------------------------------------------------------------------
 (require 'string-inflection)
 
-(when (require 'flyspell)
-  (setq
-    ;; ispell-personal-dictionary "C:/path/to/your/.ispell"
-    ;; hunspell, aspell
-    ispell-program-name "aspell"))
+
+;; (when (require 'flyspell)
+;;   (setq
+;;     ;; ispell-personal-dictionary "C:/path/to/your/.ispell"
+;;     ;; hunspell, aspell
+;;     ispell-program-name "aspell"))
+
+;; (setq ispell-silently-savep t)
+(setq ispell-alternate-dictionary (expand-file-name "lang/words.txt" user-emacs-directory))
 
 ;; edit inside grep buffer, which C-c C-p to toggle readonly mode
 (when (require 'wgrep))

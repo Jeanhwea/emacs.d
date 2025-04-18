@@ -21,15 +21,13 @@
      company
      ;; company-fuzzy
      counsel
-     chatgpt-shell
      ;; csharp-mode
      csv-mode
      cmake-mode
      cuda-mode
      dashboard
      dired-k
-     docker
-     dotenv-mode
+     ;; docker
      ;; docker-tramp
      dockerfile-mode
      doom-themes
@@ -51,7 +49,7 @@
      expand-region
      figlet
      fill-column-indicator
-     flyspell-correct
+     ;; flyspell-correct
      ggtags
      git-auto-commit-mode
      git-msg-prefix
