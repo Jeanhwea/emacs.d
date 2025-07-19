@@ -110,6 +110,7 @@
      tldr
      verb
      vterm
+     vue3-mode
      web-mode
      wgrep
      which-key
