@@ -1,6 +1,7 @@
 (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[jt]s\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[jt]sx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
 
 (defun setup-tide-mode ()
   (interactive)
@@ -36,5 +37,8 @@
         (setup-tide-mode))
 
       (eglot-ensure))))
+
+;; (when (require 'vue3-mode)
+;;     (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-html-mode)))
 
 (provide 'init-web)
