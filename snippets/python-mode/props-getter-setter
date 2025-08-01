@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: @property Getter/Setter
+# key: gs
+# --
+@property
+def ${1:prop}(self):
+$>return self._$1
+
+@$1.setter
+def $1(self, value):
+$>self._$1 = value$0
