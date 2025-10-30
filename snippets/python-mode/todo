@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Todo stub
+# key: todo
+# --
+
+raise NotImplementedError("未实现")$0
