@@ -3,4 +3,4 @@
 # key: todo
 # --
 
-raise NotImplementedError("TODO: implementation")$0
+raise NotImplementedError("TODO: `(format-time-string "%Y%m%d%H%M%S")` added by jhh")$0
