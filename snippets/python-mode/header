@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Package Header for python
-# key: pkg
+# key: >h
 # --
 
 # -*- coding:utf-8 -*-
