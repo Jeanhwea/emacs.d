@@ -1,10 +1,11 @@
 (setq-default
-  ;; dired-listing-switches "-al -X --group-directories-first"
-  dired-listing-switches "-al -v --group-directories-first"
+  dired-sort-defaults (list 'name)
+  dired-listing-switches "-l -a -v --group-directories-first"
   dired-dwim-target t)
 
-(when (jh/bsd?)
-  (setq dired-listing-switches "-al -v"))
+;; (when (jh/bsd?)
+;;   (setenv "LC_COLLATE" "C")
+;;   (setq dired-listing-switches "-l -a -v --group-directories-first"))
 
 (add-hook 'after-init-hook
   #'(lambda ()
