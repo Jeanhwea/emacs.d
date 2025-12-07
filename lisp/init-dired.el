@@ -4,8 +4,8 @@
   dired-dwim-target t)
 
 ;; (when (jh/bsd?)
-;;   (setenv "LC_COLLATE" "C")
-;;   (setq dired-listing-switches "-l -a -v --group-directories-first"))
+;;   (setq dired-listing-switches "-l -a -v --group-directories-first")
+;;   (setenv "LC_COLLATE" "C"))
 
 (add-hook 'after-init-hook
   #'(lambda ()
