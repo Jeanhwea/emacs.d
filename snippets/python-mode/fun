@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Define Function
-# key: fun
+# key: >f
 # --
 def ${1:function}(${2:args}):
 $>${0:pass}

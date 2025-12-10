@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: '{foo}xxx{bar}'.format(foo=var1, bar=var2)
-# key: fmtstr
-# --
-'${1:{foo}xxx{bar}}'.format(${2:foo=var1, bar=var2})$0

@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: While Statement
-# key: wh
-# --
-while ${1:cond}:
-$>$0

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: os.path.join(...)
-# key: pathjoin
-# --
-os.path.join(${1:'basename'}, ${2:'filename'})$0
