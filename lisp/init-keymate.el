@@ -39,6 +39,7 @@
   ;; (evil-leader/set-key-for-mode 'go-mode "r" 'eglot-rename)
 
   (evil-leader/set-key
+    "aa" 'find-alternate-file
     "bb" 'list-bookmarks
     "bB" 'workflow-bookmark-current-file
     "bv" 'workflow-git-browse-remote
