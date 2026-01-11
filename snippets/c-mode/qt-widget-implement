@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: Define Qt Widget Implementation
+# key: >qwi
+# --
+
+#include "${1:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`}.h"
+
+$1::$1(QWidget* parent) : QWidget(parent) { _initUI(); }
+
+void $1::_initUI() {
+    // initial UI
+}

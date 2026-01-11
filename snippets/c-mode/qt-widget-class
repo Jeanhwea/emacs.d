@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: Define Qt Widget Class
+# key: >qw
+# --
+
+#include <QVBoxLayout>
+#include <QWidget>
+
+class ${1:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} : public QWidget {
+$>Q_OBJECT
+
+public:
+$>explicit $1(QWidget* parent = nullptr);$0
+
+private:
+$>QVBoxLayout _layout;
+
+private:
+$>void _initUI();
+};
