@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: Define Class with Header
+# key: >hh
+# --
+
+#ifndef ${1:_`(upcase (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))`_H_}
+#define $1
+
+class ${2:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} {
+public:
+$>$2() = default;$0
+};
+
+#endif /* End of $1 */

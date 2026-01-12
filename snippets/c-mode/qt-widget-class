@@ -2,15 +2,17 @@
 # name: Define Qt Widget Class
 # key: >qw
 # --
+#ifndef ${1:_`(upcase (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))`_H_}
+#define $1
 
 #include <QVBoxLayout>
 #include <QWidget>
 
-class ${1:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} : public QWidget {
+class ${2:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} : public QWidget {
 $>Q_OBJECT
 
 public:
-$>explicit $1(QWidget* parent = nullptr);$0
+$>explicit $2(QWidget* parent = nullptr);$0
 
 private:
 $>QVBoxLayout _layout;
@@ -18,3 +20,5 @@ $>QVBoxLayout _layout;
 private:
 $>void _initUI();
 };
+
+#endif /* End of $1 */
