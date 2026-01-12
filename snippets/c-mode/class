@@ -5,5 +5,5 @@
 
 class ${1:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} {
 public:
-$>$0
+$>$1() = default;$0
 };
