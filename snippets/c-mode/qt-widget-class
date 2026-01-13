@@ -14,11 +14,19 @@ $>Q_OBJECT
 public:
 $>explicit $2(QWidget* parent = nullptr);$0
 
+// Private fields
 private:
 $>QVBoxLayout _layout;
 
+// Private functions
 private:
 $>void _initUI();
+
+// Define Signal
+// signals:
+
+// Define Slot
+// private slots:
 };
 
 #endif /* End of $1 */
