@@ -8,4 +8,4 @@
 (require 'init-package)
 (setq package-selected-packages my-packages)
 (package-refresh-contents)
-(package-install-selected-packages)
+(package-install-selected-packages t)
