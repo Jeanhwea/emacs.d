@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: Define Jhh's QtWidget Class
+# key: >jw
+# --
+# -*- coding: utf-8 -*-
+import logging
+
+from src.widget import (
+$>JxHBoxLayout,
+$>JxWidget,
+)
+
+logger = logging.getLogger(__name__)
+
+
+class ${1:`(jh/pascalcase (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))`}(JxWidget):
+$>_layout: JxHBoxLayout
+
+$>def __init__(self, *args, **kwargs):
+$>$>super().__init__(*args, **kwargs)
+$>$>self._layout = JxHBoxLayout(self)
