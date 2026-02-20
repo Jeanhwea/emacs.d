@@ -18,4 +18,10 @@
       (find-file path)
       (message "Create `%s'" path))))
 
+(defun jh/find-alternate-file()
+  "Switch between source file and header file (e.g., .cpp <-> .h)."
+  (interactive)
+  (let ((ff-always-try-to-create nil))
+    (ff-find-other-file nil)))
+
 (provide 'init-file-creator)
