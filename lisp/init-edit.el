@@ -38,6 +38,16 @@
           (dotimes (i count) (join-line)))))
     (join-line)))
 
+(defun jh/edit-file-kiro ()
+  "Open the current file in Kiro at the current cursor position."
+  (interactive)
+  (if (not (executable-find "kiro"))
+    (user-error "Command `kiro' not found in PATH")
+    (let ((file (buffer-file-name)))
+      (when file
+        (start-process "kiro" nil "kiro"
+          "-g" (format "%s:%d:%d" file (line-number-at-pos) (1+ (current-column))))))))
+
 ;; -----------------------------------------------------------------------------
 ;; editing words: upcase, capitalized
 ;; -----------------------------------------------------------------------------

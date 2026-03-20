@@ -82,6 +82,7 @@
     "hs" 'workflow-highlight-symbol
     "ii" 'workflow-inflect-string
     "kb" 'kill-buffer
+    "ko" 'workflow-open-file-at-line
     "ma" 'smerge-keep-all
     "mc" 'smerge-keep-current
     "mm" 'smerge-keep-mine

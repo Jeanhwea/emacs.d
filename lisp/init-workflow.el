@@ -63,6 +63,11 @@
   (interactive)
   (projectile-find-file))
 
+(defun workflow-open-file-at-line ()
+  "Open the current file at cursor position in Kiro."
+  (interactive)
+  (jh/edit-file-kiro))
+
 (defun workflow-git-open-file ()
   "Open file under git version control."
   (interactive)
