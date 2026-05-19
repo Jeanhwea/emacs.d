@@ -27,43 +27,36 @@
 
 
   ;; 增强 github 远端调用
-  (defadvice browse-at-remote--format-region-url-as-github
-    (around browse-at-remote--format-region-url-as-github-around activate)
-    ;; 调用函数
-    ad-do-it
-    ;; 修改返回值
-    (setq ad-return-value
-      (jh/re-replace "^https://githubfast.com" "https://github.com" ad-return-value)))
+  (defun jh/browse-at-remote--format-region-url-as-github-advice (orig-fn &rest args)
+    "Replace githubfast.com with github.com in URL."
+    (let ((url (apply orig-fn args)))
+      (jh/re-replace "^https://githubfast.com" "https://github.com" url)))
+  (advice-add 'browse-at-remote--format-region-url-as-github
+    :around #'jh/browse-at-remote--format-region-url-as-github-advice)
 
   ;; 增强 gitlab 远端调用
-  (defadvice browse-at-remote--format-region-url-as-gitlab
-    (around browse-at-remote--format-region-url-as-gitlab-around activate)
-    ;; 调用函数
-    ad-do-it
-    ;; 修改返回值
-    (setq ad-return-value
-      (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" ad-return-value))
-    (setq ad-return-value
-      (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" ad-return-value))
-    (setq ad-return-value
-      (jh/re-replace "^https://192.168.0.110" "http://192.168.0.110/gitlab" ad-return-value))
-    (setq ad-return-value
-      (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" ad-return-value)))
+  (defun jh/browse-at-remote--format-region-url-as-gitlab-advice (orig-fn &rest args)
+    "Fix gitlab URL schemes and paths."
+    (let ((url (apply orig-fn args)))
+      (setq url (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" url))
+      (setq url (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" url))
+      (setq url (jh/re-replace "^https://192.168.0.110" "http://192.168.0.110/gitlab" url))
+      (setq url (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" url))
+      url))
+  (advice-add 'browse-at-remote--format-region-url-as-gitlab
+    :around #'jh/browse-at-remote--format-region-url-as-gitlab-advice)
 
-  ;; 增强 gitlab 远端调用
-  (defadvice browse-at-remote--format-commit-url-as-gitlab
-    (around browse-at-remote--format-commit-url-as-gitlab-around activate)
-    ;; 调用函数
-    ad-do-it
-    ;; 修改返回值
-    (setq ad-return-value
-      (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" ad-return-value))
-    (setq ad-return-value
-      (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" ad-return-value))
-    (setq ad-return-value
-      (jh/re-replace "^https://192.168.0.110" "http://192.168.0.110/gitlab" ad-return-value))
-    (setq ad-return-value
-      (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" ad-return-value)))
+  ;; 增强 gitlab commit 远端调用
+  (defun jh/browse-at-remote--format-commit-url-as-gitlab-advice (orig-fn &rest args)
+    "Fix gitlab commit URL schemes and paths."
+    (let ((url (apply orig-fn args)))
+      (setq url (jh/re-replace "^https://mtiisl.cn" "http://mtiisl.cn/gitlab" url))
+      (setq url (jh/re-replace "^https://192.168.0.202" "http://192.168.0.202" url))
+      (setq url (jh/re-replace "^https://192.168.0.110" "http://192.168.0.110/gitlab" url))
+      (setq url (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" url))
+      url))
+  (advice-add 'browse-at-remote--format-commit-url-as-gitlab
+    :around #'jh/browse-at-remote--format-commit-url-as-gitlab-advice)
 
   ;; END
   )
@@ -89,7 +82,7 @@
 (defun jh/git-root (dir)
   "Return the root directory of a git repository."
   (let ((dirs
-          (remove-if-not #'jh/git-root-p
+          (cl-remove-if-not #'jh/git-root-p
             (jh/directory-sequence dir))))
     (unless (null dirs) (car dirs))))
 

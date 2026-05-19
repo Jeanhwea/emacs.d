@@ -95,7 +95,7 @@
 (setq ispell-alternate-dictionary (expand-file-name "lang/words.txt" user-emacs-directory))
 
 ;; edit inside grep buffer, which C-c C-p to toggle readonly mode
-(when (require 'wgrep))
+(require 'wgrep nil t)
 
 ;; -----------------------------------------------------------------------------
 ;; hungry-delete
