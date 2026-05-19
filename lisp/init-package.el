@@ -110,6 +110,7 @@
      tldr
      verb
      vterm
+     vundo
      ;; vue3-mode
      web-mode
      wgrep

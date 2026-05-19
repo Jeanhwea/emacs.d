@@ -87,47 +87,19 @@
 (recentf-mode 1)
 
 ;; -----------------------------------------------------------------------------
-;; undo-tree
-;; undo-tree on elpa is very old and hard to use, try this mirror
-;; git clone git@github.com:Jeanhwea/undo-tree.git
+;; vundo - visual undo tree
 ;; -----------------------------------------------------------------------------
-(when (require 'undo-tree)
-  ;; Persistent undo history
-  (setq
-    undo-tree-enable-undo-in-region nil
-    undo-tree-auto-save-history t
-    undo-tree-history-directory-alist
-    `(("." . ,(expand-file-name "undo" user-emacs-directory))))
-  ;; Compressing undo history
-  (defadvice undo-tree-make-history-save-file-name
-    (after undo-tree activate)
-    (setq ad-return-value (concat ad-return-value ".gz")))
-
-  (defun jh/undofile-expired-p (filename)
-    "Return ture if the undo file is expired."
-    (let
-      ((expired-seconds (* 100 60 60 24)) ; file expired time limits to 100 days
-        (last-modification-time
-          (file-attribute-modification-time
-            (file-attributes
-              (expand-file-name filename)))))
-      (time-less-p (time-add last-modification-time expired-seconds)
-        (current-time))))
-
-  (defun jh/undofile-size-exceed-p (filename)
-    "Return ture if the undo file exceeds maximum size limits."
-    (let ((max-size-limit (* 5 1024))   ; file size limits to 8k
-           (file-size (file-attribute-size (file-attributes filename))))
-      (> file-size max-size-limit)))
-
-  ;; Delete big file to avoid C stack overflow
-  (defun jh/delete-unused-undofiles ()
-    (let ((undodir (expand-file-name "undo" user-emacs-directory)))
-      (dolist (undofile (directory-files undodir t "gz$"))
-        (when (or (jh/undofile-size-exceed-p undofile) (jh/undofile-expired-p undofile))
-          (delete-file undofile)))))
-  (jh/delete-unused-undofiles)
-  (global-undo-tree-mode))
+(when (require 'vundo nil t)
+  (setq vundo-glyph-string vundo-unicode-symbols)
+  (with-eval-after-load 'evil
+    (evil-define-key '(normal visual) vundo-mode-map
+      "h" 'vundo-backward
+      "l" 'vundo-forward
+      "k" 'vundo-previous-node
+      "j" 'vundo-next-node
+      "q" 'vundo-quit
+      (kbd "RET") 'vundo-confirm
+      (kbd "C-g") 'vundo-quit)))
 
 ;; -----------------------------------------------------------------------------
 ;; manually install howdoi
@@ -241,7 +213,7 @@
     ((alpha (frame-parameter nil 'alpha))
       (value (or (and alpha (car alpha)) 100))
       (lookup
-        (member-if
+        (cl-member-if
           #'(lambda (e) (= (car e) value)) jh/transparency-alist))
       (next
         (if (> (length lookup) 1)
