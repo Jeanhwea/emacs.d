@@ -9,7 +9,15 @@
     ((jh/windows?) (add-to-list 'magit-repository-directories '("d:/code" . 3))))
   ;; (require 'magit-lfs)
   (defalias 'list-repositories 'magit-list-repositories)
-  (global-set-key (kbd "C-x g") 'magit-status))
+  (global-set-key (kbd "C-x g") 'magit-status)
+
+  ;; magit diff 高亮优化
+  (setq magit-diff-refine-hunk nil)
+  (when (display-graphic-p)
+    (set-face-attribute 'magit-diff-added nil :foreground "#00ff00" :background "#2a4a2a")
+    (set-face-attribute 'magit-diff-removed nil :foreground "#ff6666" :background "#4a2a2a")
+    (set-face-attribute 'magit-diff-added-highlight nil :foreground "#00ff00" :background "#2a5a2a")
+    (set-face-attribute 'magit-diff-removed-highlight nil :foreground "#ff6666" :background "#5a2a2a")))
 
 ;; (when (require 'magit-todos)
 ;;   (magit-todos-mode))
