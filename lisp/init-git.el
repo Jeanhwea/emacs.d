@@ -14,6 +14,8 @@
   ;; magit diff 高亮优化
   (setq magit-diff-refine-hunk nil)
   (when (display-graphic-p)
+    ;; 关闭光标所在 section 的整行黄色高亮
+    (set-face-attribute 'magit-section-highlight nil :background 'unspecified :extend nil)
     (set-face-attribute 'magit-diff-added nil :foreground "#00ff00" :background "#2a4a2a")
     (set-face-attribute 'magit-diff-removed nil :foreground "#ff6666" :background "#4a2a2a")
     (set-face-attribute 'magit-diff-added-highlight nil :foreground "#00ff00" :background "#2a5a2a")
