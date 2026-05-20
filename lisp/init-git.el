@@ -11,25 +11,24 @@
   (defalias 'list-repositories 'magit-list-repositories)
   (global-set-key (kbd "C-x g") 'magit-status)
 
-  ;; magit diff 高亮优化
+  ;; magit diff 高亮优化（GUI 与终端都生效）
   (setq magit-diff-refine-hunk nil)
-  (when (display-graphic-p)
-    ;; 关闭光标所在 section 的整行高亮（不延伸到行尾之后）
-    (set-face-attribute 'magit-section-highlight nil
-      :background 'unspecified :extend nil)
-    (set-face-attribute 'magit-diff-context-highlight nil
-      :background 'unspecified :extend nil)
-    (set-face-attribute 'magit-diff-hunk-heading nil :extend nil)
-    (set-face-attribute 'magit-diff-hunk-heading-highlight nil :extend nil)
-    ;; 新增/删除行的颜色更柔和，并禁止背景延伸到行尾之后
-    (set-face-attribute 'magit-diff-added nil
-      :foreground "#a6e3a1" :background "#1e3a1e" :extend nil)
-    (set-face-attribute 'magit-diff-removed nil
-      :foreground "#f38ba8" :background "#3a1e1e" :extend nil)
-    (set-face-attribute 'magit-diff-added-highlight nil
-      :foreground "#a6e3a1" :background "#264a26" :extend nil)
-    (set-face-attribute 'magit-diff-removed-highlight nil
-      :foreground "#f38ba8" :background "#4a2626" :extend nil)))
+  ;; 关闭 section / context / hunk-heading 的整行延伸高亮
+  (set-face-attribute 'magit-section-highlight nil
+    :background 'unspecified :extend nil)
+  (set-face-attribute 'magit-diff-context-highlight nil
+    :background 'unspecified :extend nil)
+  (set-face-attribute 'magit-diff-hunk-heading nil :extend nil)
+  (set-face-attribute 'magit-diff-hunk-heading-highlight nil :extend nil)
+  ;; 新增/删除行：只用前景色，不要背景，避免大片色块
+  (set-face-attribute 'magit-diff-added nil
+    :foreground "green3" :background 'unspecified :extend nil :weight 'normal)
+  (set-face-attribute 'magit-diff-removed nil
+    :foreground "red2" :background 'unspecified :extend nil :weight 'normal)
+  (set-face-attribute 'magit-diff-added-highlight nil
+    :foreground "green3" :background 'unspecified :extend nil :weight 'bold)
+  (set-face-attribute 'magit-diff-removed-highlight nil
+    :foreground "red2" :background 'unspecified :extend nil :weight 'bold))
 
 ;; (when (require 'magit-todos)
 ;;   (magit-todos-mode))
