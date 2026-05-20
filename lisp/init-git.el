@@ -1,26 +1,19 @@
 (when (require 'magit)
-  ;; repositories for magit-list-repositories
-  ;; (setq
-  ;;   magit-repository-directories `((,user-emacs-directory . 0)))
   (add-to-list 'magit-repository-directories '("~/work" . 2))
   (cond
     ((jh/mac?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
     ((jh/linux?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
     ((jh/windows?) (add-to-list 'magit-repository-directories '("d:/code" . 3))))
-  ;; (require 'magit-lfs)
   (defalias 'list-repositories 'magit-list-repositories)
   (global-set-key (kbd "C-x g") 'magit-status)
 
-  ;; magit diff 高亮优化（GUI 与终端都生效）
   (setq magit-diff-refine-hunk nil)
-  ;; 关闭 section / context / hunk-heading 的整行延伸高亮
   (set-face-attribute 'magit-section-highlight nil
     :background 'unspecified :extend nil)
   (set-face-attribute 'magit-diff-context-highlight nil
     :background 'unspecified :extend nil)
   (set-face-attribute 'magit-diff-hunk-heading nil :extend nil)
   (set-face-attribute 'magit-diff-hunk-heading-highlight nil :extend nil)
-  ;; 新增/删除行：只用前景色，不要背景，避免大片色块
   (set-face-attribute 'magit-diff-added nil
     :foreground "green3" :background 'unspecified :extend nil :weight 'normal)
   (set-face-attribute 'magit-diff-removed nil
@@ -30,22 +23,13 @@
   (set-face-attribute 'magit-diff-removed-highlight nil
     :foreground "red2" :background 'unspecified :extend nil :weight 'bold))
 
-;; (when (require 'magit-todos)
-;;   (magit-todos-mode))
-
-
 ;; -----------------------------------------------------------------------------
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
-  ;(add-to-list 'browse-at-remote-remote-type-regexps '(:host "^githubfast\\.com$" :type "github"))
-  ;(add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.202$" :type "gitlab"))
-  ;(add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.110$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitee\\.com$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitana\\.jeanhwea\\.io$" :type "gitlab"))
 
-
-  ;; 增强 github 远端调用
   (defun jh/browse-at-remote--format-region-url-as-github-advice (orig-fn &rest args)
     "Replace githubfast.com with github.com in URL."
     (let ((url (apply orig-fn args)))
@@ -53,7 +37,6 @@
   (advice-add 'browse-at-remote--format-region-url-as-github
     :around #'jh/browse-at-remote--format-region-url-as-github-advice)
 
-  ;; 增强 gitlab 远端调用
   (defun jh/browse-at-remote--format-region-url-as-gitlab-advice (orig-fn &rest args)
     "Fix gitlab URL schemes and paths."
     (let ((url (apply orig-fn args)))
@@ -65,7 +48,6 @@
   (advice-add 'browse-at-remote--format-region-url-as-gitlab
     :around #'jh/browse-at-remote--format-region-url-as-gitlab-advice)
 
-  ;; 增强 gitlab commit 远端调用
   (defun jh/browse-at-remote--format-commit-url-as-gitlab-advice (orig-fn &rest args)
     "Fix gitlab commit URL schemes and paths."
     (let ((url (apply orig-fn args)))
@@ -75,10 +57,7 @@
       (setq url (jh/re-replace "^https://gitana.jeanhwea.io" "http://gitana.jeanhwea.io" url))
       url))
   (advice-add 'browse-at-remote--format-commit-url-as-gitlab
-    :around #'jh/browse-at-remote--format-commit-url-as-gitlab-advice)
-
-  ;; END
-  )
+    :around #'jh/browse-at-remote--format-commit-url-as-gitlab-advice))
 
 ;; -----------------------------------------------------------------------------
 ;; git-auto-commit
@@ -86,11 +65,8 @@
 (when (require 'git-auto-commit-mode)
   (setq-default gac-automatically-push-p t))
 
-;; (when (require 'git-msg-prefix)
-;;   (add-hook 'git-commit-mode-hook 'git-msg-prefix))
-
 ;; -----------------------------------------------------------------------------
-;; some helper function with git repository
+;; helpers
 ;; -----------------------------------------------------------------------------
 (defun jh/git-root-p (dir)
   "Return ture if DIR is contains `.git'."
