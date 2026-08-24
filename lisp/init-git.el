@@ -27,12 +27,9 @@
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
-  ;(add-to-list 'browse-at-remote-remote-type-regexps '(:host "^githubfast\\.com$" :type "github"))
-  ;(add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.202$" :type "gitlab"))
-  ;(add-to-list 'browse-at-remote-remote-type-regexps '(:host "^192\\.168\\.0\\.110$" :type "gitlab"))
+  ;; URL 类型
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitee\\.com$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitana\\.jeanhwea\\.io$" :type "gitlab"))
-
 
   ;; 增强 github 远端调用
   (defun jh/browse-at-remote--format-region-url-as-github-advice (orig-fn &rest args)
