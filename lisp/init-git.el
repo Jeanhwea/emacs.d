@@ -27,9 +27,11 @@
 ;; browse-at-remote
 ;; -----------------------------------------------------------------------------
 (when (require 'browse-at-remote)
+  ;; URL 类型
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitee\\.com$" :type "gitlab"))
   (add-to-list 'browse-at-remote-remote-type-regexps '(:host "^gitana\\.jeanhwea\\.io$" :type "gitlab"))
 
+  ;; 增强 github 远端调用
   (defun jh/browse-at-remote--format-region-url-as-github-advice (orig-fn &rest args)
     "Replace githubfast.com with github.com in URL."
     (let ((url (apply orig-fn args)))
