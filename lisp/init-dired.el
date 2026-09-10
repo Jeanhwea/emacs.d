@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (setq-default
   dired-sort-defaults (list 'name)
   dired-listing-switches "-l -a -v --group-directories-first"

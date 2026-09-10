@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'nxml-mode-hook
   #'(lambda ()
       (sgml-mode)

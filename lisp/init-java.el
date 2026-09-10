@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;; Install jdtls
 ;; Step1. Download from https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/
 ;; Step2. put it into CLASSPATH

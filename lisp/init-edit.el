@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;; https://www.emacswiki.org/emacs/MoveLine
 (defmacro save-column (&rest BODY)
   `(let ((column (current-column)))

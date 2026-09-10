@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (defun ct/start-point ()
   "Get the start point."
   (save-excursion

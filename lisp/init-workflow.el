@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;; Part 1-1: windows commands
 (defun workflow-delete-other-windows ()
   "Delete other windows, just leave current windows."

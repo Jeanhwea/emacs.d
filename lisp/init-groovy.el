@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'groovy-mode-hook
   #'(lambda ()
       (setq

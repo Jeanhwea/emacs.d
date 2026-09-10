@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (defvar capture-dir
   (if (jh/windows?)
     "e:\\Video\\capture"

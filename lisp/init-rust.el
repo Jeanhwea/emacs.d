@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (setq rust-format-on-save t)
 
 (add-hook 'rustic-mode-hook

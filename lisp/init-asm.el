@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (defun asm-hook-func ()
   (setq-local
     show-trailing-whitespace t

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[jt]s\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[jt]sx\\'" . web-mode))

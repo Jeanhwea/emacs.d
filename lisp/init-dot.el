@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'graphviz-dot-mode-hook
   #'(lambda ()
       (setq

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'json-mode-hook
   #'(lambda()
       (evil-define-key '(normal visual) 'local (kbd "<tab>") 'json-tab-action)

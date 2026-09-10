@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'sgml-mode-hook
   #'(lambda()
       (setq

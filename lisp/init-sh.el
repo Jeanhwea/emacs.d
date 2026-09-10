@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'sh-mode-hook
   #'(lambda()
       (setq

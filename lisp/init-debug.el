@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (setq-default
   compilation-scroll-output t
   compilation-ask-about-save nil)

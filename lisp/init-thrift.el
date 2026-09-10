@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'thrift-mode-hook
   #'(lambda()
       (setq thrift-indent-level 4)

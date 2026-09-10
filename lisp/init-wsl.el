@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;; browse url inside WSL
 (when
   (and (eq system-type 'gnu/linux)

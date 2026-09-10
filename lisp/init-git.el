@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (when (require 'magit)
   (add-to-list 'magit-repository-directories '("~/work" . 2))
   (cond

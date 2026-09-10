@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'sql-mode-hook
   #'(lambda()
       (setq

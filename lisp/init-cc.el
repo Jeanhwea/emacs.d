@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'c-mode-common-hook
   #'(lambda()
       (setq

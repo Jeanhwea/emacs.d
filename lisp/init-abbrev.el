@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (clear-abbrev-table global-abbrev-table)
 
 (define-abbrev-table 'global-abbrev-table

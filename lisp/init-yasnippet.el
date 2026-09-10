@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (when (require 'yasnippet)
   (setq
     yas-snippet-dirs

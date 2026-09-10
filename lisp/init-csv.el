@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (when (require 'csv-mode)
   (add-hook 'csv-mode-hook #'(lambda () (csv-header-line))))
 

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (defconst project/golang
   '((repository . "app/repository/{}_repo/{}_repo.go")
      (helper . "app/helper/{}_helper/{}_helper.go")

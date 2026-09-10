@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (add-hook 'csharp-mode-hook
   #'(lambda()
       (setq

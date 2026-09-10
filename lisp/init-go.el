@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; go install github.com/mdempsky/gocode@latest
 ;; go install github.com/rogpeppe/godef@latest
