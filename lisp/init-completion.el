@@ -41,6 +41,17 @@
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
 ;; -----------------------------------------------------------------------------
+;; embark
+;; -----------------------------------------------------------------------------
+(when (require 'embark)
+  (setq
+    prefix-help-command #'embark-prefix-help-command
+    embark-prompter 'embark-completing-read-prompter)
+
+  (global-set-key (kbd "C-h B") 'embark-bindings)
+  (global-set-key (kbd "C-c .") 'embark-act))
+
+;; -----------------------------------------------------------------------------
 ;; eglot
 ;; -----------------------------------------------------------------------------
 (when (require 'eglot)

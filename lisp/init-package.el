@@ -39,6 +39,7 @@
      elfeed
      elm-mode
      emamux
+     embark
      emmet-mode
      engine-mode
      evil
