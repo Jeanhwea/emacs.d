@@ -46,7 +46,6 @@
      evil-commentary
      evil-leader
      evil-numbers
-     evil-pinyin-mode
      exec-path-from-shell
      expand-region
      figlet
