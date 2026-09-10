@@ -43,7 +43,8 @@
 ;; -----------------------------------------------------------------------------
 ;; always start one emacs server instance
 ;; -----------------------------------------------------------------------------
-(unless (server-running-p) (server-mode))
+(when (require 'server)
+  (unless (server-running-p) (server-mode)))
 
 (when (require 'dotenv-mode)
   (add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode)))
@@ -215,7 +216,7 @@
       (message "Timestamp %d => %s" ts str)
       (message "Now %d => %s" ts str))))
 
-(require 'sudo-edit)
+(autoload 'sudo-edit "sudo-edit" nil t)
 
 ;; cscope
 (when (require 'xcscope)

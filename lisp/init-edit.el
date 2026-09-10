@@ -119,10 +119,9 @@
 ;; -----------------------------------------------------------------------------
 ;; tramp
 ;; -----------------------------------------------------------------------------
-(when (require 'tramp)
-  (setq
-    tramp-remote-shell "/bin/zsh"
-    tramp-default-remote-shell "/bin/zsh"))
+(setq
+  tramp-remote-shell "/bin/zsh"
+  tramp-default-remote-shell "/bin/zsh")
 
 ;; -----------------------------------------------------------------------------
 ;; evil-mode
@@ -146,8 +145,5 @@
 
 (when (require 'evil-collection nil t)
   (evil-collection-init))
-
-(when (require 'evil-pinyin nil t)
-  (global-evil-pinyin-mode))
 
 (provide 'init-edit)

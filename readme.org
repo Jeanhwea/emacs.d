@@ -1,14 +1,51 @@
 #+TITLE: Jinghui's emacs.d
 #+AUTHOR: Jinghui Hu
 #+EMAIL: hujinghui@buaa.edu.cn
-#+DATE: 2018-10-22
-#+DATE: <2023-12-05 Tue>
+#+DATE: <2026-09-10 Thu>
 #+STARTUP: indent cache num inlineimages
 #+TAGS: emacs configuration elisp
 
 
 * Notes
-1. Current Emacs Version: emacs30
+1. Required Emacs version: 30.1 or later, developed against 31.1
+2. =which-key=, =eglot=, =transient= and =use-package= ship with Emacs now, they
+   are no longer installed from ELPA
+3. Heavy packages are deferred, see *Loading strategy* below
+
+* Install packages
+The package list is =my-packages= in =lisp/init-package.el=. Both scripts drive
+=scripts/instpkg.el=, which refreshes the archives and installs whatever is
+missing.
+
+Linux and macOS
+#+BEGIN_SRC sh
+  scripts/install-elpa-package.sh
+#+END_SRC
+
+Windows
+#+BEGIN_SRC bat
+  scripts\install-elpa-package.bat
+#+END_SRC
+
+The bat script finds =emacs.exe= on its own, picking the highest version under
+=%ProgramFiles%\Emacs=. Override it with the =EMACS= environment variable, and
+pass =-n= to print the command without running anything.
+
+#+BEGIN_SRC bat
+  set "EMACS=C:\Program Files\Emacs\emacs-31.1\bin\emacs.exe"
+  scripts\install-elpa-package.bat -n
+#+END_SRC
+
+* Loading strategy
+These are not loaded at startup, they arrive by autoload when a command runs or
+a matching file is opened: =org=, =verb=, =tramp=, =rustic=, =magit=, =elfeed=,
+=eglot=, =leetcode=, =dired=.
+
+When adding config for such a package, keep plain =setq= at top level, and move
+anything that touches a keymap, a face or a mode-specific variable into
+=with-eval-after-load=. A bare =(require 'foo)= at top level pulls the whole
+dependency tree in and costs startup time: =(require 'rustic)= alone used to
+drag in =org= and =tramp=.
 
 * Build EMACS from source
 ** Dependencies
@@ -38,8 +75,11 @@ CentOS
 #+END_SRC
 
 * Customize local config
-Feel free to add private setting at *~/.emacs.local.el*, the following is an
-example.
+Private settings go in *~/.emacs.local.el*, loaded after everything else, so it
+can override any package config. *~/.emacs.pre.el* is loaded first instead, use
+it for things that must be in place before packages initialize.
+
+The following is an example.
 
 #+BEGIN_SRC sh :results none
   touch ~/.emacs.local.el

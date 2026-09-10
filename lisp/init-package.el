@@ -35,7 +35,6 @@
      dotenv-mode
      edit-indirect
      editorconfig
-     eglot
      elfeed
      elm-mode
      emamux
@@ -47,7 +46,6 @@
      evil-commentary
      evil-leader
      evil-numbers
-     evil-pinyin-mode
      exec-path-from-shell
      expand-region
      figlet
@@ -138,9 +136,8 @@
   ;     ("nongnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")))
 
 
-  ;; must initialize package first
-  (when (version< emacs-version "27.0")
-    (package-initialize)))
+  (setq package-native-compile (and (fboundp 'native-comp-available-p)
+                                 (native-comp-available-p))))
 
 ;; (eval-when-compile (require 'cl))
 
