@@ -1,14 +1,15 @@
 ;;; -*- lexical-binding: t; -*-
-(when (require 'magit)
+(defalias 'list-repositories 'magit-list-repositories)
+(global-set-key (kbd "C-x g") 'magit-status)
+(setq magit-diff-refine-hunk nil)
+
+(with-eval-after-load 'magit
   (add-to-list 'magit-repository-directories '("~/work" . 2))
   (cond
     ((jh/mac?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
     ((jh/linux?) (add-to-list 'magit-repository-directories '("~/code" . 3)))
     ((jh/windows?) (add-to-list 'magit-repository-directories '("d:/code" . 3))))
-  (defalias 'list-repositories 'magit-list-repositories)
-  (global-set-key (kbd "C-x g") 'magit-status)
 
-  (setq magit-diff-refine-hunk nil)
   (set-face-attribute 'magit-section-highlight nil
     :background 'unspecified :extend nil)
   (set-face-attribute 'magit-diff-context-highlight nil
@@ -65,8 +66,7 @@
 ;; -----------------------------------------------------------------------------
 ;; git-auto-commit
 ;; -----------------------------------------------------------------------------
-(when (require 'git-auto-commit-mode)
-  (setq-default gac-automatically-push-p t))
+(setq-default gac-automatically-push-p t)
 
 ;; -----------------------------------------------------------------------------
 ;; helpers

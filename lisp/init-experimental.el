@@ -43,7 +43,8 @@
 ;; -----------------------------------------------------------------------------
 ;; always start one emacs server instance
 ;; -----------------------------------------------------------------------------
-(unless (server-running-p) (server-mode))
+(when (require 'server)
+  (unless (server-running-p) (server-mode)))
 
 (when (require 'dotenv-mode)
   (add-to-list 'auto-mode-alist '("\\.env\\..*\\'" . dotenv-mode)))

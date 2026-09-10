@@ -8,11 +8,10 @@
 ;;   (setq dired-listing-switches "-l -a -v --group-directories-first")
 ;;   (setenv "LC_COLLATE" "C"))
 
-(add-hook 'after-init-hook
-  #'(lambda ()
-      (setq dired-recursive-deletes 'top)
+(setq dired-recursive-deletes 'top)
 
-      (define-key dired-mode-map (kbd "C-c w") 'wdired-change-to-wdired-mode)))
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "C-c w") 'wdired-change-to-wdired-mode))
 
 ;; 忽略一些不需要关注的文件
 (add-hook 'dired-mode-hook (lambda () (dired-omit-mode)))
