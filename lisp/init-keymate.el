@@ -21,8 +21,6 @@
 ;; evil keybinding
 ;; -----------------------------------------------------------------------------
 (when (and (require 'evil-leader) (require 'evil-numbers))
-  (global-evil-leader-mode)
-
   (evil-define-key '(normal visual) 'global (kbd "<SPC>") 'evil-scroll-down)
   (evil-define-key '(normal visual) 'global (kbd "gp") 'xref-pop-marker-stack)
   (evil-define-key '(normal visual) 'global (kbd "gf") 'evil-find-file-at-point-with-line)
@@ -31,8 +29,6 @@
   (evil-define-key '(normal visual) 'global (kbd "gr") 'workflow-find-references)
   (evil-define-key '(normal visual) 'global (kbd "gi") 'workflow-goto-implementation)
   (evil-define-key '(normal visual) 'global (kbd "gs") 'workflow-search-rg)
-
-  (evil-leader/set-leader ",")
 
   ;; (evil-leader/set-key-for-mode 'java-mode "a" 'eglot-code-actions)
   ;; (evil-leader/set-key-for-mode 'java-mode "r" 'eglot-rename)

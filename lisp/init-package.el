@@ -115,7 +115,6 @@
      ;; vue3-mode
      web-mode
      wgrep
-     which-key
      xclip
      xcscope
      yaml-mode

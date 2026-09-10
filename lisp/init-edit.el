@@ -134,6 +134,12 @@
   ;; reserve <tab> for org-mode
   evil-want-C-i-jump nil)
 
+;; This should set before loading evil-mode, otherwise evil-leader won't be
+;; enabled in initial buffers (*scratch*, *Messages*, ...)
+(when (require 'evil-leader)
+  (setq evil-leader/leader ",")
+  (global-evil-leader-mode))
+
 (when (require 'evil)
   (evil-mode 1)
   (evil-commentary-mode))
