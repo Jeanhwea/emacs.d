@@ -154,6 +154,40 @@
 ;;     charset (font-spec :family "WenQuanYi Micro Hei Mono" :size jh/chinese-font-size)))
 
 ;; -----------------------------------------------------------------------------
+;; emoji
+;; -----------------------------------------------------------------------------
+(require 'seq)
+
+(defvar jh/emoji-font-candidates
+  '("Segoe UI Emoji" "Apple Color Emoji" "Noto Color Emoji" "Noto Emoji" "Symbola")
+  "Preferred emoji font families, ordered by priority.")
+
+(defvar jh/emoji-font nil
+  "Emoji font family currently in use, nil means not configured yet.")
+
+(defun jh/setup-emoji-font (&optional frame)
+  "Render emoji with the first available font in `jh/emoji-font-candidates'."
+  (unless jh/emoji-font
+    (when (display-graphic-p frame)
+      (let
+        ((family
+           (seq-find
+             #'(lambda (f) (member f (font-family-list frame)))
+             jh/emoji-font-candidates)))
+        (when family
+          (set-fontset-font t 'emoji (font-spec :family family) nil 'prepend)
+          (set-fontset-font t 'symbol (font-spec :family family) nil 'append)
+          (setq jh/emoji-font family))))))
+
+(defun jh/show-emoji-font ()
+  "Report which emoji font is in use."
+  (interactive)
+  (message "Emoji font: %s" (or jh/emoji-font "none")))
+
+(add-hook 'after-make-frame-functions #'jh/setup-emoji-font)
+(jh/setup-emoji-font)
+
+;; -----------------------------------------------------------------------------
 ;; theme
 ;; -----------------------------------------------------------------------------
 (when
