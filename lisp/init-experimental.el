@@ -216,7 +216,7 @@
       (message "Timestamp %d => %s" ts str)
       (message "Now %d => %s" ts str))))
 
-(require 'sudo-edit)
+(autoload 'sudo-edit "sudo-edit" nil t)
 
 ;; cscope
 (when (require 'xcscope)

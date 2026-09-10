@@ -67,13 +67,11 @@
 
   (message (format "Run %s" file)))
 
-(when (require 'rustic)
-  (setq rustic-lsp-client 'eglot)
-  (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
+(setq rustic-lsp-client 'eglot)
+(add-hook 'eglot--managed-mode-hook #'(lambda () (flymake-mode -1)))
 
-(when (require 'cargo)
-  ;; (setq cargo-process--command-test--additional-args "-- --nocapture --show-output")
-  (setq cargo-process--command-test--additional-args "-- --show-output")
-  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+;; (setq cargo-process--command-test--additional-args "-- --nocapture --show-output")
+(setq cargo-process--command-test--additional-args "-- --show-output")
+(add-hook 'rust-mode-hook 'cargo-minor-mode)
 
 (provide 'init-rust)
