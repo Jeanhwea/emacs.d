@@ -111,7 +111,7 @@
      tldr
      verb
      vterm
-     vundo
+     ;; vundo
      ;; vue3-mode
      web-mode
      wgrep

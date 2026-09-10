@@ -90,17 +90,17 @@
 ;; -----------------------------------------------------------------------------
 ;; vundo - visual undo tree
 ;; -----------------------------------------------------------------------------
-(when (require 'vundo nil t)
-  (setq vundo-glyph-string vundo-unicode-symbols)
-  (with-eval-after-load 'evil
-    (evil-define-key '(normal visual) vundo-mode-map
-      "h" 'vundo-backward
-      "l" 'vundo-forward
-      "k" 'vundo-previous-node
-      "j" 'vundo-next-node
-      "q" 'vundo-quit
-      (kbd "RET") 'vundo-confirm
-      (kbd "C-g") 'vundo-quit)))
+;; (when (require 'vundo nil t)
+;;   (setq vundo-glyph-string vundo-unicode-symbols)
+;;   (with-eval-after-load 'evil
+;;     (evil-define-key '(normal visual) vundo-mode-map
+;;       "h" 'vundo-backward
+;;       "l" 'vundo-forward
+;;       "k" 'vundo-previous-node
+;;       "j" 'vundo-next-node
+;;       "q" 'vundo-quit
+;;       (kbd "RET") 'vundo-confirm
+;;       (kbd "C-g") 'vundo-quit)))
 
 ;; -----------------------------------------------------------------------------
 ;; manually install howdoi
