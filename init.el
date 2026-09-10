@@ -25,7 +25,7 @@
   (setq-default custom-file jh/cust-file))
 
 
-(let ((mini-version "30.1"))
+(let ((mini-version "30.2"))
   (when (version< emacs-version mini-version)
     (error
       "This config supported mini version is v%s, upgrade your Emacs first"

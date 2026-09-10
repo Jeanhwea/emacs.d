@@ -7,7 +7,7 @@
 
 
 * Notes
-1. Required Emacs version: 30.1 or later, developed against 31.1
+1. Required Emacs version: 30.2 or later
 2. =which-key=, =eglot=, =transient= and =use-package= ship with Emacs now, they
    are no longer installed from ELPA
 3. Heavy packages are deferred, see *Loading strategy* below
