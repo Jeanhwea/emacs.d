@@ -96,3 +96,5 @@ org-persist/*
 
 .chatgpt-shell.el
 projectile-frecency.eld
+
+temp/*
