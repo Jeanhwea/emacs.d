@@ -88,19 +88,14 @@
 (recentf-mode 1)
 
 ;; -----------------------------------------------------------------------------
-;; vundo - visual undo tree
+;; builtin undo, see `undo-redo' and `evil-undo-system' in init-edit.el
 ;; -----------------------------------------------------------------------------
-;; (when (require 'vundo nil t)
-;;   (setq vundo-glyph-string vundo-unicode-symbols)
-;;   (with-eval-after-load 'evil
-;;     (evil-define-key '(normal visual) vundo-mode-map
-;;       "h" 'vundo-backward
-;;       "l" 'vundo-forward
-;;       "k" 'vundo-previous-node
-;;       "j" 'vundo-next-node
-;;       "q" 'vundo-quit
-;;       (kbd "RET") 'vundo-confirm
-;;       (kbd "C-g") 'vundo-quit)))
+(setq-default
+  undo-limit (* 16 1024 1024)
+  undo-strong-limit (* 24 1024 1024)
+  undo-outer-limit (* 96 1024 1024))
+
+(global-set-key (kbd "C-x C-/") 'undo-redo)
 
 ;; -----------------------------------------------------------------------------
 ;; manually install howdoi

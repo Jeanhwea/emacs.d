@@ -131,7 +131,9 @@
   evil-want-integration t
   evil-want-keybinding nil
   ;; reserve <tab> for org-mode
-  evil-want-C-i-jump nil)
+  evil-want-C-i-jump nil
+  ;; use the builtin undo system, no undo-tree needed
+  evil-undo-system 'undo-redo)
 
 ;; This should set before loading evil-mode, otherwise evil-leader won't be
 ;; enabled in initial buffers (*scratch*, *Messages*, ...)
