@@ -40,6 +40,9 @@
   (global-set-key (kbd "C-c r") 'counsel-recentf)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
+(with-eval-after-load 'counsel
+  (advice-add 'counsel-git-cands :around #'jh/call-with-utf8-output))
+
 ;; -----------------------------------------------------------------------------
 ;; embark
 ;; -----------------------------------------------------------------------------

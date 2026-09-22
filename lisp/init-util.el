@@ -18,6 +18,11 @@
   "test if system-type is berkeley-unix?"
   (equal 'berkeley-unix system-type))
 
+(defun jh/call-with-utf8-output (fn &rest args)
+  "Call FN with ARGS, forcing subprocess output to be decoded as utf-8."
+  (let ((coding-system-for-read 'utf-8-unix))
+    (apply fn args)))
+
 ;; -----------------------------------------------------------------------------
 ;; String, convert shape
 ;; -----------------------------------------------------------------------------
